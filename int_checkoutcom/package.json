@@ -1,0 +1,5 @@
+{
+	"hooks": "./cartridge/scripts/hooks.json",
+    "init": ["./cartridge/scripts/init/CkoVerifyChargesInit.js",
+             "./cartridge/scripts/init/CkoCardChargeInit.js"]   	
+}

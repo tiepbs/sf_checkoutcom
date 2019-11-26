@@ -1,0 +1,45 @@
+<isif condition="${pdict.CurrentCustomer.authenticated}">
+	<div id="ckoCardSelector" class="form-row" style="display:none;">
+		<label class="label">${Resource.msg('billing.selectcreditcard','checkout',null)}</label>
+		<div class="field-wrapper">
+			<select name="ckoCreditCardList" id="ckoCreditCardList" class="input-select" onchange="getCardData(this, '<isprint value="${URLUtils.https('CKOMain-GetCardsList')}" />')">
+				<option value="" selected="selected">${Resource.msg('billing.creditcardlistselect','checkout',null)}</option>
+			</select>
+		</div>
+	</div>
+</isif>
+
+<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.owner}" id="creditCardOwner" type="input"/>
+
+<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.type}" id="creditCardType" type="select"/>
+
+<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.number}" id="creditCardNumber" type="input" dynamicname="true"/>
+
+<div class="form-row required">
+	<label>
+		<span class="required-indicator">${Resource.msg('billing.requiredindicator', 'checkout', null)}</span>
+		<span>${Resource.msg('billing.creditcardlistexpdate', 'checkout', null)}</span>
+	</label>
+	<isscript>
+		var storeFrontCore = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontCore');
+		var currentCountry = require(storeFrontCore + '/cartridge/scripts/util/Countries').getCurrent(pdict);
+	</isscript>
+	<isdynamicform formobject="${pdict.CurrentForms.billing.paymentMethods.creditCard.expiration}" formdata="${currentCountry.dynamicForms.expirationInfo}"/>
+</div>
+
+<isscript>
+	var help = {
+		label: Resource.msg('billing.linkcvn', 'checkout', null),
+		cid: 'checkout-security-code'
+	};
+</isscript>
+<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${help}"/>
+
+<isif condition="${pdict.CurrentCustomer.authenticated}">
+	<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.saveCard}" type="checkbox"/>
+</isif>
+
+<script src="${URLUtils.staticURL('/js/checkoutcom.js')}"></script>
+<isif condition="${pdict.CurrentCustomer.authenticated}">
+	<input type="hidden" id="ckoCardListUrl" value="${URLUtils.https('CKOMain-GetCardsList')}" />
+</isif>
