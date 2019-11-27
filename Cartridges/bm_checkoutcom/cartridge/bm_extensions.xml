@@ -10,17 +10,6 @@
  		<icon>icons/cko_logo.png</icon>
 	</menuitem>
 
-	<menuaction id="checkoutcom_orders_manager_action" menupath="checkoutcom_manager_item" position="9999" site="true">
-		<name xml:lang="x-default">Checkout.com Orders</name>
-		<short_description xml:lang="x-default">Manage the Checkout.com orders.</short_description>
-		<description xml:lang="x-default">Manage the Checkout.com orders.</description>
-		<exec pipeline="CKOOrders" node="ListOrders" />
-		<sub-pipelines>
-			<pipeline name="CKOOrders" />
-		</sub-pipelines>
-		<icon>icons/cko_logo.png</icon>
-	</menuaction>
-
 	<menuaction id="checkoutcom_transactions_manager_action" menupath="checkoutcom_manager_item" position="9999" site="true">
 		<name xml:lang="x-default">Checkout.com Transactions</name>
 		<short_description xml:lang="x-default">Manage the Checkout.com transactions.</short_description>
