@@ -1,0 +1,10 @@
+{
+
+	"hooks": "./cartridge/hooks.json",
+	"init": [
+				"./cartridge/scripts/init/cko_pay_init.js",
+				"./cartridge/scripts/init/cko_confirm_pay_init.js",
+				"./cartridge/scripts/init/cko_pay_init_sources.js"
+			]
+
+}

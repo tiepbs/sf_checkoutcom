@@ -1,0 +1,60 @@
+
+<div id="card_payment_box">	
+
+	<fieldset>
+	<div>
+		<img alt="" src="${URLUtils.staticURL('/images/card-schema.png')}" width="80%" style="margin-left: auto; margin-right: auto; display: block;">
+	</div>
+	</fieldset>
+	
+	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.owner}" id="creditCardOwner" type="input" dynamicname="true" />
+	
+	<div class="form-row">
+		<div id="dw_cardTypeDone" style='width: 30px; height: 30px; border: solid 1px none; position: absolute; z-index: 2; margin-top: 0.5em; margin-left: 0.4em;'> 
+		
+			<img id="default_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/card.svg')}" width="65%"/>
+			<img id="visacard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/visa.svg')}" width="100%"/>
+			<img id="mastercard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/mastercard.svg')}" width="100%"/>
+			<img id="discovercard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/discover.svg')}" width="100%"/>
+			<img id="amexcard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/american_express.svg')}" width="100%"/>
+			<img id="jcbcard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/jcb.svg')}" width="100%"/>
+			<img id="dinersclub_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/diners_club.svg')}" width="100%">
+			<img id="madacard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/mada.svg')}" width="100%">
+		</div>
+		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.number}" id="creditCardNumber" type="input"/>
+		
+	</div>
+	
+	
+	<div class="form-row required">
+		<label>
+			<span class="required-indicator">${Resource.msg('billing.requiredindicator', 'checkout', null)}</span>
+			<span>${Resource.msg('billing.creditcardlistexpdate', 'checkout', null)}</span>
+		</label>
+		<isscript>
+			var storeFrontCore = dw.system.Site.getCurrent().getCustomPreferenceValue('cko_pay_test_StorefrontCore');
+			var currentCountry = require(dw.system.Site.getCurrent().getCustomPreferenceValue('cko_pay_test_StorefrontCore') + '/cartridge/scripts/util/Countries').getCurrent(pdict);
+		</isscript>
+		<isdynamicform formobject="${pdict.CurrentForms.cardPaymentForm.expiration}" formdata="${currentCountry.dynamicForms.expirationInfo}"/>
+	</div>
+	
+	<isscript>
+		var help = {
+			label: Resource.msg('billing.linkcvn', 'checkout', null),
+			cid: 'checkout-security-code'
+		};
+	</isscript>
+	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${help}"/>
+	
+	<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.type}" id="creditCardType" />
+	
+	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('cko_pay_test_MADA'))}">
+		<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.mada}" id="mada" />
+	</isif>
+</div>
+
+
+
+<script src="${URLUtils.staticURL('/libraries/cleave/cleave.js')}"></script>
+
+<script src="${URLUtils.staticURL('utilities/cardPayment.js')}"></script>

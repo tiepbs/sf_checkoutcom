@@ -1,0 +1,10 @@
+{
+
+	"hooks": [
+		{
+			"name": "app.payment.processor.CKO_PAY_TEST",
+			"script": "./scripts/payment/processor/CKO_PAY_TEST"
+		}
+	]
+
+}

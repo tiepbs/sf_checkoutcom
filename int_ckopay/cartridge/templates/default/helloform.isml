@@ -1,0 +1,55 @@
+<!--- TEMPLATENAME: helloform.isml --->
+<iscontent type="text/html" charset="UTF-8" compact="true" />
+<isinclude template="util/modules"/>
+
+<form action="${URLUtils.httpsContinue()}" method="post" class="form-horizontal" id="Sepa">
+	
+	<div style="width: 60%; min-width: 600px; max-width: 1000px; border: solid 1px #eee; border-radius: 5px; margin: auto; margin-top: 100px;">
+	
+		<div class="sepaTitle" style="padding: 20px;">
+			<h2>
+				SEPA Direct Debit Mandate for single payment
+			</h2>
+			<div class="sepaCreditor" style="width: 50%; float: left;">
+				<h2>Creditor <br/>Creditor Name</h2>
+				<p>Address Line 1 <br/>Address Line 2 <br/>Country</p>
+			</div>
+			<div class="sepaDebtor" style="width: 50%; float: right;">
+				<h2>Creditor <br/>Creditor Name</h2>
+				<p>Address Line 1 <br/>Address Line 2 <br/>Country</p>
+			</div>
+		</div>
+	
+	 	<div class="sepa-par" style="padding: 15px;">
+	        <hr style="opacity: 0.3;">
+	        <p>
+	        	By accepting this mandate form, you authorise (A) b4payment GmbH to send instructions to 
+	        	your bank to debit your account (B) your bank to debit your account in accordance with 
+	        	the instructions from b4payment GmbH.
+	        </p>
+	        <p>
+	        	As part of your rights, you are entitled to a refund from your bank under the terms and conditions 
+	        	of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date 
+	        	on which your account was debited.
+	        </p>
+	
+			<p>
+				<isinputfield formfield="${pdict.CurrentForms.helloform.mandate}" type="checkbox"/>
+			</p>
+	    </div>
+	
+	    <div class="sepa-right" style="padding: 10px; text-align: center;">
+	    	<hr style="opacity: 0.3;">
+			<p style="opacity: 0.5">
+		       Your rights regarding the above mandate are explained in a statement that you can obtain from your bank.
+			</p>
+	    </div>
+	</div>
+
+	<div style="text-align: center; width: 70%; max-width: 1100px; min-width: 600px; margin: auto; margin-top: 50px;">
+		<fieldset style="border: none;">
+			<button type="submit" name="${pdict.CurrentForms.helloform.submit.htmlName}" value="submit" style="width: 30%; height: 35px; background: #ccc;">Pay Now</button>
+			<button type="cancel" name="${pdict.CurrentForms.helloform.cancel.htmlName}" value="submit" style="width: 20%; height: 35px;">Cancel</button>
+		</fieldset>
+	</div>
+</form>

@@ -1,0 +1,20 @@
+<!--- TEMPLATENAME: helloform.isml --->
+<iscontent type="text/html" charset="UTF-8" compact="true" />
+<isinclude template="util/modules"/> //generates isinputfield tag html
+
+<h1>Hello World Form</h1>
+
+<form action="${URLUtils.httpsContinue()}" method="post" class="form-horizontal" id="HelloForm">
+	<fieldset>
+		<isinputfield formfield="${pdict.CurrentForms.helloform.nickname}" type="input"/>
+
+	</fieldset>
+	<fieldset>
+			<button type="submit"
+				name="${pdict.CurrentForms.helloform.submit.htmlName}"
+				value="submit">Submit</button>
+			<button type="cancel"
+				name="${pdict.CurrentForms.helloform.cancel.htmlName}"
+				value="submit">Cancel</button>
+	</fieldset>
+</form>
