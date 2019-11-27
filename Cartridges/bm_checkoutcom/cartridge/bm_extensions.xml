@@ -21,4 +21,17 @@
 		<icon>icons/cko_logo.png</icon>
 	</menuaction>
 
+	<dialogaction id="checkoutcom_transactions_manager_dialog" xp_ref="customer-search" position="9999" extern="true">
+		<name xml:lang="x-default">Test</name>
+		<exec pipeline="CKOTransactions" node="ListTransactions" />
+	</dialogaction>
+
+	<formextension id="customer-search">
+	<valueinput type="string" name="TestAttr" defaultvalue="">
+		<label xml:lang="x-default">TestAttr</label>
+		<option>Value Option 1</option>
+		<option>Value Option 2</option>
+		<option>Value Option 3</option>
+	</valueinput>
+	</formextension>
 </extensions>
