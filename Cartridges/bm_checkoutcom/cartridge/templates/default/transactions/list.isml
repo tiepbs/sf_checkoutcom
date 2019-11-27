@@ -1,5 +1,5 @@
 <style>
-	@import url("${URLUtils.staticURL('/js/tabulator/css/tabulator.min.css')}");
+	@import url("${URLUtils.staticURL('/css/tabulator/tabulator.min.css')}");
 </style>
 <isdecorate template="application/MenuFrame">
 	<!-- Encoding -->
