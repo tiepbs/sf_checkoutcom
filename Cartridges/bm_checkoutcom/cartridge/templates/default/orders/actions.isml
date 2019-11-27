@@ -1,0 +1,89 @@
+<style>
+.ckoButton-2 {
+	margin: 0px;
+	width: 80px;
+	cursor: pointer;
+}
+
+.ckoButton-3 {
+	margin: 0px;
+	width: 100px;
+	height: 30px;
+	cursor: pointer;
+}
+</style>
+
+<input type="hidden" id="hubCallUrl" name="hubCallUrl" value="${URLUtils.url('CKOTransactions-HubCall')}">
+<input type="hidden" id="transactionHistoryUrl" name="transactionHistoryUrl" value="${URLUtils.url('CKOTransactions-TransactionHistory')}">
+<script src="${URLUtils.staticURL('/js/core/actions/transactions.js')}"></script>
+
+<isif condition="${pi.getPaymentTransaction().type.toString() == pdict.PaymentTransaction.TYPE_AUTH}">
+	<button onclick="openModal('ckoActionCapture')" type="button" class="ckoButton-2 action-button" id="${pi.getPaymentTransaction().transactionID}">Capture</button>
+	<script>isActionable('${pi.getPaymentTransaction().transactionID}', 'capture')</script>
+	<div id="ckoActionCapture" class="modal modal-closed">
+		<div class="modal-content">
+			<span class="close cursor" onclick="closeModal('ckoActionCapture')">&times;</span>
+			<b>Capture transaction ${pi.getPaymentTransaction().transactionID}</b><br /><br />
+			<div>
+				<input type="radio" id="ckoCapture" name="ckoCapture" value="full" checked="checked" class="ckoAction-1">
+				<label for="ckoCapture">Full capture</label>
+			</div>
+			<div>
+			<input type="radio" id="ckoPartialCapture" name="ckoCapture" value="partial" class="ckoAction-2">
+			<label for="ckoCapture">Partial capture (${pi.getPaymentTransaction().amount} max.)</label>
+				<input type="text" id="ckoPartialCaptureAmount" name="ckoPartialCaptureAmount" class="ckoAction-3" onblur="validateMax(this.id, '${pi.getPaymentTransaction().amount}')" value="${pi.getPaymentTransaction().amount}" disabled="disabled">	
+			</div>
+			<br>
+			<button type="button" class="ckoButton-3">Confirm</button>
+			<input type="hidden" name="ckoTransactionId" value="${pi.getPaymentTransaction().transactionID}">
+			<input type="hidden" name="ckoTransactionAmount" value="${pi.getPaymentTransaction().amount}">
+			<input type="hidden" name="task" value="capture">
+		</div>
+	</div>		
+
+	<button onload="isActionable(this)" onclick="openModal('ckoActionVoid')" type="button" class="ckoButton-2 action-button" id="${pi.getPaymentTransaction().transactionID}">Void</button>
+	<div id="ckoActionVoid" class="modal modal-closed">
+		<div class="modal-content">
+			<span class="close cursor" onclick="closeModal('ckoActionVoid')">&times;</span>
+			<b>Void transaction ${pi.getPaymentTransaction().transactionID}</b><br /><br />
+			<div>
+				<input type="radio" id="ckoVoid" name="ckoVoid" value="full" checked="checked" class="ckoAction-1">
+				<label for="ckoVoid">Full void</label>
+			</div>
+			<div>
+			<input type="radio" id="ckoPartialVoid" name="ckoVoid" value="partial" class="ckoAction-2">
+			<label for="ckoVoid">Partial void (${pi.getPaymentTransaction().amount} max.)</label>
+				<input type="text" id="ckoPartialVoidAmount" name="ckoPartialVoidAmount" class="ckoAction-3" onblur="validateMax(this.id, '${pi.getPaymentTransaction().amount}')" value="${pi.getPaymentTransaction().amount}" disabled="disabled">	
+			</div>
+			<br>
+			<button type="button" class="ckoButton-3">Confirm</button>
+			<input type="hidden" name="ckoTransactionId" value="${pi.getPaymentTransaction().transactionID}">
+			<input type="hidden" name="ckoTransactionAmount" value="${pi.getPaymentTransaction().amount}">
+			<input type="hidden" name="task" value="void">
+		</div>
+	</div>		
+</isif>
+
+<isif condition="${pi.getPaymentTransaction().type.toString() == pdict.PaymentTransaction.TYPE_CAPTURE}">
+	<button onload="isActionable(this)" onclick="openModal('ckoActionRefund')" type="button" class="ckoButton-2 action-button" id="${pi.getPaymentTransaction().transactionID}">Refund</button>
+	<div id="ckoActionRefund" class="modal modal-closed">
+		<div class="modal-content">
+			<span class="close cursor" onclick="closeModal('ckoActionRefund')">&times;</span>
+			<b>Refund transaction ${pi.getPaymentTransaction().transactionID}</b><br /><br />
+			<div>
+				<input type="radio" id="ckoRefund" name="ckoRefund" value="full" checked="checked" class="ckoAction-1">
+				<label for="ckoRefund">Full refund</label>
+			</div>
+			<div>
+			<input type="radio" id="ckoPartialRefund" name="ckoRefund" value="partial" class="ckoAction-2">
+			<label for="ckoRefund">Partial refund (${pi.getPaymentTransaction().amount} max.)</label>
+				<input type="text" id="ckoPartialRefundAmount" name="ckoPartialRefundAmount" class="ckoAction-3" onblur="validateMax(this.id, '${pi.getPaymentTransaction().amount}')" value="${pi.getPaymentTransaction().amount}" disabled="disabled">	
+			</div>
+			<br>
+			<button type="button" class="ckoButton-3">Confirm</button>
+			<input type="hidden" name="ckoTransactionId" value="${pi.getPaymentTransaction().transactionID}">
+			<input type="hidden" name="ckoTransactionAmount" value="${pi.getPaymentTransaction().amount}">
+			<input type="hidden" name="task" value="refund">
+		</div>
+	</div>		
+</isif>

@@ -1,0 +1,75 @@
+<style>
+@import url("${URLUtils.staticURL('/css/modal.css')}");
+
+.ckoButton-1 {
+	width: 150px;
+	height: 30px;
+	cursor: pointer;
+}
+
+.ckoButton-2 {
+	margin: 0px;
+}
+
+.overview_title {
+	white-space: nowrap;
+}
+</style>
+
+<isdecorate template="application/MenuFrame">
+	<!-- Encoding -->
+	<iscontent type="text/html" charset="UTF-8">
+	<!-- End Encoding -->
+	
+	<!-- Modules -->
+	<isinclude template="inc/Modules">
+	<!-- End Modules -->
+	
+	<!-- Breadcrumbs -->
+	<isbreadcrumb name1="Checkout.com" url1="${URLUtils.url('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', 'checkoutcom_manager_item')}" name2="Manage transactions" url2="${URLUtils.url('CKOTransactions-ListTransactions')}" name3="${pdict.item.transactionID}">
+	<!-- Breadcrumbs -->
+	
+	<!-- Main content table -->	
+	<table border="0" cellspacing="0" cellpadding="0" width="100%">
+		<tbody>
+			<tr>
+        		<td class="overview_title">Checkout.com transaction ${pdict.item.transactionID}</td>
+    		</tr>
+ 			<tr><td>&nbsp;</td></tr>
+            <tr>
+				<td>
+                    <table width="100%" border="0" cellspacing="5" cellpadding="5" class="ckoDataDetail infobox w e n s">
+						<thead>
+							<tr>
+								<th class="table_header w e n s left" colspan="2">Transaction details</th>	
+							</tr>
+						</thead>           	
+						<tbody>
+							<tr>
+								<td class="table_detail e s">Transaction ID</td>
+								<td class="table_detail e s">${pdict.item.transactionID}</td>
+							</tr>
+							<tr>
+								<td class="table_detail w e s">Date</td>
+								<td class="table_detail e s">${pdict.item.getCreationDate()}</td>
+							</tr>
+							<tr>
+								<td class="table_detail w e s">Amount</td>
+								<td class="table_detail e s">${pdict.item.amount}</td>
+							</tr>
+							<tr>
+								<td class="table_detail w e s">Type</td>
+								<td class="table_detail e s">${pdict.item.type.toString()}</td>
+							</tr>
+							<tr>
+								<td class="table_detail w e s">Payment processor</td>
+								<td class="table_detail e s">${pdict.item.paymentProcessor.getID()}</td>
+							</tr>
+						</tbody>
+                    </table>
+				</td>
+            </tr>
+		</tbody>
+	</table>
+	<!-- End Main content table -->	
+</isdecorate>

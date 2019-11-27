@@ -1,0 +1,4 @@
+{
+    "init": ["./cartridge/scripts/init/CkoTransactionsInit.js",
+             "./cartridge/scripts/init/CkoChargesInit.js"]   	
+}

@@ -1,0 +1,72 @@
+<style>
+	@import url("${URLUtils.staticURL('/js/DataTables-1.10.18/css/jquery.dataTables.min.css')}");
+</style>
+<isdecorate template="application/MenuFrame">
+	<!-- Encoding -->
+	<iscontent type="text/html" charset="UTF-8">
+	<!-- End Encoding -->
+	
+	<!-- Modules -->
+	<isinclude template="inc/Modules">
+	<!-- End Modules -->
+	
+	<!-- Breadcrumbs -->
+	<isbreadcrumb name1="Checkout.com" url1="${URLUtils.url('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', 'checkoutcom_manager_item')}" name2="Manage transactions" url2="${URLUtils.url('CKOTransactions-ListTransactions')}">
+	<!-- Breadcrumbs -->
+	
+	<!-- Tab navigation table -->	
+    <isinclude template="inc/tabs">
+	<!-- End Tab navigation table -->	
+	
+	<!-- Main content table -->	
+	<table border="0" cellspacing="0" cellpadding="0" width="100%">
+		<tbody>
+			<tr>
+        		<td class="overview_title">Manage Checkout.com transactions</td>
+    		</tr>
+ 			<tr><td>&nbsp;</td></tr>
+            <tr>
+				<td>
+                    <table id="ckoDataList" class="display hover order-column stripe" width="100%" border="0" cellspacing="0" cellpadding="0">
+						<thead>
+							<tr>
+								<th class="table_header w e n s left">Transaction ID</th>
+								<th class="table_header e n s left">Date</th>
+								<th class="table_header e n s left">Amount</th>
+								<th class="table_header e n s left">Type</th>
+								<th class="table_header e n s left">Order ID</th>
+								<th class="table_header e n s left">Processor</th>
+							</tr>
+						</thead>
+                    	<tbody>
+                    		<isloop items="${pdict.data}" var="item">
+                                <tr>                         
+	                                <td class="table_detail w e s" nowrap="nowrap">
+	                                	<a href="${URLUtils.url('CKOTransactions-ViewTransaction', 'trackId', pdict.orderMap[item.transactionID], 'transactionId', item.transactionID)}">
+											${item.transactionID}
+										</a>									
+									</td>
+	                                <td class="table_detail e s" nowrap="nowrap">
+	                                	<isprint value="${item.getCreationDate()}" style="DATE_LONG" timezone="SITE">
+	                                	<isprint value="${item.getCreationDate()}"  formatter="H:mm" timezone="SITE">	                                
+	                                </td>	                                
+	                                <td class="table_detail e s" nowrap="nowrap">${item.amount}</td>
+	                                <td class="table_detail e s" nowrap="nowrap">${item.type.toString()}</td>
+	                                <td class="table_detail e s">
+	                                	<a href="${URLUtils.url('CKOOrders-ViewOrder', 'trackId', pdict.orderMap[item.transactionID], 'transactionId', item.transactionID)}">
+											${pdict.orderMap[item.transactionID]}
+										</a>
+	                                </td>
+	                                <td class="table_detail e s" nowrap="nowrap">${item.paymentProcessor.getID()}</td>
+                            	</tr> 	
+        	            	</isloop>
+		                </tbody>
+                    </table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<!-- End Main content table -->	
+</isdecorate>
+<script src="${URLUtils.staticURL('/js/core/list.js')}"></script>
+<script src="${URLUtils.staticURL('/js/DataTables-1.10.18/js/jquery.dataTables.min.js')}"></script>
