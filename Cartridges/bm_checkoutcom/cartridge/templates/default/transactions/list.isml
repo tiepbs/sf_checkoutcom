@@ -1,5 +1,5 @@
 <style>
-	@import url("${URLUtils.staticURL('/js/DataTables-1.10.18/css/jquery.dataTables.min.css')}");
+	@import url("${URLUtils.staticURL('/js/tabulator/css/tabulator.min.css')}");
 </style>
 <isdecorate template="application/MenuFrame">
 	<!-- Encoding -->
@@ -69,4 +69,4 @@
 	<!-- End Main content table -->	
 </isdecorate>
 <script src="${URLUtils.staticURL('/js/core/list.js')}"></script>
-<script src="${URLUtils.staticURL('/js/DataTables-1.10.18/js/jquery.dataTables.min.js')}"></script>
+<script src="${URLUtils.staticURL('/js/tabulator/js/tabulator.min.js')}"></script>
