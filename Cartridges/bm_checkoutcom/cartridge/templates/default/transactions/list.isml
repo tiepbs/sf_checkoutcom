@@ -23,4 +23,4 @@
 	<!-- End Main content table -->	
 </isdecorate>
 <script src="${URLUtils.staticURL('/js/core/list.js')}"></script>
-<script src="${URLUtils.staticURL('/js/tabulator/js/tabulator.min.js')}"></script>
+<script src="${URLUtils.staticURL('/js/tabulator/tabulator.min.js')}"></script>
