@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
-	<field formid="nickname" label="Nickname:" type="string" mandatory="true" max-length="50" />	<!-- field for Payment Option -->
-    <field formid="mandate" type="boolean" label="I accept the mandate for a single payment" mandatory="false" binding="mandate" />
-	<action formid="submit" valid-form="true"/>
-	<action formid="cancel" valid-form="false"/>
-</form>
