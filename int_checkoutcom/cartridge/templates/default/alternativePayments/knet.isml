@@ -1,0 +1,13 @@
+<!-- Knet pay APM Option -->
+<H4>
+	<img alt="knet" id="knet_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/knet.jpeg')}" width="10%"/>
+	KNET PAY 
+	<input id="knet_apm_radio_btn" type="radio" name="apm_payment_types" value="knet">
+</H4>
+
+<div id="knet_pay_box" style="display: none;">
+	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.knet_purpose}" id="sofort_purpose" type="hidden" />
+</div>
+
+
+<hr/>

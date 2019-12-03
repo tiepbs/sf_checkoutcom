@@ -1,0 +1,13 @@
+<!-- Sofort pay APM Option -->
+<H4>
+	<img alt="sofort" id="sofort_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/sofort.jpeg')}" width="10%"/>
+	SOFORT PAY 
+	<input id="sofort_apm_radio_btn" type="radio" name="apm_payment_types" value="sofort">
+</H4>
+
+<div id="sofort_pay_box" style="display: none;">
+	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.sofort_purpose}" id="sofort_purpose" type="hidden" />
+</div>
+
+
+<hr/>
