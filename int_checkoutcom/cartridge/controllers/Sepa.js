@@ -5,7 +5,7 @@
  */
 
 /* Script Modules */
-var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('cko_pay_test_StorefrontController');
+var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 var app = require(siteControllerName + '/cartridge/scripts/app');
 var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var ISML = require('dw/template/ISML');
@@ -20,19 +20,13 @@ var util = require('~/cartridge/scripts/utility/util');
 
 var Store = require('dw/catalog/Store');
 
-//function start() {
-//	app.getView({
-//	    ContinueURL: URLUtils.https('Sepa-HandleForm')
-//	    }).render('helloform');
-//}
-
 function mandate() {
 	var url = session.privacy.redirectUrl;
 	
 	if(url){
 		app.getView({
 		    ContinueURL: URLUtils.https('Sepa-HandleMandate')
-		    }).render('helloform');
+		    }).render('sepaform');
 	}else{
 		// print out a message
 		response.getWriter().println('Error!');
@@ -40,14 +34,17 @@ function mandate() {
 }
 
 function handleMandate() {
+	
+	// set session redirect url to null
 	session.privacy.redirectUrl = null;
 	
 	var gatewayResponse = false;
 	var orderId = util.getOrderId();
 	
-    app.getForm('helloform').handleAction({
+    app.getForm('sepaForm').handleAction({
         cancel: function () {
-            app.getForm('helloform').clear();
+        	// clear form
+            app.getForm('sepaForm').clear();
             
             if(orderId){
         		// load the order
@@ -55,15 +52,17 @@ function handleMandate() {
                 var basket = util.checkAndRestoreBasket(order);
             }
             
-            //response.redirect(URLUtils.https('Home-Show'));
             app.getController('COBilling').Start();
         },
         submit: function () {  
-        	var sepa = app.getForm('helloform');
+        	var sepa = app.getForm('sepaForm');
         	var mandate = sepa.get('mandate').value();
         	
         	// mandate is true
         	if(mandate){
+        		// clear form
+                app.getForm('sepaForm').clear();
+        		
             	if(orderId){
             		// load the order
             		var order = OrderMgr.getOrder(orderId);
@@ -75,13 +74,15 @@ function handleMandate() {
             		confirmation.ShowConfirmation(order);
             	}else{
             		// print out a message
-            		response.getWriter().println('Order Not Found!');
+            		//response.getWriter().println('Order Not Found!');
+                    
+                    app.getController('COBilling').Start();
             	}
             	
             	
         	}else{
-        		// print out a message
-        		response.getWriter().println('Mandate is Required!');
+        		
+        		app.getView().render('sepaform');
         	}
         }
     });
@@ -90,5 +91,4 @@ function handleMandate() {
 
 /** Shows the template page. */
 exports.Mandate = guard.ensure(['get'], mandate);
-//exports.Start = guard.ensure(['get'], start);
 exports.HandleMandate = guard.ensure(['post'], handleMandate);

@@ -604,7 +604,7 @@ var util = {
 			var gatewayObject = payObject;
 			
 			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
+			var gatewayResponse = this.gatewayClientRequest("cko.card.sources." + this.getValue('ckoMode') + ".service", gatewayObject);
 			
 			// If the charge is valid, process the response
 			if(gatewayResponse){

@@ -13,7 +13,7 @@ var util = require('~/cartridge/scripts/utility/util');
 svc.ServiceRegistry.configure("cko.card.sources.sandbox.service", {
     createRequest: function(svc, args) {  	
   		// Prepare the http service
-        svc.addHeader("Authorization", util.getAccountKeys().secretKey);
+        svc.addHeader("Authorization", util.getAccountKeys().secreteKey);
         svc.addHeader("User-Agent", CKOHelper.getCartridgeMeta());
         svc.addHeader("Content-Type", 'application/json;charset=UTF-8');
         
@@ -31,7 +31,7 @@ svc.ServiceRegistry.configure("cko.card.sources.sandbox.service", {
 svc.ServiceRegistry.configure("cko.card.sources.live.service", {
     createRequest: function(svc, args) {
 		// Prepare the http service
-        svc.addHeader("Authorization", util.getAccountKeys().secretKey);
+        svc.addHeader("Authorization", util.getAccountKeys().secreteKey);
 	    svc.addHeader("User-Agent", CKOHelper.getCartridgeMeta());
 	    svc.addHeader("Content-Type", 'application/json;charset=UTF-8');
 	   
