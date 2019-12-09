@@ -4,7 +4,6 @@
 var PaymentMgr = require('dw/order/PaymentMgr');
 var Transaction = require('dw/system/Transaction');
 var ISML = require('dw/template/ISML');
-var OrderMgr = require('dw/order/OrderMgr');
 
 /* Site controller */
 var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
@@ -20,15 +19,6 @@ var CKOHelper = require('~/cartridge/scripts/helpers/CKOHelper');
 
 /* Utility */
 var util = require('~/cartridge/scripts/utility/util');
-
-/* Business Name */
-var businessName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBusinessName');
-
-/* Card payment */
-var payWithCard = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCard'); 
-
-/* Alternative payment */
-var payWithApms = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApms'); 
 
 
 /**
@@ -83,22 +73,11 @@ function Authorize(args) {
 
 	// Preparing payment parameters
 	var orderNo = args.OrderNo;
-	var cart = Cart.get(args.Basket);
 	var paymentInstrument = args.PaymentInstrument;
 	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 	
 	// Add data to session for payment return
 	session.privacy.ckoOrderId = args.OrderNo;
-	
-
-	var paymentTypeForm = app.getForm('cardPaymentForm');
-	
-	// get payment type
-	var payment_type = paymentTypeForm.get('payment_method').value();	
-	
-	// get shop url
-	var shop_url = paymentTypeForm.get('shop_url').value();
-	
 	
 	
 	// process card payment
@@ -112,7 +91,7 @@ function Authorize(args) {
 	};
 	
 	// perform the charge
-	var request = util.handleFullChargeRequest(cardData, args);
+	var request = util.handleCardRequest(cardData, args);
 	
 	// Transaction wrapper
 	Transaction.wrap(function(){

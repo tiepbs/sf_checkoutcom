@@ -64,7 +64,7 @@ var util = {
 	
 	
 	/* cartridge metadata. */
-	getCartridgeMeta: function(catridge){
+	getCartridgeMeta: function(){
 		return this.getValue("ckoUserAgent") + ' ' + this.getValue("ckoVersion");
 	},
 	
@@ -100,12 +100,58 @@ var util = {
         return responseData;
 	},
 	
+	
 	/*
-	 * Format price for cko
+	 * Currency Conversion Ratio
 	 */
-	getFormattedPrice: function(price){
-		var orderTotalFormated = price * 100;
+	getCKOFormatedValue: function(currency){
+		
+		var byZero = {
+			currencies 	: "BIF DJF GNF ISK KMF XAF CLF XPF JPY PYG RWF KRW VUV VND XOF",
+			multiple 	: '1'
+		}
+		
+		var byThree = {
+			currencies	: "BHD LYD JOD KWD OMR TND",
+			multiple	: '1000'
+		}
+		
+		if(byZero.currencies.match(currency)){
+			return byZero.multiple;
+		}else if(byThree.currencies.match(currency)){
+			return byThree.multiple;
+		}else{
+			return 100;
+		}
+		
+	},
+	
+	
+	/*
+	 * Format price for cko gateway
+	 */
+	getFormattedPrice: function(price, args){
+		var currency = this.getCurrency(args);
+		var ckoFormateBy = this.getCKOFormatedValue(currency);
+		var orderTotalFormated = price * ckoFormateBy;
+		
 		return orderTotalFormated.toFixed();
+	},
+	
+	
+
+	/*
+	 * get Order Quantities
+	 */
+	getCurrency : function(args){
+			
+		// load the card and order information
+		var order = OrderMgr.getOrder(args.OrderNo);
+		
+		var currency = order.getCurrencyCode();
+		
+		return currency;
+		
 	},
 	
 	
@@ -278,9 +324,9 @@ var util = {
 		
 		// Prepare the transaction info for the order
 		var details = '';
-		if (gatewayResponse.hasOwnProperty('id') && gatewayResponse.hasOwnProperty('customer')){	// todo
+		if (gatewayResponse.hasOwnProperty('id') && gatewayResponse.hasOwnProperty('customer')){
 			details += this._("cko.transaction.id", "cko_pay_test") + ": " + gatewayResponse.id + "\n";
-			details += this._("cko.customer.id", "cko_pay_test") + ": " + gatewayResponse.customer.id + "\n";		// todo
+			details += this._("cko.customer.id", "cko_pay_test") + ": " + gatewayResponse.customer.id + "\n";	
 			details += this._("cko.transaction.status", "cko_pay_test") + ": " + gatewayResponse.status + "\n";
 		}
 		
@@ -346,284 +392,37 @@ var util = {
 		});
 	},
 	
-	
 	/*
-	 * Handle APM charge Request to CKO API
+	 * Apm Request
 	 */
-	handleAPMChargeRequest: function(payObject, args){
+	handleApmRequest: function(payObject, args){
 		
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
-		// Get billing address information
-		var billingAddress = order.getBillingAddress();
+		// creating billing address object
+		var gatewayObject = this.apmObject(payObject, args);
 		
-		switch(payObject.type){
-		case 'ideal':
-			// creating billing address object
-			var gatewayObject = this.gatewayAPMObject(payObject, "EUR", args);
+		var gatewayResponse = false;
+		
+		if(payObject.type == "sepa"){
 			
 			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
+			gatewayResponse = this.gatewayClientRequest("cko.card.sources." + this.getValue('ckoMode') + ".service", gatewayObject);
 			
-			// If the charge is valid, process the response
-			if(gatewayResponse){
-				this.handleAPMChargeResponse(gatewayResponse, order);
-			}else{
-				
-				// update the transaction
-				Transaction.wrap(function(){
-					OrderMgr.failOrder(order);
-				});
-				
-				// Restore the cart
-				this.checkAndRestoreBasket(order);
-				
-				return false;
-			}
-			return true;
-			
-		case 'giropay':
-			// creating billing address object
-			var gatewayObject = this.gatewayAPMObject(payObject, "EUR", args);
+		}else{
 			
 			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
+			gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
 			
-			// If the charge is valid, process the response
-			if(gatewayResponse){
-				this.handleAPMChargeResponse(gatewayResponse, order);
-			}else{
-				
-				// update the transaction
-				Transaction.wrap(function(){
-					OrderMgr.failOrder(order);
-				});
-				
-				// Restore the cart
-				this.checkAndRestoreBasket(order);
-				
-				return false;
-			}
-			return true;
+		}
+		
+		// If the charge is valid, process the response
+		if(gatewayResponse){
 			
-		case 'bancontact':
-			// creating billing address object
-			var gatewayObject = this.gatewayAPMObject(payObject, "BHD", args);
+			this.handleAPMChargeResponse(gatewayResponse, order);
 			
-			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
-			
-			// If the charge is valid, process the response
-			if(gatewayResponse){
-				this.handleAPMChargeResponse(gatewayResponse, order);
-			}else{
-				
-				// update the transaction
-				Transaction.wrap(function(){
-					OrderMgr.failOrder(order);
-				});
-				
-				// Restore the cart
-				this.checkAndRestoreBasket(order);
-				
-				return false;
-			}
-			return true;
-			
-		case 'benefit':
-			// creating billing address object
-			var gatewayObject = payObject;
-			
-			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
-			
-			// If the charge is valid, process the response
-			if(gatewayResponse){
-				this.handleAPMChargeResponse(gatewayResponse, order);
-			}else{
-				
-				// update the transaction
-				Transaction.wrap(function(){
-					OrderMgr.failOrder(order);
-				});
-				
-				// Restore the cart
-				this.checkAndRestoreBasket(order);
-				
-				return false;
-			}
-			return true;
-		case 'boleto':
-
-			// creating billing address object
-			var gatewayObject = this.gatewayAPMObject(payObject, "BRL", args);
-			
-			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
-			
-			// If the charge is valid, process the response
-			if(gatewayResponse){
-				this.handleAPMChargeResponse(gatewayResponse, order);
-			}else{
-				
-				// update the transaction
-				Transaction.wrap(function(){
-					OrderMgr.failOrder(order);
-				});
-				
-				// Restore the cart
-				this.checkAndRestoreBasket(order);
-				
-				return false;
-			}
-			return true;
-			
-		case "eps":
-			// creating billing address object
-			var gatewayObject = this.gatewayAPMObject(payObject, "EUR", args);
-			
-			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
-			
-			// If the charge is valid, process the response
-			if(gatewayResponse){
-				this.handleAPMChargeResponse(gatewayResponse, order);
-			}else{
-				
-				// update the transaction
-				Transaction.wrap(function(){
-					OrderMgr.failOrder(order);
-				});
-				
-				// Restore the cart
-				this.checkAndRestoreBasket(order);
-				
-				return false;
-			}
-			return true;
-			
-		case "sofort":
-			// creating billing address object
-			var gatewayObject = this.gatewayAPMObject(payObject, "EUR", args);
-			
-			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
-			
-			// If the charge is valid, process the response
-			if(gatewayResponse){
-				this.handleAPMChargeResponse(gatewayResponse, order);
-			}else{
-				
-				// update the transaction
-				Transaction.wrap(function(){
-					OrderMgr.failOrder(order);
-				});
-				
-				// Restore the cart
-				this.checkAndRestoreBasket(order);
-				
-				return false;
-			}
-			return true;
-			
-		case "knet":
-			// creating billing address object
-			var gatewayObject = this.gatewayAPMObject(payObject, "KWD", args);
-			
-			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
-			
-			// If the charge is valid, process the response
-			if(gatewayResponse){
-				this.handleAPMChargeResponse(gatewayResponse, order);
-			}else{
-				
-				// update the transaction
-				Transaction.wrap(function(){
-					OrderMgr.failOrder(order);
-				});
-				
-				// Restore the cart
-				this.checkAndRestoreBasket(order);
-				
-				return false;
-			}
-			return true;
-			
-		case "qpay":
-			// creating billing address object
-			var gatewayObject = this.gatewayAPMObject(payObject, "QAR", args);
-			
-			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
-			
-			// If the charge is valid, process the response
-			if(gatewayResponse){
-				this.handleAPMChargeResponse(gatewayResponse, order);
-			}else{
-				
-				// update the transaction
-				Transaction.wrap(function(){
-					OrderMgr.failOrder(order);
-				});
-				
-				// Restore the cart
-				this.checkAndRestoreBasket(order);
-				
-				return false;
-			}
-			return true;
-			
-		case "fawry":
-			// creating billing address object
-			var gatewayObject = this.gatewayAPMObject(payObject, "EGP", args);
-			
-			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
-			
-			// If the charge is valid, process the response
-			if(gatewayResponse){
-				this.handleAPMChargeResponse(gatewayResponse, order);
-			}else{
-				
-				// update the transaction
-				Transaction.wrap(function(){
-					OrderMgr.failOrder(order);
-				});
-				
-				// Restore the cart
-				this.checkAndRestoreBasket(order);
-				
-				return false;
-			}
-			return true;
-			
-		case "sepa":
-			// creating billing address object
-			var gatewayObject = payObject;
-			
-			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.sources." + this.getValue('ckoMode') + ".service", gatewayObject);
-			
-			// If the charge is valid, process the response
-			if(gatewayResponse){
-				this.handleAPMChargeResponse(gatewayResponse, order);
-			}else{
-				
-				// update the transaction
-				Transaction.wrap(function(){
-					OrderMgr.failOrder(order);
-				});
-				
-				// Restore the cart
-				this.checkAndRestoreBasket(order);
-				
-				return false;
-			}
-			return true;
-			
-		default:
+		}else{
 			
 			// update the transaction
 			Transaction.wrap(function(){
@@ -634,21 +433,60 @@ var util = {
 			this.checkAndRestoreBasket(order);
 			
 			return false;
+		}
+		return true;
+	},
+	
+	/*
+	 * return apm object
+	 */
+	apmObject: function(payObject, args){
+		
+		var chargeData = false;
+		
+		// object apm is sepa
+		if(payObject.type == 'sepa'){
+			
+			// Prepare chargeData object
+			chargeData = {
+				"customer"			: this.getCustomer(args),
+				"amount"			: this.getAmount(args),	
+			    "type"				: payObject.type,
+				"currency"			: payObject.currency,
+				"billing_address"	: this.getBillingObject(args),
+			    "source_data"		: payObject.source_data,
+				"reference"			: args.OrderNo,
+				"payment_ip"		: this.getHost(args),
+			    "metadata"			: this.getMetadataObject(payObject)
+			};
+			
+		// if apm is not sepa
+		}else{
+		
+			// Prepare chargeData object
+			chargeData = {
+				"customer"			: this.getCustomer(args),
+				"amount"			: this.getAmount(args),	
+				"currency"			: payObject.currency,
+			    "source"			: payObject.source,
+				"reference"			: args.OrderNo,
+				"payment_ip"		: this.getHost(args),
+			    "metadata"			: this.getMetadataObject(payObject)
+			};
 			
 		}
+		
+		return chargeData;
 	},
 	
 	
 	/*
 	 * Handle full charge Request to CKO API
 	 */
-	handleFullChargeRequest: function(cardData, args){
+	handleCardRequest: function(cardData, args){
 		
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
-		
-		// Get billing address information
-		var billingAddress = order.getBillingAddress();
 		
 		// creating billing address object
 		var gatewayObject = this.gatewayObject(cardData, args);
@@ -681,49 +519,6 @@ var util = {
 		}
 		
 		return true;
-		
-	},
-	
-	/*
-	 * Handle the build of the APM Gateway Object
-	 */
-	gatewayAPMObject: function(payObject, currency, args){
-		// load the card and order information
-		var order = OrderMgr.getOrder(args.OrderNo);
-
-		// Get billing address information
-		var billingAddress = order.getBillingAddress();
-
-		// Get shipping address object
-		var shippingAddress = order.getDefaultShipment().getShippingAddress();
-
-		// creating phone object
-		var phone = {
-			country_code		: null,
-			number				: billingAddress.getPhone()
-		};
-		
-		
-		// get billing Details Object
-		var billingDetails = this.getBillingObject(billingAddress);
-
-		// customer object
-		var customer = {
-			email				: order.customerEmail,
-			name				: order.customerName
-		};
-		
-		// Prepare chargeData object
-		var chargeData = {
-			"amount"			: this.getAmount(args),	
-			
-			// in live implementation this will have to be auto generated.
-			//"currency"			: order.currencyCode,
-			"currency"			: currency,
-		    "source": payObject
-		};
-		
-		return chargeData;
 		
 	},
 	
@@ -762,7 +557,7 @@ var util = {
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
-		it = order.productLineItems.iterator();
+		var it = order.productLineItems.iterator();
 
 		var products = [];
 		
@@ -773,7 +568,7 @@ var util = {
 			var product = {
 					"product_id" 	: pli.productID,
 					"quantity"		: pli.quantityValue,
-					"price"			: this.getFormattedPrice(pli.getPriceValue().toFixed(2)),
+					"price"			: this.getFormattedPrice(pli.getPriceValue().toFixed(2), args),
 					"description"	: pli.productName
 			}
 			
@@ -804,7 +599,7 @@ var util = {
 		var tax = {
 				"product_id"	: args.OrderNo,
 				"quantity"		: 1,
-				"price"			: this.getFormattedPrice(order.getTotalTax().valueOf().toFixed(2)),
+				"price"			: this.getFormattedPrice(order.getTotalTax().valueOf().toFixed(2), args),
 				"description"	: "Order Tax"
 		}
 		
@@ -829,14 +624,14 @@ var util = {
 		// Check if shipping cost is applicable to this order
 		if(shipping.getShippingTotalPrice().valueOf() > 0){
 		
-			var ship = {
+			var shippment = {
 					"product_id"	: shipping.getShippingMethod().getID(),
 					"quantity"		: 1,
-					"price"			: this.getFormattedPrice(shipping.getShippingTotalPrice().valueOf().toFixed(2)),
+					"price"			: this.getFormattedPrice(shipping.getShippingTotalPrice().valueOf().toFixed(2), args),
 					"description"	: shipping.getShippingMethod().getDisplayName() + " Shipping : " + shipping.getShippingMethod().getDescription()
 			}
 			
-			return ship;
+			return shippment;
 		
 		}else{
 			return false;
@@ -844,47 +639,47 @@ var util = {
 	},
 
 	
-	/*
-	 * get Product Names
-	 */
-	getProductShipping : function(args){
-		// load the card and order information
-		var order = OrderMgr.getOrder(args.OrderNo);
-
-		// Get shipping address object
-		var shipping = order.getDefaultShipment();
-		
-		
-		var shippingId = shipping.getID();
-		var shippingMethodId = shipping.getShippingMethodID();
-		var shippingGrossPrice = shipping.getShippingTotalGrossPrice().valueOf();
-		var shippingTotalPrice = shipping.getShippingTotalPrice().valueOf();
-		var shippingTotalTax = shipping.getTotalTax().valueOf();
-		
-		return order.getTotalTax().valueOf();
-		
-	},
+//	/*
+//	 * get Product Names
+//	 */
+//	getProductShipping : function(args){
+//		// load the card and order information
+//		var order = OrderMgr.getOrder(args.OrderNo);
+//
+//		// Get shipping address object
+//		var shipping = order.getDefaultShipment();
+//		
+//		
+//		var shippingId = shipping.getID();
+//		var shippingMethodId = shipping.getShippingMethodID();
+//		var shippingGrossPrice = shipping.getShippingTotalGrossPrice().valueOf();
+//		var shippingTotalPrice = shipping.getShippingTotalPrice().valueOf();
+//		var shippingTotalTax = shipping.getTotalTax().valueOf();
+//		
+//		return order.getTotalTax().valueOf();
+//		
+//	},
 
 	
-	/*
-	 * get Product Shipping Object
-	 */
-	getProductShippingObject : function(args){
-		// load the card and order information
-		var order = OrderMgr.getOrder(args.OrderNo);
-
-		// Get shipping address object
-		var shipping = order.getDefaultShipment().getShippingMethod();
-		
-		var shippingName = shipping.getDisplayName();
-		var shippingDescription = shipping.getDescription();
-		var shippingCurrency = shipping.getCurrencyCode();
-		var shippingId = shipping.getID();
-		var shippingTaxId = shipping.getTaxClassID();
-		
-		return shipping.getTaxClassID();
-		
-	},
+//	/*
+//	 * get Product Shipping Object
+//	 */
+//	getProductShippingObject : function(args){
+//		// load the card and order information
+//		var order = OrderMgr.getOrder(args.OrderNo);
+//
+//		// Get shipping address object
+//		var shipping = order.getDefaultShipment().getShippingMethod();
+//		
+//		var shippingName = shipping.getDisplayName();
+//		var shippingDescription = shipping.getDescription();
+//		var shippingCurrency = shipping.getCurrencyCode();
+//		var shippingId = shipping.getID();
+//		var shippingTaxId = shipping.getTaxClassID();
+//		
+//		return shipping.getTaxClassID();
+//		
+//	},
 
 	
 	/*
@@ -931,11 +726,11 @@ var util = {
 	/*
 	 * get Product IDs
 	 */
-	getProductId : function(args){
+	getProductIds : function(args){
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
-		it = order.productLineItems.iterator();
+		var it = order.productLineItems.iterator();
 
 		var productIds = [];
 		
@@ -955,7 +750,27 @@ var util = {
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
-		it = order.productLineItems.iterator();
+		var it = order.productLineItems.iterator();
+		
+		var products_quantites = 0;
+		
+		while (it.hasNext()){
+			var pli = it.next();
+			products_quantites += pli.quantityValue;
+		}
+		
+		return products_quantites;
+		
+	},
+	
+	/*
+	 * get Each Product Quantity
+	 */
+	getProductQuantities : function(args){
+		// load the card and order information
+		var order = OrderMgr.getOrder(args.OrderNo);
+		
+		var it = order.productLineItems.iterator();
 
 		var products_quantites = [];
 		
@@ -969,58 +784,40 @@ var util = {
 	},
 	
 	/*
-	 * get Order Quantities
+	 * get Host IP
 	 */
-	getCurrency : function(args){
+	getHost: function(args){
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
-		var currency = order.getCurrencyCode();
+		var host = order.getRemoteHost()
 		
-		return currency;
-		
+		return host;
 	},
 		
 	/*
-	 * Handle the build of the Gateway Object
+	 * Build the Gateway Object
 	 */
 	gatewayObject: function(cardData, args){
-		// load the card and order information
-		var order = OrderMgr.getOrder(args.OrderNo);
-
-		// Get billing address information
-		var billingAddress = order.getBillingAddress();
-
-		// Get shipping address object
-		var shippingAddress = order.getDefaultShipment().getShippingAddress();
-
-		// creating phone object
-		var phone = this.getPhone(args);
-		
-		
-		// get billing Details Object
-		var billingDetails = this.getBillingObject(billingAddress);
-
-		// customer object
-		var customer = this.getCustomer(args);
 
 		// Prepare chargeData object
 		var chargeData = {
-				"source"			: this.getSourceObject(cardData, billingDetails, phone),
+				"source"			: this.getSourceObject(cardData, args),
 				"amount"			: this.getAmount(args),	
-				"currency"			: order.currencyCode,
-				"reference"			: order.orderNo,
+				"currency"			: this.getCurrency(args),
+				"reference"			: args.OrderNo,
 				"capture"			: this.getValue('ckoAutoCapture'),
 				"capture_on"		: this.getCaptureTime(),
-				"customer"			: customer,
-				"shipping"			: this.getShippingObject(shippingAddress, phone),
+				"customer"			: this.getCustomer(args),
+				"shipping"			: this.getShippingObject(args),
 				"3ds"				: this.get3Ds(),
 				"risk"				: {enabled: true},
-				"payment_ip"		: order.getRemoteHost(),
-				"metadata"			: this.getMetadata(cardData),
+				"payment_ip"		: this.getHost(args),
+				"metadata"			: this.getMetadataObject(cardData),
 			};
 		
 		return chargeData;
 	},
+	
 	
 	/*
 	 * return order amount
@@ -1029,7 +826,7 @@ var util = {
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
-		var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2));
+		var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), args);
 		return amount;
 	},
 	
@@ -1037,7 +834,7 @@ var util = {
 	/*
 	 * return phone object
 	 */
-	getPhone: function(args){
+	getPhoneObject: function(args){
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -1054,7 +851,7 @@ var util = {
 	},
 	
 	/*
-	 * Return Customer Fullname
+	 * Return Customer FullName
 	 */
 	getCustomerName: function(args){
 		// load the card and order information
@@ -1066,6 +863,36 @@ var util = {
 		var fullname = billingAddress.getFullName();
 		
 		return fullname;
+	},
+	
+	/*
+	 * Return Customer FirstName
+	 */
+	getCustomerFirstName: function(args){
+		// load the card and order information
+		var order = OrderMgr.getOrder(args.OrderNo);
+
+		// Get billing address information
+		var billingAddress = order.getBillingAddress();
+		
+		var firstname = billingAddress.getFirstName();
+		
+		return firstname;
+	},
+	
+	/*
+	 * Return Customer LastName
+	 */
+	getCustomerLastName: function(args){
+		// load the card and order information
+		var order = OrderMgr.getOrder(args.OrderNo);
+
+		// Get billing address information
+		var billingAddress = order.getBillingAddress();
+		
+		var lastname = billingAddress.getLastName();
+		
+		return lastname;
 	},
 		
 	
@@ -1099,12 +926,12 @@ var util = {
 	/*
 	 * Build metadata object
 	 */
-	getMetadata: function(cardData){
+	getMetadataObject: function(Data){
 		var meta;
 
 		meta = {
-			udf1				: cardData.type,
-			integration_data	: this.getValue('ckoUserAgent') + " " + this.getValue('ckoVersion'),
+			udf1				: Data.type,
+			integration_data	: this.getCartridgeMeta(),
 			platform_data		: "SiteGenesis Version: 19.10 Last Updated: Oct 21, 2019 (Compatibility Mode: 16.2)"
 		}
 
@@ -1115,7 +942,13 @@ var util = {
 	/*
 	 * Build the Billing object
 	 */
-	getBillingObject: function(billingAddress){
+	getBillingObject: function(args){
+		
+		// load the card and order information
+		var order = OrderMgr.getOrder(args.OrderNo);
+
+		// Get billing address information
+		var billingAddress = order.getBillingAddress();
 		// creating billing address object
 		var billingDetails = {
 			address_line1		: billingAddress.getAddress1(),
@@ -1132,7 +965,13 @@ var util = {
 	/*
 	 * Build the Shipping object
 	 */
-	getShippingObject: function(shippingAddress, phone){
+	getShippingObject: function(args){
+		// load the card and order information
+		var order = OrderMgr.getOrder(args.OrderNo);
+
+		// Get shipping address object
+		var shippingAddress = order.getDefaultShipment().getShippingAddress();
+		
 		// creating address object
 		var shippingDetails = {
 			address_line1		: shippingAddress.getAddress1(),
@@ -1146,7 +985,7 @@ var util = {
 		// shipping object
 		var shipping = {
 			address				: shippingDetails,
-			phone				: phone
+			phone				: this.getPhoneObject(args)
 		};
 		
 		return shipping;
@@ -1155,7 +994,7 @@ var util = {
 	/*
 	 * Build Gateway Source Object
 	 */
-	getSourceObject: function(cardData, billingDetails, phone){
+	getSourceObject: function(cardData, args){
 		// source object
 		var source = {
 			type				: "card",
@@ -1164,8 +1003,8 @@ var util = {
 			expiry_year			: cardData.expiryYear,
 			name				: cardData.name,
 			cvv					: cardData.cvv,
-			billing_address		: billingDetails,
-			phone				: phone
+			billing_address		: this.getBillingObject(args),
+			phone				: this.getPhoneObject(args)
 
 		}
 		

@@ -6,7 +6,7 @@
 </H4>
 
 <div id="qpay_pay_box" style="display: none;">
-	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.qpay_purpose}" id="qpay_purpose" type="hidden" />
+	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.qpay_national_id}" id="qpay_national_id" type="text" />
 </div>
 
 

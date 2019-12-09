@@ -5,9 +5,5 @@
 	<input id="sofort_apm_radio_btn" type="radio" name="apm_payment_types" value="sofort">
 </H4>
 
-<div id="sofort_pay_box" style="display: none;">
-	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.sofort_purpose}" id="sofort_purpose" type="hidden" />
-</div>
-
 
 <hr/>

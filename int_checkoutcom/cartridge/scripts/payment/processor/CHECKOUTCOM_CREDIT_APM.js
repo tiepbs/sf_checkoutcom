@@ -36,8 +36,6 @@ var payWithApms = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApms'
  * If the verification was successful a credit card payment instrument is created.
  */
 function Handle(args) {
-	var cart = Cart.get(args.Basket);
-	var paymentMethod = args.PaymentMethodID;
 	//var shop_url = paymentTypeForm.get('shop_url').value();
 	
 	
@@ -52,189 +50,84 @@ function Handle(args) {
 		case "ideal":
 			
 			// proceed with transaction
-			Transaction.wrap(function(){
-				cart.removeExistingPaymentInstruments(paymentMethod);
-				
-				var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-				
-				paymentInstrument.creditCardHolder = "";
-				paymentInstrument.creditCardNumber = "";
-				paymentInstrument.creditCardExpirationMonth = "";
-				paymentInstrument.creditCardExpirationYear = "";
-				paymentInstrument.creditCardType = "ideal";
-			});
+			SGJCTransHandleObject(args);
 			
 			return {success: true};
+			
 		case "boleto":
 			
 			// proceed with transaction
-			Transaction.wrap(function(){
-				cart.removeExistingPaymentInstruments(paymentMethod);
-				
-				var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-				
-				paymentInstrument.creditCardHolder = "";
-				paymentInstrument.creditCardNumber = "";
-				paymentInstrument.creditCardExpirationMonth = "";
-				paymentInstrument.creditCardExpirationYear = "";
-				paymentInstrument.creditCardType = "boleto";
-			});
+			SGJCTransHandleObject(args);
 			
 			return {success: true};
+			
 		case "bancontact":
 			
 			// proceed with transaction
-			Transaction.wrap(function(){
-				cart.removeExistingPaymentInstruments(paymentMethod);
-				
-				var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-				
-				paymentInstrument.creditCardHolder = "";
-				paymentInstrument.creditCardNumber = "";
-				paymentInstrument.creditCardExpirationMonth = "";
-				paymentInstrument.creditCardExpirationYear = "";
-				paymentInstrument.creditCardType = "bancontact";
-			});
+			SGJCTransHandleObject(args);
 			
 			return {success: true};
+			
 		case "benefit":
+			
 			// proceed with transaction
-			Transaction.wrap(function(){
-				cart.removeExistingPaymentInstruments(paymentMethod);
-				
-				var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-				
-				paymentInstrument.creditCardHolder = "";
-				paymentInstrument.creditCardNumber = "";
-				paymentInstrument.creditCardExpirationMonth = "";
-				paymentInstrument.creditCardExpirationYear = "";
-				paymentInstrument.creditCardType = "benefit";
-			});
+			SGJCTransHandleObject(args);
 			
 			return {success: true};
+			
 		case "giro":
 			
 			// proceed with transaction
-			Transaction.wrap(function(){
-				cart.removeExistingPaymentInstruments(paymentMethod);
-				
-				var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-				
-				paymentInstrument.creditCardHolder = "";
-				paymentInstrument.creditCardNumber = "";
-				paymentInstrument.creditCardExpirationMonth = "";
-				paymentInstrument.creditCardExpirationYear = "";
-				paymentInstrument.creditCardType = "giropay";
-			});
+			SGJCTransHandleObject(args);
 			
 			return {success: true};
+			
 		case "eps":
 			
 			// proceed with transaction
-			Transaction.wrap(function(){
-				cart.removeExistingPaymentInstruments(paymentMethod);
-				
-				var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-				
-				paymentInstrument.creditCardHolder = "";
-				paymentInstrument.creditCardNumber = "";
-				paymentInstrument.creditCardExpirationMonth = "";
-				paymentInstrument.creditCardExpirationYear = "";
-				paymentInstrument.creditCardType = "eps";
-			});
+			SGJCTransHandleObject(args);
 			
 			return {success: true};
 			
 		case "sofort":
 			
 			// proceed with transaction
-			Transaction.wrap(function(){
-				cart.removeExistingPaymentInstruments(paymentMethod);
-				
-				var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-				
-				paymentInstrument.creditCardHolder = "";
-				paymentInstrument.creditCardNumber = "";
-				paymentInstrument.creditCardExpirationMonth = "";
-				paymentInstrument.creditCardExpirationYear = "";
-				paymentInstrument.creditCardType = "sofort";
-			});
+			SGJCTransHandleObject(args);
 			
 			return {success: true};
 			
 		case "knet":
 			
 			// proceed with transaction
-			Transaction.wrap(function(){
-				cart.removeExistingPaymentInstruments(paymentMethod);
-				
-				var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-				
-				paymentInstrument.creditCardHolder = "";
-				paymentInstrument.creditCardNumber = "";
-				paymentInstrument.creditCardExpirationMonth = "";
-				paymentInstrument.creditCardExpirationYear = "";
-				paymentInstrument.creditCardType = "knet";
-			});
+			SGJCTransHandleObject(args);
 			
 			return {success: true};
 			
 		case "qpay":
 			
 			// proceed with transaction
-			Transaction.wrap(function(){
-				cart.removeExistingPaymentInstruments(paymentMethod);
-				
-				var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-				
-				paymentInstrument.creditCardHolder = "";
-				paymentInstrument.creditCardNumber = "";
-				paymentInstrument.creditCardExpirationMonth = "";
-				paymentInstrument.creditCardExpirationYear = "";
-				paymentInstrument.creditCardType = "qpay";
-			});
+			SGJCTransHandleObject(args);
 			
 			return {success: true};
 			
 		case "fawry":
 			
 			// proceed with transaction
-			Transaction.wrap(function(){
-				cart.removeExistingPaymentInstruments(paymentMethod);
-				
-				var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-				
-				paymentInstrument.creditCardHolder = "";
-				paymentInstrument.creditCardNumber = "";
-				paymentInstrument.creditCardExpirationMonth = "";
-				paymentInstrument.creditCardExpirationYear = "";
-				paymentInstrument.creditCardType = "fawry";
-			});
+			SGJCTransHandleObject(args);
 			
 			return {success: true};
 			
 		case "sepa":
 			
 			// proceed with transaction
-			Transaction.wrap(function(){
-				cart.removeExistingPaymentInstruments(paymentMethod);
-				
-				var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-				
-				paymentInstrument.creditCardHolder = "";
-				paymentInstrument.creditCardNumber = "";
-				paymentInstrument.creditCardExpirationMonth = "";
-				paymentInstrument.creditCardExpirationYear = "";
-				paymentInstrument.creditCardType = "sepa";
-			});
+			SGJCTransHandleObject(args);
 			
 			return {success: true};
-		default:
-			return {success: false};
 		
 	}
 
 }
+
 
 /**
  * Authorizes a payment using a credit card. The payment is authorized by using the BASIC_CREDIT processor
@@ -242,503 +135,332 @@ function Handle(args) {
  * logic to authorize credit card payment.
  */
 function Authorize(args) {
-
-	// Preparing payment parameters
-	var orderNo = args.OrderNo;
-	var cart = Cart.get(args.Basket);
-	var paymentInstrument = args.PaymentInstrument;
-	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 	
-	// Add data to session for payment return
+	// Add order Number to session
 	session.privacy.ckoOrderId = args.OrderNo;
 	
-
-	var paymentTypeForm = app.getForm('cardPaymentForm');
-	
-	// get payment type
-	var payment_type = paymentTypeForm.get('payment_method').value();	
-	
-	// get shop url
-	var shop_url = paymentTypeForm.get('shop_url').value();
-	
-
 	// get apms form
 	var paymentForm = app.getForm('alternativePaymentForm');
 	
 	// get apm type chosen
-	var apm = paymentForm.get('alternative_payments').value();
+	var apm = paymentForm.get('alternative_payments').value();	
+	
+	// get shop url
+	var shop_url = paymentForm.get('store_url').value();
 	
 	// switch apms
 	switch(apm){
 		case "ideal":
 			// building ideal pay object
 		    var payObject = {
-		        "type": "ideal",
-		        "bic": "INGBNL2A",
-		        "description": "iDEAL Demo Payment",
-		        "language": "nl"
-		    };
+				source		: {
+			        "type"			: "ideal",
+			        "bic"			: "INGBNL2A",
+			        "description"	: args.OrderNo,
+			        "language"		: "nl",
+			    },
+			    type		: 'ideal',
+			    purpose		: businessName,
+			    currency	: 'EUR'
+			};
 
-			
-			// perform the charge
-			var request = util.handleAPMChargeRequest(payObject, args);
-			
-			// Transaction wrapper
-			Transaction.wrap(function(){
-				paymentInstrument.paymentTransaction.transactionID = orderNo;
-				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-			});
-			
-			// Handle apm result
-			if(request){
-				
-				if(session.privacy.redirectUrl){
-					
-					ISML.renderTemplate('redirects/APM.isml', {
-						redirectUrl: session.privacy.redirectUrl,
-					});
-					
-					session.privacy.redirectUrl = null;
-					
-					return {authorized: true, redirected: true};
-					
-				}else{
-					return {authorized: true};
-				}
-				
-			}else{
-				return {error: true};
-			}
+			// build Authorization Object
+		    SGJCTransAuthObject(payObject, args);
 			
 			
 			return {success: false};
+			
 		case "boleto":
 			// building pay object
 			var payObject = {
-				"type"	: "boleto",
-				"birthDate" : paymentForm.get('boleto_birthDate').value(),
-				"cpf"	: paymentForm.get('boleto_cpf').value(),
-				"customerName" : util.getCustomerName(args)
+				source		: {
+					"type"	: "boleto",
+					"birthDate" : paymentForm.get('boleto_birthDate').value(),
+					"cpf"		: "00003456789",
+					// in prod uncomment
+					//"cpf"	: paymentForm.get('boleto_cpf').value(),
+					"customerName" : util.getCustomerName(args)
+				},
+				type		: 'boleto',
+				purpose		: shop_url,
+				currency	: 'BRL'
 			};
 
-			
-			// perform the charge
-			var request = util.handleAPMChargeRequest(payObject, args);
-			
-			// Transaction wrapper
-			Transaction.wrap(function(){
-				paymentInstrument.paymentTransaction.transactionID = orderNo;
-				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-			});
-			
-			// Handle apm result
-			if(request){
-				
-				if(session.privacy.redirectUrl){
-					
-					ISML.renderTemplate('redirects/APM.isml', {
-						redirectUrl: session.privacy.redirectUrl,
-					});
-					
-					session.privacy.redirectUrl = null;
-					
-					return {authorized: true, redirected: true};
-					
-				}else{
-					return {authorized: true};
-				}
-				
-			}else{
-				return {error: true};
-			}
+			// build Authorization Object
+			SGJCTransAuthObject(payObject, args);
 			
 			return {success: false};
+			
 		case "bancontact":
 			// building pay object
 			var payObject = {
-				"type"	: "bancontact",
-				"payment_country" : "BE",
-				"account_holder_name"	: util.getCustomerName(args),
-				"billing_descriptor" : "Bancontact Test payment"
-			};
+					source		: {
+						"type"					: "bancontact",
+						"payment_country" 		: "BE",
+						"account_holder_name"	: util.getCustomerName(args),
+						"billing_descriptor" 	: businessName
+					},
+					type		: 'boleto',
+					purpose		: shop_url,
+					currency	: 'EUR'
+				};
 			
-			// perform the charge
-			var request = util.handleAPMChargeRequest(payObject, args);
-			
-			// Transaction wrapper
-			Transaction.wrap(function(){
-				paymentInstrument.paymentTransaction.transactionID = orderNo;
-				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-			});
-			
-			// Handle apm result
-			if(request){
-				
-				if(session.privacy.redirectUrl){
-					
-					ISML.renderTemplate('redirects/APM.isml', {
-						redirectUrl: session.privacy.redirectUrl,
-					});
-					
-					session.privacy.redirectUrl = null;
-					
-					return {authorized: true, redirected: true};
-					
-				}else{
-					return {authorized: true};
-				}
-				
-			}else{
-				return {error: true};
-			}
+			// build Authorization Object
+			SGJCTransAuthObject(payObject, args);
 			
 			return {success: false};
+			
 		case "benefit":
 			// process benefit pay
 			var payObject = {
-			    "amount": util.getAmount(args),
-			    "currency": "BHD",
-			    "source": {
-			        "type": "benefitpay",
-			        "integration_type": "web"
+			    source		: {
+			        "type"					: "benefitpay",
+			        "integration_type"		: "web"
 			    },
-			    "type": "benefit"
+			    type		: "benefit",
+			    purpose		:	shop_url,
+			    currency	: "BHD"
 			};
 			
-			// perform the charge
-			var request = util.handleAPMChargeRequest(payObject, args);
-			
-			// Transaction wrapper
-			Transaction.wrap(function(){
-				paymentInstrument.paymentTransaction.transactionID = orderNo;
-				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-			});
-			
-			// Handle apm result
-			if(request){
-				
-				if(session.privacy.redirectUrl){
-					
-					ISML.renderTemplate('redirects/APM.isml', {
-						redirectUrl: session.privacy.redirectUrl,
-					});
-					
-					session.privacy.redirectUrl = null;
-					
-					return {authorized: true, redirected: true};
-					
-				}else{
-					return {authorized: true};
-				}
-				
-			}else{
-				return {error: true};
-			}
+			// build Authorization Object
+			SGJCTransAuthObject(payObject, args);
 			
 			return {success: false};
-		case "giro":
 			
+		case "giro":
 			// building pay object
 			var payObject = {
-				type	: "giropay",
-				purpose	: businessName,
-		        "info_fields": [
-		            {
-		                "label": "info 1",
-		                "text": "this info was provided in the payment request"
-		            },
-		            {
-		                "label": "info 2",
-		                "text": "so was this info"
-		            }
-		        ]
+				source				: {
+					type			: "giropay",
+					purpose			: businessName,
+			        "info_fields"	: [
+			            {
+			                "label"	: "Shop Adrress",
+			                "text"	: shop_url
+			            },
+			            {
+			                "label"	: "info 2",
+			                "text"	: "so was this info"
+			            }
+			        ]
+				},
+			    type		: "giropay",
+			    purpose		:	shop_url,
+			    currency	: "EUR"
+				
 			};
 			
-			// perform the charge
-			var request = util.handleAPMChargeRequest(payObject, args);
+			// build Authorization Object
+			SGJCTransAuthObject(payObject, args);
 			
-			// Transaction wrapper
-			Transaction.wrap(function(){
-				paymentInstrument.paymentTransaction.transactionID = orderNo;
-				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-			});
+			return {success: false};
 			
-			// Handle apm result
-			if(request){
-				
-				if(session.privacy.redirectUrl){
-					
-					ISML.renderTemplate('redirects/APM.isml', {
-						redirectUrl: session.privacy.redirectUrl,
-					});
-					
-					session.privacy.redirectUrl = null;
-					
-					return {authorized: true, redirected: true};
-					
-				}else{
-					return {authorized: true};
-				}
-				
-			}else{
-				return {error: true};
-			}
 		case "eps":
 			
 			// building pay object
 			var payObject = {
-				type	: "eps",
-				purpose	: businessName
+				source		: {
+					type	: "eps",
+					purpose	: shop_url
+				},
+			    type		: "eps",
+			    purpose		:	shop_url,
+			    currency	: "EUR"
 			};
 			
-			// perform the charge
-			var request = util.handleAPMChargeRequest(payObject, args);
+			// build Authorization Object
+			SGJCTransAuthObject(payObject, args);
 			
-			// Transaction wrapper
-			Transaction.wrap(function(){
-				paymentInstrument.paymentTransaction.transactionID = orderNo;
-				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-			});
-			
-			// Handle apm result
-			if(request){
-				
-				if(session.privacy.redirectUrl){
-					
-					ISML.renderTemplate('redirects/APM.isml', {
-						redirectUrl: session.privacy.redirectUrl,
-					});
-					
-					session.privacy.redirectUrl = null;
-					
-					return {authorized: true, redirected: true};
-					
-				}else{
-					return {authorized: true};
-				}
-				
-			}else{
-				return {error: true};
-			}
+			return {success: false};
 			
 		case "sofort":
 			
 			// building pay object
 			var payObject = {
+				source : 	{
+					type	: "sofort"
+				},
 				type	: "sofort",
-				purpose	: businessName
+				purpose	: shop_url,
+				currency: 'EUR'
 			};
 			
-			// perform the charge
-			var request = util.handleAPMChargeRequest(payObject, args);
+			// build Authorization Object
+			SGJCTransAuthObject(payObject, args);
 			
-			// Transaction wrapper
-			Transaction.wrap(function(){
-				paymentInstrument.paymentTransaction.transactionID = orderNo;
-				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-			});
-			
-			// Handle apm result
-			if(request){
-				
-				if(session.privacy.redirectUrl){
-					
-					ISML.renderTemplate('redirects/APM.isml', {
-						redirectUrl: session.privacy.redirectUrl,
-					});
-					
-					session.privacy.redirectUrl = null;
-					
-					return {authorized: true, redirected: true};
-					
-				}else{
-					return {authorized: true};
-				}
-				
-			}else{
-				return {error: true};
-			}
+			return {success: false};
 			
 		case "knet":
 			
 			// building pay object
 			var payObject = {
-				type	: "knet",
-				language	: "en"
+			    "source"	: 		{
+			        "type"						: "knet",
+			        "language"					: "en",
+			        "user_defined_field1"		: "first user defined field",
+			        "user_defined_field2"		: "second user defined field",
+			        "card_token"				: "01234567",
+			        "user_defined_field4"		: "fourth user defined field",
+			        "ptlf"						: "ebtdut3vgtqepe56w64zcxlg6i"
+			    },
+			    type		: "knet",
+			    purpose		: shop_url,
+			    currency	: 'KWD'
 			};
 			
-			// perform the charge
-			var request = util.handleAPMChargeRequest(payObject, args);
+			// build Authorization Object
+			SGJCTransAuthObject(payObject, args);
 			
-			// Transaction wrapper
-			Transaction.wrap(function(){
-				paymentInstrument.paymentTransaction.transactionID = orderNo;
-				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-			});
-			
-			// Handle apm result
-			if(request){
-				
-				if(session.privacy.redirectUrl){
-					
-					ISML.renderTemplate('redirects/APM.isml', {
-						redirectUrl: session.privacy.redirectUrl,
-					});
-					
-					session.privacy.redirectUrl = null;
-					
-					return {authorized: true, redirected: true};
-					
-				}else{
-					return {authorized: true};
-				}
-				
-			}else{
-				return {error: true};
-			}
+			return {success: false};
 			
 		case "qpay":
 			
 			// building pay object
 			var payObject = {
-				type	: "qpay",
-				language	: "en",
-				description : businessName
+				source		: {
+			        "type"				: "qpay",
+			        "description"		: shop_url,
+			        "language"			: "en",
+			        "quantity"			: util.getProductQuantity(args),
+			        "national_id"		: paymentForm.get('qpay_national_id').value()
+					// remove the comment in production
+			        //"national_id"		: "070AYY010BU234M"
+			    },
+			    type		: "qpay",
+			    purpose		: shop_url,
+			    currency	: "QAR"
 			};
 			
-			// perform the charge
-			var request = util.handleAPMChargeRequest(payObject, args);
+			// build Authorization Object
+			SGJCTransAuthObject(payObject, args);
 			
-			// Transaction wrapper
-			Transaction.wrap(function(){
-				paymentInstrument.paymentTransaction.transactionID = orderNo;
-				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-			});
-			
-			// Handle apm result
-			if(request){
-				
-				if(session.privacy.redirectUrl){
-					
-					ISML.renderTemplate('redirects/APM.isml', {
-						redirectUrl: session.privacy.redirectUrl,
-					});
-					
-					session.privacy.redirectUrl = null;
-					
-					return {authorized: true, redirected: true};
-					
-				}else{
-					return {authorized: true};
-				}
-				
-			}else{
-				return {error: true};
-			}
+			return {success: false};
 			
 		case "fawry":
 			
 			// building pay object
 			var payObject = {
-				"type"	: "fawry",
-				"description" : businessName,
-				"customer_mobile"	: util.getPhone(args).number,
-				"customer_email"	: util.getCustomer(args).email,
-				"products"			: util.getProductInformation(args)
-			};
+			    source	: {
+			        "type": "fawry",
+			        "description": shop_url,
+					"customer_mobile"	: util.getPhoneObject(args).number,
+					"customer_email"	: util.getCustomer(args).email,
+					"products"			: util.getProductInformation(args)
+			    },
+				type		: "fawry",
+				purpose		: shop_url,
+			    currency	: "EGP"
+			 };
 			
-			// perform the charge
-			var request = util.handleAPMChargeRequest(payObject, args);
+			// build Authorization Object
+			SGJCTransAuthObject(payObject, args);
 			
-			// Transaction wrapper
-			Transaction.wrap(function(){
-				paymentInstrument.paymentTransaction.transactionID = orderNo;
-				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-			});
-			
-			// Handle apm result
-			if(request){
-				
-				if(session.privacy.redirectUrl){
-					
-					ISML.renderTemplate('redirects/APM.isml', {
-						redirectUrl: session.privacy.redirectUrl,
-					});
-					
-					session.privacy.redirectUrl = null;
-					
-					return {authorized: true, redirected: true};
-					
-				}else{
-					return {authorized: true};
-				}
-				
-			}else{
-				return {error: true};
-			}
+			return {success: false};
 			
 		case "sepa":
+
+			// Preparing payment parameters
+			var orderNo = args.OrderNo;
+			var paymentInstrument = args.PaymentInstrument;
+			var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 			
 			// building pay object
 			var payObject = {
 				"type"	: "sepa",
-			    "billing_address": {
-			        "address_line1": "Wayne Plaza 1",
-			        "address_line2": null,
-			        "city": "Gotham City",
-			        "state": null,
-			        "zip": "12345",
-			        "country":"US"
-			    },
 			    "source_data": {
-			        "first_name": "Bruce",
-			        "last_name": "Wayne",
+			        "first_name": util.getCustomerFirstName(args),
+			        "last_name": util.getCustomerLastName(args),
 			        "account_iban": "DE25100100101234567893",
-			        "billing_descriptor": "SEPA Payment Demo",
+			        "billing_descriptor": businessName,
 			        "mandate_type": "single"
 			    }
 
 			};
 			
-			// perform the charge
-			var request = util.handleAPMChargeRequest(payObject, args);
+
+			SGJCTransAuthObject(payObject, args);
 			
-			// Transaction wrapper
-			Transaction.wrap(function(){
-				paymentInstrument.paymentTransaction.transactionID = orderNo;
-				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-			});
-			
-			// Handle apm result
-			if(request){
-				
-				if(session.privacy.redirectUrl){
-					
-					ISML.renderTemplate('redirects/sepaMandate.isml', {
-						redirectUrl: session.privacy.redirectUrl,
-					});
-					
-					//session.privacy.redirectUrl = null;
-					
-					return {authorized: true, redirected: true};
-					
-				}else{
-					//return {authorized: true};
-					response.getWriter().println('Hello World!');
-					
-				}
-				
-			}else{
-				return {error: true};
-			}
+			return {success: false};
 		
 	}
 
 }
 
+
+
 /*
- * Module exports
+ * Creates Site Genesis Transaction Object
+ * @return object
  */
+function SGJCTransHandleObject(args){
+	var cart = Cart.get(args.Basket);
+	var paymentMethod = args.PaymentMethodID;
+	
+	// proceed with transact
+	return Transaction.wrap(function(){
+		cart.removeExistingPaymentInstruments(paymentMethod);
+		
+		var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
+	});
+}
+
+
+
+/*
+ * Creates Site Genesis Transaction Object
+ * @return object
+ */
+function SGJCTransAuthObject(payObject, args){
+
+	// Preparing payment parameters
+	var orderNo = args.OrderNo;
+	var paymentInstrument = args.PaymentInstrument;
+	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+	
+	// perform the charge
+	var request = util.handleApmRequest(payObject, args);
+	
+	
+	// Handle apm result
+	if(request){
+		
+		// Transaction wrapper
+		Transaction.wrap(function(){
+			paymentInstrument.paymentTransaction.transactionID = orderNo;
+			paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+		});
+		
+		if(session.privacy.redirectUrl){
+			
+			if(payObject.type == "sepa"){
+				
+				ISML.renderTemplate('redirects/sepaMandate.isml', {
+					redirectUrl: session.privacy.redirectUrl,
+				});
+				
+			}else{
+			
+			
+				ISML.renderTemplate('redirects/APM.isml', {
+					redirectUrl: session.privacy.redirectUrl,
+				});
+				
+			}
+			
+			return {authorized: true, redirected: true};
+			
+			
+		}else{
+			return {authorized: true};
+		}
+		
+	}else{
+		return {error: true};
+	}
+	
+	
+}
+
 
 /*
  * Local methods

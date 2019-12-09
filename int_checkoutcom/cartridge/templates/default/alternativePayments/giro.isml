@@ -5,9 +5,5 @@
 	<input id="giroPay_apm_radio_btn" type="radio" name="apm_payment_types" value="giro">
 </H4>
 
-<div id="giroPay_pay_box" style="display: none;">
-	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.giroPay_purpose}" id="giroPay_purpose" type="hidden" />
-</div>
-
 
 <hr/>

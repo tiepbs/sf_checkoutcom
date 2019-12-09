@@ -13,6 +13,7 @@ var CKOHelper = require('~/cartridge/scripts/helpers/CKOHelper');
 /* Checkout.com Event functions */
 var CKOEvent = require('~/cartridge/scripts/helpers/CKOEvent');
 
+
 /**
  * Handles responses from the Checkout.com payment gateway.
  */
@@ -32,17 +33,17 @@ function handleReturn() {
 			// Check the payment token if exists		
 			var paymentToken = 	request.httpParameterMap.get('cko-session-id').stringValue;
 			
-			// If there is a payment token available, verify
+			// If there is a payment session id available, verify
 			if (paymentToken) {
 				
 				// Perform the request to the payment gateway
 				gVerify = CKOHelper.getGatewayClient(
 					'cko.verify.charges.' + mode + '.service', 
 					{'paymentToken': paymentToken}
-				);			
+				);	
 				
 				// If there is a valid response
-				if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id') && CKOHelper.paymentIsValid(gVerify)) {
+				if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
 					
 					// Show order confirmation page
 					app.getController('COSummary').ShowConfirmation(order);
@@ -53,6 +54,8 @@ function handleReturn() {
 					CKOHelper.handleFail(null);
 					
 				}
+				
+			}else if(paymentId){
 				
 			}
 

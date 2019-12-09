@@ -5,9 +5,5 @@
 	<input id="epsPay_apm_radio_btn" type="radio" name="apm_payment_types" value="eps">
 </H4>
 
-<div id="epsPay_pay_box" style="display: none;">
-	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.epsPay_purpose}" id="epsPay_purpose" type="hidden" />
-</div>
-
 
 <hr/>

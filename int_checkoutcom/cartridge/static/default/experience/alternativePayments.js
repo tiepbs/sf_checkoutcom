@@ -204,6 +204,13 @@ function boletoPayBox(){
 	// boleto pay input elements div
 	var boletoBox = $('#boleto_pay_box');
 	
+	// Date formating
+	var cleave = new Cleave('#dwfrm_alternativePaymentForm_boleto__birthDate', {
+	    date: true,
+	    delimiter: '-',
+	    datePattern: ['Y', 'm', 'd']
+	});
+	
 	// set input fields toggle
 	toggleAPMS(boleto, boletoBox);
 	

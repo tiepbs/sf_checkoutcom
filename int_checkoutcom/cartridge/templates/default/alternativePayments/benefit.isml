@@ -5,9 +5,5 @@
 	<input id="benefit_apm_radio_btn" type="radio" name="apm_payment_types" value="benefit">
 </h4>
 
-<div id="benefitPay_pay_box" style="display: none;">
-	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.benefitPay_integration_type}" id="benefitPay_integration_type" type="hidden" />
-</div>
-
 
 <hr/>

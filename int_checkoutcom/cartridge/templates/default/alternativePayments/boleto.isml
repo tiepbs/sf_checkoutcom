@@ -6,7 +6,7 @@
 </h4>
 
 <div id="boleto_pay_box" style="display: none;">
-	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.boleto_birthDate}" id="boleto_birthDate" type="text" dynamicname="true" />
+	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.boleto_birthDate}" id="boleto_birthDate" type="text" />
 	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.boleto_cpf}" id="boleto_cpfe" type="text" dynamicname="true" />
 </div>
 

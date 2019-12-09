@@ -5,9 +5,5 @@
 	<input id="fawry_apm_radio_btn" type="radio" name="apm_payment_types" value="fawry">
 </H4>
 
-<div id="fawry_pay_box" style="display: none;">
-	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.fawry_purpose}" id="fawry_purpose" type="hidden" />
-</div>
-
 
 <hr/>
