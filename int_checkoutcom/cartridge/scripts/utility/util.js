@@ -186,8 +186,10 @@ var util = {
 	/*
 	 * get Order Quantities
 	 */
-	getCurrency : function(order){
-		
+	getCurrency : function(args){
+		var orderId = this.getOrderId();
+		// load the card and order information
+		var order = OrderMgr.getOrder(orderId);
 		var currency = order.getCurrencyCode();
 		
 		return currency;
