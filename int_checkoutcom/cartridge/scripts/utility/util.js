@@ -2,12 +2,8 @@
 
 
 /* API Includes */
-var HTTPclient = require('dw/net/HTTPClient');
-var ISML = require('dw/template/ISML');
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
-var Store = require('dw/catalog/Store');
-//var Shipment = require('dw/order/Shipment');
 var Logger = require('dw/system/Logger');
 var BasketMgr = require('dw/order/BasketMgr');
 var Resource = require('dw/web/Resource');
@@ -25,6 +21,53 @@ var app = require(SiteController + "/cartridge/scripts/app");
 * Utility functions for my cartridge integration.
 */
 var util = {
+		
+	/*
+	 * get the required value for each mode
+	 */
+	getAppModeValue: function(sandboxValue, liveValue){
+		
+		var appMode = this.getValue('ckoMode');
+		
+		if(appMode == 'sandbox'){
+			return sandboxValue;
+		}else{
+			return liveValue;
+		}
+		
+	},	
+	
+	
+	/*
+	 * get user language
+	 */	
+	getLanguage: function(){
+		return dw.system.Site.getCurrent().defaultLocale;
+	},
+	
+	
+	
+	/*
+	 * get Site Name
+	 */
+	getSiteName: function(){
+		
+		var siteName = dw.system.Site.getCurrent().name;
+		
+		return siteName;
+		
+	},
+	
+	
+	/*
+	 * get site Hostname
+	 */
+	getSiteHostName: function(){
+		var hostname = dw.system.Site.getCurrent().httpHostName;
+		
+		return hostname;
+	},
+	
 		
 	/* 
 	 * get value from custom preferences
@@ -130,8 +173,8 @@ var util = {
 	/*
 	 * Format price for cko gateway
 	 */
-	getFormattedPrice: function(price, args){
-		var currency = this.getCurrency(args);
+	getFormattedPrice: function(price, order){
+		var currency = this.getCurrency(order);
 		var ckoFormateBy = this.getCKOFormatedValue(currency);
 		var orderTotalFormated = price * ckoFormateBy;
 		
@@ -143,10 +186,7 @@ var util = {
 	/*
 	 * get Order Quantities
 	 */
-	getCurrency : function(args){
-			
-		// load the card and order information
-		var order = OrderMgr.getOrder(args.OrderNo);
+	getCurrency : function(order){
 		
 		var currency = order.getCurrencyCode();
 		
@@ -315,6 +355,7 @@ var util = {
 		// add redirect to sepa source reqeust
 		if(type == 'Sepa'){
 			session.privacy.redirectUrl = "${URLUtils.url('Sepa-Mandate')}";
+			session.privacy.sepaResponse = gatewayResponse;
 		}
 		
 		// Add redirect URL to session if exists
@@ -332,7 +373,7 @@ var util = {
 		
 		// Add the details to the order
 		Transaction.wrap(function(){
-			order.addNote(self._("cko.transaction.details", "cko_pay_test"), details);
+			order.addNote(self._("cko.transaction.details", "ckoPayAPM"), details);
 		});
 		
 		// Confirm the payment
@@ -366,7 +407,7 @@ var util = {
 		var details = '';
 		if (gatewayResponse.hasOwnProperty('card') && gatewayResponse.card.hasOwnProperty('customer')){	// todo
 			details += this._("cko.customer.id", "cko_pay_test") + ": " + gatewayResponse.card.customerId + "\n";		// todo
-		}
+		};
 		
 		details += this._("cko.transaction.status", "cko_pay_test") + ": " + gatewayResponse.status + "\n";
 		details += this._("cko.respnose.code", "cko_pay_test") + ": " + gatewayResponse.responseCode + "\n";
@@ -379,18 +420,49 @@ var util = {
 		// Add risk flag information if applicable
 		if(gatewayResponse.responseCode = '10100'){
 			details += this._("cko.risk.flag", "cko_pay_test") + ": " + this._("cko.risk.info", "cko_pay_test") + "\n";
-		}
+		};
 		
 		// Add the details to the order
 		Transaction.wrap(function(){
 			order.addNote(self._("cko.transaction.details", "cko_pay_test"), details);
-		})
+		});
 		
 		// Confirm the payment
 		Transaction.wrap(function(){
 			order.setPaymentStatus(order.PAYMENT_STATUS_PAID);
 		});
 	},
+	
+	/*
+	 * Sepa apm Request
+	 */
+	handleSepaRequest: function(payObject, order){
+		
+		var gatewayResponse = false;
+		
+		// Perform the request to the payment gateway
+		gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", payObject);
+		
+		// If the charge is valid, process the response
+		if(gatewayResponse){
+			
+			this.handleAPMChargeResponse(gatewayResponse, order);
+			
+		}else{
+			
+			// update the transaction
+			Transaction.wrap(function(){
+				OrderMgr.failOrder(order);
+			});
+			
+			// Restore the cart
+			this.checkAndRestoreBasket(order);
+			
+			return false;
+		}
+		return true;
+	},
+	
 	
 	/*
 	 * Apm Request
@@ -442,7 +514,18 @@ var util = {
 	 */
 	apmObject: function(payObject, args){
 		
+		// load the card and order information
+		var order = OrderMgr.getOrder(args.OrderNo);
+		
 		var chargeData = false;
+		
+		var currency = false;
+		
+		if(this.getValue('ckoMode') == 'sandbox'){
+			currency = payObject.currency;
+		}else{
+			currency = this.getCurrency(args);
+		}
 		
 		// object apm is sepa
 		if(payObject.type == 'sepa'){
@@ -450,9 +533,9 @@ var util = {
 			// Prepare chargeData object
 			chargeData = {
 				"customer"			: this.getCustomer(args),
-				"amount"			: this.getAmount(args),	
+				"amount"			: this.getAmount(order),	
 			    "type"				: payObject.type,
-				"currency"			: payObject.currency,
+				"currency"			: currency,
 				"billing_address"	: this.getBillingObject(args),
 			    "source_data"		: payObject.source_data,
 				"reference"			: args.OrderNo,
@@ -466,8 +549,8 @@ var util = {
 			// Prepare chargeData object
 			chargeData = {
 				"customer"			: this.getCustomer(args),
-				"amount"			: this.getAmount(args),	
-				"currency"			: payObject.currency,
+				"amount"			: this.getAmount(order),	
+				"currency"			: currency,
 			    "source"			: payObject.source,
 				"reference"			: args.OrderNo,
 				"payment_ip"		: this.getHost(args),
@@ -568,7 +651,7 @@ var util = {
 			var product = {
 					"product_id" 	: pli.productID,
 					"quantity"		: pli.quantityValue,
-					"price"			: this.getFormattedPrice(pli.getPriceValue().toFixed(2), args),
+					"price"			: this.getFormattedPrice(pli.getPriceValue().toFixed(2), order),
 					"description"	: pli.productName
 			}
 			
@@ -599,7 +682,7 @@ var util = {
 		var tax = {
 				"product_id"	: args.OrderNo,
 				"quantity"		: 1,
-				"price"			: this.getFormattedPrice(order.getTotalTax().valueOf().toFixed(2), args),
+				"price"			: this.getFormattedPrice(order.getTotalTax().valueOf().toFixed(2), order),
 				"description"	: "Order Tax"
 		}
 		
@@ -802,7 +885,7 @@ var util = {
 		// Prepare chargeData object
 		var chargeData = {
 				"source"			: this.getSourceObject(cardData, args),
-				"amount"			: this.getAmount(args),	
+				"amount"			: this.getAmount(order),	
 				"currency"			: this.getCurrency(args),
 				"reference"			: args.OrderNo,
 				"capture"			: this.getValue('ckoAutoCapture'),
@@ -822,11 +905,9 @@ var util = {
 	/*
 	 * return order amount
 	 */
-	getAmount: function(args){
-		// load the card and order information
-		var order = OrderMgr.getOrder(args.OrderNo);
+	getAmount: function(order){
 		
-		var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), args);
+		var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order);
 		return amount;
 	},
 	
@@ -961,6 +1042,23 @@ var util = {
 		
 		return billingDetails;
 	},
+	
+	/*
+	 * get Billing Country
+	 */
+	getBillingCountry: function(args){
+		
+		// load the card and order information
+		var order = OrderMgr.getOrder(args.OrderNo);
+
+		// Get billing address information
+		var billingAddress = order.getBillingAddress();
+		
+		var country = billingAddress.getCountryCode().value
+		
+		return country;
+	},
+	
 	
 	/*
 	 * Build the Shipping object

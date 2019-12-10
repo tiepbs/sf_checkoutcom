@@ -31,16 +31,19 @@ var payWithCard = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCard'
 var payWithApms = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApms'); 
 
 
+// App Mode
+var appMode = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode'); 
+
+// get apms form
+var paymentForm = app.getForm('alternativePaymentForm');
+
+
 /**
  * Verifies a credit card against a valid card number and expiration date and possibly invalidates invalid form fields.
  * If the verification was successful a credit card payment instrument is created.
  */
 function Handle(args) {
 	//var shop_url = paymentTypeForm.get('shop_url').value();
-	
-	
-	// get apms form
-	var paymentForm = app.getForm('alternativePaymentForm');
 	
 	// get apm type chosen
 	var apm = paymentForm.get('alternative_payments').value();
@@ -123,6 +126,27 @@ function Handle(args) {
 			SGJCTransHandleObject(args);
 			
 			return {success: true};
+			
+		case "multibanco":
+			
+			// proceed with transaction
+			SGJCTransHandleObject(args);
+			
+			return {success: true};
+			
+		case "poli":
+			
+			// proceed with transaction
+			SGJCTransHandleObject(args);
+			
+			return {success: true};
+			
+		case "p24":
+			
+			// proceed with transaction
+			SGJCTransHandleObject(args);
+			
+			return {success: true};
 		
 	}
 
@@ -151,234 +175,88 @@ function Authorize(args) {
 	// switch apms
 	switch(apm){
 		case "ideal":
-			// building ideal pay object
-		    var payObject = {
-				source		: {
-			        "type"			: "ideal",
-			        "bic"			: "INGBNL2A",
-			        "description"	: args.OrderNo,
-			        "language"		: "nl",
-			    },
-			    type		: 'ideal',
-			    purpose		: businessName,
-			    currency	: 'EUR'
-			};
-
-			// build Authorization Object
-		    SGJCTransAuthObject(payObject, args);
 			
+			idealPayAuthorization(args);
 			
 			return {success: false};
 			
 		case "boleto":
-			// building pay object
-			var payObject = {
-				source		: {
-					"type"	: "boleto",
-					"birthDate" : paymentForm.get('boleto_birthDate').value(),
-					"cpf"		: "00003456789",
-					// in prod uncomment
-					//"cpf"	: paymentForm.get('boleto_cpf').value(),
-					"customerName" : util.getCustomerName(args)
-				},
-				type		: 'boleto',
-				purpose		: shop_url,
-				currency	: 'BRL'
-			};
 
-			// build Authorization Object
-			SGJCTransAuthObject(payObject, args);
+			boletoPayAuthorization(args, paymentForm);
 			
 			return {success: false};
 			
 		case "bancontact":
-			// building pay object
-			var payObject = {
-					source		: {
-						"type"					: "bancontact",
-						"payment_country" 		: "BE",
-						"account_holder_name"	: util.getCustomerName(args),
-						"billing_descriptor" 	: businessName
-					},
-					type		: 'boleto',
-					purpose		: shop_url,
-					currency	: 'EUR'
-				};
 			
-			// build Authorization Object
-			SGJCTransAuthObject(payObject, args);
+			bancontactPayAuthorization(args);
 			
 			return {success: false};
 			
 		case "benefit":
-			// process benefit pay
-			var payObject = {
-			    source		: {
-			        "type"					: "benefitpay",
-			        "integration_type"		: "web"
-			    },
-			    type		: "benefit",
-			    purpose		:	shop_url,
-			    currency	: "BHD"
-			};
-			
-			// build Authorization Object
-			SGJCTransAuthObject(payObject, args);
+
+			benefitPayAuthorization(args);
 			
 			return {success: false};
 			
 		case "giro":
-			// building pay object
-			var payObject = {
-				source				: {
-					type			: "giropay",
-					purpose			: businessName,
-			        "info_fields"	: [
-			            {
-			                "label"	: "Shop Adrress",
-			                "text"	: shop_url
-			            },
-			            {
-			                "label"	: "info 2",
-			                "text"	: "so was this info"
-			            }
-			        ]
-				},
-			    type		: "giropay",
-			    purpose		:	shop_url,
-			    currency	: "EUR"
-				
-			};
 			
-			// build Authorization Object
-			SGJCTransAuthObject(payObject, args);
+			giroPayAuthorization(args);
 			
 			return {success: false};
 			
 		case "eps":
 			
-			// building pay object
-			var payObject = {
-				source		: {
-					type	: "eps",
-					purpose	: shop_url
-				},
-			    type		: "eps",
-			    purpose		:	shop_url,
-			    currency	: "EUR"
-			};
-			
-			// build Authorization Object
-			SGJCTransAuthObject(payObject, args);
+			epsPayAuthorization(args);
 			
 			return {success: false};
 			
 		case "sofort":
 			
-			// building pay object
-			var payObject = {
-				source : 	{
-					type	: "sofort"
-				},
-				type	: "sofort",
-				purpose	: shop_url,
-				currency: 'EUR'
-			};
-			
-			// build Authorization Object
-			SGJCTransAuthObject(payObject, args);
+			sofortPayAuthorization(args);
 			
 			return {success: false};
 			
 		case "knet":
 			
-			// building pay object
-			var payObject = {
-			    "source"	: 		{
-			        "type"						: "knet",
-			        "language"					: "en",
-			        "user_defined_field1"		: "first user defined field",
-			        "user_defined_field2"		: "second user defined field",
-			        "card_token"				: "01234567",
-			        "user_defined_field4"		: "fourth user defined field",
-			        "ptlf"						: "ebtdut3vgtqepe56w64zcxlg6i"
-			    },
-			    type		: "knet",
-			    purpose		: shop_url,
-			    currency	: 'KWD'
-			};
-			
-			// build Authorization Object
-			SGJCTransAuthObject(payObject, args);
+			knetPayAuthorization(args);
 			
 			return {success: false};
 			
 		case "qpay":
 			
-			// building pay object
-			var payObject = {
-				source		: {
-			        "type"				: "qpay",
-			        "description"		: shop_url,
-			        "language"			: "en",
-			        "quantity"			: util.getProductQuantity(args),
-			        "national_id"		: paymentForm.get('qpay_national_id').value()
-					// remove the comment in production
-			        //"national_id"		: "070AYY010BU234M"
-			    },
-			    type		: "qpay",
-			    purpose		: shop_url,
-			    currency	: "QAR"
-			};
-			
-			// build Authorization Object
-			SGJCTransAuthObject(payObject, args);
+			qPayAuthorization(args);
 			
 			return {success: false};
 			
 		case "fawry":
 			
-			// building pay object
-			var payObject = {
-			    source	: {
-			        "type": "fawry",
-			        "description": shop_url,
-					"customer_mobile"	: util.getPhoneObject(args).number,
-					"customer_email"	: util.getCustomer(args).email,
-					"products"			: util.getProductInformation(args)
-			    },
-				type		: "fawry",
-				purpose		: shop_url,
-			    currency	: "EGP"
-			 };
-			
-			// build Authorization Object
-			SGJCTransAuthObject(payObject, args);
+			fawryPayAuthorization(args);
 			
 			return {success: false};
 			
 		case "sepa":
-
-			// Preparing payment parameters
-			var orderNo = args.OrderNo;
-			var paymentInstrument = args.PaymentInstrument;
-			var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 			
-			// building pay object
-			var payObject = {
-				"type"	: "sepa",
-			    "source_data": {
-			        "first_name": util.getCustomerFirstName(args),
-			        "last_name": util.getCustomerLastName(args),
-			        "account_iban": "DE25100100101234567893",
-			        "billing_descriptor": businessName,
-			        "mandate_type": "single"
-			    }
-
-			};
+			sepaPayAuthorization(args);
 			
-
-			SGJCTransAuthObject(payObject, args);
+			return {success: false};
+			
+		case "multibanco":
+			
+			multibancoPayAuthorization(args);
+			
+			return {success: false};
+			
+			
+		case "poli":
+			
+			poliPayAuthorization(args);
+			
+			return {success: false};
+			
+			
+		case "p24":
+			
+			p24PayAuthorization(args);
 			
 			return {success: false};
 		
@@ -435,14 +313,14 @@ function SGJCTransAuthObject(payObject, args){
 			if(payObject.type == "sepa"){
 				
 				ISML.renderTemplate('redirects/sepaMandate.isml', {
-					redirectUrl: session.privacy.redirectUrl,
+					redirectUrl: session.privacy.redirectUrl
 				});
 				
 			}else{
 			
 			
 				ISML.renderTemplate('redirects/APM.isml', {
-					redirectUrl: session.privacy.redirectUrl,
+					redirectUrl: session.privacy.redirectUrl
 				});
 				
 			}
@@ -458,6 +336,361 @@ function SGJCTransAuthObject(payObject, args){
 		return {error: true};
 	}
 	
+	
+}
+
+
+/*
+ * Ideal Pay Authorization
+ */
+function idealPayAuthorization(args){
+	
+	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+	var language = util.getAppModeValue('nl', util.getLanguage());
+	var bic = util.getAppModeValue('INGBNL2A', paymentForm.get('ideal_bic').value());
+	
+	// building ideal pay object
+    var payObject = {
+			"source"	: {
+		        "type"			: "ideal",
+		        "bic"			: bic,
+		        "description"	: args.OrderNo,
+		        "language"		: language,
+		    },
+		    "type"		: 'ideal',
+		    "purpose"	: businessName,
+		    "currency"	: currency
+		};
+
+	// build Authorization Object
+    SGJCTransAuthObject(payObject, args);
+	
+}
+
+/*
+ * Boleto Pay Authorization
+ */
+function boletoPayAuthorization(args){
+	
+	var cpfNumber = util.getAppModeValue('00003456789', paymentForm.get('boleto_cpf').value());
+	var birthday = util.getAppModeValue('1984-03-04', paymentForm.get('boleto_birthDate').value());
+	var currency = util.getAppModeValue('BRL', util.getCurrency(args));
+	
+	// building pay object
+	var payObject = {
+		"source"		: {
+			"type"	: "boleto",
+			"birthDate" : birthday,
+			"cpf"		: cpfNumber,
+			"customerName" : util.getCustomerName(args)
+		},
+		"type"		: 'boleto',
+		"purpose"	: businessName,
+		"currency"	: currency
+	};
+
+	// build Authorization Object
+	SGJCTransAuthObject(payObject, args);
+	
+}
+
+
+/*
+ * Bancontact Pay Authorization
+ */
+function bancontactPayAuthorization(args){
+	
+	var country = util.getAppModeValue('BE', util.getBillingCountry(args));
+	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+	
+	// building pay object
+	var payObject = {
+			"source"		: {
+				"type"					: "bancontact",
+				"payment_country" 		: country,
+				"account_holder_name"	: util.getCustomerName(args),
+				"billing_descriptor" 	: businessName
+			},
+			"type"		: 'boleto',
+			"purpose"	: businessName,
+			"currency"	: currency
+		};
+	
+	// build Authorization Object
+	SGJCTransAuthObject(payObject, args);
+	
+}
+
+
+/*
+ * Benefit Pay Authorization
+ */
+function benefitPayAuthorization(args){
+	
+	var currency = util.getAppModeValue('BHD', util.getCurrency(args));
+	
+	// process benefit pay
+	var payObject = {
+		    "source"		: {
+		        "type"					: "benefitpay",
+		        "integration_type"		: "web"
+		    },
+		    "type"		: "benefit",
+		    "purpose"	: businessName,
+		    "currency"	: currency
+		};
+	
+	// build Authorization Object
+	SGJCTransAuthObject(payObject, args);
+	
+}
+
+
+/*
+ * Giro Pay Authorization
+ */
+function giroPayAuthorization(args){
+	
+	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+
+	// building pay object
+	var payObject = {
+			"source"				: {
+				"type"			: "giropay",
+				"purpose"			: businessName
+			},
+		    "type"		: "giropay",
+		    "purpose"	: businessName,
+		    "currency"	: currency
+			
+		};
+	
+	// build Authorization Object
+	SGJCTransAuthObject(payObject, args);
+	
+}
+
+/*
+ * Eps Pay Authorization
+ */
+function epsPayAuthorization(args){
+	
+	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+	
+	// building pay object
+	var payObject = {
+			"source"	: {
+				"type"		: "eps",
+				"purpose"	: businessName
+			},
+		    "type"		: "eps",
+		    "purpose"	: businessName,
+		    "currency"	: currency
+		};
+	
+	// build Authorization Object
+	SGJCTransAuthObject(payObject, args);
+	
+}
+
+
+/*
+ * Sofort Pay Authorization
+ */
+function sofortPayAuthorization(args){
+	
+	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+
+	// building pay object
+	var payObject = {
+		"source"	: 	{
+				"type"	: "sofort"
+			},
+		"type"		: "sofort",
+		"purpose"	: businessName,
+		"currency" 	: currency
+	};
+	
+	// build Authorization Object
+	SGJCTransAuthObject(payObject, args);
+}
+
+/*
+ * Knet Pay Authorization
+ */
+function knetPayAuthorization(args){
+	
+	var currency = util.getAppModeValue('KWD', util.getCurrency(args));
+	var language = util.getAppModeValue('en', util.getLanguage());
+	
+	// building pay object
+	var payObject = {
+	    "source"	: 		{
+	        "type"						: "knet",
+	        "language"					: language,
+	        "user_defined_field1"		: "first user defined field",
+	        "user_defined_field2"		: "second user defined field",
+	        "card_token"				: "01234567",
+	        "user_defined_field4"		: "fourth user defined field",
+	        "ptlf"						: "ebtdut3vgtqepe56w64zcxlg6i"
+	    },
+	    "type"		: "knet",
+	    "purpose"	: businessName,
+	    "currency"	: currency
+	};
+	
+	// build Authorization Object
+	SGJCTransAuthObject(payObject, args);
+	
+}
+
+
+/*
+ * Q Pay Authorization
+ */
+function qPayAuthorization(args){
+	
+	var nationalId = util.getAppModeValue('070AYY010BU234M', paymentForm.get('qpay_national_id').value());
+	var language = util.getAppModeValue('en', util.getLanguage());
+	var currency = util.getAppModeValue('QAR', util.getCurrency(args));
+	
+	// building pay object
+	var payObject = {
+		"source"	: {
+	        "type"				: "qpay",
+	        "description"		: businessName,
+	        "language"			: language,
+	        "quantity"			: util.getProductQuantity(args),
+	        "national_id"		: nationalId
+	    },
+	    "type"		: "qpay",
+	    "purpose"	: businessName,
+	    "currency"	: currency
+	};
+	
+	// build Authorization Object
+	SGJCTransAuthObject(payObject, args);
+	
+}
+
+
+/*
+ * Fawry Pay Authorization
+ */
+function fawryPayAuthorization(args){
+	
+	var currency = util.getAppModeValue('EGP', util.getCurrency(args));
+	
+	// building pay object
+	var payObject = {
+	    "source"	: {
+	        "type": "fawry",
+	        "description": businessName,
+			"customer_mobile"	: util.getPhoneObject(args).number,
+			"customer_email"	: util.getCustomer(args).email,
+			"products"			: util.getProductInformation(args)
+	    },
+		"type"		: "fawry",
+		"purpose"	: businessName,
+	    "currency"	: currency
+	 };
+	
+	// build Authorization Object
+	SGJCTransAuthObject(payObject, args);
+	
+}
+
+/*
+ * Sepa Pay Authorization
+ */
+function sepaPayAuthorization(args){
+	
+	var accountIban = util.getAppModeValue('DE25100100101234567893', paymentForm.get('sepa_iban').value() + paymentForm.get('sepa_bic').value());
+	
+	// building pay object
+	var payObject = {
+		"type"			: "sepa",
+	    "source_data"	: {
+	        "first_name"			: util.getCustomerFirstName(args),
+	        "last_name"				: util.getCustomerLastName(args),
+	        "account_iban"			: accountIban,
+	        "billing_descriptor"	: businessName,
+	        "mandate_type"			: "single"
+	    }
+
+	};
+	
+
+	SGJCTransAuthObject(payObject, args);
+	
+}
+
+/*
+ * Multibanco Pay Authorization
+ */
+function multibancoPayAuthorization(args){
+	
+	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+	var country = util.getAppModeValue('PT', util.getBillingCountry(args));
+	
+	var payObject = {
+	        "type"		: "multibanco",
+		    "currency"	: currency,
+		    "source": {
+		        "type"					: "multibanco",
+		        "payment_country"		: country,
+		        "account_holder_name"	: util.getCustomerName(args),
+		        "billing_descriptor"	: businessName
+		    }
+		 }
+	
+
+	SGJCTransAuthObject(payObject, args);
+	
+}
+
+/*
+ * Poli Pay Authorization
+ */
+function poliPayAuthorization(args){
+	
+	var currency = util.getAppModeValue('NZD', util.getCurrency(args));
+	
+	var payObject = {
+	        "type"		: "poli",
+		    "currency"	: currency,
+		    "source"	: {
+		        "type"		: "poli"
+		     }
+		 }
+	
+
+	SGJCTransAuthObject(payObject, args);
+	
+}
+
+/*
+ * P24 Pay Authorization
+ */
+function p24PayAuthorization(args){
+	
+	var currency = util.getAppModeValue('PLN', util.getCurrency(args));
+	var country = util.getAppModeValue('PL', util.getBillingCountry(args));
+	
+	var payObject = {
+		    "type": "p24",
+		    "currency"		: currency,
+		    "source"		: {
+		        "type"					: "p24",
+		        "payment_country"		: country,
+		        "account_holder_name"	: util.getCustomerName(args),
+		        "account_holder_email"	: util.getCustomer(args).email,
+		        "billing_descriptor"	: businessName
+		    }
+		 }
+	
+
+	SGJCTransAuthObject(payObject, args);
 	
 }
 

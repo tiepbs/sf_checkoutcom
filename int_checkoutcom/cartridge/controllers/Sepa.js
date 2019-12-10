@@ -17,14 +17,27 @@ var OrderMgr = require('dw/order/OrderMgr');
 */
 var util = require('~/cartridge/scripts/utility/util');
 
-
-var Store = require('dw/catalog/Store');
-
 function mandate() {
 	var url = session.privacy.redirectUrl;
+	var orderId = util.getOrderId();
+	var order = OrderMgr.getOrder(orderId);
 	
 	if(url){
 		app.getView({
+			creditAmount: order.totalGrossPrice.value.toFixed(2),
+			formatedAmount: util.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order),
+			debtor:	order.defaultShipment.shippingAddress.firstName + " " + order.defaultShipment.shippingAddress.lastName,
+			debtorAddress1: order.billingAddress.address1,
+			debtorAddress2: order.billingAddress.address2,
+			debtorCity:	order.billingAddress.city,
+			debtorPostCode: order.billingAddress.postalCode,
+			debtorStateCode: order.billingAddress.stateCode,
+			debtorCountryCode: order.billingAddress.countryCode,
+			creditor: util.getValue('ckoBusinessName'),
+			creditorAddress1: util.getValue('ckoBusinessAddressLine1'),
+			creditorAddress2: util.getValue('ckoBusinessAddressLine2'),
+			creditorCity: util.getValue('ckoBusinessCity'),
+			creditorCountry: util.getValue('ckoBusinessCountry'),
 		    ContinueURL: URLUtils.https('Sepa-HandleMandate')
 		    }).render('sepaform');
 	}else{
@@ -62,10 +75,28 @@ function handleMandate() {
         	if(mandate){
         		// clear form
                 app.getForm('sepaForm').clear();
+                
+                // get the response object from session
+                var responseObject = session.privacy.sepaResponse;
         		
             	if(orderId){
+            		
             		// load the order
             		var order = OrderMgr.getOrder(orderId);
+            		
+            		var payObject = {
+	        			    "source": {
+	        			        "type": "id",
+	        			        "id": responseObject.id
+	        			    },
+	        			    "amount": util.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order),
+	        			    "currency": "EUR",
+	        			    "reference": orderId
+	            		};
+            		
+            		session.privacy.sepaResponse = null;
+            		
+            		var request = util.handleSepaRequest(payObject, order);
             		
                 	var confirmation = app.getController('COSummary');
                 	

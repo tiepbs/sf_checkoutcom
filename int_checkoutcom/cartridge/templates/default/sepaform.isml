@@ -1,4 +1,4 @@
-<!--- TEMPLATENAME: helloform.isml --->
+<!--- TEMPLATENAME: Sepaform.isml --->
 <iscontent type="text/html" charset="UTF-8" compact="true" />
 <isinclude template="util/modules"/>
 
@@ -11,12 +11,27 @@
 				SEPA Direct Debit Mandate for single payment
 			</h2>
 			<div class="sepaCreditor" style="width: 50%; float: left;">
-				<h2>Creditor <br/>Creditor Name</h2>
-				<p>Address Line 1 <br/>Address Line 2 <br/>Country</p>
+				<h2>Creditor <br/><isprint value="${pdict.creditor}"></h2>
+				
+				<p>
+					<isprint value="${pdict.creditorAddress1}">
+					<isprint value="${pdict.creditorAddress2}">
+					<isprint value="${pdict.creditorCity}">
+					<isprint value="${pdict.creditorCountry}">
+				</p>
+				
 			</div>
+			
 			<div class="sepaDebtor" style="width: 50%; float: right;">
-				<h2>Creditor <br/>Creditor Name</h2>
-				<p>Address Line 1 <br/>Address Line 2 <br/>Country</p>
+				<h2>Debtor <br/><isprint value="${pdict.debtor}"></h2>
+				
+				<p>
+					<isprint value="${pdict.debtorAddress1}">	
+					<isprint value="${pdict.debtorAddress2}">
+					<isprint value="${pdict.debtorCountryCode}">
+					
+				</p>
+				
 			</div>
 		</div>
 	

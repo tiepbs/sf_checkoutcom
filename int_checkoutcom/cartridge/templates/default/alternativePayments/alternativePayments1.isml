@@ -41,6 +41,15 @@
 	</isif>
 	
 	
+	<!-- This to include the poli apm form -->
+	
+	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCountries')) == 'AU' && (dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCurrencies')) == 'AUD'}">
+	<isinclude template="alternativePayments/poli.isml"/>
+	</isif>
+	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCountries')) == 'NZ' && (dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCurrencies')) == 'NZD'}">
+	<isinclude template="alternativePayments/poli.isml"/>
+	</isif>
+	
 		
 	<!-- This to include the eps pay apm form -->
 	
@@ -95,6 +104,22 @@
 	</isif>
 	
 	
+	<!-- This to include the Multibanco apm form -->
+	
+	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCountries')) == 'PT' && (dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCurrencies')) == 'EUR'}">
+		<isinclude template="alternativePayments/multibanco.isml"/>
+	</isif>
+	
+	
+	<!-- This to include the p24 apm form -->
+	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCountries')) == 'PL' && (dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCurrencies')) == 'EUR'}">
+	<isinclude template="alternativePayments/p24.isml"/>
+	</isif>
+	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCountries')) == 'PL' && (dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCurrencies')) == 'PLN'}">
+	<isinclude template="alternativePayments/p24.isml"/>
+	</isif>
+	
+	
 		
 	<!-- This to include the sepa apm form -->
 	
@@ -138,8 +163,17 @@
 	<!-- This to include the fawry apm form -->
 	<isinclude template="alternativePayments/fawry.isml"/>
 	
+	<!-- This to include the multibanco apm form -->
+	<isinclude template="alternativePayments/multibanco.isml"/>
+		
+	<!-- This to include the poli apm form -->
+	<isinclude template="alternativePayments/poli.isml"/>
+	
 	<!-- This to include the sepa apm form -->
 	<isinclude template="alternativePayments/sepa.isml"/>
+	
+	<!-- This to include the p24 apm form -->
+	<isinclude template="alternativePayments/p24.isml"/>
 
 </isif>
 

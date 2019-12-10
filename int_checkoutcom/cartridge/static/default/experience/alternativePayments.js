@@ -59,6 +59,15 @@ function AlternativePayments(){
 		case"benefit":
 			benefitPayBox();
 			break;
+		case"multibanco":
+			multibancoPayBox();
+			break;
+		case"poli":
+			poliPayBox();
+			break;
+		case"p24":
+			p24PayBox();
+			break;
 		default:
 			console.log('Apm unknown');
 		}
@@ -259,6 +268,49 @@ function giroPayBox(){
 	
 	// set input fields toggle
 	toggleAPMS(giroPay, giroPayBox);
+}
+
+
+/*
+ * Multibanco Pay decorator
+ */
+function multibancoPayBox(){
+	// multibanco pay radio button element
+	var multibancoPay = $('#multibancoPay_apm_radio_btn');
+	
+	// multibanco pay input elements div
+	var giroPayBox = $('#multibancoPay_pay_box');
+	
+	// set input fields toggle
+	toggleAPMS(multibancoPay, giroPayBox);
+}
+
+/*
+ * Poli Pay decorator
+ */
+function poliPayBox(){
+	// multibanco pay radio button element
+	var poliPay = $('#poliPay_apm_radio_btn');
+	
+	// multibanco pay input elements div
+	var poliPayBox = $('#poliPay_pay_box');
+	
+	// set input fields toggle
+	toggleAPMS(poliPay, poliPayBox);
+}
+
+/*
+ * Poli Pay decorator
+ */
+function p24PayBox(){
+	// multibanco pay radio button element
+	var p24Pay = $('#p24Pay_apm_radio_btn');
+	
+	// multibanco pay input elements div
+	var p24PayBox = $('#p24Pay_pay_box');
+	
+	// set input fields toggle
+	toggleAPMS(p24Pay, p24PayBox);
 }
 
 
