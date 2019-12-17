@@ -5,6 +5,7 @@ var PaymentMgr = require('dw/order/PaymentMgr');
 var Transaction = require('dw/system/Transaction');
 var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
+var BasketMgr = require('dw/order/BasketMgr');
 
 /* Site controller */
 var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
@@ -16,7 +17,12 @@ var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
 /* Helpers */
-var CKOHelper = require('~/cartridge/scripts/helpers/CKOHelper');
+var CKOHelper = require('~/cartridge/scripts/helpers/CKOCardHelper');
+
+
+
+/* Helpers */
+var CKOApmHelper = require('~/cartridge/scripts/helpers/CKOApmHelper');
 
 /* Utility */
 var util = require('~/cartridge/scripts/utility/util');
@@ -147,6 +153,13 @@ function Handle(args) {
 			SGJCTransHandleObject(args);
 			
 			return {success: true};
+			
+		case "klarna":
+			
+			// proceed with transaction
+			SGJCTransHandleObject(args);
+			
+			return {success: true};
 		
 	}
 
@@ -257,6 +270,13 @@ function Authorize(args) {
 		case "p24":
 			
 			p24PayAuthorization(args);
+			
+			return {success: false};
+			
+			
+		case "klarna":
+			
+			klarnaPayAuthorization(args);
 			
 			return {success: false};
 		
@@ -606,10 +626,12 @@ function fawryPayAuthorization(args){
 function sepaPayAuthorization(args){
 	
 	var accountIban = util.getAppModeValue('DE25100100101234567893', paymentForm.get('sepa_iban').value() + paymentForm.get('sepa_bic').value());
+	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
 	
 	// building pay object
 	var payObject = {
 		"type"			: "sepa",
+		"currency"		: currency,
 	    "source_data"	: {
 	        "first_name"			: util.getCustomerFirstName(args),
 	        "last_name"				: util.getCustomerLastName(args),
@@ -691,6 +713,60 @@ function p24PayAuthorization(args){
 	
 
 	SGJCTransAuthObject(payObject, args);
+	
+}
+
+
+
+/*
+ * Klarna Pay Authorization
+ */
+function klarnaPayAuthorization(args){
+	
+	var basket = BasketMgr.getCurrentBasket();
+	var order = OrderMgr.getOrder(args.OrderNo);
+	
+	
+
+	var countryCode = util.getAppModeValue('GB', util.getBillingObject(args).country);
+	var currency = util.getAppModeValue('GBP', util.getCurrencyCode(args));
+	var locale = util.getAppModeValue('en-GB', util.getLanguage());
+	var total = util.getFormattedPrice(order.totalGrossPrice.value, currency);
+	var tax =  util.getFormattedPrice(order.totalTax.value, currency);
+	var products = util.getOrderBasketObject(args);
+	
+	// Klarna Form Inputs
+	var klarna_token = paymentForm.get('klarna_token').value();
+	var klarna_approved = paymentForm.get('klarna_approved').value();
+	var klarna_finalize_required = paymentForm.get('klarna_finalize_required').value();
+	
+	var billingAddress = util.getOrderBasketAddress(args);
+	
+	if(klarna_approved){
+		
+		 var payObject = {
+			"type"		: "klarna",
+		    "amount"	: total,
+		    "currency"	: currency,
+		    "capture"	: false,
+		    "source"	: {
+		        "type"					: "klarna",
+		        "authorization_token"	: klarna_token,
+		        "locale"				: locale,
+		        "purchase_country"		: countryCode,
+		        "tax_amount"			: tax,
+		        "billing_address"		: billingAddress,
+		        "products"				: products
+		    }
+		 };
+		
+		
+
+		SGJCTransAuthObject(payObject, args);
+	}else{
+		 return {success: false};
+	}
+	 
 	
 }
 

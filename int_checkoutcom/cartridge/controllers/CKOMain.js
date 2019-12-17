@@ -8,10 +8,13 @@ var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
 
 /* Checkout.com Helper functions */
-var CKOHelper = require('~/cartridge/scripts/helpers/CKOHelper');
+var CKOHelper = require('~/cartridge/scripts/helpers/CKOCardHelper');
 
 /* Checkout.com Event functions */
 var CKOEvent = require('~/cartridge/scripts/helpers/CKOEvent');
+
+/* Checkout.com Utils functions */
+var CKOUtils = require('~/cartridge/scripts/helpers/CKOUtils');
 
 
 /**
@@ -19,8 +22,8 @@ var CKOEvent = require('~/cartridge/scripts/helpers/CKOEvent');
  */
 function handleReturn() {
 	var gResponse = false;
-	var mode = CKOHelper.getValue('ckoMode');
-	var orderId = CKOHelper.getOrderId();	
+	var mode = CKOUtils.getValue('ckoMode');
+	var orderId = CKOUtils.getOrderId();	
 	
 	// If there is a track id
 	if (orderId) {
@@ -37,7 +40,7 @@ function handleReturn() {
 			if (paymentToken) {
 				
 				// Perform the request to the payment gateway
-				gVerify = CKOHelper.getGatewayClient(
+				gVerify = CKOUtils.gatewayClientRequest(
 					'cko.verify.charges.' + mode + '.service', 
 					{'paymentToken': paymentToken}
 				);	
@@ -51,11 +54,9 @@ function handleReturn() {
 				}
 				else {
 					
-					CKOHelper.handleFail(null);
+					CKOU.handleFail(gVerify);
 					
 				}
-				
-			}else if(paymentId){
 				
 			}
 
@@ -66,11 +67,11 @@ function handleReturn() {
 				gResponse = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
 
 				// Process the response data
-				if (CKOHelper.paymentIsValid(gResponse)) {
+				if (CKOUtils.paymentIsValid(gResponse)) {
 					app.getController('COSummary').ShowConfirmation(order);
 				}
 				else {
-					CKOHelper.handleFail(null);
+					CKOUtils.handleFail(gResponse);
 				}
 				
 			}
@@ -78,7 +79,7 @@ function handleReturn() {
 		}
 		else {
 			
-			CKOHelper.handleFail(null);
+			CKOUtils.handleFail(null);
 			
 		}
 		
@@ -98,7 +99,7 @@ function handleFail() {
 	var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
     // Restore the cart
-	CKOHelper.checkAndRestoreBasket(order);
+	CKOUtils.checkAndRestoreBasket(order);
 
 	// Send back to the error page
 	ISML.renderTemplate('custom/common/response/failed.isml');
@@ -108,7 +109,7 @@ function handleFail() {
  * Handles webhook responses from the Checkout.com payment gateway.
  */
 function handleWebhook() {
-	var isValidResponse = CKOHelper.isValidResponse();
+	var isValidResponse = CKOUtils.isValidResponse();
 	if (isValidResponse) {
 		// Get the response as JSON object
 		var hook = JSON.parse(request.httpParameterMap.getRequestBodyAsString());

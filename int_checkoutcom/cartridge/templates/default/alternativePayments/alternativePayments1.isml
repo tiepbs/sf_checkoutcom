@@ -112,6 +112,7 @@
 	
 	
 	<!-- This to include the p24 apm form -->
+	
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCountries')) == 'PL' && (dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCurrencies')) == 'EUR'}">
 	<isinclude template="alternativePayments/p24.isml"/>
 	</isif>
@@ -126,6 +127,12 @@
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCurrencies')) == 'EUR'}">
 		<isinclude template="alternativePayments/sepa.isml"/>
 	</isif>
+	
+	
+	<!-- This to include the klarna apm form -->
+	
+	<isinclude template="alternativePayments/klarna.isml"/>
+	
 
 </isif>
 
@@ -174,6 +181,9 @@
 	
 	<!-- This to include the p24 apm form -->
 	<isinclude template="alternativePayments/p24.isml"/>
+	
+	<!-- This to include the klarna apm form -->
+	<isinclude template="alternativePayments/klarna.isml"/>
 
 </isif>
 
@@ -185,6 +195,9 @@
 <!-- Store URL -->
 <isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.store_url}" id="store_url" />
 
+
+
+<script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
 
 <script src="${URLUtils.staticURL('/libraries/cleave/cleave.js')}"></script>
 

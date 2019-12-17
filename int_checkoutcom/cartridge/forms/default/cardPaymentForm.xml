@@ -56,6 +56,12 @@
      	
 	<!-- field for credit card type -->
     <field formid="mada" type="string" mandatory="false" max-length="40" binding="mada" />
+    
+   	<!-- field for cko currency -->
+    <field formid="ckoCurrency" type="string" mandatory="false" max-length="40" binding="ckoCurrency" />
+    
+    <!-- field for cko country -->
+    <field formid="ckoCountry" type="string" mandatory="false" max-length="40" binding="ckoCountry" />
      	
 	<!-- field for credit card number -->
     <field formid="number" label="creditcard.number" type="string" mandatory="true" masked="4" max-length="16"

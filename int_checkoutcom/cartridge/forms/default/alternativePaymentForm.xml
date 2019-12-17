@@ -66,5 +66,10 @@
     <field formid="sepa" type="string" label="PAY WITH SEPA" mandatory="false" binding="sepa" />
     <field formid="sepa_iban" label="IBAN" type="string" mandatory="true" max-length="40" binding="sepa_iban"/>
     <field formid="sepa_bic" label="BIC" type="string" mandatory="true" max-length="40" binding="sepa_bic"/>
+    
+    <!-- field for Klarna pay -->
+    <field formid="klarna_token" type="string" max-length="40" binding="klarna_token"/>
+    <field formid="klarna_approved" type="string" max-length="40" binding="klarna_approved"/>
+    <field formid="klarna_finalize_required" type="string" max-length="40" binding="klarna_finalize_required"/>
 
 </form>

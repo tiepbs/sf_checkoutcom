@@ -8,12 +8,8 @@ var Logger = require('dw/system/Logger');
 var BasketMgr = require('dw/order/BasketMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
-
-
-/* Site Controller */
+var TaxMgr = require('dw/order/TaxMgr');
 var SiteController = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
-
-/* App */
 var app = require(SiteController + "/cartridge/scripts/app");
 
 
@@ -42,7 +38,12 @@ var util = {
 	 * get user language
 	 */	
 	getLanguage: function(){
-		return dw.system.Site.getCurrent().defaultLocale;
+		
+		var language = dw.system.Site.getCurrent().defaultLocale;
+		
+		language = language.replace('_', '-');
+		
+		return language;
 	},
 	
 	
@@ -173,8 +174,7 @@ var util = {
 	/*
 	 * Format price for cko gateway
 	 */
-	getFormattedPrice: function(price, order){
-		var currency = this.getCurrency(order);
+	getFormattedPrice: function(price, currency){
 		var ckoFormateBy = this.getCKOFormatedValue(currency);
 		var orderTotalFormated = price * ckoFormateBy;
 		
@@ -186,7 +186,7 @@ var util = {
 	/*
 	 * get Order Quantities
 	 */
-	getCurrency : function(args){
+	getCurrency : function(){
 		var orderId = this.getOrderId();
 		// load the card and order information
 		var order = OrderMgr.getOrder(orderId);
@@ -195,6 +195,27 @@ var util = {
 		return currency;
 		
 	},
+	
+	
+	
+	/*
+	 * get Order Quantities
+	 */
+	getApmCurrency : function(currency){
+		var orderId = this.getOrderId();
+		// load the card and order information
+		var order = OrderMgr.getOrder(orderId);
+		
+		if(this.getValue('ckoMode') == 'sandbox'){
+			return currency;
+		}else{
+			currency = order.getCurrencyCode();
+			
+			return currency;
+		}
+		
+	},
+	
 	
 	
 	/*
@@ -465,6 +486,37 @@ var util = {
 		return true;
 	},
 	
+//	
+//	/*
+//	 * Klarna apm Request
+//	 */
+//	handleKlarnaRequest: function(payObject, order){
+//		
+//		var gatewayResponse = false;
+//		
+//		// Perform the request to the payment gateway
+//		gatewayResponse = this.gatewayClientRequest('cko.klarna.session.' + util.getValue('ckoMode') + '.service', payObject);
+//		
+//		// If the charge is valid, process the response
+//		if(gatewayResponse){
+//			
+//			this.handleAPMChargeResponse(gatewayResponse, order);
+//			
+//		}else{
+//			
+//			// update the transaction
+//			Transaction.wrap(function(){
+//				OrderMgr.failOrder(order);
+//			});
+//			
+//			// Restore the cart
+//			this.checkAndRestoreBasket(order);
+//			
+//			return false;
+//		}
+//		return true;
+//	},
+	
 	
 	/*
 	 * Apm Request
@@ -521,42 +573,48 @@ var util = {
 		
 		var chargeData = false;
 		
-		var currency = false;
-		
-		if(this.getValue('ckoMode') == 'sandbox'){
-			currency = payObject.currency;
-		}else{
-			currency = this.getCurrency(args);
-		}
+		var currency = this.getApmCurrency(payObject.currency);
 		
 		// object apm is sepa
 		if(payObject.type == 'sepa'){
 			
 			// Prepare chargeData object
 			chargeData = {
-				"customer"			: this.getCustomer(args),
-				"amount"			: this.getAmount(order),	
-			    "type"				: payObject.type,
-				"currency"			: currency,
-				"billing_address"	: this.getBillingObject(args),
-			    "source_data"		: payObject.source_data,
-				"reference"			: args.OrderNo,
-				"payment_ip"		: this.getHost(args),
-			    "metadata"			: this.getMetadataObject(payObject)
+				"customer"				: this.getCustomer(args),
+				"amount"				: this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getApmCurrency(currency)),
+			    "type"					: payObject.type,
+				"currency"				: currency,
+				"billing_address"		: this.getBillingObject(args),
+			    "source_data"			: payObject.source_data,
+				"reference"				: args.OrderNo,
+				"payment_ip"			: this.getHost(args),
+			    "metadata"				: this.getMetadataObject(payObject),
+			    "billing_descriptor"	: this.getBillingDescriptorObject()
 			};
 			
 		// if apm is not sepa
+		}if(payObject.type == 'klarna'){
+			
+			// Prepare chargeData object
+			chargeData = {
+				"amount"				: this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getApmCurrency(currency)),	
+				"currency"				: currency,
+				"capture"				: false,
+			    "source"				: payObject.source
+			};
+			
 		}else{
 		
 			// Prepare chargeData object
 			chargeData = {
-				"customer"			: this.getCustomer(args),
-				"amount"			: this.getAmount(order),	
-				"currency"			: currency,
-			    "source"			: payObject.source,
-				"reference"			: args.OrderNo,
-				"payment_ip"		: this.getHost(args),
-			    "metadata"			: this.getMetadataObject(payObject)
+				"customer"				: this.getCustomer(args),
+				"amount"				: this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getApmCurrency(currency)),	
+				"currency"				: currency,
+			    "source"				: payObject.source,
+				"reference"				: args.OrderNo,
+				"payment_ip"			: this.getHost(args),
+			    "metadata"				: this.getMetadataObject(payObject),
+			    "billing_descriptor"	: this.getBillingDescriptorObject()
 			};
 			
 		}
@@ -636,6 +694,20 @@ var util = {
 	},
 	
 	/*
+	 * get Basket Quantities
+	 */
+	getBillingDescriptorObject : function(){
+		
+		var billingDescriptor = {
+				"name"	: this.getValue('ckoBillingDescriptor1'),
+				"city"	: this.getValue('ckoBillingDescriptor2')
+		}
+		
+		return billingDescriptor;
+		
+	},
+	
+	/*
 	 * get Products Information
 	 */
 	getProductInformation : function(args){
@@ -653,7 +725,7 @@ var util = {
 			var product = {
 					"product_id" 	: pli.productID,
 					"quantity"		: pli.quantityValue,
-					"price"			: this.getFormattedPrice(pli.getPriceValue().toFixed(2), order),
+					"price"			: this.getFormattedPrice(pli.getPriceValue().toFixed(2), this.getCurrency()),
 					"description"	: pli.productName
 			}
 			
@@ -684,7 +756,7 @@ var util = {
 		var tax = {
 				"product_id"	: args.OrderNo,
 				"quantity"		: 1,
-				"price"			: this.getFormattedPrice(order.getTotalTax().valueOf().toFixed(2), order),
+				"price"			: this.getFormattedPrice(order.getTotalTax().valueOf().toFixed(2), this.getCurrency()),
 				"description"	: "Order Tax"
 		}
 		
@@ -712,7 +784,7 @@ var util = {
 			var shippment = {
 					"product_id"	: shipping.getShippingMethod().getID(),
 					"quantity"		: 1,
-					"price"			: this.getFormattedPrice(shipping.getShippingTotalPrice().valueOf().toFixed(2), args),
+					"price"			: this.getFormattedPrice(shipping.getShippingTotalPrice().valueOf().toFixed(2), this.getCurrency()),
 					"description"	: shipping.getShippingMethod().getDisplayName() + " Shipping : " + shipping.getShippingMethod().getDescription()
 			}
 			
@@ -765,6 +837,20 @@ var util = {
 //		return shipping.getTaxClassID();
 //		
 //	},
+	
+	
+	/*
+	 * Return Order Currency Code
+	 */
+	getCurrencyCode: function(args){
+		var order = OrderMgr.getOrder(args.OrderNo);
+
+		// Get shipping address object
+		var shipping = order.getDefaultShipment().getShippingMethod();
+		var shippingCurrency = shipping.getCurrencyCode();
+		
+		return shippingCurrency;
+	},
 
 	
 	/*
@@ -883,21 +969,24 @@ var util = {
 	 * Build the Gateway Object
 	 */
 	gatewayObject: function(cardData, args){
+		// load the card and order information
+		var order = OrderMgr.getOrder(args.OrderNo);
 
 		// Prepare chargeData object
 		var chargeData = {
-				"source"			: this.getSourceObject(cardData, args),
-				"amount"			: this.getAmount(order),	
-				"currency"			: this.getCurrency(args),
-				"reference"			: args.OrderNo,
-				"capture"			: this.getValue('ckoAutoCapture'),
-				"capture_on"		: this.getCaptureTime(),
-				"customer"			: this.getCustomer(args),
-				"shipping"			: this.getShippingObject(args),
-				"3ds"				: this.get3Ds(),
-				"risk"				: {enabled: true},
-				"payment_ip"		: this.getHost(args),
-				"metadata"			: this.getMetadataObject(cardData),
+				"source"				: this.getSourceObject(cardData, args),
+				"amount"				: this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getCurrency()),	
+				"currency"				: this.getCurrency(),
+				"reference"				: args.OrderNo,
+				"capture"				: this.getValue('ckoAutoCapture'),
+				"capture_on"			: this.getCaptureTime(),
+				"customer"				: this.getCustomer(args),
+				"billing_descriptor"	: this.getBillingDescriptorObject(),
+				"shipping"				: this.getShippingObject(args),
+				"3ds"					: this.get3Ds(),
+				"risk"					: {enabled: true},
+				"payment_ip"			: this.getHost(args),
+				"metadata"				: this.getMetadataObject(cardData)
 			};
 		
 		return chargeData;
@@ -909,7 +998,7 @@ var util = {
 	 */
 	getAmount: function(order){
 		
-		var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order);
+		var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getCurrency());
 		return amount;
 	},
 	
@@ -1109,7 +1198,157 @@ var util = {
 		}
 		
 		return source;
+	},
+	
+	/*
+	 * Return Basket Item object
+	 */
+	getBasketObject: function(basket){
+		
+		var currency = this.getAppModeValue('GBP', basket.getCurrencyCode());
+		
+		var products_quantites = [];
+		
+		var it = basket.productLineItems.iterator();
+		
+		while (it.hasNext()){
+			var pli = it.next();
+			
+			var products = {
+				"name"				: pli.productName,
+				"quantity"			: pli.quantityValue,
+				"unit_price"		: this.getFormattedPrice(pli.adjustedGrossPrice.value, currency),
+				"tax_rate"			: pli.taxRate * 100 * 100,  
+				"total_amount"		: this.getFormattedPrice(pli.adjustedGrossPrice.value, currency),
+				"total_tax_amount"	: this.getFormattedPrice(pli.adjustedTax.value, currency)
+			}
+			
+			products_quantites.push(products);
+		}
+		
+		var shipping = {
+			"name"				: basket.defaultShipment.shippingMethod.displayName + " Shipping",
+			"quantity"			: 1,
+			"unit_price"		: this.getFormattedPrice(basket.shippingTotalGrossPrice.value, currency),
+			"tax_rate"			: basket.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100,
+			"total_amount"		: this.getFormattedPrice(basket.shippingTotalGrossPrice.value, currency),
+			"total_tax_amount"	: this.getFormattedPrice(basket.shippingTotalTax.value, currency)
+		}
+		
+		if(basket.shippingTotalPrice.value > 0){
+			products_quantites.push(shipping);
+		}
+		
+		return products_quantites;
+	},
+	
+	
+	/*
+	 * Return Basket Item object
+	 */
+	getOrderBasketObject: function(args){
+		
+		var currency = this.getAppModeValue('GBP', this.getCurrencyCode(args));
+		
+		var order = OrderMgr.getOrder(args.OrderNo);
+		
+		var it = order.productLineItems.iterator();
+
+		var products_quantites = [];
+		
+		while (it.hasNext()){
+			var pli = it.next();
+			
+			var products = {
+				"name"				: pli.productName,
+				"quantity"			: pli.quantityValue,
+				"unit_price"		: this.getFormattedPrice(pli.adjustedGrossPrice.value, currency),
+				"tax_rate"			: pli.taxRate * 100 * 100,
+				"total_amount"		: this.getFormattedPrice(pli.adjustedGrossPrice.value, currency),
+				"total_tax_amount"	: this.getFormattedPrice(pli.adjustedTax.value, currency)
+			}
+			
+			products_quantites.push(products);
+		}
+		
+		var shipping = {
+			"name"				: order.defaultShipment.shippingMethod.displayName + " Shipping",
+			"quantity"			: 1,
+			"unit_price"		: this.getFormattedPrice(order.shippingTotalGrossPrice.value, currency),
+			"tax_rate"			: order.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100,
+			"total_amount"		: this.getFormattedPrice(order.shippingTotalGrossPrice.value, currency),
+			"total_tax_amount"	: this.getFormattedPrice(order.shippingTotalTax.value, currency)
+		}
+		
+		if(order.shippingTotalPrice.value > 0){
+			products_quantites.push(shipping);
+		}
+		
+		return products_quantites;
+		
+	},
+	
+	/*
+	 * Return Basket Item CountryCode
+	 */
+	getBasketCountyCode: function(basket){
+		
+		var countyCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
+		
+		return countyCode;
+		
+	},
+	
+	
+	/*
+	 * Return Basket Item CountryCode
+	 */
+	getBasketAddress: function(basket){
+		
+        var basketAddress = {
+            given_name					: this.getAppModeValue('John', basket.defaultShipment.shippingAddress.firstName),
+            family_name					: this.getAppModeValue('Doe', basket.defaultShipment.shippingAddress.lastName),
+            email						: "john@doe.com",
+            title						: this.getAppModeValue('Mr', basket.defaultShipment.shippingAddress.title),
+            street_address				: this.getAppModeValue('13 New Burlington St', basket.defaultShipment.shippingAddress.address1),
+            street_address2				: this.getAppModeValue('Apt 214', basket.defaultShipment.shippingAddress.address2),
+            postal_code					: this.getAppModeValue('W13 3BG', basket.defaultShipment.shippingAddress.postalCode),
+            city						: this.getAppModeValue('London', basket.defaultShipment.shippingAddress.city),
+            phone						: this.getAppModeValue('01895808221', basket.defaultShipment.shippingAddress.phone),
+            country						: this.getAppModeValue("GB", basket.defaultShipment.shippingAddress.countryCode.valueOf())
+            
+        }
+		
+		return basketAddress;
+		
+	},
+	
+	/*
+	 * Return Basket Item CountryCode
+	 */
+	getOrderBasketAddress: function(args){
+		
+		var order = OrderMgr.getOrder(args.OrderNo);
+		
+        var basketAddress = {
+            given_name					: this.getAppModeValue('John', order.defaultShipment.shippingAddress.firstName),
+            family_name					: this.getAppModeValue('Doe', order.defaultShipment.shippingAddress.lastName),
+            email						: this.getAppModeValue('john@doe.com', order.customerEmail),
+            title						: this.getAppModeValue('Mr', order.defaultShipment.shippingAddress.title),
+            street_address				: this.getAppModeValue('13 New Burlington St', order.defaultShipment.shippingAddress.address1),
+            street_address2				: this.getAppModeValue('Apt 214', order.defaultShipment.shippingAddress.address2),
+            postal_code					: this.getAppModeValue('W13 3BG', order.defaultShipment.shippingAddress.postalCode),
+            city						: this.getAppModeValue('London', order.defaultShipment.shippingAddress.city),
+            phone						: this.getAppModeValue('01895808221', order.defaultShipment.shippingAddress.phone),
+            country						: this.getAppModeValue("GB", order.defaultShipment.shippingAddress.countryCode.valueOf())
+            
+        }
+		
+		return basketAddress;
+		
 	}
+	
+	
 	
 }
 

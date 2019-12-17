@@ -1,8 +1,9 @@
 /* API Includes */
 var svc = require('dw/svc');
 
-/* Helper functions */
-var CKOHelper = require('~/cartridge/scripts/helpers/CKOHelper');
+/* Utility */
+var util = require('~/cartridge/scripts/utility/util');
+
 
 /**
  * Initialize HTTP service for the Checkout.com sandbox charges verification.
@@ -14,8 +15,8 @@ svc.ServiceRegistry.configure("cko.verify.charges.sandbox.service", {
         // Prepare the http service
         svc.setURL(serviceUrl);
         svc.setRequestMethod("GET");
-        svc.addHeader("Authorization", CKOHelper.getAccountKeys().secreteKey);
-        svc.addHeader("User-Agent", CKOHelper.getCartridgeMeta());
+        svc.addHeader("Authorization", util.getAccountKeys().secreteKey);
+        svc.addHeader("User-Agent", util.getCartridgeMeta());
         svc.addHeader("Content-Type", 'application/json;charset=UTF-8');    
         
         return (args) ? JSON.stringify(args) : null;
@@ -36,8 +37,8 @@ svc.ServiceRegistry.configure("cko.verify.charges.live.service", {
         // Prepare the http service
         svc.setURL(serviceUrl);
         svc.setRequestMethod("GET");
-        svc.addHeader("Authorization", CKOHelper.getAccountKeys().secreteKey);
-        svc.addHeader("User-Agent", CKOHelper.getCartridgeMeta());
+        svc.addHeader("Authorization", util.getAccountKeys().secreteKey);
+        svc.addHeader("User-Agent", util.getCartridgeMeta());
         svc.addHeader("Content-Type", 'application/json;charset=UTF-8');
         
         return (args) ? JSON.stringify(args) : null;

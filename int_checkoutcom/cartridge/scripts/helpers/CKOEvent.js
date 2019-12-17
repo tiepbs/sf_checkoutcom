@@ -5,7 +5,7 @@ var OrderMgr = require('dw/order/OrderMgr');
 var Transaction = require('dw/system/Transaction');
 
 /* Checkout.com Helper functions */
-var CKOHelper = require('~/cartridge/scripts/helpers/CKOHelper');
+var CKOHelper = require('~/cartridge/scripts/helpers/CKOCardHelper');
 
 /**
  * Gateway event functions for the Checkout.com cartridge integration.

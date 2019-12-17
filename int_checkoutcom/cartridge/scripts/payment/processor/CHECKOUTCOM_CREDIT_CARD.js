@@ -15,7 +15,7 @@ var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
 /* Helpers */
-var CKOHelper = require('~/cartridge/scripts/helpers/CKOHelper');
+var CKOCardHelper = require('~/cartridge/scripts/helpers/CKOCardHelper');
 
 /* Utility */
 var util = require('~/cartridge/scripts/utility/util');
@@ -76,21 +76,21 @@ function Authorize(args) {
 	var paymentInstrument = args.PaymentInstrument;
 	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 	
-	// Add data to session for payment return
+	// Add order number to the session global object 
 	session.privacy.ckoOrderId = args.OrderNo;
 	
 	
-	// process card payment
+	// build card data object
 	var cardData = {
 		"name"			: paymentInstrument.creditCardHolder,
 		"number"		: paymentInstrument.creditCardNumber,
 		"expiryMonth"	: paymentInstrument.creditCardExpirationMonth,
 		"expiryYear"	: paymentInstrument.creditCardExpirationYear,
 		"cvv"			: app.getForm("cardPaymentForm").get('cvn').value(),
-		"type"			: paymentInstrument.creditCardType
+		"type"			: paymentInstrument.creditCardType,
 	};
 	
-	// perform the charge
+	// make the charge request
 	var request = util.handleCardRequest(cardData, args);
 	
 	// Transaction wrapper
@@ -99,13 +99,13 @@ function Authorize(args) {
 		paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
 	});
 	
-	// Handle card charge result
+	// Handle card charge request result
 	if(request){
 		
 		if(util.getValue('cko3ds')){
 			
 			ISML.renderTemplate('redirects/3DSecure.isml', {
-				redirectUrl: session.privacy.redirectUrl,
+				redirectUrl: session.privacy.redirectUrl
 			});
 			
 			return {authorized: true, redirected: true};
