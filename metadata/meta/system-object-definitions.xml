@@ -27,9 +27,63 @@
                 <type>string</type>
                 <default-value>19.1.0</default-value>
             </attribute-definition>
+            <attribute-definition attribute-id="ckoBillingDescriptor1">
+                <display-name xml:lang="x-default">Billing Descriptor Line1</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Billing Descriptor For Invoice (Max-25 characters)</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Billing Descriptor Line 1</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBillingDescriptor2">
+                <display-name xml:lang="x-default">Billing Descriptor Line2</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Billing Descriptor For Invoice (Max-30 characters)</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Billing Descriptor Line 2</default-value>
+            </attribute-definition>
             <attribute-definition attribute-id="ckoBusinessName">
                 <display-name xml:lang="x-default">Buisness Name</display-name>
                 <description xml:lang="x-default">Your SFCC Shop Name (Max-20 characters)</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Sfcc Shop</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBusinessAddressLine1">
+                <display-name xml:lang="x-default">Buisness AddressLine1</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Business AddressLine1 (Max-20 characters)</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Sfcc Shop</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBusinessAddressLine2">
+                <display-name xml:lang="x-default">Buisness AddressLine2</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Business AddressLine1 (Max-20 characters)</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Sfcc Shop</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBusinessCity">
+                <display-name xml:lang="x-default">Buisness City</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Business City (Max-20 characters)</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Sfcc Shop</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBusinessCountry">
+                <display-name xml:lang="x-default">Buisness Country</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Business Country (Max-20 characters)</description>
                 <type>string</type>
                 <mandatory-flag>true</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -246,6 +300,10 @@
                         <value>AD</value>
                     </value-definition>
                     <value-definition>
+                        <display xml:lang="x-default">AU</display>
+                        <value>AU</value>
+                    </value-definition>
+                    <value-definition>
                         <display xml:lang="x-default">AT</display>
                         <value>AT</value>
                     </value-definition>
@@ -366,6 +424,10 @@
                         <value>NO</value>
                     </value-definition>
                     <value-definition>
+                        <display xml:lang="x-default">NZ</display>
+                        <value>NZ</value>
+                    </value-definition>
+                    <value-definition>
                         <display xml:lang="x-default">PL</display>
                         <value>PL</value>
                     </value-definition>
@@ -420,6 +482,10 @@
                 <select-multiple-flag>false</select-multiple-flag>
                 <value-definitions>
                     <value-definition>
+                        <display xml:lang="x-default">AUD</display>
+                        <value>AUD</value>
+                    </value-definition>
+                    <value-definition>
                         <display xml:lang="x-default">BHD</display>
                         <value>BHD</value>
                     </value-definition>
@@ -450,6 +516,14 @@
                     <value-definition>
                         <display xml:lang="x-default">NOK</display>
                         <value>NOK</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">NZD</display>
+                        <value>NZD</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">PLN</display>
+                        <value>PLN</value>
                     </value-definition>
                     <value-definition>
                         <display xml:lang="x-default">SEK</display>
@@ -483,7 +557,13 @@
                 <display-name xml:lang="x-default">Account Settings</display-name>
                 <attribute attribute-id="ckoEnabled"/>
                 <attribute attribute-id="ckoMode"/>
+                <attribute attribute-id="ckoBillingDescriptor1"/>
+                <attribute attribute-id="ckoBillingDescriptor2"/>
                 <attribute attribute-id="ckoBusinessName"/>
+                <attribute attribute-id="ckoBusinessAddressLine1"/>
+                <attribute attribute-id="ckoBusinessAddressLine2"/>
+                <attribute attribute-id="ckoBusinessCity"/>
+                <attribute attribute-id="ckoBusinessCountry"/>
                 <attribute attribute-id="ckoCard"/>
                 <attribute attribute-id="cko3ds"/>
                 <attribute attribute-id="ckoN3ds"/>

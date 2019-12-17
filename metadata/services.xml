@@ -12,6 +12,12 @@
         <password/>
     </service-credential>
 
+    <service-credential service-credential-id="cko.klarna.session.sandbox.credential">
+        <url>https://api.sandbox.checkout.com/klarna-external/credit-sessions</url>
+        <user-id/>
+        <password/>
+    </service-credential>
+
     <service-credential service-credential-id="cko.card.charge.sandbox.credential">
         <url>https://api.sandbox.checkout.com/payments</url>
         <user-id/>
@@ -26,6 +32,12 @@
 
     <service-credential service-credential-id="cko.card.sources.live.credential">
         <url>https://api.checkout.com/sources</url>
+        <user-id/>
+        <password/>
+    </service-credential>
+
+    <service-credential service-credential-id="cko.klarna.session.live.credential">
+        <url>https://api.checkout.com/klarna-external/credit-sessions</url>
         <user-id/>
         <password/>
     </service-credential>
@@ -64,6 +76,15 @@
         <credential-id>cko.card.sources.sandbox.credential</credential-id>
     </service>
 
+    <service service-id="cko.klarna.session.sandbox.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <profile-id>CheckoutCom</profile-id>
+        <credential-id>cko.klarna.session.sandbox.credential</credential-id>
+    </service>
+
     <service service-id="cko.verify.charges.sandbox.service">
         <service-type>HTTP</service-type>
         <enabled>true</enabled>
@@ -89,6 +110,15 @@
         <comm-log-enabled>false</comm-log-enabled>
         <profile-id>CheckoutCom</profile-id>
         <credential-id>cko.card.sources.live.credential</credential-id>
+    </service>
+
+    <service service-id="cko.klarna.session.live.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <profile-id>CheckoutCom</profile-id>
+        <credential-id>cko.klarna.session.live.credential</credential-id>
     </service>
 
     <service service-id="cko.verify.charges.live.service">
