@@ -1,8 +1,0 @@
-{
-	"hooks": [
-		{
-			"name": "app.payment.processor.CHECKOUTCOM_CREDIT",
-			"script": "./payment/processor/CHECKOUTCOM_CREDIT"
-		}		
-	]
-}
