@@ -109,3 +109,18 @@ function isActionable(chargeId, operation) {
 	});
 }
 
+// Open the transaction modal view
+function openModal(id) {
+    var targetItemId = '#' + id;
+    jQuery(targetItemId).css('display', 'block')
+    .removeClass('modal-closed')
+    .addClass('modal-opened');
+}
+  
+// Close the transaction modal view
+function closeModal(id) {
+    var targetItemId = '#' + id;
+    jQuery(targetItemId).css('display', 'none')
+    .removeClass('modal-opened')
+    .addClass('modal-closed');
+}
