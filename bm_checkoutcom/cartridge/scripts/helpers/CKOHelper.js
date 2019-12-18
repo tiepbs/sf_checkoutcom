@@ -113,7 +113,7 @@ var CKOHelper = {
      * Checks if a payment instrument is Checkout.com.
      */
     isCKo: function (instrument) {
-        return instrument.paymentMethod == 'CHECKOUTCOM_CREDIT' || instrument.paymentMethod == 'CHECKOUTCOM_APPLEPAY' || instrument.paymentMethod == 'CHECKOUTCOM_GOOGLEPAY';
+        return instrument.paymentMethod.indexOf('CHECKOUTCOM_') >= 0;
     },
 
     /**
