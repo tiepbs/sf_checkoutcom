@@ -20,19 +20,6 @@ function listTransactions() {
 }
 
 /**
- * View a transaction
- */
-function viewTransaction() {
-    // Load the transaction
-    var paymentTransaction = CKOHelper.loadTransactionFromRequest();
-
-    // Render the template
-    ISML.renderTemplate('transactions/detail', {
-        item: paymentTransaction
-    });
-}
-
-/**
  * Perform a remote Hub Call
  */
 function hubCall() {
@@ -83,6 +70,5 @@ function transactionHistory() {
 * Web exposed methods
 */
 exports.ListTransactions = guard.ensure(['https'], listTransactions);
-exports.ViewTransaction = guard.ensure(['https'], viewTransaction);
 exports.HubCall = guard.ensure(['https'], hubCall);
 exports.TransactionHistory = guard.ensure(['https'], transactionHistory);

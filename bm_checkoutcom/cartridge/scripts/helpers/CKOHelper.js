@@ -82,34 +82,6 @@ var CKOHelper = {
     },
 
     /**
-     * Loads a transaction from request.
-     */
-    loadTransactionFromRequest: function () {
-        // Get the order from the request
-        var trackId = request.httpParameterMap.get('trackId').stringValue;
-
-        // Get the transaction from the request
-        var transactionId = request.httpParameterMap.get('transactionId').stringValue;
-
-        // Load the order
-        var order = OrderMgr.getOrder(trackId);
-
-        // Get the payment instrument
-        var paymentInstruments = order.getPaymentInstruments();
-
-        // Get the relevant transaction
-        for each (var instrument in paymentInstruments) {
-            // Get the payment transaction
-            var paymentTransaction = instrument.getPaymentTransaction();
-
-            // Add the payment transaction to the output
-            if (paymentTransaction.transactionID == transactionId) {
-                return paymentTransaction;
-            }  
-        }
-    },
-
-    /**
      * Checks if a payment instrument is Checkout.com.
      */
     isCKo: function (instrument) {
