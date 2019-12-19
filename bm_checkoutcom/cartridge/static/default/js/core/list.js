@@ -9,30 +9,11 @@ document.addEventListener('DOMContentLoaded', function(){
 }, false);
 
 function buildTable() {
-	//define some sample data
-	var tabledata = [
-		{id:1, name:"Oli Bob", age:"12", col:"red", dob:""},
-		{id:2, name:"Mary May", age:"1", col:"blue", dob:"14/05/1982"},
-		{id:3, name:"Christine Lobowski", age:"42", col:"green", dob:"22/05/1982"},
-		{id:4, name:"Brendon Philips", age:"125", col:"orange", dob:"01/08/1980"},
-		{id:5, name:"Margret Marmajuke", age:"16", col:"yellow", dob:"31/01/1999"}
-	];
+	// Prepare the table data
+	var controllerUrl = jQuery('[id="transactionsControllerUrl"]');
 
-	//create Tabulator on DOM element with id "example-table"
-	var table = new Tabulator("#example-table", {
-		height:205, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
-		data:tabledata, //assign data to table
-		layout:"fitColumns", //fit columns to width of table (optional)
-		columns:[ //Define Table Columns
-			{title:"Name", field:"name", width:150},
-			{title:"Age", field:"age", align:"left", formatter:"progress"},
-			{title:"Favourite Color", field:"col"},
-			{title:"Date Of Birth", field:"dob", sorter:"date", align:"center"},
-		],
-		rowClick:function(e, row){ //trigger an alert message when the row is clicked
-			alert("Row " + row.getData().id + " Clicked!!!!");
-		},
-	});
+	// Instantiate the table
+	getTransactionData(controllerUrl);
 }
 
 function buildTabs() {
@@ -66,4 +47,38 @@ function getCookie(cname) {
         }
     }
     return "";
+}
+
+function getTransactionData(controllerUrl) {
+	jQuery.ajax({
+		type: 'POST',
+		url: controllerUrl,
+		success: function (data) {
+			initTable(data);
+		},
+		error: function (request, status, error) {
+			console.log(error);
+		}
+	});
+}
+
+function initTable(tableData) {
+	// Build the table instance
+	var table = new Tabulator('#transactions-table', {
+		height: 205,
+		data: tableData, 
+		layout: 'fitColumns',
+		columns: getTableColumns()
+	});
+}
+
+function getTableColumns() {
+	return [
+		{title: 'Order No', field: 'order_no', width: 150},
+		{title: 'Transaction Id', field:'transaction_id'},
+		{title: 'Amount', field: 'amount'},
+		{title: 'Date', field: 'creation_date'},
+		{title: 'Type', field: 'type'},
+		{title: 'Processor', field: 'processor'},
+	];
 }

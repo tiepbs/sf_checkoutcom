@@ -11,64 +11,32 @@ var CKOHelper = require('~/cartridge/scripts/helpers/CKOHelper');
 /**
  * Get the transactions list
  */
-function listTransactions() {
-	// Prepare the output array
-	var data = CKOHelper.getCkoTransactions();
-	
+function listTransactions() {	
     // Render the template
-    ISML.renderTemplate('transactions/list', {data: data.result, orderMap: data.orderMap});
+    ISML.renderTemplate('transactions/list');
 }
 
 /**
- * Perform a remote Hub Call
+ * Get the transactions table data
  */
-function hubCall() {
-    // Get the operating mode
-    var mode = CKOHelper.getValue('ckoMode');
-   
-    // Get the transaction task
-    var task = request.httpParameterMap.get('task');
-
-    // Prepare the payload
-    var ckoChargeData = {
-        value: CKOHelper.getFormattedPrice(request.httpParameterMap.get('val').stringValue),
-        chargeId: request.httpParameterMap.get('tid').stringValue
+function getTransactionsData() {	
+	// Prepare the output array
+    //var data = CKOHelper.getCkoTransactions();
+    
+    var data = {
+        order_no: '01234',
+        transaction_id: 'tid445',
+        amount: '222',
+        creation_date: '13/09/76',
+        type: 'TYPE_AUTH',
+        processor: 'CHECKOUTCOM_CARD'
     }
 
-    // Perform the request
-    var gResponse = CKOHelper.getGatewayClient(
-        'cko.transaction.' + task + '.' + mode + '.service',
-        ckoChargeData
-    );
-
-    return JSON.stringify(ckoChargeData);
-}
-
-function transactionHistory() {
-    // Get the transaction ID
-    var chargeId = request.httpParameterMap.get('chargeId');
-
-    // Get the transaction operation
-    var operation = request.httpParameterMap.get('operation');
-
-    // Get the operating mode
-    var mode = CKOHelper.getValue('ckoMode');
-
-    // Prepare the charge data
-    var ckoChargeData = {chargeId: chargeId};
-
-    // Send a gateway request to check the transaction status
-    var gResponse = CKOHelper.getGatewayClient(
-        'cko.charge.history.' + mode + '.service',
-        ckoChargeData
-    );
-
-    ISML.renderTemplate('transactions/ajax.isml', { test: JSON.parse(gResponse) });
+    println(JSON.stringify(data));
 }
 
 /*
 * Web exposed methods
 */
 exports.ListTransactions = guard.ensure(['https'], listTransactions);
-exports.HubCall = guard.ensure(['https'], hubCall);
-exports.TransactionHistory = guard.ensure(['https'], transactionHistory);
+exports.GetTransactionsData = guard.ensure(['https'], getTransactionsData);

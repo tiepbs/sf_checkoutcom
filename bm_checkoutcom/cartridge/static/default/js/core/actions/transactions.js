@@ -37,11 +37,6 @@ function buildTransactionActions() {
     });
 }
 
-function sendTransactionData(data) {
-	var controllerUrl = jQuery('#hubCallUrl').val();
-    jQuery.post(controllerUrl, data);
-}
-
 function getTransactionData(targetElement) {    
     // Get the requested transaction type
     var task = targetElement.parents('.modal-opened')
@@ -92,21 +87,6 @@ function toFloat(val) {
     }
     
     return parseFloat(output).toFixed(2);
-}
-
-function isActionable(chargeId, operation) {
-	// Get the controller URL
-	var controllerUrl = jQuery('#transactionHistoryUrl').val();
-    
-	// Send the charge id	
-	jQuery.ajax ({
-		url: controllerUrl,
-		method: "POST",
-        data: {chargeId: chargeId, operation: operation},
-        success: function(data) {
-            console.log(data);
-        }
-	});
 }
 
 // Open the transaction modal view
