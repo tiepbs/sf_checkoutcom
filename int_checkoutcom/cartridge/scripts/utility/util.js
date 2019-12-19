@@ -665,6 +665,37 @@ var util = {
 		
 	},
 	
+		
+	/*
+	 * Build the Gateway Object
+	 */
+	gatewayObject: function(cardData, args){
+		// load the card and order information
+		var order = OrderMgr.getOrder(args.OrderNo);
+		
+
+		// Prepare chargeData object
+		var chargeData = {
+				"source"				: this.getSourceObject(cardData, args),
+				"amount"				: this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getCurrency()),	
+				"currency"				: order.getCurrencyCode(),
+				"reference"				: args.OrderNo,
+				"capture"				: this.getValue('ckoAutoCapture'),
+				"capture_on"			: this.getCaptureTime(),
+				"customer"				: this.getCustomer(args),
+				"billing_descriptor"	: this.getBillingDescriptorObject(),
+				"shipping"				: this.getShippingObject(args),
+				"3ds"					: this.get3Ds(),
+				"risk"					: {enabled: true},
+				"payment_ip"			: this.getHost(args),
+				"metadata"				: this.getMetadataObject(cardData)
+			};
+		
+		return chargeData;
+	},
+	
+	
+	
 	/*
 	 * return customer object
 	 */
@@ -964,33 +995,6 @@ var util = {
 		
 		return host;
 	},
-		
-	/*
-	 * Build the Gateway Object
-	 */
-	gatewayObject: function(cardData, args){
-		// load the card and order information
-		var order = OrderMgr.getOrder(args.OrderNo);
-
-		// Prepare chargeData object
-		var chargeData = {
-				"source"				: this.getSourceObject(cardData, args),
-				"amount"				: this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getCurrency()),	
-				"currency"				: this.getCurrency(),
-				"reference"				: args.OrderNo,
-				"capture"				: this.getValue('ckoAutoCapture'),
-				"capture_on"			: this.getCaptureTime(),
-				"customer"				: this.getCustomer(args),
-				"billing_descriptor"	: this.getBillingDescriptorObject(),
-				"shipping"				: this.getShippingObject(args),
-				"3ds"					: this.get3Ds(),
-				"risk"					: {enabled: true},
-				"payment_ip"			: this.getHost(args),
-				"metadata"				: this.getMetadataObject(cardData)
-			};
-		
-		return chargeData;
-	},
 	
 	
 	/*
@@ -1075,7 +1079,11 @@ var util = {
 		var captureOn = this.getValue('ckoAutoCaptureTime');
 		
 		if(captureOn > 0){
-			return captureOn;
+			
+			var t = new Date();
+			t.setSeconds(t.getSeconds() + captureOn);
+			
+			return t;
 		}
 		
 		return null;
