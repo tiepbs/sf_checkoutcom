@@ -71,6 +71,9 @@ function AlternativePayments(){
 		case"klarna":
 			klarnaPayBox();
 			break;
+		case"paypal":
+			paypalPayBox();
+			break;
 		default:
 			console.log('Apm unknown');
 		}
@@ -318,6 +321,21 @@ function p24PayBox(){
 
 
 /*
+ * Paypal Pay decorator
+ */
+function paypalPayBox(){
+	// multibanco pay radio button element
+	var paypalPay = $('#paypalPay_apm_radio_btn');
+	
+	// multibanco pay input elements div
+	var paypalPayBox = $('#paypalPay_pay_box');
+	
+	// set input fields toggle
+	toggleAPMS(paypalPay, paypalPayBox);
+}
+
+
+/*
  * Poli Pay decorator
  */
 function klarnaPayBox(){
@@ -419,7 +437,7 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId){
 //            shipping_address			: addressInfo,
 //            order_amount				: requestObject.amount,
 //            order_tax_amount			: requestObject.tax_amount,
-//            order_lines					: requestObject.products,
+//            order_lines				: requestObject.products,
 //            customer					: {
 //							                date_of_birth: "1970-01-01",
 //							                gender: "male"

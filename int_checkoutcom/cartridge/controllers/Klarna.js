@@ -34,14 +34,16 @@ function session(){
 		var total = util.getFormattedPrice(basket.getTotalGrossPrice().value, currency);
 		var tax =  util.getFormattedPrice(basket.getTotalTax().value, currency);
 		var products = util.getBasketObject(basket);
+		var billing = util.getBasketAddress(basket);
 				
 		var requestObject = {
 		    "purchase_country": countryCode,
-		    "currency": currency,
-		    "locale": locale,
-		    "amount": total,
-		    "tax_amount": tax,
-		    "products": products
+		    "currency"				: currency,
+		    "locale"				: locale,
+		    "amount"				: total,
+		    "tax_amount"			: tax,
+		    "products"				: products,
+		    "billing_address"		: billing
 		}
 		
 

@@ -1213,24 +1213,27 @@ var util = {
 		
 		while (it.hasNext()){
 			var pli = it.next();
-			
+			var productTaxRate = pli.taxRate * 100 * 100;
+			var productQuantity = pli.quantityValue;
+			var unitPrice = this.getFormattedPrice(pli.adjustedGrossPrice.value, currency) / productQuantity;
+			var totalAmount = this.getFormattedPrice(pli.adjustedGrossPrice.value, currency);
 			var products = {
 				"name"				: pli.productName,
-				"quantity"			: pli.quantityValue,
-				"unit_price"		: this.getFormattedPrice(pli.adjustedGrossPrice.value, currency),
-				"tax_rate"			: pli.taxRate * 100 * 100,  
-				"total_amount"		: this.getFormattedPrice(pli.adjustedGrossPrice.value, currency),
+				"quantity"			: productQuantity.toString(),
+				"unit_price"		: unitPrice.toString(),
+				"tax_rate"			: productTaxRate.toString(),  
+				"total_amount"		: totalAmount.toString(),
 				"total_tax_amount"	: this.getFormattedPrice(pli.adjustedTax.value, currency)
 			}
 			
 			products_quantites.push(products);
 		}
-		
+		var shippingTaxRate = basket.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100;
 		var shipping = {
 			"name"				: basket.defaultShipment.shippingMethod.displayName + " Shipping",
-			"quantity"			: 1,
+			"quantity"			: '1',
 			"unit_price"		: this.getFormattedPrice(basket.shippingTotalGrossPrice.value, currency),
-			"tax_rate"			: basket.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100,
+			"tax_rate"			: shippingTaxRate.toString(),
 			"total_amount"		: this.getFormattedPrice(basket.shippingTotalGrossPrice.value, currency),
 			"total_tax_amount"	: this.getFormattedPrice(basket.shippingTotalTax.value, currency)
 		}
@@ -1258,24 +1261,27 @@ var util = {
 		
 		while (it.hasNext()){
 			var pli = it.next();
-			
+			var productTaxRate = pli.taxRate * 100 * 100;
+			var productQuantity = pli.quantityValue;
+			var unitPrice = this.getFormattedPrice(pli.adjustedGrossPrice.value, currency) / productQuantity;
+			var totalAmount = this.getFormattedPrice(pli.adjustedGrossPrice.value, currency);
 			var products = {
 				"name"				: pli.productName,
-				"quantity"			: pli.quantityValue,
-				"unit_price"		: this.getFormattedPrice(pli.adjustedGrossPrice.value, currency),
-				"tax_rate"			: pli.taxRate * 100 * 100,
-				"total_amount"		: this.getFormattedPrice(pli.adjustedGrossPrice.value, currency),
+				"quantity"			: productQuantity.toString(),
+				"unit_price"		: unitPrice.toString(),
+				"tax_rate"			: productTaxRate.toString(),
+				"total_amount"		: totalAmount.toString(),
 				"total_tax_amount"	: this.getFormattedPrice(pli.adjustedTax.value, currency)
 			}
 			
 			products_quantites.push(products);
 		}
-		
+		var shippingTaxRate = order.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100;
 		var shipping = {
 			"name"				: order.defaultShipment.shippingMethod.displayName + " Shipping",
-			"quantity"			: 1,
+			"quantity"			: '1',
 			"unit_price"		: this.getFormattedPrice(order.shippingTotalGrossPrice.value, currency),
-			"tax_rate"			: order.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100,
+			"tax_rate"			: shippingTaxRate.toString(),
 			"total_amount"		: this.getFormattedPrice(order.shippingTotalGrossPrice.value, currency),
 			"total_tax_amount"	: this.getFormattedPrice(order.shippingTotalTax.value, currency)
 		}
@@ -1305,7 +1311,7 @@ var util = {
 	 */
 	getBasketAddress: function(basket){
 		
-        var basketAddress = {
+        var address = {
             given_name					: this.getAppModeValue('John', basket.defaultShipment.shippingAddress.firstName),
             family_name					: this.getAppModeValue('Doe', basket.defaultShipment.shippingAddress.lastName),
             email						: "john@doe.com",
@@ -1319,7 +1325,7 @@ var util = {
             
         }
 		
-		return basketAddress;
+		return address;
 		
 	},
 	
@@ -1330,7 +1336,7 @@ var util = {
 		
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
-        var basketAddress = {
+        var address = {
             given_name					: this.getAppModeValue('John', order.defaultShipment.shippingAddress.firstName),
             family_name					: this.getAppModeValue('Doe', order.defaultShipment.shippingAddress.lastName),
             email						: this.getAppModeValue('john@doe.com', order.customerEmail),
@@ -1344,7 +1350,7 @@ var util = {
             
         }
 		
-		return basketAddress;
+		return address;
 		
 	}
 	

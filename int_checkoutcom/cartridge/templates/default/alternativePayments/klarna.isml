@@ -11,12 +11,14 @@
 
 	<div id="klarna-payments-container" style="min-width: 280px; padding: 10px;"></div>
 	
+	<!-- field for Klarna token -->
+	<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.klarna_token}" />
+	<!-- field for Klarna approved -->
+	<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.klarna_approved}" />
+	<!-- field for Klarna finalize required -->
+	<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.klarna_finalize_required}" />
+	
 </div>
 
-<!-- field for Klarna token -->
-<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.klarna_token}" />
-<!-- field for Klarna approved -->
-<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.klarna_approved}" />
-<!-- field for Klarna finalize required -->
-<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.klarna_finalize_required}" />
+
 <hr/>

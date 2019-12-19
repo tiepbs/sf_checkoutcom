@@ -133,6 +133,11 @@
 	
 	<isinclude template="alternativePayments/klarna.isml"/>
 	
+	
+	<!-- This to include the Paypal apm form -->
+	
+	<isinclude template="alternativePayments/paypal.isml"/>
+	
 
 </isif>
 

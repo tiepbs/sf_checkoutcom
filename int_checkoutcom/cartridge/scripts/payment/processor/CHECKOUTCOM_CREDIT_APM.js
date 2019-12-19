@@ -160,6 +160,13 @@ function Handle(args) {
 			SGJCTransHandleObject(args);
 			
 			return {success: true};
+			
+		case "paypal":
+			
+			// proceed with transaction
+			SGJCTransHandleObject(args);
+			
+			return {success: true};
 		
 	}
 
@@ -277,6 +284,12 @@ function Authorize(args) {
 		case "klarna":
 			
 			klarnaPayAuthorization(args);
+			
+			return {success: false};
+			
+		case "paypal":
+			
+			paypalPayAuthorization(args);
 			
 			return {success: false};
 		
@@ -767,6 +780,34 @@ function klarnaPayAuthorization(args){
 		 return {success: false};
 	}
 	 
+	
+}
+
+
+/*
+ * Paypal Pay Authorization
+ */
+function paypalPayAuthorization(args){
+	
+	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+
+	var payObject = {
+		    "type"				: "paypal",
+		    "currency"			: currency,
+		    "source"			: {
+		        "type"					: "paypal",
+		        "invoice_number"		: args.OrderNo,
+		        "logo_url": "https		://www.example.com/logo.jpg",
+		        "stc"					: {
+		            "property_name1": "property 1",
+		            "property_name2": "property 2",
+		            "property_name3": "property 3"
+		        }
+		    }
+		}
+	
+
+	SGJCTransAuthObject(payObject, args);
 	
 }
 
