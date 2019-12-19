@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 function buildTable() {
 	// Prepare the table data
-	var controllerUrl = jQuery('[id="transactionsControllerUrl"]');
+	var controllerUrl = jQuery('[id="transactionsControllerUrl"]').val();
 
 	// Instantiate the table
 	getTransactionData(controllerUrl);
@@ -66,7 +66,7 @@ function initTable(tableData) {
 	// Build the table instance
 	var table = new Tabulator('#transactions-table', {
 		height: 205,
-		data: tableData, 
+		data: [JSON.parse(tableData)], 
 		layout: 'fitColumns',
 		columns: getTableColumns()
 	});

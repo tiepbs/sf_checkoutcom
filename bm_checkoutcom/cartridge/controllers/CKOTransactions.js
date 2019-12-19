@@ -32,7 +32,7 @@ function getTransactionsData() {
         processor: 'CHECKOUTCOM_CARD'
     }
 
-    println(JSON.stringify(data));
+    ISML.renderTemplate('transactions/ajax', {data: JSON.stringify(data) });
 }
 
 /*
