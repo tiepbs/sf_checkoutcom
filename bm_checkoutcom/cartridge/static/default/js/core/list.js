@@ -117,3 +117,36 @@ function closeModal(id) {
     .removeClass('modal-opened')
     .addClass('modal-closed');
 }
+
+function validateMax(elementId, amount) {
+	var maxAmount = toFloat(amount);	
+	var targetField = jQuery('#' + elementId);
+    var currentAmount = toFloat(targetField.val());
+    var finalAmount;
+	
+	if ((currentAmount > maxAmount) || currentAmount == 0) {
+        finalAmount = maxAmount
+    }
+    else {
+        finalAmount = currentAmount;
+    }
+    
+    targetField.val(finalAmount);
+}
+
+function toFloat(val) {
+    var output;
+    
+    if (val.constructor === String) {
+        var parsed = /[+-]?\d+(?:\.\d+)?/g.exec(val);
+        output = parsed === null ? 0 : parsed.pop()
+    } else {
+        return Math.abs(val).toFixed(2);
+    }
+    output = Math.abs(Number(output));
+    if (String(output).split(".").length < 2 || String(output).split(".")[1].length<=2 ){
+        output = output.toFixed(2);
+    }
+    
+    return parseFloat(output).toFixed(2);
+}
