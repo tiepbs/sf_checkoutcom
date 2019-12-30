@@ -26,5 +26,4 @@
 
 <input type="hidden" id="transactionsControllerUrl" value="${URLUtils.url('CKOTransactions-GetTransactionsData')}">
 <script src="${URLUtils.staticURL('/js/core/list.js')}"></script>
-<script src="${URLUtils.staticURL('/js/core/transactions.js')}"></script>
 <script src="${URLUtils.staticURL('/js/tabulator/tabulator.min.js')}"></script>

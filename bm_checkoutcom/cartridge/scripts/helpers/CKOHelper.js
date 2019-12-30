@@ -51,13 +51,13 @@ var CKOHelper = {
         var data = [];
 
         // Query the orders
-        var orders  = this.getCkoOrders();
+        var result  = this.getCkoOrders();
         
         // Prepare the order mapping container
         var orderMap = {};
         
         // Loop through the results
-        for each (var item in orders) {
+        for each (var item in result) {
             // Get the payment instruments
             var paymentInstruments = item.getPaymentInstruments();
             
@@ -103,10 +103,18 @@ var CKOHelper = {
     },
 
     /**
+     * Loads an order by track id.
+     */
+    loadOrderFromRequest: function () {
+        // Get the order from the request
+        var trackId = request.httpParameterMap.get('trackId').stringValue;
+
+        return OrderMgr.getOrder(trackId);
+    },
+
+    /**
      * Writes gateway information to the website's custom log files.
      */
-    // todo - update the logger
-    /*
     logThis: function (dataType, gatewayData) {
         if (this.getValue('ckoDebugEnabled') == 'true' && (gatewayData)) {
             var logger = Logger.getLogger('ckodebug');
@@ -115,7 +123,47 @@ var CKOHelper = {
             }
         }
     },
-    */
+
+    /**
+     * Creates an HTTP Client to handle gateway queries.
+     */
+    getGatewayClient: function (serviceId, requestData, method) { 
+        var method = method || 'POST';     
+        var responseData = false;
+        var serv = ServiceRegistry.get(serviceId);
+        
+        // Prepare the request URL and data
+        if (requestData.hasOwnProperty('chargeId')) {
+            var requestUrl = serv.getURL().replace('chargeId', requestData.chargeId);
+            serv.setURL(requestUrl);
+            delete requestData['chargeId'];
+        } 
+
+        // Set the request method
+    	
+        // Send the call
+        var resp = serv.call(requestData);
+        if (resp.status == 'OK') {
+            responseData = resp.object
+        }
+        
+        return responseData;
+    },
+    
+    /**
+     * Returns a price formatted for processing by the gateway.
+     */
+    getFormattedPrice: function (price) {
+        var orderTotalFormatted = price * 100;
+        return orderTotalFormatted.toFixed();
+    },
+
+    /**
+     * The cartridge metadata.
+     */
+    getCartridgeMeta: function (price) {
+        return this.getValue('ckoUserAgent') + ' ' + this.getValue('ckoVersion');
+    },
 
     /**
      * Build HTTP service Headers.
