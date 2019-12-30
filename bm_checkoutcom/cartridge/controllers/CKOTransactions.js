@@ -21,8 +21,9 @@ function listTransactions() {
  */
 function getTransactionsData() {	
 	// Prepare the output array
-    //var data = CKOHelper.getCkoTransactions();
+    var data = CKOHelper.getCkoTransactions();
     
+    /*
     var data = {
         order_no: '01234',
         transaction_id: 'tid445',
@@ -31,6 +32,7 @@ function getTransactionsData() {
         type: 'TYPE_AUTH',
         processor: 'CHECKOUTCOM_CARD'
     }
+    */
 
     ISML.renderTemplate('transactions/ajax', {data: JSON.stringify(data) });
 }
