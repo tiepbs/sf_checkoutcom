@@ -6,6 +6,8 @@ var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var Logger = require('dw/system/Logger');
 var BasketMgr = require('dw/order/BasketMgr');
+var PaymentMgr = require('dw/order/PaymentMgr');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var TaxMgr = require('dw/order/TaxMgr');
@@ -260,7 +262,7 @@ var util = {
 		authData.currency = "USD";	
 		
 		var authResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", authData);
-		
+    	
 		if(this.paymentValidate(authResponse)){
 			return true;
 		}
@@ -636,7 +638,7 @@ var util = {
 		
 		// Pre_Authorize card
 		var preAuthorize = this.preAuthorizeCard(gatewayObject);
-		
+    	    	
 		if(preAuthorize){
 			// Perform the request to the payment gateway
 			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
@@ -644,6 +646,7 @@ var util = {
 			// If the charge is valid, process the response
 			if(gatewayResponse){
 				this.handleFullChargeResponse(gatewayResponse, order);
+				return gatewayResponse;
 			}else{
 				
 				// update the transaction
