@@ -44,13 +44,13 @@
         <isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue("ckoEnabled"))}">  
 
 
-            <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_CREDIT_CARD'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_CARD">
+            <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_CREDIT_CARD'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_CREDIT_CARD">
                 <div class="form-row form-caption cko-form">
                     <isinclude template="cardForm" />
                 </div>
             </div>
 
-            <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_CREDIT_APM'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_APM">
+            <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_CREDIT_APM'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_CREDIT_CARD">
                 <div class="form-row form-caption cko-form">
                     <isinclude template="apmForm" />
                 </div>
