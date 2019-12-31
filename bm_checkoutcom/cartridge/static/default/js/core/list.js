@@ -73,12 +73,12 @@ function initTable(tableData) {
 
 function getTableColumns() {
 	return [
-		{title: 'Order No', field: 'order_no', width: 150, formatter: 'html'},
-		{title: 'Transaction Id', field:'transaction_id'},
-		{title: 'Amount', field: 'amount'},
-		{title: 'Date', field: 'creation_date'},
-		{title: 'Type', field: 'type'},
-		{title: 'Processor', field: 'processor'},
+		{title: 'Order No', field: 'order_no', width: 150, formatter: 'html', headerFilter: 'input'},
+		{title: 'Transaction Id', field:'transaction_id', headerFilter: 'input'},
+		{title: 'Amount', field: 'amount', headerFilter: 'input'},
+		{title: 'Date', field: 'creation_date', headerFilter: 'input'},
+		{title: 'Type', field: 'type', headerFilter: 'input'},
+		{title: 'Processor', field: 'processor', headerFilter: 'input'},
 		{title: 'Actions', field: 'actions',
 			headerSort: false,
 			formatter: function (cell, formatterParams, onRendered) {
