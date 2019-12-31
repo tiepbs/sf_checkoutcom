@@ -86,7 +86,7 @@ var CKOHelper = {
             }
         } 
         
-        return {result: data};
+        return data;
     },
 
     /**
