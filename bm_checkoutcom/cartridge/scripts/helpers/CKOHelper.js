@@ -69,16 +69,24 @@ var CKOHelper = {
                     
                     // Add the payment transaction to the output
                     if (!this.containsObject(paymentTransaction, data)) {
-                        data.push(paymentTransaction);
+                    	// Build the row data
+                    	var row = {
+                	        order_no: item.orderNo,
+                	        transaction_id: paymentTransaction.transactionID,
+                	        amount: paymentTransaction.amount,
+                	        creation_date: paymentTransaction.getCreationDate().toDateString(),
+                	        type: paymentTransaction.type,
+                	        processor: paymentTransaction.paymentProcessor		
+                    	};
+                    	
+                        // Add the transaction
+                        data.push(row);
                     }
-                    
-                    // Map transaction to order id
-                    orderMap[paymentTransaction.transactionID] = item.orderNo;
                 }
             }
         } 
         
-        return {result: data, orderMap: orderMap};
+        return {result: data};
     },
 
     /**

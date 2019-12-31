@@ -23,17 +23,7 @@ function getTransactionsData() {
 	// Prepare the output array
     var data = CKOHelper.getCkoTransactions();
     
-    /*
-    var data = {
-        order_no: '01234',
-        transaction_id: 'tid445',
-        amount: '222',
-        creation_date: '13/09/76',
-        type: 'TYPE_AUTH',
-        processor: 'CHECKOUTCOM_CARD'
-    }
-    */
-
+    // Send the AJAX response
     ISML.renderTemplate('transactions/ajax', {data: JSON.stringify(data) });
 }
 
