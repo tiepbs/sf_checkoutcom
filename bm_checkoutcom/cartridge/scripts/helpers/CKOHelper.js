@@ -5,7 +5,8 @@ var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var OrderMgr = require('dw/order/OrderMgr');
 var PaymentMgr = require('dw/order/PaymentMgr');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
-var Util  = require('dw/util');
+var Util = require('dw/util');
+var URLUtils = require('dw/web/URLUtils');
 
 /**
  * Helper functions for the Checkout.com cartridge integration.
@@ -72,7 +73,7 @@ var CKOHelper = {
                     if (!this.containsObject(paymentTransaction, data)) {                    	
                     	// Build the row data
                     	var row = {
-                	        order_no: item.orderNo,
+                	        order_no: '<a href="' + URLUtils.url('ViewOrder-FindByNumber', 'OrderID', item.orderNo) + '" target="_blank">' + item.orderNo + "</a>",
                 	        transaction_id: paymentTransaction.transactionID,
                 	        amount: paymentTransaction.amount.decimalValue + ' ' + paymentTransaction.amount.currencyCode,
                 	        creation_date: paymentTransaction.getCreationDate().toDateString(),

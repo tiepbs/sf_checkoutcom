@@ -73,15 +73,13 @@ function initTable(tableData) {
 
 function getTableColumns() {
 	return [
-		{title: 'Order No', field: 'order_no', width: 150},
+		{title: 'Order No', field: 'order_no', width: 150, formatter: 'html'},
 		{title: 'Transaction Id', field:'transaction_id'},
 		{title: 'Amount', field: 'amount'},
 		{title: 'Date', field: 'creation_date'},
 		{title: 'Type', field: 'type'},
 		{title: 'Processor', field: 'processor'},
-		{
-			title: 'Actions',
-			field: 'actions',
+		{title: 'Actions', field: 'actions',
 			headerSort: false,
 			formatter: function (cell, formatterParams, onRendered) {
 				return getButtonsHtml();
