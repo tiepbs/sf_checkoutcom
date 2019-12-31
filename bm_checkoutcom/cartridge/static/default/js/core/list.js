@@ -79,7 +79,9 @@ function getTableColumns() {
 		{title: 'Date', field: 'creation_date'},
 		{title: 'Type', field: 'type'},
 		{title: 'Processor', field: 'processor'},
-		{title: 'Actions', field: 'actions',
+		{
+			title: 'Actions',
+			field: 'actions',
 			headerSort: false,
 			formatter: function (cell, formatterParams, onRendered) {
 				return getButtonsHtml();
