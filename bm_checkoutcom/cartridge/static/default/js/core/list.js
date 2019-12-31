@@ -54,7 +54,6 @@ function getTransactionData(controllerUrl) {
 		type: 'POST',
 		url: controllerUrl,
 		success: function (data) {
-			console.log(data);
 			initTable(data);
 		},
 		error: function (request, status, error) {
@@ -66,7 +65,6 @@ function getTransactionData(controllerUrl) {
 function initTable(tableData) {
 	// Build the table instance
 	var table = new Tabulator('#transactions-table', {
-		height: 205,
 		data: JSON.parse(tableData), 
 		layout: 'fitColumns',
 		columns: getTableColumns()

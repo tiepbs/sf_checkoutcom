@@ -3,6 +3,7 @@
 /* API Includes */
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var OrderMgr = require('dw/order/OrderMgr');
+var PaymentMgr = require('dw/order/PaymentMgr');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var Util  = require('dw/util');
 
@@ -66,17 +67,17 @@ var CKOHelper = {
                 if (this.isCKo(instrument)) {
                     // Get the payment transaction
                     var paymentTransaction = instrument.getPaymentTransaction();
-                    
+
                     // Add the payment transaction to the output
-                    if (!this.containsObject(paymentTransaction, data)) {
+                    if (!this.containsObject(paymentTransaction, data)) {                    	
                     	// Build the row data
                     	var row = {
                 	        order_no: item.orderNo,
                 	        transaction_id: paymentTransaction.transactionID,
-                	        amount: paymentTransaction.amount,
+                	        amount: paymentTransaction.amount.decimalValue + ' ' + paymentTransaction.amount.currencyCode,
                 	        creation_date: paymentTransaction.getCreationDate().toDateString(),
-                	        type: paymentTransaction.type,
-                	        processor: paymentTransaction.paymentProcessor		
+                	        type: paymentTransaction.type.displayValue,
+                	        processor: this.getProcessorId(instrument)
                     	};
                     	
                         // Add the transaction
@@ -96,6 +97,13 @@ var CKOHelper = {
         return instrument.paymentMethod.indexOf('CHECKOUTCOM_') >= 0;
     },
 
+    /**
+     * Get the processor ID for a payment instrument.
+     */
+    getProcessorId: function (instrument) {
+        return PaymentMgr.getPaymentMethod(instrument.getPaymentMethod()).getPaymentProcessor().getID();
+    },
+    
     /**
      * Checks if an object already exists in an array.
      */
