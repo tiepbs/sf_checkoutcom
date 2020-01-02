@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	setBox();
 	
 	// set schema image
-	setSchema('#dwfrm_cardPaymentForm_ccNumber');
+	setSchema('#dwfrm_cardPaymentForm_number');
 	
 });
 
@@ -19,12 +19,12 @@ document.addEventListener('DOMContentLoaded', function(){
 // sets schema box
 var setBox = function(){
 	// card number input styling
-	$('#dwfrm_cardPaymentForm_ccNumber').css("padding", '0');
-	$('#dwfrm_cardPaymentForm_ccNumber').css("padding-left", '40px');
+	$('#dwfrm_cardPaymentForm_number').css("padding", '0');
+	$('#dwfrm_cardPaymentForm_number').css("padding-left", '40px');
 	
 	// get object
 	var box = document.getElementById('dw_cardTypeDone');
-	var input = document.getElementById('dwfrm_cardPaymentForm_ccNumber');
+	var input = document.getElementById('dwfrm_cardPaymentForm_number');
 	if(input){
 		$(input.parentNode).prepend(box);
 	}
@@ -77,7 +77,7 @@ var setMada = function(){
 	//setDefault();
 	
 	
-	var input = document.getElementById('dwfrm_cardPaymentForm_ccNumber');
+	var input = document.getElementById('dwfrm_cardPaymentForm_number');
 	input.addEventListener('keyup', function(){
 		var value = this.value;
 		if(value.length > 6){

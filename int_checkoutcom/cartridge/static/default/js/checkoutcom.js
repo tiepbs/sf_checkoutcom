@@ -85,7 +85,7 @@ function setFields(data) {
 	var $creditCard = $('[data-method="CHECKOUTCOM_CREDIT"]');
 	$creditCard.find('input[name$="creditCard_owner"]').val(data.cardHolder).trigger('change');
 	$creditCard.find('select[name$="_type"]').val(data.cardType).trigger('change');
-	$creditCard.find('input[name*="_creditCard_cardNumber"]').val(data.cardNumber).trigger('change');
+	$creditCard.find('input[name*="_creditCard_number"]').val(data.cardNumber).trigger('change');
 	$creditCard.find('[name$="_month"]').val(data.expiryMonth).trigger('change');
 	$creditCard.find('[name$="_year"]').val(data.expiryYear).trigger('change');
 	$creditCard.find('input[name$="_cvn"]').val('').trigger('change');

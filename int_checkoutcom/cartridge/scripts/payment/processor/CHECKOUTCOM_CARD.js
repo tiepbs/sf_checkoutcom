@@ -39,10 +39,10 @@ function Handle(args) {
 	var cardData = {
 			
 		owner		: paymentForm.get('owner').value(),
-		number		: util.getFormattedNumber(paymentForm.get('ccNumber').value()),
+		number		: util.getFormattedNumber(paymentForm.get('number').value()),
 		month		: paymentForm.get('expiration.month').value(),
 		year		: paymentForm.get('expiration.year').value(),
-		cvn			: paymentForm.get('cvv').value(),
+		cvn			: paymentForm.get('cvn').value(),
 		cardType	: paymentForm.get('type').value()
 		
 	};	

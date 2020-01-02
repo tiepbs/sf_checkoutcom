@@ -1,14 +1,17 @@
 <?xml version="1.0"?>
 <form xmlns="http://www.demandware.com/xml/form/2008-04-19">
-	     	
-	<!-- field for payment method -->
-    <field formid="payment_method" type="string" mandatory="false" max-length="40" default-value="card" binding="payment_method" />
-    	<!-- field for Shop URL -->
-    <field formid="shop_url" type="string" mandatory="false" max-length="120" binding="shop_url" />
-	
-	<!-- field for Payment Option -->
-    <field formid="cardPayment" type="boolean" label="PAY WITH CARD" mandatory="false" binding="cardPayment" />
-	 
+
+    <!-- field for credit card type -->
+    <field formid="type" label="creditcard.type" type="string" mandatory="true" binding="creditCardType"
+        missing-error="creditcard.typemissing">
+        <options optionid-binding="cardType" value-binding="cardType" label-binding="name"/>
+    </field>
+
+	<!-- field for credit card number -->
+    <field formid="number" label="creditcard.number" type="string" mandatory="true" masked="4" max-length="16"
+	    description="creditcard.numberexample" binding="creditCardNumber"
+	    missing-error="creditcard.numbermissingerror" value-error="creditcard.numbervalueerror"/>
+	    
 	<group formid="expiration"> 
 		<!-- field for credit card expiration month -->
 	    <field formid="month" label="resource.month" type="integer" mandatory="true" binding="creditCardExpirationMonth"
@@ -48,26 +51,8 @@
 	</group>
 
 	<!-- field for credit card owner -->
-    <field formid="owner" label="creditcard.ownerlabel" type="string" mandatory="true" max-length="40" binding="creditCardHolder"
+    <field formid="owner" label="creditcard.ownerlabel" type="string" mandatory="true" binding="creditCardHolder"
      	missing-error="creditcard.ownermissingerror"/>
-     	
-	<!-- field for credit card type -->
-    <field formid="type" type="string" mandatory="false" max-length="40" binding="creditCardType" />
-     	
-	<!-- field for credit card type -->
-    <field formid="mada" type="string" mandatory="false" max-length="40" binding="mada" />
-    
-   	<!-- field for cko currency -->
-    <field formid="ckoCurrency" type="string" mandatory="false" max-length="40" binding="ckoCurrency" />
-    
-    <!-- field for cko country -->
-    <field formid="ckoCountry" type="string" mandatory="false" max-length="40" binding="ckoCountry" />
-     	
-	<!-- field for credit card number -->
-    <field formid="number" label="creditcard.number" type="string" mandatory="true" max-length="16"
-	    description="creditcard.numberexample" binding="creditCardNumber"
-	    missing-error="creditcard.numbermissingerror" value-error="creditcard.numbervalueerror"/>
-	    
 
 	<!-- field for credit card security code -->
     <field formid="cvn" label="creditcard.cvnlabel" type="string" mandatory="true" masked="0"
