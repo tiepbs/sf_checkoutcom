@@ -1,3 +1,9 @@
-.tabulator-header-filter {
-    
+/* Table styles */
+.tabulator-header-filter input {
+    height: 40px !important;
+    background-color: red !important;
+}
+
+.tabulator-cell button {
+	cursor: pointer;
 }
