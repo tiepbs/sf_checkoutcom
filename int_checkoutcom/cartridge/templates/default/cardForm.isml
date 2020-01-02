@@ -68,4 +68,4 @@
 
 <script src="${URLUtils.staticURL('/libraries/cleave/cleave.js')}"></script>
 
-<script src="${URLUtils.staticURL('experience/cardPayment.js')}"></script>
+<script src="${URLUtils.staticURL('/experience/cardPayment.js')}"></script>
