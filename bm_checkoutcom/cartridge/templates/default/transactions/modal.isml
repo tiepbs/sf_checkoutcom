@@ -1,0 +1,12 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/core/modal.css')}");
+</style>
+<div id="ckoModal" class="ckoModal">
+	<div class="modal-content">
+		<span class="close">&times;</span>
+		<p>Some text in the Modal..</p>
+	</div>
+</div>
+
+<!-- Scripts-->
+<script src="${URLUtils.staticURL('/js/core/actions.js')}"></script>

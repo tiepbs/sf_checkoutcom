@@ -2,36 +2,25 @@
 	@import url("${URLUtils.staticURL('/css/tabulator/tabulator.min.css')}");
 	@import url("${URLUtils.staticURL('/css/tabulator/semantic-ui/tabulator_semantic-ui.css')}");
 	@import url("${URLUtils.staticURL('/css/core/list.css')}");
-	@import url("${URLUtils.staticURL('/css/core/modal.css')}");
 </style>
 <isdecorate template="application/MenuFrame">
 	<!-- Encoding -->
 	<iscontent type="text/html" charset="UTF-8">
-	<!-- End Encoding -->
 	
 	<!-- Modules -->
 	<isinclude template="inc/Modules">
-	<!-- End Modules -->
 	
 	<!-- Breadcrumbs -->
 	<isbreadcrumb name1="Checkout.com" url1="${URLUtils.url('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', 'checkoutcom_manager_item')}" name2="Manage transactions" url2="${URLUtils.url('CKOTransactions-ListTransactions')}">
-	<!-- Breadcrumbs -->
 	
 	<!-- Tab navigation table -->	
     <isinclude template="inc/tabs">
-	<!-- End Tab navigation table -->	
 	
 	<!-- Main content table -->	
 	<div id="transactions-table"></div>
-	<!-- End Main content table -->	
 
-	<!-- Transactions Modal window HTML -->
-	<div id="ckoModal" class="ckoModal">
-		<div class="modal-content">
-			<span class="close">&times;</span>
-			<p>Some text in the Modal..</p>
-		</div>
-	</div>
+	<!-- Transactions modal windows -->
+	<isinclude template="inc/modal">
 
 </isdecorate>
 
@@ -39,6 +28,5 @@
 <input type="hidden" id="transactionsControllerUrl" value="${URLUtils.url('CKOTransactions-GetTransactionsData')}">
 
 <!-- Scripts-->
-<script src="${URLUtils.staticURL('/js/core/actions.js')}"></script>
 <script src="${URLUtils.staticURL('/js/core/list.js')}"></script>
 <script src="${URLUtils.staticURL('/js/tabulator/tabulator.min.js')}"></script>
