@@ -24,7 +24,7 @@
 			<img id="dinersclub_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/diners_club.svg')}" width="100%">
 			<img id="madacard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/mada.svg')}" width="100%">
 		</div>
-		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.number}" id="creditCardNumber" type="input"/>
+		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.cardNumber}" id="cardNumber" type="input"/>
 		
 	</div>
 	
@@ -49,7 +49,7 @@
 	</isscript>
 	
 	<!-- Card CVN -->
-	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${help}"/>
+	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.cvv}" type="input" rowclass="cvn" dynamicname="true" help="${help}"/>
 	
 	<!-- Card Type -->
 	<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.type}" id="creditCardType" />
