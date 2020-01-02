@@ -14,11 +14,9 @@ var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
 /* App */
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
-/* Helpers */
-var CKOCardHelper = require('~/cartridge/scripts/helpers/CKOCardHelper');
-
 /* Utility */
-var util = require('~/cartridge/scripts/utility/util');
+var cardUtility = require('~/cartridge/scripts/helpers/cardUtility');
+var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 
 
 /**
@@ -28,7 +26,6 @@ var util = require('~/cartridge/scripts/utility/util');
 function Handle(args) {
 	var cart = Cart.get(args.Basket);
 	var paymentMethod = args.PaymentMethodID;
-	//var shop_url = paymentTypeForm.get('shop_url').value();
 	
 
 	// get card payment form
@@ -38,7 +35,7 @@ function Handle(args) {
 	var cardData = {
 			
 		owner		: paymentForm.get('owner').value(),
-		number		: util.getFormattedNumber(paymentForm.get('number').value()),
+		number		: ckoUtility.getFormattedNumber(paymentForm.get('number').value()),
 		month		: paymentForm.get('expiration.month').value(),
 		year		: paymentForm.get('expiration.year').value(),
 		cvn			: paymentForm.get('cvn').value(),
@@ -65,9 +62,9 @@ function Handle(args) {
 }
 
 /**
- * Authorizes a payment using a credit card. The payment is authorized by using the BASIC_CREDIT processor
- * only and setting the order no as the transaction ID. Customizations may use other processors and custom
- * logic to authorize credit card payment.
+ * Authorises a payment using a credit card. The payment is authorised by using the BASIC_CREDIT processor
+ * only and setting the order no as the transaction ID. Customisations may use other processors and custom
+ * logic to authorise credit card payment.
  */
 function Authorize(args) {
 
@@ -91,7 +88,7 @@ function Authorize(args) {
 	};
 	
 	// make the charge request
-	var request = util.handleCardRequest(cardData, args);
+	var request = cardUtility.handleCardRequest(cardData, args);
 	
 	// Transaction wrapper
 	Transaction.wrap(function(){
@@ -102,7 +99,7 @@ function Authorize(args) {
 	// Handle card charge request result
 	if(request){
 		
-		if(util.getValue('cko3ds')){
+		if(ckoUtility.getValue('cko3ds')){
 			
 			ISML.renderTemplate('redirects/3DSecure.isml', {
 				redirectUrl: session.privacy.redirectUrl

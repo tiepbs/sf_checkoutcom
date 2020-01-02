@@ -8,7 +8,6 @@ var Logger = require('dw/system/Logger');
 var BasketMgr = require('dw/order/BasketMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
-var TaxMgr = require('dw/order/TaxMgr');
 var SiteController = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 var app = require(SiteController + "/cartridge/scripts/app");
 
@@ -16,7 +15,7 @@ var app = require(SiteController + "/cartridge/scripts/app");
 /*
 * Utility functions for my cartridge integration.
 */
-var util = {
+var ckoUtility = {
 		
 	/*
 	 * get the required value for each mode
@@ -248,27 +247,6 @@ var util = {
 	},
 	
 	/*
-	 * Pre_Authorize card with zero value
-	 */
-	preAuthorizeCard: function(chargeData){
-		
-		// Prepare the 0 auth charge
-		var authData = JSON.parse(JSON.stringify(chargeData));
-		
-		authData['3ds'].enabled = false;
-		authData.amount = 0;
-		authData.currency = "USD";	
-		
-		var authResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", authData);
-		
-		if(this.paymentValidate(authResponse)){
-			return true;
-		}
-		
-		return false;
-	},
-	
-	/*
 	 * Handle a failed payment response
 	 */
 	handleFail: function(gatewayResponse){
@@ -355,314 +333,6 @@ var util = {
 			
 			
 		}
-	},
-	
-	/*
-	 * Handle APM charge Response from CKO API
-	 */
-	handleAPMChargeResponse: function(gatewayResponse, order){
-		// clean the session
-		session.privacy.redirectUrl = null;
-		// Assign this to self
-		var self = this;
-		
-		// Logging
-		this.doLog('response', JSON.stringify(gatewayResponse));	
-		
-		// Update customer data
-		this.updateCustomerData(gatewayResponse);
-		
-		var gatewayLinks = gatewayResponse._links;
-		var type = gatewayResponse.type;
-		
-		// add redirect to sepa source reqeust
-		if(type == 'Sepa'){
-			session.privacy.redirectUrl = "${URLUtils.url('Sepa-Mandate')}";
-			session.privacy.sepaResponse = gatewayResponse;
-		}
-		
-		// Add redirect URL to session if exists
-		if(gatewayLinks.hasOwnProperty('redirect')){
-			session.privacy.redirectUrl = gatewayLinks.redirect.href
-		}
-		
-		// Prepare the transaction info for the order
-		var details = '';
-		if (gatewayResponse.hasOwnProperty('id') && gatewayResponse.hasOwnProperty('customer')){
-			details += this._("cko.transaction.id", "cko_pay_test") + ": " + gatewayResponse.id + "\n";
-			details += this._("cko.customer.id", "cko_pay_test") + ": " + gatewayResponse.customer.id + "\n";	
-			details += this._("cko.transaction.status", "cko_pay_test") + ": " + gatewayResponse.status + "\n";
-		}
-		
-		// Add the details to the order
-		Transaction.wrap(function(){
-			order.addNote(self._("cko.transaction.details", "ckoPayAPM"), details);
-		});
-		
-		// Confirm the payment
-		Transaction.wrap(function(){
-			order.setPaymentStatus(order.PAYMENT_STATUS_PAID);
-		});
-	},
-	
-	
-	/*
-	 * Handle full charge Response from CKO API
-	 */
-	handleFullChargeResponse: function(gatewayResponse, order){
-		// Assign this to self
-		var self = this;
-		
-		// Logging
-		this.doLog('response', JSON.stringify(gatewayResponse));	
-		
-		// Update customer data
-		this.updateCustomerData(gatewayResponse);
-		
-		var gatewayLinks = gatewayResponse._links;
-		
-		// Add 3DS redirect URL to session if exists
-		if(gatewayLinks.hasOwnProperty('redirect')){
-			session.privacy.redirectUrl = gatewayLinks.redirect.href
-		}
-		
-		// Prepare the transaction info for the order
-		var details = '';
-		if (gatewayResponse.hasOwnProperty('card') && gatewayResponse.card.hasOwnProperty('customer')){	// todo
-			details += this._("cko.customer.id", "cko_pay_test") + ": " + gatewayResponse.card.customerId + "\n";		// todo
-		};
-		
-		details += this._("cko.transaction.status", "cko_pay_test") + ": " + gatewayResponse.status + "\n";
-		details += this._("cko.respnose.code", "cko_pay_test") + ": " + gatewayResponse.responseCode + "\n";
-		details += this._("cko.response.message", "cko_pay_test") + ": " + gatewayResponse.responseMessage + "\n";
-		details += this._("cko.response.info", "cko_pay_test") + ": " + gatewayResponse.responseAdvancedInfo + "\n";
-		details += this._("cko.respnse.last4", "cko_pay_test") + ": " + gatewayResponse.last4 + "\n";
-		details += this._("cko.response.paymentMethod", "cko_pay_test") + ": " + gatewayResponse.paymentMethod + "\n";
-		details += this._("cko.authorization.code", "cko_pay_test") + ": " + gatewayResponse.authCode + "\n";
-		
-		// Add risk flag information if applicable
-		if(gatewayResponse.responseCode = '10100'){
-			details += this._("cko.risk.flag", "cko_pay_test") + ": " + this._("cko.risk.info", "cko_pay_test") + "\n";
-		};
-		
-		// Add the details to the order
-		Transaction.wrap(function(){
-			order.addNote(self._("cko.transaction.details", "cko_pay_test"), details);
-		});
-		
-		// Confirm the payment
-		Transaction.wrap(function(){
-			order.setPaymentStatus(order.PAYMENT_STATUS_PAID);
-		});
-	},
-	
-	/*
-	 * Sepa apm Request
-	 */
-	handleSepaRequest: function(payObject, order){
-		
-		var gatewayResponse = false;
-		
-		// Perform the request to the payment gateway
-		gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", payObject);
-		
-		// If the charge is valid, process the response
-		if(gatewayResponse){
-			
-			this.handleAPMChargeResponse(gatewayResponse, order);
-			
-		}else{
-			
-			// update the transaction
-			Transaction.wrap(function(){
-				OrderMgr.failOrder(order);
-			});
-			
-			// Restore the cart
-			this.checkAndRestoreBasket(order);
-			
-			return false;
-		}
-		return true;
-	},
-	
-//	
-//	/*
-//	 * Klarna apm Request
-//	 */
-//	handleKlarnaRequest: function(payObject, order){
-//		
-//		var gatewayResponse = false;
-//		
-//		// Perform the request to the payment gateway
-//		gatewayResponse = this.gatewayClientRequest('cko.klarna.session.' + util.getValue('ckoMode') + '.service', payObject);
-//		
-//		// If the charge is valid, process the response
-//		if(gatewayResponse){
-//			
-//			this.handleAPMChargeResponse(gatewayResponse, order);
-//			
-//		}else{
-//			
-//			// update the transaction
-//			Transaction.wrap(function(){
-//				OrderMgr.failOrder(order);
-//			});
-//			
-//			// Restore the cart
-//			this.checkAndRestoreBasket(order);
-//			
-//			return false;
-//		}
-//		return true;
-//	},
-	
-	
-	/*
-	 * Apm Request
-	 */
-	handleApmRequest: function(payObject, args){
-		
-		// load the card and order information
-		var order = OrderMgr.getOrder(args.OrderNo);
-		
-		// creating billing address object
-		var gatewayObject = this.apmObject(payObject, args);
-		
-		var gatewayResponse = false;
-		
-		if(payObject.type == "sepa"){
-			
-			// Perform the request to the payment gateway
-			gatewayResponse = this.gatewayClientRequest("cko.card.sources." + this.getValue('ckoMode') + ".service", gatewayObject);
-			
-		}else{
-			
-			// Perform the request to the payment gateway
-			gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
-			
-		}
-		
-		// If the charge is valid, process the response
-		if(gatewayResponse){
-			
-			this.handleAPMChargeResponse(gatewayResponse, order);
-			
-		}else{
-			
-			// update the transaction
-			Transaction.wrap(function(){
-				OrderMgr.failOrder(order);
-			});
-			
-			// Restore the cart
-			this.checkAndRestoreBasket(order);
-			
-			return false;
-		}
-		return true;
-	},
-	
-	/*
-	 * return apm object
-	 */
-	apmObject: function(payObject, args){
-		
-		// load the card and order information
-		var order = OrderMgr.getOrder(args.OrderNo);
-		
-		var chargeData = false;
-		
-		var currency = this.getApmCurrency(payObject.currency);
-		
-		// object apm is sepa
-		if(payObject.type == 'sepa'){
-			
-			// Prepare chargeData object
-			chargeData = {
-				"customer"				: this.getCustomer(args),
-				"amount"				: this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getApmCurrency(currency)),
-			    "type"					: payObject.type,
-				"currency"				: currency,
-				"billing_address"		: this.getBillingObject(args),
-			    "source_data"			: payObject.source_data,
-				"reference"				: args.OrderNo,
-				"payment_ip"			: this.getHost(args),
-			    "metadata"				: this.getMetadataObject(payObject),
-			    "billing_descriptor"	: this.getBillingDescriptorObject()
-			};
-			
-		// if apm is not sepa
-		}if(payObject.type == 'klarna'){
-			
-			// Prepare chargeData object
-			chargeData = {
-				"amount"				: this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getApmCurrency(currency)),	
-				"currency"				: currency,
-				"capture"				: false,
-			    "source"				: payObject.source
-			};
-			
-		}else{
-		
-			// Prepare chargeData object
-			chargeData = {
-				"customer"				: this.getCustomer(args),
-				"amount"				: this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getApmCurrency(currency)),	
-				"currency"				: currency,
-			    "source"				: payObject.source,
-				"reference"				: args.OrderNo,
-				"payment_ip"			: this.getHost(args),
-			    "metadata"				: this.getMetadataObject(payObject),
-			    "billing_descriptor"	: this.getBillingDescriptorObject()
-			};
-			
-		}
-		
-		return chargeData;
-	},
-	
-	
-	/*
-	 * Handle full charge Request to CKO API
-	 */
-	handleCardRequest: function(cardData, args){
-		
-		// load the card and order information
-		var order = OrderMgr.getOrder(args.OrderNo);
-		
-		// creating billing address object
-		var gatewayObject = this.gatewayObject(cardData, args);
-		
-		// Pre_Authorize card
-		var preAuthorize = this.preAuthorizeCard(gatewayObject);
-		
-		if(preAuthorize){
-			// Perform the request to the payment gateway
-			var gatewayResponse = this.gatewayClientRequest("cko.card.charge." + this.getValue('ckoMode') + ".service", gatewayObject);
-			
-			// If the charge is valid, process the response
-			if(gatewayResponse){
-				this.handleFullChargeResponse(gatewayResponse, order);
-			}else{
-				
-				// update the transaction
-				Transaction.wrap(function(){
-					OrderMgr.failOrder(order);
-				});
-				
-				// Restore the cart
-				this.checkAndRestoreBasket(order);
-				
-				return false;
-			}
-			
-		}else{
-			return false;
-		}
-		
-		return true;
-		
 	},
 	
 	/*
@@ -794,49 +464,6 @@ var util = {
 			return false;
 		}
 	},
-
-	
-//	/*
-//	 * get Product Names
-//	 */
-//	getProductShipping : function(args){
-//		// load the card and order information
-//		var order = OrderMgr.getOrder(args.OrderNo);
-//
-//		// Get shipping address object
-//		var shipping = order.getDefaultShipment();
-//		
-//		
-//		var shippingId = shipping.getID();
-//		var shippingMethodId = shipping.getShippingMethodID();
-//		var shippingGrossPrice = shipping.getShippingTotalGrossPrice().valueOf();
-//		var shippingTotalPrice = shipping.getShippingTotalPrice().valueOf();
-//		var shippingTotalTax = shipping.getTotalTax().valueOf();
-//		
-//		return order.getTotalTax().valueOf();
-//		
-//	},
-
-	
-//	/*
-//	 * get Product Shipping Object
-//	 */
-//	getProductShippingObject : function(args){
-//		// load the card and order information
-//		var order = OrderMgr.getOrder(args.OrderNo);
-//
-//		// Get shipping address object
-//		var shipping = order.getDefaultShipment().getShippingMethod();
-//		
-//		var shippingName = shipping.getDisplayName();
-//		var shippingDescription = shipping.getDescription();
-//		var shippingCurrency = shipping.getCurrencyCode();
-//		var shippingId = shipping.getID();
-//		var shippingTaxId = shipping.getTaxClassID();
-//		
-//		return shipping.getTaxClassID();
-//		
-//	},
 	
 	
 	/*
@@ -964,33 +591,6 @@ var util = {
 		
 		return host;
 	},
-		
-	/*
-	 * Build the Gateway Object
-	 */
-	gatewayObject: function(cardData, args){
-		// load the card and order information
-		var order = OrderMgr.getOrder(args.OrderNo);
-
-		// Prepare chargeData object
-		var chargeData = {
-				"source"				: this.getSourceObject(cardData, args),
-				"amount"				: this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getCurrency()),	
-				"currency"				: this.getCurrency(),
-				"reference"				: args.OrderNo,
-				"capture"				: this.getValue('ckoAutoCapture'),
-				"capture_on"			: this.getCaptureTime(),
-				"customer"				: this.getCustomer(args),
-				"billing_descriptor"	: this.getBillingDescriptorObject(),
-				"shipping"				: this.getShippingObject(args),
-				"3ds"					: this.get3Ds(),
-				"risk"					: {enabled: true},
-				"payment_ip"			: this.getHost(args),
-				"metadata"				: this.getMetadataObject(cardData)
-			};
-		
-		return chargeData;
-	},
 	
 	
 	/*
@@ -1075,7 +675,11 @@ var util = {
 		var captureOn = this.getValue('ckoAutoCaptureTime');
 		
 		if(captureOn > 0){
-			return captureOn;
+			
+			var t = new Date();
+			t.setSeconds(t.getSeconds() + captureOn);
+			
+			return t;
 		}
 		
 		return null;
@@ -1178,26 +782,6 @@ var util = {
 		};
 		
 		return shipping;
-	},
-	
-	/*
-	 * Build Gateway Source Object
-	 */
-	getSourceObject: function(cardData, args){
-		// source object
-		var source = {
-			type				: "card",
-			number				: cardData.number,
-			expiry_month		: cardData.expiryMonth,
-			expiry_year			: cardData.expiryYear,
-			name				: cardData.name,
-			cvv					: cardData.cvv,
-			billing_address		: this.getBillingObject(args),
-			phone				: this.getPhoneObject(args)
-
-		}
-		
-		return source;
 	},
 	
 	/*
@@ -1364,4 +948,4 @@ var util = {
 * Module exports
 */
 
-module.exports = util;
+module.exports = ckoUtility;
