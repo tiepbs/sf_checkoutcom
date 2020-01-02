@@ -24,7 +24,7 @@
 			<img id="dinersclub_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/diners_club.svg')}" width="100%">
 			<img id="madacard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/mada.svg')}" width="100%">
 		</div>
-		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.cardNumber}" id="cardNumber" type="input"/>
+		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.ccNumber}" id="ccNumber" type="input"/>
 		
 	</div>
 	
