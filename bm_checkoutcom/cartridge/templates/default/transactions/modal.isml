@@ -1,10 +1,28 @@
 <style>
 	@import url("${URLUtils.staticURL('/css/core/modal.css')}");
 </style>
-<div id="ckoModal" class="ckoModal">
+
+<!-- Capture window -->
+<div id="capture_modal" class="ckoModal">
 	<div class="modal-content">
 		<span class="close">&times;</span>
-		<p>Some text in the Modal..</p>
+		<div>Some text in the Modal..</div>
+	</div>
+</div>
+
+<!-- Void window -->
+<div id="void_modal" class="ckoModal">
+	<div class="modal-content">
+		<span class="close">&times;</span>
+		<div>Some text in the Modal..</div>
+	</div>
+</div>
+
+<!-- Refund window -->
+<div id="refund_modal" class="ckoModal">
+	<div class="modal-content">
+		<span class="close">&times;</span>
+		<div>Some text in the Modal..</div>
 	</div>
 </div>
 

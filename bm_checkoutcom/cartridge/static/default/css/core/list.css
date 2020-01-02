@@ -9,7 +9,7 @@
 }
 
 /* The Modal (background) */
-#ckoModal {
+.ckoModal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -23,7 +23,7 @@
 }
   
 /* Modal Content/Box */
-#ckoModal .modal-content {
+.ckoModal .modal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
@@ -32,15 +32,15 @@
 }
   
 /* The Close Button */
-#ckoModal .close {
+.ckoModal .close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
   
-#ckoModal .close:hover,
-#ckoModal .close:focus {
+.ckoModal .close:hover,
+.ckoModal .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;

@@ -93,10 +93,9 @@ function getButtonsHtml() {
 	var html = '';
 	
 	// Build the auth button
-	html += '<button type="button" id="auth_btn" onclick="openModal()">Authorise</button>';
-	html += '<button type="button" id="capt_btn" onclick="openModal()">Capture</button>';
-	html += '<button type="button" id="void_btn" onclick="openModal()">Void</button>';
-	html += '<button type="button" id="refd_btn" onclick="openModal()">Refund</button>';
+	html += '<button type="button" id="capture_button" onclick="openModal()">Capture</button>';
+	html += '<button type="button" id="void_button" onclick="openModal()">Void</button>';
+	html += '<button type="button" id="refund_button" onclick="openModal()">Refund</button>';
 
 	return html;
 }

@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', function(){
 function initButtons() {
 	// Close the modal window
 	jQuery('.ckoModal .modal-content .close').click(function() {
-		jQuery('[id="ckoModal"]').hide();
+		jQuery('.ckoModal').hide();
 	});
 }
 
 function openModal() {
-	jQuery('[id="ckoModal"]').show();
+	jQuery('.ckoModal').show();
 }
