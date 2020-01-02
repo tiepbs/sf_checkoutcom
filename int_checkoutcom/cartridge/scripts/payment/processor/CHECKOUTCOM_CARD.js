@@ -81,15 +81,17 @@ function Authorize(args) {
 	session.privacy.ckoOrderId = args.OrderNo;
 	
 	
-	// build card data object
+	// prepare card data object
 	var cardData = {
-		"name"			: paymentInstrument.creditCardHolder,
-		"number"		: paymentInstrument.creditCardNumber,
-		"expiryMonth"	: paymentInstrument.creditCardExpirationMonth,
-		"expiryYear"	: paymentInstrument.creditCardExpirationYear,
-		"cvv"			: app.getForm("cardPaymentForm").get('cvn').value(),
-		"type"			: paymentInstrument.creditCardType,
-	};
+			
+		owner		: paymentForm.get('owner').value(),
+		number		: util.getFormattedNumber(paymentForm.get('cardNumber').value()),
+		month		: paymentForm.get('expiration.month').value(),
+		year		: paymentForm.get('expiration.year').value(),
+		cvn			: paymentForm.get('cvv').value(),
+		cardType	: paymentForm.get('type').value()
+		
+	};	
 	
 	// make the charge request
 	var chargeResponse = util.handleCardRequest(cardData, args);
