@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function(){
 }, false);
 
 function initButtons() {
-	// Close modal window
+	// Close the modal window
 	jQuery('.ckoModal .modal-content .close').click(function() {
 		jQuery('.ckoModal').hide();
 	});
