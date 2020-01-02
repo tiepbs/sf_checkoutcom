@@ -20,7 +20,7 @@
 	<div id="transactions-table"></div>
 
 	<!-- Transactions modal windows -->
-	<isinclude template="inc/modal">
+	<isinclude template="transactions/modal">
 
 </isdecorate>
 
