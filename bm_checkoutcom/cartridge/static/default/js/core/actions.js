@@ -14,6 +14,8 @@ function initButtons() {
 	});
 }
 
-function openModal() {
-	jQuery('.ckoModal').show();
+function openModal(elt) {
+	var str = elt.id.split('_')[0];
+	var modalId = str + '_modal';
+	jQuery('[id="' + modalId + '"]').show();
 }

@@ -6,7 +6,9 @@
 <div id="capture_modal" class="ckoModal">
 	<div class="modal-content">
 		<span class="close">&times;</span>
-		<div>Some text in the Modal..</div>
+		<div>
+			<h1>Capture transaction</h1>
+		</div>
 	</div>
 </div>
 
@@ -14,7 +16,9 @@
 <div id="void_modal" class="ckoModal">
 	<div class="modal-content">
 		<span class="close">&times;</span>
-		<div>Some text in the Modal..</div>
+		<div>
+			<h1>Void transaction</h1>
+		</div>
 	</div>
 </div>
 
@@ -22,7 +26,9 @@
 <div id="refund_modal" class="ckoModal">
 	<div class="modal-content">
 		<span class="close">&times;</span>
-		<div>Some text in the Modal..</div>
+		<div>
+			<h1>Refund transaction</h1>
+		</div>
 	</div>
 </div>
 
