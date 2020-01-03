@@ -102,7 +102,13 @@ var CKOHelper = {
      * Get the processor ID for a payment instrument.
      */
     getProcessorId: function (instrument) {
-        return PaymentMgr.getPaymentMethod(instrument.getPaymentMethod()).getPaymentProcessor().getID();
+    	var paymentMethod = PaymentMgr.getPaymentMethod(instrument.getPaymentMethod());
+    	if (paymentMethod) {
+    		return paymentMethod.getPaymentProcessor().getID();
+    	}
+    	else {
+    		return '';
+    	}
     },
     
     /**
