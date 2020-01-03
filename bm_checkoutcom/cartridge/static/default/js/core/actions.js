@@ -15,7 +15,29 @@ function initButtons() {
 }
 
 function openModal(elt) {
-	var str = elt.id.split('_')[0];
-	var modalId = str + '_modal';
+	// Prepare the origin element id
+	var members = elt.id.split('-');
+
+	// Get the transaction data
+	getTransactionData(members[2]);
+
+
+	// Open the target modal
+	var modalId = members[0] + '_modal';
 	jQuery('[id="' + modalId + '"]').show();
+}
+
+function getTransactionData(transactionId) {
+	var controllerUrl = jQuery('[id="transactionsControllerUrl"]').val();
+	jQuery.ajax({
+		type: 'POST',
+		url: controllerUrl,
+		data: {tid: transactionId},
+		success: function (data) {
+			console.log(data);
+		},
+		error: function (request, status, error) {
+			console.log(error);
+		}
+	});
 }

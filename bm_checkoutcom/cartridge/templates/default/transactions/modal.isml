@@ -8,6 +8,12 @@
 		<span class="close">&times;</span>
 		<div>
 			<h1>Capture transaction</h1>
+			<div>
+				<input type="text" id="capture_value" name="capture_value">
+			</div>
+			<div>
+				<button type="button">Capture</button>
+			</div>
 		</div>
 	</div>
 </div>

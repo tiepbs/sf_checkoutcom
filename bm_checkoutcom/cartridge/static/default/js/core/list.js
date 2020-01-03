@@ -13,7 +13,7 @@ function buildTable() {
 	var controllerUrl = jQuery('[id="transactionsControllerUrl"]').val();
 
 	// Instantiate the table
-	getTransactionData(controllerUrl);
+	getTransactionsData(controllerUrl);
 }
 
 function buildTabs() {
@@ -49,7 +49,7 @@ function getCookie(cname) {
     return "";
 }
 
-function getTransactionData(controllerUrl) {
+function getTransactionsData(controllerUrl) {
 	jQuery.ajax({
 		type: 'POST',
 		url: controllerUrl,
@@ -82,20 +82,21 @@ function getTableColumns() {
 		{title: 'Actions', field: 'actions',
 			headerSort: false,
 			formatter: function (cell, formatterParams, onRendered) {
-				return getButtonsHtml();
+				var transactionId = cell.getRow().getData().transaction_id;
+				return getButtonsHtml(transactionId);
 			}
 		}
 	];
 }
 
-function getButtonsHtml() {
+function getButtonsHtml(transactionId) {
 	// Prepare the variable
 	var html = '';
 	
 	// Build the auth button
-	html += '<button type="button" id="capture_button" onclick="openModal(this)">Capture</button>';
-	html += '<button type="button" id="void_button" onclick="openModal(this)">Void</button>';
-	html += '<button type="button" id="refund_button" onclick="openModal(this)">Refund</button>';
+	html += '<button type="button" id="capture-button-' + transactionId + '" onclick="openModal(this)">Capture</button>';
+	html += '<button type="button" id="void-button-' + transactionId + '" onclick="openModal(this)">Void</button>';
+	html += '<button type="button" id="refund-button-' + transactionId + '" onclick="openModal(this)">Refund</button>';
 
 	return html;
 }

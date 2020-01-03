@@ -54,10 +54,7 @@ var CKOHelper = {
 
         // Query the orders
         var result  = this.getCkoOrders();
-        
-        // Prepare the order mapping container
-        var orderMap = {};
-        
+
         // Loop through the results
         for each (var item in result) {
             // Get the payment instruments
@@ -70,7 +67,7 @@ var CKOHelper = {
                     var paymentTransaction = instrument.getPaymentTransaction();
 
                     // Add the payment transaction to the output
-                    if (!this.containsObject(paymentTransaction, data)) {                    	
+                    if (!this.containsObject(paymentTransaction, data) && this.isTransactionNeeded(paymentTransaction.transactionID)) {                    	
                     	// Build the row data
                     	var row = {
                 	        order_no: '<a href="' + URLUtils.url('ViewOrder-FindByNumber', 'OrderID', item.orderNo) + '" target="_blank">' + item.orderNo + "</a>",
@@ -89,6 +86,23 @@ var CKOHelper = {
         } 
         
         return data;
+    },
+
+    /**
+     * Checks if a transaction should be returned in the reaults.
+     */
+    isTransactionNeeded: function (transactionId) {
+        // Get an optional transaction id
+        var tid = request.httpParameterMap.get('tid').stringValue;
+
+        if (tid && (transactionId == tid)) {
+            return true;
+        }
+        else if (!tid) {
+            return true;
+        }
+
+        return false;
     },
 
     /**
