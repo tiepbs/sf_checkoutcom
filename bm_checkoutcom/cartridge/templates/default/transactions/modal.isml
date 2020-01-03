@@ -10,7 +10,9 @@
 			<h1>Capture transaction</h1>
 			<div>
 				<input type="text" id="capture_value" name="capture_value">
+				<span id="capture_currency"></span>
 			</div>
+			<br>
 			<div>
 				<button type="button">Capture</button>
 			</div>

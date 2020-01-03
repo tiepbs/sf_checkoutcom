@@ -75,7 +75,13 @@ function getTableColumns() {
 	return [
 		{title: 'Order No', field: 'order_no', width: 150, formatter: 'html', headerFilter: 'input'},
 		{title: 'Transaction Id', field:'transaction_id', headerFilter: 'input'},
-		{title: 'Amount', field: 'amount', headerFilter: 'input'},
+		{title: 'Amount', field: 'amount', headerFilter: 'input',
+			formatter: function (cell, formatterParams, onRendered) {
+				var rowData = cell.getRow().getData();
+				return cell.getValue() + ' ' + rowData.currency;
+			}		
+		},
+		{title: 'Currency', field: 'currency', visible: false},
 		{title: 'Date', field: 'creation_date', headerFilter: 'input'},
 		{title: 'Type', field: 'type', headerFilter: 'input'},
 		{title: 'Processor', field: 'processor', headerFilter: 'input'},

@@ -72,7 +72,8 @@ var CKOHelper = {
                     	var row = {
                 	        order_no: '<a href="' + URLUtils.url('ViewOrder-FindByNumber', 'OrderID', item.orderNo) + '" target="_blank">' + item.orderNo + "</a>",
                 	        transaction_id: paymentTransaction.transactionID,
-                	        amount: paymentTransaction.amount.decimalValue + ' ' + paymentTransaction.amount.currencyCode,
+                            amount: paymentTransaction.amount.value,
+                            currency: paymentTransaction.amount.currencyCode,
                 	        creation_date: paymentTransaction.getCreationDate().toDateString(),
                 	        type: paymentTransaction.type.displayValue,
                 	        processor: this.getProcessorId(instrument)
