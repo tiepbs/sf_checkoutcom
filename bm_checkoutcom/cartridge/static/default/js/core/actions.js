@@ -21,26 +21,46 @@ function openModal(elt) {
 	var members = elt.id.split('-');
 
 	// Get the transaction data
-	getTransactionData(members);
+	var tidExists = members[2] != null && members[2] != 'undefined';
+	var isValidTid = members[2].length > 0 && members[2].indexOf('act_') == 0;
+	if (tidExists && isValidTid) { 
+		getTransactionData(members);
+	}
+	else {
+		alert('The transaction ID is missing or invalid.');
+	}
 }
 
 function getTransactionData(members) {
+	// Prepare the controller URL for the AJAX request
 	var controllerUrl = jQuery('[id="transactionsControllerUrl"]').val();
+
+	// Set the transaction action
 	var action = members[0];
+
+	// Set the transaction id
 	var transactionId = members[2];
+
+	// Set the modal window id
 	var modalId = '[id="' + action + '_modal"]';
+
+	// Send the AJAX request
 	jQuery.ajax({
 		type: 'POST',
 		url: controllerUrl,
 		data: {tid: transactionId},
 		success: function (data) {
+			// Get the data
 			var transaction = JSON.parse(data)[0];
+
+			// Set the amount and currency display in modal window
 			var field1Id = '[id="' + action + '_value"]';
 			var field2Id = '[id="' + action + '_currency"]';
 			jQuery(field1Id).val(transaction.amount);
 			jQuery(field2Id).append(transaction.currency);
-			jQuery(modalId).show();
 
+			// Show the modal window
+			jQuery(modalId).show();
 		},
 		error: function (request, status, error) {
 			console.log(error);

@@ -36,7 +36,7 @@ var CKOHelper = {
             
             // Loop through the payment instruments
             for each (var instrument in paymentInstruments) {
-                if (this.isCKo(instrument) && !this.containsObject(item, data)) {
+                if (this.isCkoItem(instrument.paymentMethod) && !this.containsObject(item, data)) {
                     data.push(item);	
                 }
             }
@@ -62,26 +62,24 @@ var CKOHelper = {
             
             // Loop through the payment instruments
             for each (var instrument in paymentInstruments) {
-                if (this.isCKo(instrument)) {
-                    // Get the payment transaction
-                    var paymentTransaction = instrument.getPaymentTransaction();
+                // Get the payment transaction
+                var paymentTransaction = instrument.getPaymentTransaction();
 
-                    // Add the payment transaction to the output
-                    if (!this.containsObject(paymentTransaction, data) && this.isTransactionNeeded(paymentTransaction.transactionID)) {                    	
-                    	// Build the row data
-                    	var row = {
-                	        order_no: '<a href="' + URLUtils.url('ViewOrder-FindByNumber', 'OrderID', item.orderNo) + '" target="_blank">' + item.orderNo + "</a>",
-                	        transaction_id: paymentTransaction.transactionID,
-                            amount: paymentTransaction.amount.value,
-                            currency: paymentTransaction.amount.currencyCode,
-                	        creation_date: paymentTransaction.getCreationDate().toDateString(),
-                	        type: paymentTransaction.type.displayValue,
-                	        processor: this.getProcessorId(instrument)
-                    	};
-                    	
-                        // Add the transaction
-                        data.push(row);
-                    }
+                // Add the payment transaction to the output
+                if (!this.containsObject(paymentTransaction, data) && this.isTransactionNeeded(paymentTransaction, instrument)) {                    	
+                    // Build the row data
+                    var row = {
+                        order_no: '<a href="' + URLUtils.url('ViewOrder-FindByNumber', 'OrderID', item.orderNo) + '" target="_blank">' + item.orderNo + "</a>",
+                        transaction_id: paymentTransaction.transactionID,
+                        amount: paymentTransaction.amount.value,
+                        currency: paymentTransaction.amount.currencyCode,
+                        creation_date: paymentTransaction.getCreationDate().toDateString(),
+                        type: paymentTransaction.type.displayValue,
+                        processor: this.getProcessorId(instrument)
+                    };
+                    
+                    // Add the transaction
+                    data.push(row);
                 }
             }
         } 
@@ -92,14 +90,15 @@ var CKOHelper = {
     /**
      * Checks if a transaction should be returned in the reaults.
      */
-    isTransactionNeeded: function (transactionId) {
+    isTransactionNeeded: function (paymentTransaction, paymentInstrument) {
         // Get an optional transaction id
         var tid = request.httpParameterMap.get('tid').stringValue;
 
-        if (tid && (transactionId == tid)) {
-            return true;
-        }
-        else if (!tid) {
+        // Return true only if conditions are met
+        var condition1 = (tid && paymentTransaction.transactionID == tid) || !tid;
+        var condition2 = this.isCkoItem(paymentInstrument.paymentMethod);
+        var condition3 = this.isCkoItem(this.getProcessorId(paymentInstrument));
+        if (condition1 && condition2 && condition3) {
             return true;
         }
 
@@ -109,8 +108,8 @@ var CKOHelper = {
     /**
      * Checks if a payment instrument is Checkout.com.
      */
-    isCKo: function (instrument) {
-        return instrument.paymentMethod.indexOf('CHECKOUTCOM_') >= 0;
+    isCkoItem: function (item) {
+        return item.length > 0 && item.indexOf('CHECKOUTCOM_') >= 0;
     },
 
     /**
