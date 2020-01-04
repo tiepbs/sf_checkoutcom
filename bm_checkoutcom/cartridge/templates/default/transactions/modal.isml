@@ -9,12 +9,17 @@
 		<div>
 			<h1>Capture transaction</h1>
 			<div>
-				<input type="text" id="capture_value" name="capture_value">
-				<span id="capture_currency"></span>
+				<p>Transaction ID: <span id="capture_transaction_id"></span></p>
+				<p>Full amount: <span id="capture_full_amount"></span></p>
 			</div>
-			<br>
 			<div>
-				<button type="button">Capture</button>
+				<p>
+					<input type="text" id="capture_value" name="capture_value">
+					<span id="capture_currency"></span>
+				</p>
+			</div>
+			<div>
+				<button type="button">Submit</button>
 			</div>
 		</div>
 	</div>
@@ -26,6 +31,19 @@
 		<span class="close">&times;</span>
 		<div>
 			<h1>Void transaction</h1>
+			<div>
+				<p>Transaction ID: <span id="void_transaction_id"></span></p>
+				<p>Full amount: <span id="void_full_amount"></span></p>
+			</div>
+			<div>
+				<p>
+					<input type="text" id="void_value" name="void_value">
+					<span id="void_currency"></span>
+				</p>
+			</div>
+			<div>
+				<button type="button">Submit</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -36,6 +54,19 @@
 		<span class="close">&times;</span>
 		<div>
 			<h1>Refund transaction</h1>
+			<div>
+				<p>Transaction ID: <span id="refund_transaction_id"></span></p>
+				<p>Full amount: <span id="refund_full_amount"></span></p>
+			</div>
+			<div>
+				<p>
+					<input type="text" id="refund_value" name="refund_value">
+					<span id="refund_currency"></span>
+				</p>
+			</div>
+			<div>
+				<button type="button">Submit</button>
+			</div>
 		</div>
 	</div>
 </div>
