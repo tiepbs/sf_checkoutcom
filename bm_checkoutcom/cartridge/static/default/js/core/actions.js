@@ -58,12 +58,14 @@ function getTransactionData(members) {
 			var field2Id = '[id="' + action + '_currency"]';
 			var field3Id = '[id="' + action + '_transaction_id"]';
 			var field4Id = '[id="' + action + '_full_amount"]';
+			var field5Id = '[id="' + action + '_order_no"]';
 
 			// Add the transation data to the fields
 			jQuery(field1Id).val(transaction.amount);
 			jQuery(field2Id).append(transaction.currency);
 			jQuery(field3Id).append(transaction.transaction_id);
 			jQuery(field4Id).append(transaction.amount + ' ' + transaction.currency);
+			jQuery(field5Id).append(transaction.order_no);
 
 			// Show the modal window
 			jQuery(modalId).show();

@@ -15,6 +15,10 @@
     margin-right: 14px;
 }
 
+.tabulator-row .tabulator-cell, .tabulator-col {
+    border-right: 1px solid #dddddd !important;
+}
+
 /* The Modal (background) */
 .ckoModal {
     display: none; /* Hidden by default */

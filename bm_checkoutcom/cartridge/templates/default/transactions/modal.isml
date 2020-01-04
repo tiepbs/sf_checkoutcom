@@ -10,6 +10,7 @@
 			<h1>Capture transaction</h1>
 			<hr>
 			<div>
+				<p><span class="label">Order No:</span><span id="capture_order_no"></span></p>
 				<p><span class="label">Transaction ID:</span><span id="capture_transaction_id"></span></p>
 				<p><span class="label">Full amount:</span><span id="capture_full_amount"></span></p>
 			</div>
@@ -34,6 +35,7 @@
 			<h1>Void transaction</h1>
 			<hr>
 			<div>
+				<p><span class="label">Order No:</span><span id="void_order_no"></span></p>
 				<p><span class="label">Transaction ID:</span><span id="void_transaction_id"></span></p>
 				<p><span class="label">Full amount:</span><span id="void_full_amount"></span></p>
 			</div>
@@ -58,6 +60,7 @@
 			<h1>Refund transaction</h1>
 			<hr>
 			<div>
+				<p><span class="label">Order No:</span><span id="refund_order_no"></span></p>
 				<p><span class="label">Transaction ID:</span><span id="refund_transaction_id"></span></p>
 				<p><span class="label">Full amount:</span><span id="refund_full_amount"></span></p>
 			</div>
