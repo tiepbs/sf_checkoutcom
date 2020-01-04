@@ -1,11 +1,18 @@
 /* Table styles */
+.tabulator .tabulator-tableHolder .tabulator-placeholder span {
+    font-size: 15px !important;
+    margin: 0px !important;
+}
+
 .tabulator-header-filter input {
-    height: 40px !important;
-    background-color: red !important;
+    border: solid 1px #cccccc;
+    height: 27px;
 }
 
 .tabulator-cell button {
-	cursor: pointer;
+    cursor: pointer;
+    margin-left: 0px;
+    margin-right: 14px;
 }
 
 /* The Modal (background) */

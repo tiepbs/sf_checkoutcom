@@ -11,7 +11,7 @@ function initButtons() {
 	// Close the modal window
 	jQuery('.ckoModal .modal-content .close').click(function() {
 		jQuery('.ckoModal .modal-content input').val('');
-		jQuery('.ckoModal .modal-content span').not('.close').empty();
+		jQuery('.ckoModal .modal-content span').not('.close, .label').empty();
 		jQuery('.ckoModal').hide();
 	});
 }

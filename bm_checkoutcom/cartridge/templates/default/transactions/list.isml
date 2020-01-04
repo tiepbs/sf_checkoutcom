@@ -1,7 +1,9 @@
 <style>
 	@import url("${URLUtils.staticURL('/css/tabulator/tabulator.min.css')}");
 	@import url("${URLUtils.staticURL('/css/tabulator/semantic-ui/tabulator_semantic-ui.css')}");
+	@import url("${URLUtils.staticURL('/css/core/global.css')}");
 	@import url("${URLUtils.staticURL('/css/core/list.css')}");
+	@import url("${URLUtils.staticURL('/css/bootstrap/bootstrap.min.css')}");
 </style>
 <isdecorate template="application/MenuFrame">
 	<!-- Encoding -->

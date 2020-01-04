@@ -65,6 +65,8 @@ function getTransactionsData(controllerUrl) {
 function initTable(tableData) {
 	// Build the table instance
 	var table = new Tabulator('#transactions-table', {
+		headerFilterPlaceholder: '>',
+		placeholder: 'No results found for this request.',
 		data: JSON.parse(tableData), 
 		layout: 'fitColumns',
 		columns: getTableColumns()
@@ -73,9 +75,13 @@ function initTable(tableData) {
 
 function getTableColumns() {
 	return [
-		{title: 'Order No', field: 'order_no', width: 150, formatter: 'html', headerFilter: 'input'},
-		{title: 'Transaction Id', field:'transaction_id', headerFilter: 'input'},
-		{title: 'Amount', field: 'amount', headerFilter: 'input',
+		{title: 'Order No', field: 'order_no', width: 150, formatter: 'html', headerFilter: 'input', headerFilterPlaceholder: ''},
+		{title: 'Transaction Id', field:'transaction_id', headerFilter: 'input', headerFilterPlaceholder: ''},
+		{
+			title: 'Amount',
+			field: 'amount',
+			headerFilter: 'input',
+			headerFilterPlaceholder: '',
 			formatter: function (cell, formatterParams, onRendered) {
 				var rowData = cell.getRow().getData();
 				return cell.getValue() + ' ' + rowData.currency;
@@ -85,7 +91,9 @@ function getTableColumns() {
 		{title: 'Date', field: 'creation_date', headerFilter: 'input'},
 		{title: 'Type', field: 'type', headerFilter: 'input'},
 		{title: 'Processor', field: 'processor', headerFilter: 'input'},
-		{title: 'Actions', field: 'actions',
+		{
+			title:'Actions',
+			field: 'actions',
 			headerSort: false,
 			formatter: function (cell, formatterParams, onRendered) {
 				var transactionId = cell.getRow().getData().transaction_id;
@@ -100,9 +108,9 @@ function getButtonsHtml(transactionId) {
 	var html = '';
 	
 	// Build the auth button
-	html += '<button type="button" id="capture-button-' + transactionId + '" onclick="openModal(this)">Capture</button>';
-	html += '<button type="button" id="void-button-' + transactionId + '" onclick="openModal(this)">Void</button>';
-	html += '<button type="button" id="refund-button-' + transactionId + '" onclick="openModal(this)">Refund</button>';
+	html += '<button type="button" id="capture-button-' + transactionId + '" onclick="openModal(this)" class="btn btn-primary">Capture</button>';
+	html += '<button type="button" id="void-button-' + transactionId + '" onclick="openModal(this)" class="btn btn-primary">Void</button>';
+	html += '<button type="button" id="refund-button-' + transactionId + '" onclick="openModal(this)" class="btn btn-primary">Refund</button>';
 
 	return html;
 }
