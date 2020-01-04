@@ -19,6 +19,11 @@
     border-right: 1px solid #dddddd !important;
 }
 
+/* Table controls */
+.transactions-table-controls {
+    text-align: right;
+}
+
 /* The Modal (background) */
 .ckoModal {
     display: none; /* Hidden by default */

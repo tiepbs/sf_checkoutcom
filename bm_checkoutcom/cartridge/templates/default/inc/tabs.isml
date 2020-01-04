@@ -8,7 +8,7 @@
         </tr>
     </tbody>
 </table>
-<script src="${URLUtils.staticURL('/js/core/list.js')}"></script>
+<script src="${URLUtils.staticURL('/js/core/tabs.js')}"></script>
 <script>
 setNavigationstate('${request.httpPath}');
 </script>

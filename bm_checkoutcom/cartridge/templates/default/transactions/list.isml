@@ -19,6 +19,19 @@
     <isinclude template="inc/tabs">
 	
 	<!-- Main content table -->	
+	<div class="transactions-table-controls">
+		Rows per page: 
+		<select class="transactions-table-pager" name="transactions-table-pager">
+			<option value="10">10</option>
+			<option value="50">50</option>
+			<option value="100">100</option>
+			<option value="150">150</option>
+			<option value="200">200</option>
+			<option value="250">250</option>
+			<option value="300">300</option>
+			<option value="all">All</option>
+		</select>
+	</div>
 	<div id="transactions-table"></div>
 
 	<!-- Transactions modal windows -->

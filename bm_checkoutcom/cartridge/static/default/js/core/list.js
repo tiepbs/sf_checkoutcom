@@ -3,7 +3,7 @@
 /**
  * jQuery Ajax helpers on DOM ready.
  */
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function() {
 	buildTabs();
 	buildTable();
 }, false);
@@ -23,14 +23,6 @@ function buildTabs() {
 	// Activate current
 	jQuery(activeId).removeClass('table_tabs_dis').addClass('table_tabs_en');
 	jQuery(activeId).parent('td').removeClass('table_tabs_dis_background').addClass('table_tabs_en_background');
-}
-
-function setNavigationstate(path) {
-	// Get the path members
-	var members = path.split('/');
-		
-	// Set the cookie with controller name
-	document.cookie = 'ckoTabs=' + members[members.length-1];
 }
 
 function getCookie(cname) {
@@ -69,7 +61,22 @@ function initTable(tableData) {
 		placeholder: 'No results found for this request.',
 		data: JSON.parse(tableData), 
 		layout: 'fitColumns',
-		columns: getTableColumns()
+		pagination: 'local',
+		paginationSize: 10,
+		columns: getTableColumns(),
+		tableBuilt: function() {
+			// Set the pagination controls
+			setPagination(this);
+		}
+	});
+}
+
+function setPagination(table) {
+	// Add the pager event
+	jQuery('.transactions-table-controls .transactions-table-pager').change(function() {
+		var selectedVal = jQuery(this).val();
+		jQuery(this).val(selectedVal);
+		table.setPageSize(selectedVal);
 	});
 }
 
