@@ -14,10 +14,15 @@ function initButtons() {
 		jQuery('.ckoModal .modal-content span').not('.close, .label').empty();
 		jQuery('.ckoModal').hide();
 	});
+
+	// Submit the action request
+	jQuery('.ckoModal .modal-content .submit').click(function() {
+		performAction();
+	});	
 }
 
 function openModal(elt) {
-	// Prepare the origin element id
+	// Prepare the origin element id members
 	var members = elt.id.split('-');
 
 	// Get the transaction data
@@ -36,13 +41,13 @@ function getTransactionData(members) {
 	var controllerUrl = jQuery('[id="transactionsControllerUrl"]').val();
 
 	// Set the transaction action
-	var action = members[0];
+	var task = members[0];
 
 	// Set the transaction id
 	var transactionId = members[2];
 
 	// Set the modal window id
-	var modalId = '[id="' + action + '_modal"]';
+	var modalId = '[id="' + task + '_modal"]';
 
 	// Send the AJAX request
 	jQuery.ajax({
@@ -54,11 +59,11 @@ function getTransactionData(members) {
 			var transaction = JSON.parse(data)[0];
 
 			// Set the transation data field ids
-			var field1Id = '[id="' + action + '_value"]';
-			var field2Id = '[id="' + action + '_currency"]';
-			var field3Id = '[id="' + action + '_transaction_id"]';
-			var field4Id = '[id="' + action + '_full_amount"]';
-			var field5Id = '[id="' + action + '_order_no"]';
+			var field1Id = '[id="' + task + '_value"]';
+			var field2Id = '[id="' + task + '_currency"]';
+			var field3Id = '[id="' + task + '_transaction_id"]';
+			var field4Id = '[id="' + task + '_full_amount"]';
+			var field5Id = '[id="' + task + '_order_no"]';
 
 			// Add the transation data to the fields
 			jQuery(field1Id).val(transaction.amount);
@@ -74,4 +79,41 @@ function getTransactionData(members) {
 			console.log(error);
 		}
 	});
+
+	function performAction(elt) {
+		// Prepare the action URL
+		var actionUrl = jQuery('[id="actionControllerUrl"]').val();
+
+		// Prepare the origin element id members
+		var members = elt.id.split('-');
+
+		// Get the transaction task
+		var task = members[0];
+
+		// Set the transaction id
+		var transactionId = members[2];
+
+		// Set the transaction value field id
+		var fieldId = '[id="' + task + '_value"]';
+
+		// Prepare the action data
+		var data = {
+			tid: transactionId,
+			task: task,
+			amount: jQuery(fieldId).val()
+		}
+
+		// Send the AJAX request
+		jQuery.ajax({
+			type: 'POST',
+			url: actionUrl,
+			data: data,
+			success: function (res) {
+				console.log(res);
+			},
+			error: function (request, status, error) {
+				console.log(error);
+			}
+		});
+	}
 }

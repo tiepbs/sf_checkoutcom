@@ -27,8 +27,34 @@ function getTransactionsData() {
     ISML.renderTemplate('transactions/ajax', {data: JSON.stringify(data) });
 }
 
+/**
+ * Perform a remote Hub Call
+ */
+function remoteCall() {
+    // Get the operating mode
+    var mode = CKOHelper.getValue('ckoMode');
+   
+    // Get the transaction task
+    var task = request.httpParameterMap.get('task');
+
+    // Prepare the payload
+    var ckoChargeData = {
+        amount: CKOHelper.getFormattedPrice(request.httpParameterMap.get('amount').stringValue),
+        chargeId: request.httpParameterMap.get('tid').stringValue
+    }
+
+    // Perform the request
+    var gResponse = CKOHelper.getGatewayClient(
+        'cko.transaction.' + task + '.' + mode + '.service',
+        ckoChargeData
+    );
+
+    return JSON.stringify(ckoChargeData);
+}
+
 /*
 * Web exposed methods
 */
 exports.ListTransactions = guard.ensure(['https'], listTransactions);
 exports.GetTransactionsData = guard.ensure(['https'], getTransactionsData);
+exports.RemoteCall = guard.ensure(['https'], remoteCall);

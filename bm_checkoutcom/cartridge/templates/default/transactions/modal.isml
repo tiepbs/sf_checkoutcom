@@ -21,7 +21,7 @@
 				</p>
 			</div>
 			<div>
-				<button class="btn btn-primary" type="button">Submit</button>
+				<button class="btn btn-primary submit" type="button">Submit</button>
 			</div>
 		</div>
 	</div>
@@ -46,7 +46,7 @@
 				</p>
 			</div>
 			<div>
-				<button class="btn btn-primary" type="button">Submit</button>
+				<button class="btn btn-primary submit" type="button">Submit</button>
 			</div>
 		</div>
 	</div>
@@ -71,11 +71,14 @@
 				</p>
 			</div>
 			<div>
-				<button class="btn btn-primary" type="button">Submit</button>
+				<button class="btn btn-primary submit" type="button">Submit</button>
 			</div>
 		</div>
 	</div>
 </div>
+
+<!-- Transaction action controller URL -->
+<input type="hidden" id="actionControllerUrl" value="${URLUtils.url('CKOTransactions-RemoteCall')}">
 
 <!-- Scripts-->
 <script src="${URLUtils.staticURL('/js/core/actions.js')}"></script>

@@ -175,8 +175,6 @@ var CKOHelper = {
             serv.setURL(requestUrl);
             delete requestData['chargeId'];
         } 
-
-        // Set the request method
     	
         // Send the call
         var resp = serv.call(requestData);
