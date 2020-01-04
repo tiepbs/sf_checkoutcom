@@ -17,7 +17,7 @@ function initButtons() {
 
 	// Submit the action request
 	jQuery('.ckoModal .modal-content .submit').click(function() {
-		performAction();
+		performAction(jQuery(this).parents().find('input'));
 	});	
 }
 
@@ -79,41 +79,41 @@ function getTransactionData(members) {
 			console.log(error);
 		}
 	});
+}
 
-	function performAction(elt) {
-		// Prepare the action URL
-		var actionUrl = jQuery('[id="actionControllerUrl"]').val();
+function performAction(elt) {
+	// Prepare the action URL
+	var actionUrl = jQuery('[id="actionControllerUrl"]').val();
 
-		// Prepare the origin element id members
-		var members = elt.id.split('-');
+	// Prepare the origin element id members
+	var members = elt.attr('id').split('-');
 
-		// Get the transaction task
-		var task = members[0];
+	// Get the transaction task
+	var task = members[0];
 
-		// Set the transaction id
-		var transactionId = members[2];
+	// Set the transaction id
+	var transactionId = members[2];
 
-		// Set the transaction value field id
-		var fieldId = '[id="' + task + '_value"]';
+	// Set the transaction value field id
+	var fieldId = '[id="' + task + '_value"]';
 
-		// Prepare the action data
-		var data = {
-			tid: transactionId,
-			task: task,
-			amount: jQuery(fieldId).val()
-		}
-
-		// Send the AJAX request
-		jQuery.ajax({
-			type: 'POST',
-			url: actionUrl,
-			data: data,
-			success: function (res) {
-				console.log(res);
-			},
-			error: function (request, status, error) {
-				console.log(error);
-			}
-		});
+	// Prepare the action data
+	var data = {
+		tid: transactionId,
+		task: task,
+		amount: jQuery(fieldId).val()
 	}
+
+	// Send the AJAX request
+	jQuery.ajax({
+		type: 'POST',
+		url: actionUrl,
+		data: data,
+		success: function (res) {
+			console.log(res);
+		},
+		error: function (request, status, error) {
+			console.log(error);
+		}
+	});
 }

@@ -49,7 +49,7 @@ function remoteCall() {
         ckoChargeData
     );
 
-    return JSON.stringify(ckoChargeData);
+    ISML.renderTemplate('transactions/ajax', {data: JSON.stringify(gResponse) });
 }
 
 /*
