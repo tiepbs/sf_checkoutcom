@@ -44,11 +44,11 @@ function remoteCall() {
     }
 
     // Set the service parameter
-    var srv = 'cko.transaction.' + task + '.' + mode + '.service';
+    var serviceName = 'cko.transaction.' + task + '.' + mode + '.service';
 
     // Perform the request
     var gResponse = CKOHelper.getGatewayClient(
-        srv,
+        serviceName,
         ckoChargeData
     );
 
