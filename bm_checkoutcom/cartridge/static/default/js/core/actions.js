@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
 function initButtons() {
 	// Close the modal window
-	jQuery('.ckoModal .modal-content .close').click(function() {
+	jQuery('.ckoModal .modal-content .close').click(function(e) {
+		console.log(e);
 		jQuery('.ckoModal .modal-content input').val('');
 		jQuery('.ckoModal .modal-content span').not('.close, .label').empty();
 		jQuery('.ckoModal').hide();
@@ -112,7 +113,6 @@ function performAction(elt) {
 		url: actionUrl,
 		data: data,
 		success: function (res) {
-			console.log(res);
 			var success = JSON.parse(res);
 			if (!success) {
 				alert('The transaction could not be processed.');
