@@ -176,22 +176,12 @@ var CKOHelper = {
             delete requestData['chargeId'];
         } 
 
-        // Send the call
-        var resp = serv.call(requestData);
-        logger.debug('response {0}', JSON.stringify(resp));
-
-        return resp.object;
-
-
-        /*
         var resp = serv.call(requestData);
         if (resp.status == 'OK') {
             responseData = resp.object;
         }
         
         return responseData;
-
-        */
     },
     
     /**
