@@ -111,6 +111,8 @@ function Authorize(args) {
 		        paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
 				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
 		        paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
+		        paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+		        paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
 		        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
 		    });
 			
