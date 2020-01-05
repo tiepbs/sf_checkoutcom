@@ -82,8 +82,9 @@ function setPagination(table) {
 
 function getTableColumns() {
 	return [
-		{title: 'Order No', field: 'order_no', width: 150, formatter: 'html', headerFilter: 'input', headerFilterPlaceholder: ''},
-		{title: 'Transaction Id', field:'transaction_id', headerFilter: 'input', headerFilterPlaceholder: ''},
+		{title: 'Order No', field: 'order_no', width: 150, formatter: 'html', headerFilter: 'input'},
+		{title: 'Transaction Id', field:'transaction_id', headerFilter: 'input'},
+		{title: 'Payment Id', field: 'payment_id', headerFilter: 'input'},
 		{
 			title: 'Amount',
 			field: 'amount',
