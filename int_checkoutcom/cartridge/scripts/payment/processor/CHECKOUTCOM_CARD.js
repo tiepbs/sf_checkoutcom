@@ -110,7 +110,7 @@ function Authorize(args) {
 		    Transaction.wrap(function() {
 		        paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
 				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-		        paymentInstrument.paymentTransaction.custom.paymentID = chargeResponse.id;
+		        paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
 		        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
 		    });
 			
