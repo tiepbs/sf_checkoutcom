@@ -62,15 +62,17 @@ function getTransactionData(members) {
 			var field1Id = '[id="' + task + '_value"]';
 			var field2Id = '[id="' + task + '_currency"]';
 			var field3Id = '[id="' + task + '_transaction_id"]';
-			var field4Id = '[id="' + task + '_full_amount"]';
-			var field5Id = '[id="' + task + '_order_no"]';
+			var field4Id = '[id="' + task + '_payment_id"]';
+			var field5Id = '[id="' + task + '_full_amount"]';
+			var field6Id = '[id="' + task + '_order_no"]';
 
 			// Add the transation data to the fields
 			jQuery(field1Id).val(transaction.amount);
 			jQuery(field2Id).append(transaction.currency);
 			jQuery(field3Id).append(transaction.transaction_id);
-			jQuery(field4Id).append(transaction.amount + ' ' + transaction.currency);
-			jQuery(field5Id).append(transaction.order_no);
+			jQuery(field4Id).append(transaction.payment_id);
+			jQuery(field5Id).append(transaction.amount + ' ' + transaction.currency);
+			jQuery(field6Id).append(transaction.order_no);
 
 			// Show the modal window
 			jQuery(modalId).show();
@@ -92,14 +94,14 @@ function performAction(elt) {
 	var task = members[0];
 	
 	// Set the transaction id
-	var transactionId = jQuery('[id="' + task + '_transaction_id"]').text();
+	var paymentId = jQuery('[id="' + task + '_payment_id"]').text();
 
 	// Set the transaction value field id
 	var amount = jQuery('[id="' + task + '_value"]').val();
 
 	// Prepare the action data
 	var data = {
-		tid: transactionId,
+		pid: paymentId,
 		task: task,
 		amount: amount
 	}

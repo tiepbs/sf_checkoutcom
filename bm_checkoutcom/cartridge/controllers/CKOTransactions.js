@@ -40,7 +40,7 @@ function remoteCall() {
     // Prepare the payload
     var ckoChargeData = {
         amount: CKOHelper.getFormattedPrice(request.httpParameterMap.get('amount').stringValue),
-        chargeId: request.httpParameterMap.get('tid').stringValue
+        chargeId: request.httpParameterMap.get('pid').stringValue
     }
 
     // Set the service parameter

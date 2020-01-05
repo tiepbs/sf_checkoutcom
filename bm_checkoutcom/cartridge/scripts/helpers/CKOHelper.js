@@ -172,7 +172,7 @@ var CKOHelper = {
         // Prepare the request URL and data
         if (requestData.hasOwnProperty('chargeId')) {
             var requestUrl = serv.getURL().replace('chargeId', requestData.chargeId);
-            serv.setURL('http://requestbin.net/r/1g56s6z1');
+            serv.setURL(requestUrl);
             delete requestData['chargeId'];
         } 
 
