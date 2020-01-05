@@ -175,11 +175,6 @@ var CKOHelper = {
             delete requestData['chargeId'];
         } 
 
-        const logger = require('dw/system/Logger').getLogger('ckodebug');
-    	logger.debug('requestUrl {0}', requestUrl);
-        logger.debug('requestData {0}', JSON.stringify(requestData));
-        logger.debug('key {0}', this.getAccountKeys().secreteKey);
-
         // Send the call
         var resp = serv.call(requestData);
         logger.debug('response {0}', JSON.stringify(resp));
