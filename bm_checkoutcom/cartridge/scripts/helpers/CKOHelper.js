@@ -167,7 +167,6 @@ var CKOHelper = {
         var method = method || 'POST';     
         //var responseData = false;
         var serv = ServiceRegistry.get(serviceId);
-        serv.addHeader("Authorization", this.getAccountKeys().secreteKey);
 
         // Prepare the request URL and data
         if (requestData.hasOwnProperty('chargeId')) {
