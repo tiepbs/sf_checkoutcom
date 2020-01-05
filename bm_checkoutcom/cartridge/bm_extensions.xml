@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<extensions xmlns="http://www.demandware.com/xml/bmmodules/2007-12-11"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.demandware.com/xml/bmmodules/2007-12-11 bmext.xsd">
+
+	<menuitem id="checkoutcom_manager_item" position="9999" site="true">
+		<name xml:lang="x-default">Checkout.com Manager</name>
+		<short_description xml:lang="x-default">Manage the Checkout.com orders, customers and transactions.</short_description>
+		<description xml:lang="x-default">Manage the Checkout.com orders, customers and transactions.</description>
+ 		<icon>icons/cko_logo.png</icon>
+	</menuitem>
+
+	<menuaction id="checkoutcom_transactions_manager_action" menupath="checkoutcom_manager_item" position="9999" site="true">
+		<name xml:lang="x-default">Checkout.com Transactions</name>
+		<short_description xml:lang="x-default">Manage the Checkout.com transactions.</short_description>
+		<description xml:lang="x-default">Manage the Checkout.com transactions.</description>
+		<exec pipeline="CKOTransactions" node="ListTransactions" />
+		<sub-pipelines>
+			<pipeline name="CKOTransactions" />
+		</sub-pipelines>
+		<icon>icons/cko_logo.png</icon>
+	</menuaction>
+
+	<dialogaction id="checkoutcom_transactions_manager_dialog" xp_ref="customer-search" position="9999" extern="true">
+		<name xml:lang="x-default">Test</name>
+		<exec pipeline="CKOTransactions" node="ListTransactions" />
+	</dialogaction>
+
+	<formextension id="customer-search">
+	<valueinput type="string" name="TestAttr" defaultvalue="">
+		<label xml:lang="x-default">TestAttr</label>
+		<option>Value Option 1</option>
+		<option>Value Option 2</option>
+		<option>Value Option 3</option>
+	</valueinput>
+	</formextension>
+</extensions>
