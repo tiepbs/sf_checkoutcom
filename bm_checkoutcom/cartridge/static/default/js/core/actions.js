@@ -17,7 +17,7 @@ function initButtons() {
 
 	// Submit the action request
 	jQuery('.ckoModal .modal-content .submit').click(function() {
-		performAction(jQuery(this).parents().find('input'));
+		performAction(jQuery(this).closest('.modal-content').find('input'));
 	});	
 }
 
@@ -86,22 +86,22 @@ function performAction(elt) {
 	var actionUrl = jQuery('[id="actionControllerUrl"]').val();
 
 	// Prepare the origin element id members
-	var members = elt.attr('id').split('-');
+	var members = elt.attr('id').split('_');
 
 	// Get the transaction task
 	var task = members[0];
-
+	
 	// Set the transaction id
-	var transactionId = members[2];
+	var transactionId = jQuery('[id="' + task + '_transaction_id"]').text();
 
 	// Set the transaction value field id
-	var fieldId = '[id="' + task + '_value"]';
+	var amount = jQuery('[id="' + task + '_value"]').val();
 
 	// Prepare the action data
 	var data = {
 		tid: transactionId,
 		task: task,
-		amount: jQuery(fieldId).val()
+		amount: amount
 	}
 
 	// Send the AJAX request
@@ -110,7 +110,10 @@ function performAction(elt) {
 		url: actionUrl,
 		data: data,
 		success: function (res) {
-			console.log(res);
+			var success = JSON.parse(res);
+			if (!success) {
+				alert('The transaction could not be processed.');
+			}
 		},
 		error: function (request, status, error) {
 			console.log(error);

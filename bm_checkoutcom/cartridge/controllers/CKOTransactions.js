@@ -43,12 +43,16 @@ function remoteCall() {
         chargeId: request.httpParameterMap.get('tid').stringValue
     }
 
+    // Set the service parameter
+    var srv = 'cko.transaction.' + task + '.' + mode + '.service';
+
     // Perform the request
     var gResponse = CKOHelper.getGatewayClient(
-        'cko.transaction.' + task + '.' + mode + '.service',
+        srv,
         ckoChargeData
     );
 
+    // Return the response
     ISML.renderTemplate('transactions/ajax', {data: JSON.stringify(gResponse) });
 }
 
