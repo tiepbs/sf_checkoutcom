@@ -175,7 +175,7 @@ var CKOHelper = {
             serv.setURL(requestUrl);
             delete requestData['chargeId'];
         } 
-    	
+ 
         // Send the call
         var resp = serv.call(requestData);
         if (resp.status == 'OK') {
@@ -189,8 +189,8 @@ var CKOHelper = {
      * Returns a price formatted for processing by the gateway.
      */
     getFormattedPrice: function (price) {
-        var orderTotalFormatted = price * 100;
-        return orderTotalFormatted.toFixed();
+        var amount = price.toFixed(2);
+        return amount*100;
     },
 
     /**
