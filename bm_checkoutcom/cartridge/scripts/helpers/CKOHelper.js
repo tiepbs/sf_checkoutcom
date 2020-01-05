@@ -213,7 +213,7 @@ var CKOHelper = {
 
         // Set the default headers
         serviceInstance.setRequestMethod(method);
-        serviceInstance.addHeader("Authorization", this.getAccountKeys().privateKey);
+        serviceInstance.addHeader("Authorization", this.getAccountKeys().secreteKey);
         serviceInstance.addHeader("User-Agent", this.getCartridgeMeta());
         serviceInstance.addHeader("Content-Type", 'application/json;charset=UTF-8');
 
@@ -235,7 +235,7 @@ var CKOHelper = {
         var str = this.getValue('ckoMode') == 'live' ? 'Live' : 'Sandbox';
 
         keys.privateKey = this.getValue('cko' + str + 'PrivateKey');
-        keys.publicKey = this.getValue('cko' + str + 'PublicKey');
+        keys.secreteKey = this.getValue('cko' + str + 'SecreteKey');
         keys.privateSharedKey = this.getValue('cko' + str + 'PrivateSharedKey');
 
         return keys;
