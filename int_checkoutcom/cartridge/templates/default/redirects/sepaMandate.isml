@@ -1,0 +1,2 @@
+<!--- TEMPLATENAME: SepaMandate.isml --->
+<isredirect location="${URLUtils.url('Sepa-Mandate')}" permanent="false">
