@@ -110,6 +110,7 @@ function performAction(elt) {
 		url: actionUrl,
 		data: data,
 		success: function (res) {
+			console.log(res);
 			var success = JSON.parse(res);
 			if (!success) {
 				alert('The transaction could not be processed.');

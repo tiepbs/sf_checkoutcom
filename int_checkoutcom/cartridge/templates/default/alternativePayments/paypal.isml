@@ -1,9 +1,0 @@
-<!-- PAYPAL pay APM Option -->
-<H4>
-	<img alt="paypalPay" id="paypalPay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/paypal.jpeg')}" width="10%"/>
-	PAYPAL PAY 
-	<input id="paypalPay_apm_radio_btn" type="radio" name="apm_payment_types" value="paypal">
-</H4>
-
-
-<hr/>

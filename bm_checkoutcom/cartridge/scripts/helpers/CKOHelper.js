@@ -5,7 +5,6 @@ var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var OrderMgr = require('dw/order/OrderMgr');
 var PaymentMgr = require('dw/order/PaymentMgr');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
-var Util = require('dw/util');
 var URLUtils = require('dw/web/URLUtils');
 
 /**
@@ -166,30 +165,44 @@ var CKOHelper = {
      */
     getGatewayClient: function (serviceId, requestData, method) { 
         var method = method || 'POST';     
-        var responseData = false;
+        //var responseData = false;
         var serv = ServiceRegistry.get(serviceId);
-        
+        serv.addHeader("Authorization", this.getAccountKeys().secreteKey);
+
         // Prepare the request URL and data
         if (requestData.hasOwnProperty('chargeId')) {
             var requestUrl = serv.getURL().replace('chargeId', requestData.chargeId);
-            serv.setURL(requestUrl);
+            serv.setURL('http://requestbin.net/r/1g56s6z1');
             delete requestData['chargeId'];
         } 
- 
+
+        const logger = require('dw/system/Logger').getLogger('ckodebug');
+    	logger.debug('requestUrl {0}', requestUrl);
+        logger.debug('requestData {0}', JSON.stringify(requestData));
+        logger.debug('key {0}', this.getAccountKeys().secreteKey);
+
         // Send the call
         var resp = serv.call(requestData);
+        logger.debug('response {0}', JSON.stringify(resp));
+
+        return resp.object;
+
+
+        /*
+        var resp = serv.call(requestData);
         if (resp.status == 'OK') {
-            responseData = resp.object
+            responseData = resp.object;
         }
         
         return responseData;
+
+        */
     },
     
     /**
      * Returns a price formatted for processing by the gateway.
      */
-    getFormattedPrice: function (price) {
-        var amount = price.toFixed(2);
+    getFormattedPrice: function (amount) {
         return amount*100;
     },
 
@@ -214,7 +227,6 @@ var CKOHelper = {
         // Set the default headers
         serviceInstance.setRequestMethod(method);
         serviceInstance.addHeader("Authorization", this.getAccountKeys().secreteKey);
-        serviceInstance.addHeader("User-Agent", this.getCartridgeMeta());
         serviceInstance.addHeader("Content-Type", 'application/json;charset=UTF-8');
 
         return serviceInstance;
@@ -234,9 +246,9 @@ var CKOHelper = {
         var keys = {};
         var str = this.getValue('ckoMode') == 'live' ? 'Live' : 'Sandbox';
 
-        keys.privateKey = this.getValue('cko' + str + 'PrivateKey');
+        keys.publicKey = this.getValue('cko' + str + 'PublicKey');
         keys.secreteKey = this.getValue('cko' + str + 'SecreteKey');
-        keys.privateSharedKey = this.getValue('cko' + str + 'PrivateSharedKey');
+        keys.privateKey = this.getValue('cko' + str + 'PrivateKey');
 
         return keys;
     }
