@@ -1,6 +1,17 @@
 
 <div id="card_payment_box">	
 
+	<isif condition="${pdict.CurrentCustomer.authenticated}">
+		<div id="ckoCardSelector" class="form-row" style="display:none;">
+			<label class="label">${Resource.msg('billing.selectcreditcard','checkout',null)}</label>
+			<div class="field-wrapper">
+				<select name="ckoCreditCardList" id="ckoCreditCardList" class="input-select" onchange="getCardData(this, '<isprint value="${URLUtils.https('CKOMain-GetCardsList')}" />')">
+					<option value="" selected="selected">${Resource.msg('billing.creditcardlistselect','checkout',null)}</option>
+				</select>
+			</div>
+		</div>
+	</isif>
+
 	<!-- Cards Image -->
 	<fieldset>
 	<div>
@@ -9,7 +20,7 @@
 	</fieldset>
 	
 	<!-- Card Owner Info -->
-	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.owner}" id="creditCardOwner" type="input" dynamicname="true" />
+	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.owner}" id="creditCardOwner" type="input" />
 	
 	<!-- Card Number and Image -->
 	<div class="form-row">
@@ -62,6 +73,11 @@
 		<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.mada}" id="mada" />
 	</isif>
 	
+	<script src="${URLUtils.staticURL('/js/checkoutcom.js')}"></script>
+	<isif condition="${pdict.CurrentCustomer.authenticated}">
+		<input type="hidden" id="ckoCardListUrl" value="${URLUtils.https('CKOMain-GetCardsList')}" />
+	</isif>
+	
 </div>
 
 
@@ -69,3 +85,5 @@
 <script src="${URLUtils.staticURL('/libraries/cleave/cleave.js')}"></script>
 
 <script src="${URLUtils.staticURL('experience/cardPayment.js')}"></script>
+
+
