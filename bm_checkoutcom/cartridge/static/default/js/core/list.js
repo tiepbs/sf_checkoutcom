@@ -109,21 +109,25 @@ function getTableColumns() {
 			field: 'actions',
 			headerSort: false,
 			formatter: function (cell, formatterParams, onRendered) {
-				var transactionId = cell.getRow().getData().transaction_id;
-				return getButtonsHtml(transactionId);
+				return getButtonsHtml(cell);
 			}
 		}
 	];
 }
 
-function getButtonsHtml(transactionId) {
+function getButtonsHtml(cell) {
+	// Get the row data
+	var rowData = cell.getRow().getData();
+
 	// Prepare the variable
 	var html = '';
 	
 	// Build the auth button
-	html += '<button type="button" id="capture-button-' + transactionId + '" onclick="openModal(this)" class="btn btn-primary">Capture</button>';
-	html += '<button type="button" id="void-button-' + transactionId + '" onclick="openModal(this)" class="btn btn-primary">Void</button>';
-	html += '<button type="button" id="refund-button-' + transactionId + '" onclick="openModal(this)" class="btn btn-primary">Refund</button>';
+	if (rowData.opened) {
+		html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" onclick="openModal(this)" class="btn btn-primary">Capture</button>';
+		html += '<button type="button" id="void-button-' + rowData.transaction_id + '" onclick="openModal(this)" class="btn btn-primary">Void</button>';
+		html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" onclick="openModal(this)" class="btn btn-primary">Refund</button>';
+	}
 
 	return html;
 }
