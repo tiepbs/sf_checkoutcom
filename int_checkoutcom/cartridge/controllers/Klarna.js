@@ -15,7 +15,7 @@ var BasketMgr = require('dw/order/BasketMgr');
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 
 
-function session(){
+function klarnaSession(){
 	
 	var basket = BasketMgr.getCurrentBasket();
 	
@@ -58,4 +58,4 @@ function session(){
 }
 
 
-exports.Session = guard.ensure(['https'], session);
+exports.klarnaSession = guard.ensure(['https'], klarnaSession);
