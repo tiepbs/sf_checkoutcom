@@ -1,0 +1,49 @@
+<hr/>
+<!-- Payment Methods -->
+
+<!-- This to include the card payment option -->
+<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCard'))}">
+	<h2>CARD PAYMENT<input id="card_radio_btn" type="radio" name="payment_types" value="card" checked></h2>
+</isif>
+
+<!-- This to include the card apm option -->
+<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApms'))}">
+	<h2>ALTERNATIVE PAYMENTS<input id="apm_radio_btn" type="radio" name="payment_types" value="apms"></h2>
+</isif>
+
+<hr/>
+
+
+
+
+
+<!-- This to include the card payment form -->
+<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCard'))}">
+
+	<!-- This includes the card payment forms and buttons -->
+	<isinclude template="cardPayments/cardPayment.isml"/>
+
+</isif>
+
+
+
+<!-- This includes the alternative payments from -->
+<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApms'))}">
+
+	<!-- This includes the alternative payment forms and buttons -->
+	<isinclude template="alternativePayments/alternativePayments.isml"/>	
+
+</isif>
+
+
+
+
+
+<!-- Payment Method Chosen -->
+<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.payment_method}" id="payment_method" />
+
+<!-- Shop URL -->
+<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.shop_url}" id="shop_url" />
+
+<!-- Store URL -->
+<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.store_url}" id="store_url" />

@@ -1,0 +1,2 @@
+	<!-- This includes the alternative payment forms and buttons -->
+	<isinclude template="alternativePayments/alternativePayments1.isml"/>
