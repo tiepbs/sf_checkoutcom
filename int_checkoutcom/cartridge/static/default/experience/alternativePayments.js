@@ -457,7 +457,7 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Obj
         // options
         {
             instance_id			: sessionId,
-            auto_finalize		: false, 
+            auto_finalize		: false, // Optional, defaults to true - relevant in case of payment_method_category "pay_now". Should be true for single-page checkout and false for multi-page checkout
             payment_method_category: paymentMethod
         	},
             {
