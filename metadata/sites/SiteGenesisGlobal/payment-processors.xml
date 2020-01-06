@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <payment-processors xmlns="http://www.demandware.com/xml/impex/paymentprocessor/2007-03-31">
-    <payment-processor processor-id="CHECKOUTCOM_CREDIT">
+    <payment-processor processor-id="CHECKOUTCOM_CARD">
         <preferences>
             <all-instances/>
             <development/>
@@ -8,15 +8,7 @@
             <production/>
         </preferences>
     </payment-processor>
-    <payment-processor processor-id="CHECKOUTCOM_CREDIT_CARD">
-        <preferences>
-            <all-instances/>
-            <development/>
-            <staging/>
-            <production/>
-        </preferences>
-    </payment-processor>
-    <payment-processor processor-id="CHECKOUTCOM_CREDIT_APM">
+    <payment-processor processor-id="CHECKOUTCOM_APM">
         <preferences>
             <all-instances/>
             <development/>

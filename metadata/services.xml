@@ -24,6 +24,24 @@
         <password/>
     </service-credential>
 
+    <service-credential service-credential-id="cko.transaction.capture.sandbox.credential">
+        <url>https://api.sandbox.checkout.com/payments/chargeId/captures</url>
+        <user-id/>
+        <password/>
+    </service-credential>
+
+    <service-credential service-credential-id="cko.transaction.void.sandbox.credential">
+        <url>https://api.sandbox.checkout.com/payments/chargeId/voids</url>
+        <user-id/>
+        <password/>
+    </service-credential>
+
+    <service-credential service-credential-id="cko.transaction.refund.sandbox.credential">
+        <url>https://api.sandbox.checkout.com/payments/chargeId/refunds</url>
+        <user-id/>
+        <password/>
+    </service-credential>
+
     <service-credential service-credential-id="cko.verify.charges.live.credential">
         <url>https://api.checkout.com/payments</url>
         <user-id/>
@@ -48,6 +66,24 @@
         <password/>
     </service-credential>
 
+    <service-credential service-credential-id="cko.transaction.capture.live.credential">
+        <url>https://api.checkout.com/payments/chargeId/captures</url>
+        <user-id/>
+        <password/>
+    </service-credential>
+
+    <service-credential service-credential-id="cko.transaction.void.live.credential">
+        <url>https://api.checkout.com/payments/chargeId/voids</url>
+        <user-id/>
+        <password/>
+    </service-credential>
+
+    <service-credential service-credential-id="cko.transaction.refund.live.credential">
+        <url>https://api.checkout.com/payments/chargeId/refunds</url>
+        <user-id/>
+        <password/>
+    </service-credential>
+
     <service-profile service-profile-id="CheckoutCom">
         <timeout-millis>10000</timeout-millis>
         <rate-limit-enabled>false</rate-limit-enabled>
@@ -65,6 +101,33 @@
         <comm-log-enabled>false</comm-log-enabled>
         <profile-id>CheckoutCom</profile-id>
         <credential-id>cko.card.charge.sandbox.credential</credential-id>
+    </service>
+
+    <service service-id="cko.transaction.capture.sandbox.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <profile-id>CheckoutCom</profile-id>
+        <credential-id>cko.transaction.capture.sandbox.credential</credential-id>
+    </service>
+
+    <service service-id="cko.transaction.void.sandbox.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <profile-id>CheckoutCom</profile-id>
+        <credential-id>cko.transaction.void.sandbox.credential</credential-id>
+    </service>
+
+    <service service-id="cko.transaction.refund.sandbox.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <profile-id>CheckoutCom</profile-id>
+        <credential-id>cko.transaction.refund.sandbox.credential</credential-id>
     </service>
 
     <service service-id="cko.card.sources.sandbox.service">
@@ -101,6 +164,33 @@
         <comm-log-enabled>false</comm-log-enabled>
         <profile-id>CheckoutCom</profile-id>
         <credential-id>cko.card.charge.live.credential</credential-id>
+    </service>
+
+    <service service-id="cko.transaction.capture.live.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <profile-id>CheckoutCom</profile-id>
+        <credential-id>cko.transaction.capture.live.credential</credential-id>
+    </service>
+
+    <service service-id="cko.transaction.void.sandbox.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <profile-id>CheckoutCom</profile-id>
+        <credential-id>cko.transaction.void.live.credential</credential-id>
+    </service>
+
+    <service service-id="cko.transaction.refund.live.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <profile-id>CheckoutCom</profile-id>
+        <credential-id>cko.transaction.refund.live.credential</credential-id>
     </service>
 
     <service service-id="cko.card.sources.live.service">

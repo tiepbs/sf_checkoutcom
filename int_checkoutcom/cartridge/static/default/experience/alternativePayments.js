@@ -425,31 +425,6 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId){
 		klarnaAuthorizeButton('#klarna-payments-container', sessionId, paymentMethod, addressInfo, requestObject);
 	});
 	
-//	Klarna.Payments.load({
-//		container					: '#klarna-payments-container',
-//	    payment_method_category		: paymentMethod,
-//	    instance_id					: sessionId
-//		}, {
-//            purchase_country			: requestObject.purchase_country,
-//            purchase_currency			: requestObject.currency,
-//            locale					: requestObject.locale,
-//            billing_address			: addressInfo,
-//            shipping_address			: addressInfo,
-//            order_amount				: requestObject.amount,
-//            order_tax_amount			: requestObject.tax_amount,
-//            order_lines				: requestObject.products,
-//            customer					: {
-//							                date_of_birth: "1970-01-01",
-//							                gender: "male"
-//							            }
-//            
-//		},
-//        function (response) {
-//            // ...
-//			console.log(response);
-//        }
-//		
-//	);
 }
 
 
