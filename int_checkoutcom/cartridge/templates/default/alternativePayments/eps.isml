@@ -1,0 +1,9 @@
+<!-- EPS pay APM Option -->
+<H4>
+	<img alt="epsPay" id="epsPay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/eps.png')}" width="10%"/>
+	EPS PAY 
+	<input id="epsPay_apm_radio_btn" type="radio" name="apm_payment_types" value="eps">
+</H4>
+
+
+<hr/>
