@@ -75,6 +75,7 @@ var CKOHelper = {
                         currency: paymentTransaction.amount.currencyCode,
                         creation_date: paymentTransaction.getCreationDate().toDateString(),
                         type: paymentTransaction.type.displayValue,
+                        opened: paymentTransaction.custom.ckoTransactionOpened,
                         processor: this.getProcessorId(instrument)
                     };
                     

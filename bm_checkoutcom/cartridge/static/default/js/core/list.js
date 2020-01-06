@@ -59,6 +59,10 @@ function initTable(tableData) {
 	var table = new Tabulator('#transactions-table', {
 		headerFilterPlaceholder: '>',
 		placeholder: 'No results found for this request.',
+		persistentSort: true,
+		layout: 'fitColumns',
+		responsiveLayout: true,
+		height: '100%',
 		data: JSON.parse(tableData), 
 		layout: 'fitColumns',
 		pagination: 'local',
@@ -82,23 +86,24 @@ function setPagination(table) {
 
 function getTableColumns() {
 	return [
-		{title: 'Order No', field: 'order_no', width: 150, formatter: 'html', headerFilter: 'input'},
-		{title: 'Transaction Id', field:'transaction_id', headerFilter: 'input'},
-		{title: 'Payment Id', field: 'payment_id', headerFilter: 'input'},
+		{title: 'Order No', field: 'order_no', width: 120, formatter: 'html', headerFilter: 'input'},
+		{title: 'Transaction Id', field:'transaction_id', width: 250, headerFilter: 'input'},
+		{title: 'Payment Id', field: 'payment_id', width: 250, headerFilter: 'input'},
 		{
 			title: 'Amount',
 			field: 'amount',
+			width: 120,
 			headerFilter: 'input',
-			headerFilterPlaceholder: '',
 			formatter: function (cell, formatterParams, onRendered) {
 				var rowData = cell.getRow().getData();
 				return cell.getValue() + ' ' + rowData.currency;
 			}		
 		},
 		{title: 'Currency', field: 'currency', visible: false},
-		{title: 'Date', field: 'creation_date', headerFilter: 'input'},
-		{title: 'Type', field: 'type', headerFilter: 'input'},
-		{title: 'Processor', field: 'processor', headerFilter: 'input'},
+		{title: 'Date', field: 'creation_date', width: 140, headerFilter: 'input'},
+		{title: 'Type', field: 'type', width: 110, headerFilter: 'input'},
+		{title: 'Opened', field: 'opened', width: 110, formatter: 'tickCross'},
+		{title: 'Processor', field: 'processor', width: 190, headerFilter: 'input'},
 		{
 			title:'Actions',
 			field: 'actions',
