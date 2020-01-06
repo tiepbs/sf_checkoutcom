@@ -188,7 +188,10 @@
 	<isinclude template="alternativePayments/p24.isml"/>
 	
 	<!-- This to include the klarna apm form -->
-	<isinclude template="alternativePayments/klarna.isml"/>
+	<isinclude template="alternativePayments/klarna.isml"/>	
+	
+	<!-- This to include the Paypal apm form -->
+	<isinclude template="alternativePayments/paypal.isml"/>
 
 </isif>
 

@@ -1,44 +1,23 @@
 'use strict';
 
+
+/* Site controller */
+var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
+
 /* API Includes */
 var PaymentMgr = require('dw/order/PaymentMgr');
 var Transaction = require('dw/system/Transaction');
 var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
-var BasketMgr = require('dw/order/BasketMgr');
-
-/* Site controller */
-var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
-
-/* Shopper cart */
 var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
-
-/* App */
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
-/* Helpers */
-var CKOHelper = require('~/cartridge/scripts/helpers/CKOCardHelper');
-
-
-
-/* Helpers */
-var CKOApmHelper = require('~/cartridge/scripts/helpers/CKOApmHelper');
-
 /* Utility */
-var util = require('~/cartridge/scripts/utility/util');
+var apmUtility = require('~/cartridge/scripts/helpers/apmUtility');
+var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 
 /* Business Name */
 var businessName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBusinessName');
-
-/* Card payment */
-var payWithCard = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoCard'); 
-
-/* Alternative payment */
-var payWithApms = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApms'); 
-
-
-// App Mode
-var appMode = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode'); 
 
 // get apms form
 var paymentForm = app.getForm('alternativePaymentForm');
@@ -174,9 +153,9 @@ function Handle(args) {
 
 
 /**
- * Authorizes a payment using a credit card. The payment is authorized by using the BASIC_CREDIT processor
- * only and setting the order no as the transaction ID. Customizations may use other processors and custom
- * logic to authorize credit card payment.
+ * Authorises a payment using a credit card. The payment is authorised by using the BASIC_CREDIT processor
+ * only and setting the order no as the transaction ID. Customisations may use other processors and custom
+ * logic to authorise credit card payment.
  */
 function Authorize(args) {
 	
@@ -188,9 +167,6 @@ function Authorize(args) {
 	
 	// get apm type chosen
 	var apm = paymentForm.get('alternative_payments').value();	
-	
-	// get shop url
-	var shop_url = paymentForm.get('store_url').value();
 	
 	// switch apms
 	switch(apm){
@@ -329,11 +305,11 @@ function SGJCTransAuthObject(payObject, args){
 	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 	
 	// perform the charge
-	var request = util.handleApmRequest(payObject, args);
+	var apmRequest = apmUtility.handleApmRequest(payObject, args);
 	
 	
 	// Handle apm result
-	if(request){
+	if(apmRequest){
 		
 		// Transaction wrapper
 		Transaction.wrap(function(){
@@ -378,9 +354,9 @@ function SGJCTransAuthObject(payObject, args){
  */
 function idealPayAuthorization(args){
 	
-	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
-	var language = util.getAppModeValue('nl', util.getLanguage());
-	var bic = util.getAppModeValue('INGBNL2A', paymentForm.get('ideal_bic').value());
+	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
+	var language = ckoUtility.getAppModeValue('nl', ckoUtility.getLanguage());
+	var bic = ckoUtility.getAppModeValue('INGBNL2A', paymentForm.get('ideal_bic').value());
 	
 	// building ideal pay object
     var payObject = {
@@ -405,9 +381,9 @@ function idealPayAuthorization(args){
  */
 function boletoPayAuthorization(args){
 	
-	var cpfNumber = util.getAppModeValue('00003456789', paymentForm.get('boleto_cpf').value());
-	var birthday = util.getAppModeValue('1984-03-04', paymentForm.get('boleto_birthDate').value());
-	var currency = util.getAppModeValue('BRL', util.getCurrency(args));
+	var cpfNumber = ckoUtility.getAppModeValue('00003456789', paymentForm.get('boleto_cpf').value());
+	var birthday = ckoUtility.getAppModeValue('1984-03-04', paymentForm.get('boleto_birthDate').value());
+	var currency = ckoUtility.getAppModeValue('BRL', ckoUtility.getCurrency(args));
 	
 	// building pay object
 	var payObject = {
@@ -415,7 +391,7 @@ function boletoPayAuthorization(args){
 			"type"	: "boleto",
 			"birthDate" : birthday,
 			"cpf"		: cpfNumber,
-			"customerName" : util.getCustomerName(args)
+			"customerName" : ckoUtility.getCustomerName(args)
 		},
 		"type"		: 'boleto',
 		"purpose"	: businessName,
@@ -433,15 +409,15 @@ function boletoPayAuthorization(args){
  */
 function bancontactPayAuthorization(args){
 	
-	var country = util.getAppModeValue('BE', util.getBillingCountry(args));
-	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+	var country = ckoUtility.getAppModeValue('BE', ckoUtility.getBillingCountry(args));
+	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
 	
 	// building pay object
 	var payObject = {
 			"source"		: {
 				"type"					: "bancontact",
 				"payment_country" 		: country,
-				"account_holder_name"	: util.getCustomerName(args),
+				"account_holder_name"	: ckoUtility.getCustomerName(args),
 				"billing_descriptor" 	: businessName
 			},
 			"type"		: 'boleto',
@@ -460,7 +436,7 @@ function bancontactPayAuthorization(args){
  */
 function benefitPayAuthorization(args){
 	
-	var currency = util.getAppModeValue('BHD', util.getCurrency(args));
+	var currency = ckoUtility.getAppModeValue('BHD', ckoUtility.getCurrency(args));
 	
 	// process benefit pay
 	var payObject = {
@@ -484,7 +460,7 @@ function benefitPayAuthorization(args){
  */
 function giroPayAuthorization(args){
 	
-	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
 
 	// building pay object
 	var payObject = {
@@ -508,7 +484,7 @@ function giroPayAuthorization(args){
  */
 function epsPayAuthorization(args){
 	
-	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
 	
 	// building pay object
 	var payObject = {
@@ -532,7 +508,7 @@ function epsPayAuthorization(args){
  */
 function sofortPayAuthorization(args){
 	
-	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
 
 	// building pay object
 	var payObject = {
@@ -553,19 +529,14 @@ function sofortPayAuthorization(args){
  */
 function knetPayAuthorization(args){
 	
-	var currency = util.getAppModeValue('KWD', util.getCurrency(args));
-	var language = util.getAppModeValue('en', util.getLanguage());
+	var currency = ckoUtility.getAppModeValue('KWD', ckoUtility.getCurrency(args));
+	var language = ckoUtility.getAppModeValue('en', ckoUtility.getLanguage());
 	
 	// building pay object
 	var payObject = {
 	    "source"	: 		{
 	        "type"						: "knet",
 	        "language"					: language,
-	        "user_defined_field1"		: "first user defined field",
-	        "user_defined_field2"		: "second user defined field",
-	        "card_token"				: "01234567",
-	        "user_defined_field4"		: "fourth user defined field",
-	        "ptlf"						: "ebtdut3vgtqepe56w64zcxlg6i"
 	    },
 	    "type"		: "knet",
 	    "purpose"	: businessName,
@@ -583,9 +554,9 @@ function knetPayAuthorization(args){
  */
 function qPayAuthorization(args){
 	
-	var nationalId = util.getAppModeValue('070AYY010BU234M', paymentForm.get('qpay_national_id').value());
-	var language = util.getAppModeValue('en', util.getLanguage());
-	var currency = util.getAppModeValue('QAR', util.getCurrency(args));
+	var nationalId = ckoUtility.getAppModeValue('070AYY010BU234M', paymentForm.get('qpay_national_id').value());
+	var language = ckoUtility.getAppModeValue('en', ckoUtility.getLanguage());
+	var currency = ckoUtility.getAppModeValue('QAR', ckoUtility.getCurrency(args));
 	
 	// building pay object
 	var payObject = {
@@ -593,7 +564,7 @@ function qPayAuthorization(args){
 	        "type"				: "qpay",
 	        "description"		: businessName,
 	        "language"			: language,
-	        "quantity"			: util.getProductQuantity(args),
+	        "quantity"			: ckoUtility.getProductQuantity(args),
 	        "national_id"		: nationalId
 	    },
 	    "type"		: "qpay",
@@ -612,16 +583,16 @@ function qPayAuthorization(args){
  */
 function fawryPayAuthorization(args){
 	
-	var currency = util.getAppModeValue('EGP', util.getCurrency(args));
+	var currency = ckoUtility.getAppModeValue('EGP', ckoUtility.getCurrency(args));
 	
 	// building pay object
 	var payObject = {
 	    "source"	: {
 	        "type": "fawry",
 	        "description": businessName,
-			"customer_mobile"	: util.getPhoneObject(args).number,
-			"customer_email"	: util.getCustomer(args).email,
-			"products"			: util.getProductInformation(args)
+			"customer_mobile"	: ckoUtility.getPhoneObject(args).number,
+			"customer_email"	: ckoUtility.getCustomer(args).email,
+			"products"			: ckoUtility.getProductInformation(args)
 	    },
 		"type"		: "fawry",
 		"purpose"	: businessName,
@@ -638,16 +609,16 @@ function fawryPayAuthorization(args){
  */
 function sepaPayAuthorization(args){
 	
-	var accountIban = util.getAppModeValue('DE25100100101234567893', paymentForm.get('sepa_iban').value() + paymentForm.get('sepa_bic').value());
-	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+	var accountIban = ckoUtility.getAppModeValue('DE25100100101234567893', paymentForm.get('sepa_iban').value() + paymentForm.get('sepa_bic').value());
+	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
 	
 	// building pay object
 	var payObject = {
 		"type"			: "sepa",
 		"currency"		: currency,
 	    "source_data"	: {
-	        "first_name"			: util.getCustomerFirstName(args),
-	        "last_name"				: util.getCustomerLastName(args),
+	        "first_name"			: ckoUtility.getCustomerFirstName(args),
+	        "last_name"				: ckoUtility.getCustomerLastName(args),
 	        "account_iban"			: accountIban,
 	        "billing_descriptor"	: businessName,
 	        "mandate_type"			: "single"
@@ -665,8 +636,8 @@ function sepaPayAuthorization(args){
  */
 function multibancoPayAuthorization(args){
 	
-	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
-	var country = util.getAppModeValue('PT', util.getBillingCountry(args));
+	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
+	var country = ckoUtility.getAppModeValue('PT', ckoUtility.getBillingCountry(args));
 	
 	var payObject = {
 	        "type"		: "multibanco",
@@ -674,7 +645,7 @@ function multibancoPayAuthorization(args){
 		    "source": {
 		        "type"					: "multibanco",
 		        "payment_country"		: country,
-		        "account_holder_name"	: util.getCustomerName(args),
+		        "account_holder_name"	: ckoUtility.getCustomerName(args),
 		        "billing_descriptor"	: businessName
 		    }
 		 }
@@ -689,7 +660,7 @@ function multibancoPayAuthorization(args){
  */
 function poliPayAuthorization(args){
 	
-	var currency = util.getAppModeValue('NZD', util.getCurrency(args));
+	var currency = ckoUtility.getAppModeValue('NZD', ckoUtility.getCurrency(args));
 	
 	var payObject = {
 	        "type"		: "poli",
@@ -709,8 +680,8 @@ function poliPayAuthorization(args){
  */
 function p24PayAuthorization(args){
 	
-	var currency = util.getAppModeValue('PLN', util.getCurrency(args));
-	var country = util.getAppModeValue('PL', util.getBillingCountry(args));
+	var currency = ckoUtility.getAppModeValue('PLN', ckoUtility.getCurrency(args));
+	var country = ckoUtility.getAppModeValue('PL', ckoUtility.getBillingCountry(args));
 	
 	var payObject = {
 		    "type": "p24",
@@ -718,8 +689,8 @@ function p24PayAuthorization(args){
 		    "source"		: {
 		        "type"					: "p24",
 		        "payment_country"		: country,
-		        "account_holder_name"	: util.getCustomerName(args),
-		        "account_holder_email"	: util.getCustomer(args).email,
+		        "account_holder_name"	: ckoUtility.getCustomerName(args),
+		        "account_holder_email"	: ckoUtility.getCustomer(args).email,
 		        "billing_descriptor"	: businessName
 		    }
 		 }
@@ -736,24 +707,23 @@ function p24PayAuthorization(args){
  */
 function klarnaPayAuthorization(args){
 	
-	var basket = BasketMgr.getCurrentBasket();
 	var order = OrderMgr.getOrder(args.OrderNo);
 	
 	
 
-	var countryCode = util.getAppModeValue('GB', util.getBillingObject(args).country);
-	var currency = util.getAppModeValue('GBP', util.getCurrencyCode(args));
-	var locale = util.getAppModeValue('en-GB', util.getLanguage());
-	var total = util.getFormattedPrice(order.totalGrossPrice.value, currency);
-	var tax =  util.getFormattedPrice(order.totalTax.value, currency);
-	var products = util.getOrderBasketObject(args);
+	var countryCode = ckoUtility.getAppModeValue('GB', ckoUtility.getBillingObject(args).country);
+	var currency = ckoUtility.getAppModeValue('GBP', ckoUtility.getCurrencyCode(args));
+	var locale = ckoUtility.getAppModeValue('en-GB', ckoUtility.getLanguage());
+	var total = ckoUtility.getFormattedPrice(order.totalGrossPrice.value, currency);
+	var tax =  ckoUtility.getFormattedPrice(order.totalTax.value, currency);
+	var products = ckoUtility.getOrderBasketObject(args);
 	
 	// Klarna Form Inputs
 	var klarna_token = paymentForm.get('klarna_token').value();
 	var klarna_approved = paymentForm.get('klarna_approved').value();
-	var klarna_finalize_required = paymentForm.get('klarna_finalize_required').value();
+	//var klarna_finalize_required = paymentForm.get('klarna_finalize_required').value();
 	
-	var billingAddress = util.getOrderBasketAddress(args);
+	var billingAddress = ckoUtility.getOrderBasketAddress(args);
 	
 	if(klarna_approved){
 		
@@ -789,20 +759,14 @@ function klarnaPayAuthorization(args){
  */
 function paypalPayAuthorization(args){
 	
-	var currency = util.getAppModeValue('EUR', util.getCurrency(args));
+	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
 
 	var payObject = {
 		    "type"				: "paypal",
 		    "currency"			: currency,
 		    "source"			: {
 		        "type"					: "paypal",
-		        "invoice_number"		: args.OrderNo,
-		        "logo_url": "https		://www.example.com/logo.jpg",
-		        "stc"					: {
-		            "property_name1": "property 1",
-		            "property_name2": "property 2",
-		            "property_name3": "property 3"
-		        }
+		        "invoice_number"		: args.OrderNo
 		    }
 		}
 	

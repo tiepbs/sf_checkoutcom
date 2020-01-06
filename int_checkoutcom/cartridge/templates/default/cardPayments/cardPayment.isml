@@ -1,14 +1,17 @@
 
 <div id="card_payment_box">	
 
+	<!-- Cards Image -->
 	<fieldset>
 	<div>
 		<img alt="" src="${URLUtils.staticURL('/images/card-schema.png')}" width="80%" style="margin-left: auto; margin-right: auto; display: block;">
 	</div>
 	</fieldset>
 	
+	<!-- Card Owner Info -->
 	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.owner}" id="creditCardOwner" type="input" dynamicname="true" />
 	
+	<!-- Card Number and Image -->
 	<div class="form-row">
 		<div id="dw_cardTypeDone" style='width: 30px; height: 30px; border: solid 1px none; position: absolute; z-index: 2; margin-top: 0.5em; margin-left: 0.4em;'> 
 		
@@ -26,6 +29,7 @@
 	</div>
 	
 	
+	<!-- Card Expiration -->
 	<div class="form-row required">
 		<label>
 			<span class="required-indicator">${Resource.msg('billing.requiredindicator', 'checkout', null)}</span>
@@ -43,20 +47,25 @@
 			cid: 'checkout-security-code'
 		};
 	</isscript>
+	
+	<!-- Card CVN -->
 	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${help}"/>
 	
+	<!-- Card Type -->
 	<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.type}" id="creditCardType" />
 	
+	<!-- Shop URL -->
+	<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.shop_url}" id="shop_url" />
+	
+	<!-- Mada -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMada'))}">
 		<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.mada}" id="mada" />
 	</isif>
+	
 </div>
 
 
-<iscomment> 
 
 <script src="${URLUtils.staticURL('/libraries/cleave/cleave.js')}"></script>
 
 <script src="${URLUtils.staticURL('experience/cardPayment.js')}"></script>
-
-</iscomment>

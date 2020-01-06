@@ -1,11 +1,13 @@
-<div id="alternative_payments_box" style="display: none;">
+<!-- Sandbox Mode APMs -->
+
+<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode'))  == 'sandbox'}">
 
 	<!-- This to include the ideal pay apm form -->
 	<isinclude template="alternativePayments/ideal.isml"/>
-
+	
 	<!-- This to include the boleto pay apm form -->
 	<isinclude template="alternativePayments/boleto.isml"/>
-
+	
 	<!-- This to include the bancontact pay apm form -->
 	<isinclude template="alternativePayments/bancontact.isml"/>
 	
@@ -30,13 +32,93 @@
 	<!-- This to include the fawry apm form -->
 	<isinclude template="alternativePayments/fawry.isml"/>
 	
+	<!-- This to include the multibanco apm form -->
+	<isinclude template="alternativePayments/multibanco.isml"/>
 		
+	<!-- This to include the poli apm form -->
+	<isinclude template="alternativePayments/poli.isml"/>
+	
 	<!-- This to include the sepa apm form -->
 	<isinclude template="alternativePayments/sepa.isml"/>
 	
-	<!-- field for alternative payment chosen -->
-	<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.alternative_payments}" />
+	<!-- This to include the p24 apm form -->
+	<isinclude template="alternativePayments/p24.isml"/>
 	
-</div>
+	<!-- This to include the klarna apm form -->
+	<isinclude template="alternativePayments/klarna.isml"/>	
+	
+	<!-- This to include the Paypal apm form -->
+	<isinclude template="alternativePayments/paypal.isml"/>
+	
+
+</isif>
+
+
+<!-- Live Mode APMs -->
+<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode'))  == 'live'}">
+
+	<!-- This to include the ideal pay apm form -->
+	<isinclude template="alternativePayments/ideal.isml"/>
+	
+	<!-- This to include the boleto pay apm form -->
+	<isinclude template="alternativePayments/boleto.isml"/>
+	
+	<!-- This to include the bancontact pay apm form -->
+	<isinclude template="alternativePayments/bancontact.isml"/>
+	
+	<!-- This to include the benefit pay apm form -->
+	<isinclude template="alternativePayments/benefit.isml"/>
+	
+	<!-- This to include the giro pay apm form -->
+	<isinclude template="alternativePayments/giro.isml"/>
+	
+	<!-- This to include the eps pay apm form -->
+	<isinclude template="alternativePayments/eps.isml"/>
+		
+	<!-- This to include the sofort pay apm form -->
+	<isinclude template="alternativePayments/sofort.isml"/>
+	
+	<!-- This to include the knet pay apm form -->
+	<isinclude template="alternativePayments/knet.isml"/>
+	
+	<!-- This to include the qpay apm form -->
+	<isinclude template="alternativePayments/qpay.isml"/>
+	
+	<!-- This to include the fawry apm form -->
+	<isinclude template="alternativePayments/fawry.isml"/>
+	
+	<!-- This to include the multibanco apm form -->
+	<isinclude template="alternativePayments/multibanco.isml"/>
+		
+	<!-- This to include the poli apm form -->
+	<isinclude template="alternativePayments/poli.isml"/>
+	
+	<!-- This to include the sepa apm form -->
+	<isinclude template="alternativePayments/sepa.isml"/>
+	
+	<!-- This to include the p24 apm form -->
+	<isinclude template="alternativePayments/p24.isml"/>
+	
+	<!-- This to include the klarna apm form -->
+	<isinclude template="alternativePayments/klarna.isml"/>	
+	
+	<!-- This to include the Paypal apm form -->
+	<isinclude template="alternativePayments/paypal.isml"/>
+
+</isif>
+
+
+	
+<!-- field for alternative payment chosen -->
+<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.alternative_payments}" />
+
+<!-- Store URL -->
+<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.store_url}" id="store_url" />
+
+
+
+<script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
+
+<script src="${URLUtils.staticURL('/libraries/cleave/cleave.js')}"></script>
 
 <script src="${URLUtils.staticURL('experience/alternativePayments.js')}"></script>

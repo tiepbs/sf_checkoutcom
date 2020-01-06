@@ -422,7 +422,7 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId){
 	    instance_id					: sessionId
 		}, function (res) {
 		console.debug(res);
-		klarnaAuthorizeButton('#klarna-payments-container', sessionId, paymentMethod);
+		klarnaAuthorizeButton('#klarna-payments-container', sessionId, paymentMethod, addressInfo, requestObject);
 	});
 	
 //	Klarna.Payments.load({
@@ -456,11 +456,11 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId){
 /*
  * Klarna Authorize button
  */
-function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod){
+function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject){
 	//console.log(klarnaContainer);
 	
 	var AuthorizeBtn = "<button type='button' style='width: 100%; margin-top: 30px;' onclick='klarnaAuthorize(`" + sessionId 
-	+ "`, `" + klarnaContainer + "`, `" + paymentMethod + "`)'>Authorize</button>";
+	+ "`, `" + klarnaContainer + "`, `" + paymentMethod + "`, ` " + JSON.stringify(billingAddress) + " ` , ` " + JSON.stringify(requestObject) + " `)'>Authorize</button>";
 	
 	var klarna = $(klarnaContainer);
 	
@@ -473,18 +473,31 @@ function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod){
 /*
  * Klarna Authorize
  */
-function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod){
+function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Object){
+	
+	var requestObject = JSON.parse(Object);
+	var billingAddress = JSON.parse(Address);
 	
     Klarna.Payments.authorize(
         // options
         {
             instance_id			: sessionId,
-            auto_finalize		: false // Optional, defaults to true - relevant in case of payment_method_category "pay_now". Should be true for single-page checkout and false for multi-page checkout
+            auto_finalize		: false, // Optional, defaults to true - relevant in case of payment_method_category "pay_now". Should be true for single-page checkout and false for multi-page checkout
+            payment_method_category: paymentMethod
+        	},
+            {
+                  purchase_country			: requestObject.purchase_country,
+                  purchase_currency			: requestObject.currency,
+              	  locale					: requestObject.locale,
+            	  billing_address			: billingAddress,
+            	  order_amount				: requestObject.amount,
+            	  order_tax_amount			: requestObject.tax_amount,
+            	  order_lines				: requestObject.products
         },
         // callback
         function (response) {
             // ...
-        	console.log(response);
+        	//console.log(response);
         	
         	if(response.approved){
     			$(klarnaContainer).empty();

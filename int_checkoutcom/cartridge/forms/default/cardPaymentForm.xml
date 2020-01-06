@@ -64,7 +64,7 @@
     <field formid="ckoCountry" type="string" mandatory="false" max-length="40" binding="ckoCountry" />
      	
 	<!-- field for credit card number -->
-    <field formid="number" label="creditcard.number" type="string" mandatory="true"
+    <field formid="number" label="creditcard.number" type="string" mandatory="true" masked="4" max-length="16"
 	    description="creditcard.numberexample" binding="creditCardNumber"
 	    missing-error="creditcard.numbermissingerror" value-error="creditcard.numbervalueerror"/>
 	    

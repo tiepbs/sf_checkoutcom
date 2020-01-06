@@ -4,19 +4,20 @@
 
 <form action="${URLUtils.httpsContinue()}" method="post" class="form-horizontal" id="Sepa">
 	
-	<div style="width: 60%; min-width: 600px; max-width: 1000px; border: solid 1px #eee; border-radius: 5px; margin: auto; margin-top: 100px;">
+	<div style="min-width: 600px; max-width: 1000px; border: solid 1px #eee; border-radius: 5px; margin: auto; margin-top: 100px;">
 	
-		<div class="sepaTitle" style="padding: 20px;">
-			<h2>
-				SEPA Direct Debit Mandate for single payment
-			</h2>
+		<div style="padding: 40px; text-align: left; min-height: 250px;">
+			<div>
+				<h2>SEPA Direct Debit Mandate for single payment</h2>
+			</div>
+			
 			<div class="sepaCreditor" style="width: 50%; float: left;">
 				<h2>Creditor <br/><isprint value="${pdict.creditor}"></h2>
 				
 				<p>
-					<isprint value="${pdict.creditorAddress1}">
-					<isprint value="${pdict.creditorAddress2}">
-					<isprint value="${pdict.creditorCity}">
+					<isprint value="${pdict.creditorAddress1}"><br>
+					<isprint value="${pdict.creditorAddress2}"><br>
+					<isprint value="${pdict.creditorCity}"><br>
 					<isprint value="${pdict.creditorCountry}">
 				</p>
 				
@@ -26,21 +27,21 @@
 				<h2>Debtor <br/><isprint value="${pdict.debtor}"></h2>
 				
 				<p>
-					<isprint value="${pdict.debtorAddress1}">	
-					<isprint value="${pdict.debtorAddress2}">
-					<isprint value="${pdict.debtorCountryCode}">
-					
+					<isprint value="${pdict.debtorAddress1}"><br>
+					<isprint value="${pdict.debtorAddress2}"><br>
+					<isprint value="${pdict.debtorCountryCode}">	
 				</p>
 				
 			</div>
 		</div>
+		
+		<hr>
 	
-	 	<div class="sepa-par" style="padding: 15px;">
-	        <hr style="opacity: 0.3;">
+	 	<div style="padding: 20px; text-align: left;">
 	        <p>
-	        	By accepting this mandate form, you authorise (A) b4payment GmbH to send instructions to 
+	        	By accepting this mandate form, you authorise (A) <isprint value="${pdict.creditor}"> to send instructions to 
 	        	your bank to debit your account (B) your bank to debit your account in accordance with 
-	        	the instructions from b4payment GmbH.
+	        	the instructions from <isprint value="${pdict.creditor}">.
 	        </p>
 	        <p>
 	        	As part of your rights, you are entitled to a refund from your bank under the terms and conditions 
