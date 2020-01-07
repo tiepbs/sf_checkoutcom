@@ -68,7 +68,20 @@ var ckoUtility = {
 		return hostname;
 	},
 	
-		
+    /**
+     * Check if the gateway response is valid.
+     */
+    isValidResponse: function() {
+        var requestKey = request.httpHeaders.get("Authorization");
+        var privateSharedKey = this.getAccountKeys().privateKey;
+        
+        if (requestKey == privateSharedKey) {
+        	return true;
+        }
+
+        return false;
+	}, 
+	
 	/* 
 	 * get value from custom preferences
 	 */
