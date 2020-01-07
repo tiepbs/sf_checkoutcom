@@ -90,12 +90,6 @@ function Authorize(args) {
 	// make the charge request
 	var chargeRequest = cardUtility.handleCardRequest(cardData, args);
 	
-	// Transaction wrapper
-	Transaction.wrap(function(){
-		paymentInstrument.paymentTransaction.transactionID = orderNo;
-		paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-	});
-	
 	// Handle card charge request result
 	if(chargeRequest){
 		
