@@ -88,10 +88,10 @@ function Authorize(args) {
 	};
 	
 	// make the charge request
-	var chargeRequest = cardUtility.handleCardRequest(cardData, args);
+	var chargeResponse = cardUtility.handleCardRequest(cardData, args);
 
 	// Handle card charge request result
-	if(chargeRequest){
+	if(chargeResponse){
 		
 		if(ckoUtility.getValue('cko3ds')){
 			
