@@ -1,12 +1,12 @@
 {
 	"hooks": [
 		{
-			"name": "app.payment.processor.CHECKOUTCOM_CREDIT_CARD",
-			"script": "./payment/processor/CHECKOUTCOM_CREDIT_CARD"		
+			"name": "app.payment.processor.CHECKOUTCOM_CARD",
+			"script": "./payment/processor/CHECKOUTCOM_CARD"		
 		},	
 		{
-			"name": "app.payment.processor.CHECKOUTCOM_CREDIT_APM",
-			"script": "./payment/processor/CHECKOUTCOM_CREDIT_APM"		
+			"name": "app.payment.processor.CHECKOUTCOM_APM",
+			"script": "./payment/processor/CHECKOUTCOM_APM"		
 		}	
 	]
 }
