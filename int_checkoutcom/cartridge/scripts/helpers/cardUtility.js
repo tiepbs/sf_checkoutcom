@@ -36,6 +36,7 @@ var cardUtility = {
 			// If the charge is valid, process the response
 			if(gatewayResponse){
 				this.handleFullChargeResponse(gatewayResponse, order);
+				return gatewayResponse;
 			}else{
 				
 				// update the transaction

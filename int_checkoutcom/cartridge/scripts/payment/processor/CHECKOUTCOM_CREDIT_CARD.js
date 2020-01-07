@@ -107,7 +107,17 @@ function Authorize(args) {
 			
 			return {authorized: true, redirected: true};
 			
-		}else{
+		} else {
+			// Create the authorization transaction
+		    Transaction.wrap(function() {
+		        paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
+				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+				paymentInstrument.custom.ckoPaymentId = chargeResponse.id;
+				paymentInstrument.custom.ckoParentTransactionId = null;
+				paymentInstrument.custom.ckoTransactionOpened = null;
+		        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+		    });
+			
 			return {authorized: true};
 		}
 		
