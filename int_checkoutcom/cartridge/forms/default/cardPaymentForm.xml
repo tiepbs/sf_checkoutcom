@@ -3,8 +3,6 @@
 	     	
 	<!-- field for payment method -->
     <field formid="payment_method" type="string" mandatory="false" max-length="40" default-value="card" binding="payment_method" />
-    	<!-- field for Shop URL -->
-    <field formid="shop_url" type="string" mandatory="false" max-length="120" binding="shop_url" />
 	
 	<!-- field for Payment Option -->
     <field formid="cardPayment" type="boolean" label="PAY WITH CARD" mandatory="false" binding="cardPayment" />
@@ -59,9 +57,6 @@
     
    	<!-- field for cko currency -->
     <field formid="ckoCurrency" type="string" mandatory="false" max-length="40" binding="ckoCurrency" />
-    
-    <!-- field for cko country -->
-    <field formid="ckoCountry" type="string" mandatory="false" max-length="40" binding="ckoCountry" />
      	
 	<!-- field for credit card number -->
     <field formid="number" label="creditcard.number" type="string" mandatory="true"
@@ -74,7 +69,7 @@
      	missing-error="creditcard.cvnmissingerror" value-error="creditcard.cvnrangeerror"/>
  
 	<!-- optional flags -->
-	<field formid="saveCard" label="creditcard.savecard" type="boolean" mandatory="false" default-value="true" />
+	<field formid="saveCard" label="creditcard.savecard" type="boolean" mandatory="false" default-value="false" />
 
 	<!-- confirm action to save the card details -->
     <action formid="confirm" valid-form="true"/>

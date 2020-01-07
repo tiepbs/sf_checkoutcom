@@ -28,7 +28,6 @@ var paymentForm = app.getForm('alternativePaymentForm');
  * If the verification was successful a credit card payment instrument is created.
  */
 function Handle(args) {
-	//var shop_url = paymentTypeForm.get('shop_url').value();
 	
 	// get apm type chosen
 	var apm = paymentForm.get('alternative_payments').value();
@@ -464,9 +463,9 @@ function giroPayAuthorization(args){
 
 	// building pay object
 	var payObject = {
-			"source"				: {
+			"source"		: {
 				"type"			: "giropay",
-				"purpose"			: businessName
+				"purpose"		: businessName
 			},
 		    "type"		: "giropay",
 		    "purpose"	: businessName,
@@ -534,9 +533,9 @@ function knetPayAuthorization(args){
 	
 	// building pay object
 	var payObject = {
-	    "source"	: 		{
-	        "type"						: "knet",
-	        "language"					: language,
+	    "source"	: 	{
+	        "type"			: "knet",
+	        "language"		: language,
 	    },
 	    "type"		: "knet",
 	    "purpose"	: businessName,
@@ -561,11 +560,11 @@ function qPayAuthorization(args){
 	// building pay object
 	var payObject = {
 		"source"	: {
-	        "type"				: "qpay",
-	        "description"		: businessName,
-	        "language"			: language,
-	        "quantity"			: ckoUtility.getProductQuantity(args),
-	        "national_id"		: nationalId
+	        "type"			: "qpay",
+	        "description"	: businessName,
+	        "language"		: language,
+	        "quantity"		: ckoUtility.getProductQuantity(args),
+	        "national_id"	: nationalId
 	    },
 	    "type"		: "qpay",
 	    "purpose"	: businessName,
@@ -588,8 +587,8 @@ function fawryPayAuthorization(args){
 	// building pay object
 	var payObject = {
 	    "source"	: {
-	        "type": "fawry",
-	        "description": businessName,
+	        "type"				: "fawry",
+	        "description"		: businessName,
 			"customer_mobile"	: ckoUtility.getPhoneObject(args).number,
 			"customer_email"	: ckoUtility.getCustomer(args).email,
 			"products"			: ckoUtility.getProductInformation(args)
@@ -642,7 +641,7 @@ function multibancoPayAuthorization(args){
 	var payObject = {
 	        "type"		: "multibanco",
 		    "currency"	: currency,
-		    "source": {
+		    "source"	: {
 		        "type"					: "multibanco",
 		        "payment_country"		: country,
 		        "account_holder_name"	: ckoUtility.getCustomerName(args),
@@ -684,7 +683,7 @@ function p24PayAuthorization(args){
 	var country = ckoUtility.getAppModeValue('PL', ckoUtility.getBillingCountry(args));
 	
 	var payObject = {
-		    "type": "p24",
+		    "type"			: "p24",
 		    "currency"		: currency,
 		    "source"		: {
 		        "type"					: "p24",
@@ -721,8 +720,6 @@ function klarnaPayAuthorization(args){
 	// Klarna Form Inputs
 	var klarna_token = paymentForm.get('klarna_token').value();
 	var klarna_approved = paymentForm.get('klarna_approved').value();
-	//var klarna_finalize_required = paymentForm.get('klarna_finalize_required').value();
-	
 	var billingAddress = ckoUtility.getOrderBasketAddress(args);
 	
 	if(klarna_approved){
@@ -762,11 +759,11 @@ function paypalPayAuthorization(args){
 	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
 
 	var payObject = {
-		    "type"				: "paypal",
-		    "currency"			: currency,
-		    "source"			: {
-		        "type"					: "paypal",
-		        "invoice_number"		: args.OrderNo
+		    "type"			: "paypal",
+		    "currency"		: currency,
+		    "source"		: {
+		        "type"				: "paypal",
+		        "invoice_number"	: args.OrderNo
 		    }
 		}
 	

@@ -14,6 +14,7 @@ var apm_selected_box = false;
 document.addEventListener('DOMContentLoaded', function(){
 	
 	AlternativePayments();
+	AlternativePaymentsFilter();
 	
 }, false);
 
@@ -536,6 +537,97 @@ function toggleAPMS(apms, apmBox){
 		
 	}
 
+}
+
+
+function AlternativePaymentsFilter(){
+	
+	var apmsFilterObject = {
+		ideal 		: {
+			countries	: "NL",
+			currencies	: "EUR"
+		},
+		boleto		: {
+			countries	: "BR",
+			currencies	: ["BRL", "USD"]
+		},
+		bancontact	: {
+			countries	: "BE",
+			currencies	: "EUR"
+		},
+		benefit		: {
+			countries	: "BH",
+			currencies	: "BHD"
+		},
+		giro		: {
+			countries	: "DE",
+			currencies	: "EUR"
+		},
+		eps			: {
+			countries	: "AT",
+			currencies	: "EUR"
+		},
+		sofort		: {
+			countries	: ["AT", "BE", "DE", "ES", "IT", "NL"],
+			currencies	: "EUR"
+		},
+		knet		: {
+			countries	: "KW",
+			currencies	: "KWD"
+		},
+		qpay		: {
+			countries	: "QA",
+			currencies	: "QAR"
+		},
+		fawry		: {
+			countries	: "EG",
+			currencies	: "EGP"
+		},
+		multibanco	: {
+			countries	: "PT",
+			currencies	: "EUR"
+		},
+		poli		: {
+			countries	: ["AU", "NZ"],
+			currencies	: ["AUD", "NZD"]
+		},
+		sepa		: {
+			countries	: ["AT", "BE", "CY", "DE", "EE", "ES", "FI", "FR", "GR", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PT", "SI", "SK", "AD", "BG", "CH", "CZ", "DK", "GB", "HR", "HU", "IS", "LI", "MC", "NO", "PL", "RO", "SM", "SE", "VA"],
+			currencies	: "EUR"
+		},
+		p24			: {
+			countries	: "PL",
+			currencies	: ["EUR", "PLN"]
+		},
+		klarna		: {
+			countries	: ["AT", "DK", "FI", "DE", "NL", "NO", "SE", "UK"],
+			currencies	: ["EUR", "DKK", "GBP", "NOK", "SEK"]
+		}
+	}
+	
+	
+	var creditCard = $('#is-CHECKOUTCOM_APM');
+	
+	creditCard.on('click', function(){
+		
+		var controllerUrl = $('#ckoApmFilterUrl').val();
+			
+			//console.log(controllerUrl);
+			
+		var xhttpFilter = new XMLHttpRequest();
+		xhttpFilter.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+		 
+		    	console.log(JSON.parse(this.responseText));
+	  	    	
+		    }
+		};
+		xhttpFilter.open("GET", controllerUrl, true);
+		xhttpFilter.send();
+			
+	
+	});
+	
 }
 
 

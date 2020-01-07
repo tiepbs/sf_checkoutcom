@@ -62,11 +62,12 @@
 	<!-- Card CVN -->
 	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${help}"/>
 	
+	<isif condition="${pdict.CurrentCustomer.authenticated}">
+		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.saveCard}" type="checkbox"/>
+	</isif>
+	
 	<!-- Card Type -->
 	<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.type}" id="creditCardType" />
-	
-	<!-- Shop URL -->
-	<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.shop_url}" id="shop_url" />
 	
 	<!-- Mada -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMada'))}">
@@ -77,6 +78,9 @@
 	<isif condition="${pdict.CurrentCustomer.authenticated}">
 		<input type="hidden" id="ckoCardListUrl" value="${URLUtils.https('CKOMain-GetCardsList')}" />
 	</isif>
+	
+	<!-- APM Filter Url -->
+	<input type="hidden" id="ckoApmFilterUrl" value="${URLUtils.https('CKOMain-GetApmFilter')}" />
 	
 </div>
 

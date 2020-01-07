@@ -6,6 +6,7 @@ var app = require(siteControllerName + '/cartridge/scripts/app');
 var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
+var BasketMgr = require('dw/order/BasketMgr');
 
 /* Checkout.com Event functions */
 var CKOEvent = require('~/cartridge/scripts/helpers/CKOEvent');
@@ -159,14 +160,28 @@ function getCardsList() {
 	}
 }
 
-/*
- * Module exports
- */
+
+function getApmFilter(){
+	
+	var basket = BasketMgr.getCurrentBasket();
+	var currencyCode = basket.getCurrencyCode();
+	var countryCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
+	
+	var filterObject = {
+			country		: countryCode,
+			currency	: currencyCode
+	}
+	
+	response.getWriter().println(JSON.stringify(filterObject));
+	
+}
+
 
 /*
- * Local methods
+ * Module exports
  */
 exports.HandleReturn = guard.ensure(['https'], handleReturn);
 exports.HandleFail = guard.ensure(['https'], handleFail);
 exports.HandleWebhook = guard.ensure(['post', 'https'], handleWebhook);
 exports.GetCardsList = guard.ensure(['https'], getCardsList);
+exports.GetApmFilter = guard.ensure(['https'], getApmFilter);
