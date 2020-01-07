@@ -612,13 +612,31 @@ function AlternativePaymentsFilter(){
 		
 		var controllerUrl = $('#ckoApmFilterUrl').val();
 			
-			//console.log(controllerUrl);
-			
 		var xhttpFilter = new XMLHttpRequest();
 		xhttpFilter.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 		 
-		    	console.log(JSON.parse(this.responseText));
+//		    	console.log(JSON.parse(this.responseText));
+				var filterObject = JSON.parse(this.responseText);
+		    	
+//				var idObject = {
+//					country		: "DE",
+//					currency	: "EUR"
+//				}
+		    	
+		    	var amps;
+		    	
+		    	for(amps in apmsFilterObject){
+		    		
+		    		var apmObjects = apmsFilterObject[amps];
+		    		
+		    		if(apmObjects.countries.includes(filterObject.country) && apmObjects.currencies.includes(filterObject.currency)){
+		    			
+		    			showThisApm(amps);
+		    			
+		    		}
+		    		
+		    	}
 	  	    	
 		    }
 		};
@@ -628,6 +646,11 @@ function AlternativePaymentsFilter(){
 	
 	});
 	
+}
+
+
+function showThisApm(apmId){
+	$('#'+ apmId).show();
 }
 
 
