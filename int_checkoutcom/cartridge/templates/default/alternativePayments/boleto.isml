@@ -1,7 +1,7 @@
 <!-- Boleto APM Option -->
 <h4>
 	<img alt="" id="boletopay_thumb" class="image imageright" type="image" value="Edit" src="${URLUtils.staticURL('/images/apm-icons/boleto_bancario.png')}" width="10%"/>
-	BOLETO BANCARIO PAY 
+	${Resource.msg('cko.boleto.name','cko',null)}
 	<input id="boleto_apm_radio_btn" type="radio" name="apm_payment_types" value="boleto">
 </h4>
 

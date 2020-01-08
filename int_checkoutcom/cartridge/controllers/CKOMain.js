@@ -6,15 +6,13 @@ var app = require(siteControllerName + '/cartridge/scripts/app');
 var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
-
-/* Checkout.com Helper functions */
-var CKOHelper = require('~/cartridge/scripts/helpers/CKOCardHelper');
+var BasketMgr = require('dw/order/BasketMgr');
 
 /* Checkout.com Event functions */
 var CKOEvent = require('~/cartridge/scripts/helpers/CKOEvent');
 
-/* Checkout.com Utils functions */
-var CKOUtils = require('~/cartridge/scripts/helpers/CKOUtils');
+/** Utility **/
+var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 
 
 /**
@@ -22,8 +20,8 @@ var CKOUtils = require('~/cartridge/scripts/helpers/CKOUtils');
  */
 function handleReturn() {
 	var gResponse = false;
-	var mode = CKOUtils.getValue('ckoMode');
-	var orderId = CKOUtils.getOrderId();	
+	var mode = ckoUtility.getValue('ckoMode');
+	var orderId = ckoUtility.getOrderId();	
 	
 	// If there is a track id
 	if (orderId) {
@@ -40,7 +38,7 @@ function handleReturn() {
 			if (paymentToken) {
 				
 				// Perform the request to the payment gateway
-				gVerify = CKOUtils.gatewayClientRequest(
+				gVerify = ckoUtility.gatewayClientRequest(
 					'cko.verify.charges.' + mode + '.service', 
 					{'paymentToken': paymentToken}
 				);	
@@ -54,7 +52,7 @@ function handleReturn() {
 				}
 				else {
 					
-					CKOU.handleFail(gVerify);
+					ckoUtility.handleFail(gVerify);
 					
 				}
 				
@@ -67,11 +65,11 @@ function handleReturn() {
 				gResponse = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
 
 				// Process the response data
-				if (CKOUtils.paymentIsValid(gResponse)) {
+				if (ckoUtility.paymentIsValid(gResponse)) {
 					app.getController('COSummary').ShowConfirmation(order);
 				}
 				else {
-					CKOUtils.handleFail(gResponse);
+					ckoUtility.handleFail(gResponse);
 				}
 				
 			}
@@ -79,7 +77,7 @@ function handleReturn() {
 		}
 		else {
 			
-			CKOUtils.handleFail(null);
+			ckoUtility.handleFail(null);
 			
 		}
 		
@@ -109,7 +107,7 @@ function handleFail() {
  * Handles webhook responses from the Checkout.com payment gateway.
  */
 function handleWebhook() {
-	var isValidResponse = CKOUtils.isValidResponse();
+	var isValidResponse = ckoUtility.isValidResponse();
 	if (isValidResponse) {
 		// Get the response as JSON object
 		var hook = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
@@ -162,14 +160,28 @@ function getCardsList() {
 	}
 }
 
-/*
- * Module exports
- */
+
+function getApmFilter(){
+	
+	var basket = BasketMgr.getCurrentBasket();
+	var currencyCode = basket.getCurrencyCode();
+	var countryCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
+	
+	var filterObject = {
+			country		: countryCode,
+			currency	: currencyCode
+	}
+	
+	response.getWriter().println(JSON.stringify(filterObject));
+	
+}
+
 
 /*
- * Local methods
+ * Module exports
  */
 exports.HandleReturn = guard.ensure(['https'], handleReturn);
 exports.HandleFail = guard.ensure(['https'], handleFail);
 exports.HandleWebhook = guard.ensure(['post', 'https'], handleWebhook);
 exports.GetCardsList = guard.ensure(['https'], getCardsList);
+exports.GetApmFilter = guard.ensure(['https'], getApmFilter);

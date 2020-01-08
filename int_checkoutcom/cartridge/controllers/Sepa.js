@@ -12,20 +12,20 @@ var ISML = require('dw/template/ISML');
 var URLUtils = require('dw/web/URLUtils');
 var OrderMgr = require('dw/order/OrderMgr');
 
-/*
-* Utility functions
-*/
-var util = require('~/cartridge/scripts/utility/util');
+
+/** Utility **/
+var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
+var apmUtility = require('~/cartridge/scripts/helpers/apmUtility');
 
 function mandate() {
 	var url = session.privacy.redirectUrl;
-	var orderId = util.getOrderId();
+	var orderId = ckoUtility.getOrderId();
 	var order = OrderMgr.getOrder(orderId);
 	
 	if(url){
 		app.getView({
 			creditAmount: order.totalGrossPrice.value.toFixed(2),
-			formatedAmount: util.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order),
+			formatedAmount: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), 'EUR'),
 			debtor:	order.defaultShipment.shippingAddress.firstName + " " + order.defaultShipment.shippingAddress.lastName,
 			debtorAddress1: order.billingAddress.address1,
 			debtorAddress2: order.billingAddress.address2,
@@ -33,11 +33,12 @@ function mandate() {
 			debtorPostCode: order.billingAddress.postalCode,
 			debtorStateCode: order.billingAddress.stateCode,
 			debtorCountryCode: order.billingAddress.countryCode,
-			creditor: util.getValue('ckoBusinessName'),
-			creditorAddress1: util.getValue('ckoBusinessAddressLine1'),
-			creditorAddress2: util.getValue('ckoBusinessAddressLine2'),
-			creditorCity: util.getValue('ckoBusinessCity'),
-			creditorCountry: util.getValue('ckoBusinessCountry'),
+			
+			creditor: ckoUtility.getValue('ckoBusinessName'),
+			creditorAddress1: ckoUtility.getValue('ckoBusinessAddressLine1'),
+			creditorAddress2: ckoUtility.getValue('ckoBusinessAddressLine2'),
+			creditorCity: ckoUtility.getValue('ckoBusinessCity'),
+			creditorCountry: ckoUtility.getValue('ckoBusinessCountry'),
 		    ContinueURL: URLUtils.https('Sepa-HandleMandate')
 		    }).render('sepaform');
 	}else{
@@ -50,9 +51,7 @@ function handleMandate() {
 	
 	// set session redirect url to null
 	session.privacy.redirectUrl = null;
-	
-	var gatewayResponse = false;
-	var orderId = util.getOrderId();
+	var orderId = ckoUtility.getOrderId();
 	
     app.getForm('sepaForm').handleAction({
         cancel: function () {
@@ -62,7 +61,7 @@ function handleMandate() {
             if(orderId){
         		// load the order
         		var order = OrderMgr.getOrder(orderId);
-                var basket = util.checkAndRestoreBasket(order);
+                ckoUtility.checkAndRestoreBasket(order);
             }
             
             app.getController('COBilling').Start();
@@ -89,23 +88,19 @@ function handleMandate() {
 	        			        "type": "id",
 	        			        "id": responseObject.id
 	        			    },
-	        			    "amount": util.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order),
+	        			    "amount": ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), 'EUR'),
 	        			    "currency": "EUR",
 	        			    "reference": orderId
 	            		};
             		
             		session.privacy.sepaResponse = null;
             		
-            		var request = util.handleSepaRequest(payObject, order);
+            		apmUtility.handleSepaRequest(payObject, order);
             		
                 	var confirmation = app.getController('COSummary');
                 	
-            		
-            		//app.getView().render('helloformresult');
             		confirmation.ShowConfirmation(order);
             	}else{
-            		// print out a message
-            		//response.getWriter().println('Order Not Found!');
                     
                     app.getController('COBilling').Start();
             	}
