@@ -66,7 +66,7 @@ function initTable(tableData) {
 		data: JSON.parse(tableData), 
 		layout: 'fitColumns',
 		pagination: 'local',
-		paginationSize: 10,
+		paginationSize: 100,
 		columns: getTableColumns(),
 		tableBuilt: function() {
 			// Set the pagination controls
