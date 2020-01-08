@@ -106,10 +106,10 @@ function Authorize(args) {
 		    Transaction.wrap(function() {
 		        paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
 				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-				paymentInstrument.custom.ckoPaymentId = chargeResponse.id;
-				paymentInstrument.custom.ckoParentTransactionId = null;
-				paymentInstrument.custom.ckoTransactionOpened = null;
-		        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+				//paymentInstrument.custom.ckoPaymentId = chargeResponse.id;							// need to be fixed by dave
+				//paymentInstrument.custom.ckoParentTransactionId = null;								// need to be fixed by dave
+				//paymentInstrument.custom.ckoTransactionOpened = null;									// need to be fixed by dave
+		        //paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);			// need to be fixed by dave
 		    });
 			
 			return {authorized: true};

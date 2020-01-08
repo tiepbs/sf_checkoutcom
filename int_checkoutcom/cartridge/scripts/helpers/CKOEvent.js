@@ -24,7 +24,7 @@ var CKOEvent = {
         details += ckoUtility._('cko.transaction.id', 'cko') + ': ' + hook.message.id + '\n';
         details += ckoUtility._('cko.transaction.oid', 'cko') + ': ' + hook.message.originalId + '\n';
         details += ckoUtility._('cko.transaction.status', 'cko') + ': ' + hook.message.status + '\n';
-        details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.message.responseCode + '\n';
+        details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.message.response_code + '\n';
         details += ckoUtility._('cko.response.message', 'cko') + ': ' + hook.message.responseMessage + '\n';
         details += ckoUtility._('cko.response.info', 'cko') + ': ' + hook.message.responseAdvancedInfo + '\n';
 

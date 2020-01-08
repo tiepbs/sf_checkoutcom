@@ -33,7 +33,6 @@ var apmUtility = {
 		// add redirect to sepa source reqeust
 		if(type == 'Sepa'){
 			session.privacy.redirectUrl = "${URLUtils.url('Sepa-Mandate')}";
-			session.privacy.sepaResponse = gatewayResponse;
 		}
 		
 		// Add redirect URL to session if exists
@@ -41,34 +40,9 @@ var apmUtility = {
 			session.privacy.redirectUrl = gatewayLinks.redirect.href
 		}
 		
-		// Prepare the transaction info for the order
-		var details = '';
-		if (gatewayResponse.hasOwnProperty('card') && gatewayResponse.card.hasOwnProperty('customer')){	// todo
-			details += ckoUtility._("cko.customer.id", "cko_pay_test") + ": " + gatewayResponse.card.customerId + "\n";		// todo
-		}
+		ckoUtility.buildResponseNote(gatewayResponse, order);
 		
-		details += ckoUtility._("cko.transaction.status", "cko") + ": " + gatewayResponse.status + "\n";
-		details += ckoUtility._("cko.respnose.code", "cko") + ": " + gatewayResponse.responseCode + "\n";
-		details += ckoUtility._("cko.response.message", "cko") + ": " + gatewayResponse.responseMessage + "\n";
-		details += ckoUtility._("cko.response.info", "cko") + ": " + gatewayResponse.responseAdvancedInfo + "\n";
-		details += ckoUtility._("cko.respnse.last4", "cko") + ": " + gatewayResponse.last4 + "\n";
-		details += ckoUtility._("cko.response.paymentMethod", "cko") + ": " + gatewayResponse.paymentMethod + "\n";
-		details += ckoUtility._("cko.authorization.code", "cko") + ": " + gatewayResponse.authCode + "\n";
-		
-		// Add risk flag information if applicable
-		if(gatewayResponse.response_code == '10100'){
-			details += ckoUtility._("cko.risk.flag", "cko") + ": " + ckoUtility._("cko.risk.info", "cko") + "\n";
-		}
-		
-		// Add the details to the order
-		Transaction.wrap(function(){
-			order.addNote(ckoUtility._("cko.transaction.details", "cko"), details);
-		});
-		
-		// Confirm the payment
-		Transaction.wrap(function(){
-			order.setPaymentStatus(order.PAYMENT_STATUS_PAID);
-		});
+
 	},
 	
 	

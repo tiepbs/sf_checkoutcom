@@ -1,7 +1,7 @@
 <!-- Qpay pay APM Option -->
 <H4>
 	<img alt="qpay" id="knet_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/qpay.png')}" width="10%"/>
-	QPAY 
+	${Resource.msg('cko.qpay.name','cko',null)} 
 	<input id="qpay_apm_radio_btn" type="radio" name="apm_payment_types" value="qpay">
 </H4>
 

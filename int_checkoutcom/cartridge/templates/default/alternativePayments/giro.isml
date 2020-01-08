@@ -1,7 +1,7 @@
 <!-- Giro pay APM Option -->
 <H4>
 	<img alt="giropay" id="giropay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/giropay.jpeg')}" width="10%"/>
-	GIRO PAY 
+	${Resource.msg('cko.giro.name','cko',null)} 
 	<input id="giroPay_apm_radio_btn" type="radio" name="apm_payment_types" value="giro">
 </H4>
 

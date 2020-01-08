@@ -365,10 +365,6 @@ function callKlarnaController(controllerUrl){
 	    	var requestObject = JSON.parse(this.responseText).requestObject;
 	    	var addressInfo = JSON.parse(this.responseText).addressInfo;
 	    	
-	    	
-	    	
-	    	//console.log(JSON.parse(this.responseText));
-	    	
 		    Klarna.Payments.init(
 			    // options
 		    	{
@@ -378,8 +374,6 @@ function callKlarnaController(controllerUrl){
 	    	var klarnaBox = $('#klarna-buttons');
 	    	
 	    	for(var i = 0; i < categories.length; i++){
-
-	    		//<input id="klarna_apm_radio_btn" type="radio" name="apm_payment_types" value="klarna">
 		    	
 		    	var klarnaButton = "<div style='padding: 10px; border: solid 0.5px #eee; border-radius: 5px;'> " + categories[i].name 
 		    	+ " <input type='radio' name='payment_method_categories' value='" + categories[i].identifier + "'id='" 
@@ -473,7 +467,6 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Obj
         // callback
         function (response) {
             // ...
-        	//console.log(response);
         	
         	if(response.approved){
     			$(klarnaContainer).empty();
@@ -593,14 +586,14 @@ function getApmObject(){
 			},
 			sepa		: {
 				countries	: ["AT", "BE", "CY", "DE", "EE", "ES", "FI", "FR", "GR", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PT", "SI", "SK", "AD", "BG", "CH", "CZ", "DK", "GB", "HR", "HU", "IS", "LI", "MC", "NO", "PL", "RO", "SM", "SE", "VA"],
-				currencies	: "EUR"
+				currencies	: ["EUR", "GBP"]
 			},
 			p24			: {
 				countries	: "PL",
 				currencies	: ["EUR", "PLN"]
 			},
 			klarna		: {
-				countries	: ["AT", "DK", "FI", "DE", "NL", "NO", "SE", "UK"],
+				countries	: ["AT", "DK", "FI", "DE", "NL", "NO", "SE", "UK", "GB"],
 				currencies	: ["EUR", "DKK", "GBP", "NOK", "SEK"]
 			}
 		}
@@ -625,18 +618,13 @@ function AlternativePaymentsFilter(){
 				
 				var filterObject = JSON.parse(this.responseText);
 		    	
-//				var filterObject = {
-//					country		: "DE",
-//					currency	: "EUR"
-//				}
-		    	
 		    	var amps;
 		    	
 		    	for(amps in apmsFilterObject){
 		    		
 		    		var apmObjects = apmsFilterObject[amps];
 		    		
-		    		if(apmObjects.countries.includes(filterObject.country) && apmObjects.currencies.includes(filterObject.currency)){
+		    		if(apmObjects.countries.includes(filterObject.country.toUpperCase()) && apmObjects.currencies.includes(filterObject.currency)){
 		    			
 		    			showThisApm(amps);
 		    			
@@ -646,9 +634,9 @@ function AlternativePaymentsFilter(){
 	  	    	
 		    }
 		};
+		
 		xhttpFilter.open("GET", controllerUrl, true);
-		xhttpFilter.send();
-			
+		xhttpFilter.send();	
 	
 	});
 	
