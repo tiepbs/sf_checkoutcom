@@ -45,7 +45,9 @@
             <attribute-group group-id="Checkout.com">
                 <display-name xml:lang="x-default">Checkout.com</display-name>
                 <attribute attribute-id="ckoPaymentId"/>
-            </attribute-group>
+                <attribute attribute-id="ckoParentTransactionId"/>
+                <attribute attribute-id="ckoTransactionOpened"/>
+           </attribute-group>
         </group-definitions>
     </type-extension>
     <type-extension type-id="SitePreferences">

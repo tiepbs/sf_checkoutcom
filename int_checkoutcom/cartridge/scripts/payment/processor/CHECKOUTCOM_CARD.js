@@ -4,6 +4,7 @@
 var PaymentMgr = require('dw/order/PaymentMgr');
 var Transaction = require('dw/system/Transaction');
 var ISML = require('dw/template/ISML');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 
 /* Site controller */
 var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
@@ -89,7 +90,7 @@ function Authorize(args) {
 	
 	// make the charge request
 	var chargeResponse = cardUtility.handleCardRequest(cardData, args);
-
+	
 	// Handle card charge request result
 	if(chargeResponse){
 		
@@ -106,10 +107,10 @@ function Authorize(args) {
 		    Transaction.wrap(function() {
 		        paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
 				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-				//paymentInstrument.custom.ckoPaymentId = chargeResponse.id;							// need to be fixed by dave
-				//paymentInstrument.custom.ckoParentTransactionId = null;								// need to be fixed by dave
-				//paymentInstrument.custom.ckoTransactionOpened = null;									// need to be fixed by dave
-		        //paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);			// need to be fixed by dave
+				paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
+				paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+				paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = null;
+		        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
 		    });
 			
 			return {authorized: true};
