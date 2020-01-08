@@ -108,10 +108,16 @@ function handleFail() {
  */
 function handleWebhook() {
 	var isValidResponse = ckoUtility.isValidResponse();
+
+	const logger = require('dw/system/Logger').getLogger('ckodebug');
+	logger.debug('hook1 {0}', request.httpParameterMap.getRequestBodyAsString());
+
 	if (isValidResponse) {
 		// Get the response as JSON object
 		var hook = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
 		
+    	logger.debug('hook2 {0}', JSON.stringify(hook));
+
 		// Check the webhook event
 		if (hook !== null && hook.hasOwnProperty('eventType') && hook.hasOwnProperty('message')) {
 			// Get a camel case function name from event type
