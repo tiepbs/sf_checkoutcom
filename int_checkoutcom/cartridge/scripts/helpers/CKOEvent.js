@@ -5,7 +5,7 @@ var OrderMgr = require('dw/order/OrderMgr');
 var Transaction = require('dw/system/Transaction');
 
 /* Checkout.com Helper functions */
-var CKOHelper = require('~/cartridge/scripts/helpers/CKOCardHelper');
+var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 
 /**
  * Gateway event functions for the Checkout.com cartridge integration.
@@ -20,18 +20,18 @@ var CKOEvent = {
 
     	// Prepare the webhook info
         var details = '';
-        details += CKOHelper._('cko.webhook.event', 'cko') + ': ' + hook.eventType + '\n';
-        details += CKOHelper._('cko.transaction.id', 'cko') + ': ' + hook.message.id + '\n';
-        details += CKOHelper._('cko.transaction.oid', 'cko') + ': ' + hook.message.originalId + '\n';
-        details += CKOHelper._('cko.transaction.status', 'cko') + ': ' + hook.message.status + '\n';
-        details += CKOHelper._('cko.response.code', 'cko') + ': ' + hook.message.responseCode + '\n';
-        details += CKOHelper._('cko.response.message', 'cko') + ': ' + hook.message.responseMessage + '\n';
-        details += CKOHelper._('cko.response.info', 'cko') + ': ' + hook.message.responseAdvancedInfo + '\n';
+        details += ckoUtility._('cko.webhook.event', 'cko') + ': ' + hook.eventType + '\n';
+        details += ckoUtility._('cko.transaction.id', 'cko') + ': ' + hook.message.id + '\n';
+        details += ckoUtility._('cko.transaction.oid', 'cko') + ': ' + hook.message.originalId + '\n';
+        details += ckoUtility._('cko.transaction.status', 'cko') + ': ' + hook.message.status + '\n';
+        details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.message.response_code + '\n';
+        details += ckoUtility._('cko.response.message', 'cko') + ': ' + hook.message.responseMessage + '\n';
+        details += ckoUtility._('cko.response.info', 'cko') + ': ' + hook.message.responseAdvancedInfo + '\n';
 
         // Process the transaction
         Transaction.wrap(function() {
             // Add the details to the order
-            order.addNote(CKOHelper._('cko.webhook.info', 'cko'), details);
+            order.addNote(ckoUtility._('cko.webhook.info', 'cko'), details);
  
             // Update the payment status
             if (paymentStatus) {

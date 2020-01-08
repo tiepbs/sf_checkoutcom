@@ -14,6 +14,7 @@ var apm_selected_box = false;
 document.addEventListener('DOMContentLoaded', function(){
 	
 	AlternativePayments();
+	AlternativePaymentsFilter();
 	
 }, false);
 
@@ -364,10 +365,6 @@ function callKlarnaController(controllerUrl){
 	    	var requestObject = JSON.parse(this.responseText).requestObject;
 	    	var addressInfo = JSON.parse(this.responseText).addressInfo;
 	    	
-	    	
-	    	
-	    	//console.log(JSON.parse(this.responseText));
-	    	
 		    Klarna.Payments.init(
 			    // options
 		    	{
@@ -377,8 +374,6 @@ function callKlarnaController(controllerUrl){
 	    	var klarnaBox = $('#klarna-buttons');
 	    	
 	    	for(var i = 0; i < categories.length; i++){
-
-	    		//<input id="klarna_apm_radio_btn" type="radio" name="apm_payment_types" value="klarna">
 		    	
 		    	var klarnaButton = "<div style='padding: 10px; border: solid 0.5px #eee; border-radius: 5px;'> " + categories[i].name 
 		    	+ " <input type='radio' name='payment_method_categories' value='" + categories[i].identifier + "'id='" 
@@ -422,45 +417,20 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId){
 	    instance_id					: sessionId
 		}, function (res) {
 		console.debug(res);
-		klarnaAuthorizeButton('#klarna-payments-container', sessionId, paymentMethod);
+		klarnaAuthorizeButton('#klarna-payments-container', sessionId, paymentMethod, addressInfo, requestObject);
 	});
 	
-//	Klarna.Payments.load({
-//		container					: '#klarna-payments-container',
-//	    payment_method_category		: paymentMethod,
-//	    instance_id					: sessionId
-//		}, {
-//            purchase_country			: requestObject.purchase_country,
-//            purchase_currency			: requestObject.currency,
-//            locale					: requestObject.locale,
-//            billing_address			: addressInfo,
-//            shipping_address			: addressInfo,
-//            order_amount				: requestObject.amount,
-//            order_tax_amount			: requestObject.tax_amount,
-//            order_lines				: requestObject.products,
-//            customer					: {
-//							                date_of_birth: "1970-01-01",
-//							                gender: "male"
-//							            }
-//            
-//		},
-//        function (response) {
-//            // ...
-//			console.log(response);
-//        }
-//		
-//	);
 }
 
 
 /*
  * Klarna Authorize button
  */
-function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod){
+function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject){
 	//console.log(klarnaContainer);
 	
 	var AuthorizeBtn = "<button type='button' style='width: 100%; margin-top: 30px;' onclick='klarnaAuthorize(`" + sessionId 
-	+ "`, `" + klarnaContainer + "`, `" + paymentMethod + "`)'>Authorize</button>";
+	+ "`, `" + klarnaContainer + "`, `" + paymentMethod + "`, ` " + JSON.stringify(billingAddress) + " ` , ` " + JSON.stringify(requestObject) + " `)'>Authorize</button>";
 	
 	var klarna = $(klarnaContainer);
 	
@@ -473,18 +443,30 @@ function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod){
 /*
  * Klarna Authorize
  */
-function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod){
+function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Object){
+	
+	var requestObject = JSON.parse(Object);
+	var billingAddress = JSON.parse(Address);
 	
     Klarna.Payments.authorize(
         // options
         {
             instance_id			: sessionId,
-            auto_finalize		: false // Optional, defaults to true - relevant in case of payment_method_category "pay_now". Should be true for single-page checkout and false for multi-page checkout
+            auto_finalize		: false, 
+            payment_method_category: paymentMethod
+        	},
+            {
+                  purchase_country			: requestObject.purchase_country,
+                  purchase_currency			: requestObject.currency,
+              	  locale					: requestObject.locale,
+            	  billing_address			: billingAddress,
+            	  order_amount				: requestObject.amount,
+            	  order_tax_amount			: requestObject.tax_amount,
+            	  order_lines				: requestObject.products
         },
         // callback
         function (response) {
             // ...
-        	console.log(response);
         	
         	if(response.approved){
     			$(klarnaContainer).empty();
@@ -548,6 +530,121 @@ function toggleAPMS(apms, apmBox){
 		
 	}
 
+}
+
+
+function getApmObject(){
+	
+	var apmsFilterObject = {
+			ideal 		: {
+				countries	: "NL",
+				currencies	: "EUR"
+			},
+			boleto		: {
+				countries	: "BR",
+				currencies	: ["BRL", "USD"]
+			},
+			bancontact	: {
+				countries	: "BE",
+				currencies	: "EUR"
+			},
+			benefit		: {
+				countries	: "BH",
+				currencies	: "BHD"
+			},
+			giro		: {
+				countries	: "DE",
+				currencies	: "EUR"
+			},
+			eps			: {
+				countries	: "AT",
+				currencies	: "EUR"
+			},
+			sofort		: {
+				countries	: ["AT", "BE", "DE", "ES", "IT", "NL"],
+				currencies	: "EUR"
+			},
+			knet		: {
+				countries	: "KW",
+				currencies	: "KWD"
+			},
+			qpay		: {
+				countries	: "QA",
+				currencies	: "QAR"
+			},
+			fawry		: {
+				countries	: "EG",
+				currencies	: "EGP"
+			},
+			multibanco	: {
+				countries	: "PT",
+				currencies	: "EUR"
+			},
+			poli		: {
+				countries	: ["AU", "NZ"],
+				currencies	: ["AUD", "NZD"]
+			},
+			sepa		: {
+				countries	: ["AT", "BE", "CY", "DE", "EE", "ES", "FI", "FR", "GR", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PT", "SI", "SK", "AD", "BG", "CH", "CZ", "DK", "GB", "HR", "HU", "IS", "LI", "MC", "NO", "PL", "RO", "SM", "SE", "VA"],
+				currencies	: ["EUR", "GBP"]
+			},
+			p24			: {
+				countries	: "PL",
+				currencies	: ["EUR", "PLN"]
+			},
+			klarna		: {
+				countries	: ["AT", "DK", "FI", "DE", "NL", "NO", "SE", "UK", "GB"],
+				currencies	: ["EUR", "DKK", "GBP", "NOK", "SEK"]
+			}
+		}
+	
+	return apmsFilterObject;
+}
+
+
+function AlternativePaymentsFilter(){
+	
+	var apmsFilterObject = getApmObject();
+	
+	var creditCard = $('#is-CHECKOUTCOM_APM');
+	
+	creditCard.on('click', function(){
+		
+		var controllerUrl = $('#ckoApmFilterUrl').val();
+			
+		var xhttpFilter = new XMLHttpRequest();
+		xhttpFilter.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				
+				var filterObject = JSON.parse(this.responseText);
+		    	
+		    	var amps;
+		    	
+		    	for(amps in apmsFilterObject){
+		    		
+		    		var apmObjects = apmsFilterObject[amps];
+		    		
+		    		if(apmObjects.countries.includes(filterObject.country.toUpperCase()) && apmObjects.currencies.includes(filterObject.currency)){
+		    			
+		    			showThisApm(amps);
+		    			
+		    		}
+		    		
+		    	}
+	  	    	
+		    }
+		};
+		
+		xhttpFilter.open("GET", controllerUrl, true);
+		xhttpFilter.send();	
+	
+	});
+	
+}
+
+
+function showThisApm(apmId){
+	$('#'+ apmId).show();
 }
 
 
