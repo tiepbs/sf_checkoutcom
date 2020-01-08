@@ -75,11 +75,7 @@ var ckoUtility = {
         var requestKey = request.httpHeaders.get("Authorization");
         var privateSharedKey = this.getAccountKeys().privateKey;
         
-        if (requestKey == privateSharedKey) {
-        	return true;
-        }
-
-        return false;
+        return requestKey == privateSharedKey
 	}, 
 	
 	/* 
