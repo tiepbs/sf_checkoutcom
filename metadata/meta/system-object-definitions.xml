@@ -67,7 +67,7 @@
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>3</min-length>
-                <default-value>Billing Descriptor Line 1</default-value>
+                <default-value>Sfcc Shop</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoBillingDescriptor2">
                 <display-name xml:lang="x-default">Billing Descriptor Line2</display-name>
@@ -76,7 +76,7 @@
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>3</min-length>
-                <default-value>Billing Descriptor Line 2</default-value>
+                <default-value>Sfcc City</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoBusinessName">
                 <display-name xml:lang="x-default">Buisness Name</display-name>
