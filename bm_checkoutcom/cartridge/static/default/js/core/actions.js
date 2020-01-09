@@ -10,12 +10,25 @@ document.addEventListener('DOMContentLoaded', function(){
 function initButtons() {
 	// Close the modal window
 	jQuery('.ckoModal .modal-content .close').click(function(e) {
-		console.log(e);
 		jQuery('.ckoModal .modal-content input').val('');
 		jQuery('.ckoModal .modal-content span').not('.close, .label').empty();
 		jQuery('.ckoModal').hide();
 	});
 
+	// Define the transaction buttons click events
+	document.addEventListener('click', function(e) {  
+		if (e.target.className.indexOf('ckoAction') !== -1) {
+			// Ignore double cliks
+			if (e.detail > 1) {
+				return;
+			}
+
+			// Open the transaction action modal window
+			openModal(e.target);
+		}
+	},  true);
+	
+	
 	// Submit the action request
 	jQuery('.ckoModal .modal-content .submit').click(function() {
 		performAction(jQuery(this).closest('.modal-content').find('input'));
