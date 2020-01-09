@@ -68,7 +68,8 @@ var ckoUtility = {
 		return hostname;
 	},
 	
-    /**
+	
+    /*
      * Check if the gateway response is valid.
      */
     isValidResponse: function() {
@@ -83,6 +84,7 @@ var ckoUtility = {
         return requestKey == privateSharedKey
 	}, 
 	
+	
 	/* 
 	 * get value from custom preferences
 	 */
@@ -90,12 +92,14 @@ var ckoUtility = {
 		return dw.system.Site.getCurrent().getCustomPreferenceValue(field);
 	},
 	
+	
 	/*
 	 * Handles string translation with language resource files.
 	 */
 	_: function(strValue, strFile){
 		return Resource.msg(strValue, strFile, null);
 	},
+	
 		
 	/*
 	 * Write gateway information to the website's custom log files.
@@ -109,7 +113,10 @@ var ckoUtility = {
 		}
 	},
 	
-	/* return order id */
+	
+	/* 
+	 * return order id 
+	 */
 	getOrderId: function(){
 		var orderId = (this.getValue('cko3ds')) ? request.httpParameterMap.get('reference').stringValue : request.httpParameterMap.get('reference').stringValue;
 		if(orderId === null){
@@ -120,10 +127,13 @@ var ckoUtility = {
 	},
 	
 	
-	/* cartridge metadata. */
+	/* 
+	 * cartridge metadata. 
+	 */
 	getCartridgeMeta: function(){
 		return this.getValue("ckoUserAgent") + ' ' + this.getValue("ckoVersion");
 	},
+	
 	
 	/*
 	 * get Account API Keys
@@ -138,6 +148,7 @@ var ckoUtility = {
 
         return keys;
 	},
+	
 	
 	/*
 	 * Create an HTTP client to handle request to gateway
@@ -240,12 +251,14 @@ var ckoUtility = {
 		return result;
 	},
 	
+	
 	/*
 	 * Confirm is a payment is valid from API response code
 	 */
 	paymentValidate: function(gatewayResponse){
 		return gatewayResponse.response_code == "10000" || gatewayResponse.response_code == '10100' || gatewayResponse.response_code == '10200';
 	},
+	
 	
 	/*
 	 * Write order information to session for the current shopper.
@@ -259,6 +272,7 @@ var ckoUtility = {
 			});
 		}
 	},
+	
 	
 	/*
 	 * Handle a failed payment response
@@ -391,6 +405,7 @@ var ckoUtility = {
 		}
 	},
 	
+	
 	/*
 	 * return customer object
 	 */
@@ -407,6 +422,7 @@ var ckoUtility = {
 		return customer;
 	},
 	
+	
 	/*
 	 * get Basket Quantities
 	 */
@@ -419,8 +435,10 @@ var ckoUtility = {
 		
 	},
 	
+	
 	/*
-	 * get Basket Quantities
+	 * get Billing Descriptor Object
+	 * from custom preferences
 	 */
 	getBillingDescriptorObject : function(){
 		
@@ -432,6 +450,7 @@ var ckoUtility = {
 		return billingDescriptor;
 		
 	},
+	
 	
 	/*
 	 * get Products Information
@@ -471,6 +490,7 @@ var ckoUtility = {
 		return products;
 		
 	},
+	
 	
 	/*
 	 * return tax object
@@ -577,6 +597,7 @@ var ckoUtility = {
 		
 	},
 	
+	
 	/*
 	 * get Product IDs
 	 */
@@ -596,6 +617,7 @@ var ckoUtility = {
 		return productIds;
 		
 	},
+	
 	
 	/*
 	 * get Each Product Quantity
@@ -617,6 +639,7 @@ var ckoUtility = {
 		
 	},
 	
+	
 	/*
 	 * get Each Product Quantity
 	 */
@@ -636,6 +659,7 @@ var ckoUtility = {
 		return products_quantites;
 		
 	},
+	
 	
 	/*
 	 * get Host IP
@@ -678,6 +702,7 @@ var ckoUtility = {
 		return phone;
 	},
 	
+	
 	/*
 	 * Return Customer FullName
 	 */
@@ -693,6 +718,7 @@ var ckoUtility = {
 		return fullname;
 	},
 	
+	
 	/*
 	 * Return Customer FirstName
 	 */
@@ -707,6 +733,7 @@ var ckoUtility = {
 		
 		return firstname;
 	},
+	
 	
 	/*
 	 * Return Customer LastName
@@ -733,7 +760,8 @@ var ckoUtility = {
 		if(captureOn > 0){
 			
 			var t = new Date();
-			t.setSeconds(t.getSeconds() + captureOn);
+			var m = parseInt(t.getMinutes()) + parseInt(captureOn);
+			t.setMinutes(m);
 			
 			return t;
 		}
