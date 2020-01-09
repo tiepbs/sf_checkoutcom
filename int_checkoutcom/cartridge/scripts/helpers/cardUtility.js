@@ -27,7 +27,8 @@ var cardUtility = {
 		var gatewayObject = this.gatewayObject(cardData, args);
 		
 		// Pre_Authorize card
-		var preAuthorize = this.preAuthorizeCard(gatewayObject);
+		//var preAuthorize = this.preAuthorizeCard(gatewayObject);
+		var preAuthorize = true;
 		
 		if(preAuthorize){
 			// Perform the request to the payment gateway
