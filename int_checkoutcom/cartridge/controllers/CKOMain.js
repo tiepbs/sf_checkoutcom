@@ -101,10 +101,10 @@ function handleWebhook() {
 		var hook = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
 
 		// Check the webhook event
-		if (hook !== null && hook.hasOwnProperty('eventType') && hook.hasOwnProperty('message')) {
+		if (hook !== null && hook.hasOwnProperty('type')) {
 			// Get a camel case function name from event type
 			var func = '';
-			var parts = hook.eventType.split('.');
+			var parts = hook.eventType.split('_');
 			for (var i = 0; i < parts.length; i++) {
 				func += (i == 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
 			}

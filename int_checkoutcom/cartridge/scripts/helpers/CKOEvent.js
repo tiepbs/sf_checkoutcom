@@ -20,13 +20,10 @@ var CKOEvent = {
 
     	// Prepare the webhook info
         var details = '';
-        details += ckoUtility._('cko.webhook.event', 'cko') + ': ' + hook.eventType + '\n';
-        details += ckoUtility._('cko.transaction.id', 'cko') + ': ' + hook.message.id + '\n';
-        details += ckoUtility._('cko.transaction.oid', 'cko') + ': ' + hook.message.originalId + '\n';
-        details += ckoUtility._('cko.transaction.status', 'cko') + ': ' + hook.message.status + '\n';
+        details += ckoUtility._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
+        details += ckoUtility._('cko.transaction.id', 'cko') + ': ' + hook.action_id + '\n';
+        details += ckoUtility._('cko.transaction.status', 'cko') + ': ' + hook.message.response_summary + '\n';
         details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.message.response_code + '\n';
-        details += ckoUtility._('cko.response.message', 'cko') + ': ' + hook.message.responseMessage + '\n';
-        details += ckoUtility._('cko.response.info', 'cko') + ': ' + hook.message.responseAdvancedInfo + '\n';
 
         // Process the transaction
         Transaction.wrap(function() {
@@ -46,58 +43,58 @@ var CKOEvent = {
     },
 
     /**
-     * Charge captured event.
+     * Payment captured event.
      */
-    chargeCaptured: function(hook) {  
+    paymentCaptured: function(hook) {  
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);
     },
 
     /**
-     * Charge succeded event.
+     * Payment authorized event.
      */
-    chargeSucceeded: function(hook) {
+    paymentApproved: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
     },   
 
     /**
-     * Charge failed event.
+     * Authorization failed event.
      */
-    chargeFailed: function(hook) {
+    paymentDeclined: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
     },   
 
     /**
-     * Charge capture failed event.
+     * Capture failed event.
      */
-    chargeCapturedFailed: function(hook) {
+    paymentCapturedDeclined: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
     },  
 
     /**
-     * Charge refunded event.
+     * Payment refunded event.
      */
-    chargeRefunded: function(hook) {
+    paymentRefunded: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', 'ORDER_STATUS_CANCELLED');
     },  
 
     /**
-     * Charge voided event.
+     * Payment voided event.
      */    
-    chargeVoided: function(hook) {
+    paymentVoided: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_CANCELLED');
     }, 
 
     /**
-     * Charge refund failed event.
+     * Refund failed event.
      */
-    chargeRefundedFailed: function(hook) {
+    paymentRefundDeclined: function(hook) {
         this.addWebhookInfo(hook, null, null);
     }, 
 
     /**
      * Charge void failed event.
      */
-    chargeVoidedFailed: function(hook) {
+    paymentVoidDeclined: function(hook) {
         this.addWebhookInfo(hook, null, null);
     }  
 };
