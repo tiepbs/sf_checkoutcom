@@ -74,7 +74,12 @@ var ckoUtility = {
     isValidResponse: function() {
         var requestKey = request.httpHeaders.get("Authorization");
         var privateSharedKey = this.getAccountKeys().privateKey;
-        
+		
+		const logger = require('dw/system/Logger').getLogger('ckodebug');
+		logger.debug('requestKey {0}', requestKey);
+		logger.debug('privateSharedKey {0}',privateSharedKey);
+
+		
         return requestKey == privateSharedKey
 	}, 
 	
