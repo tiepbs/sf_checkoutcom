@@ -21,8 +21,10 @@ var CKOEvent = {
             // Prepare the webhook info
             var details = '';
             details += ckoUtility._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
-            details += ckoUtility._('cko.transaction.id', 'cko') + ': ' + hook.action_id + '\n';
-            details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.response_code + '\n';
+            details += ckoUtility._('cko.transaction.id', 'cko') + ': ' + hook.data.action_id + '\n';
+            details += ckoUtility._('cko.transaction.paymentId', 'cko') + ': ' + hook.data.id + '\n';
+            details += ckoUtility._('cko.transaction.eventId', 'cko') + ': ' + hook.id + '\n';
+            details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.data.response_code + '\n';
 
             // Process the transaction
             Transaction.wrap(function() {
