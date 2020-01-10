@@ -75,9 +75,6 @@ var cardUtility = {
 		if(gatewayLinks.hasOwnProperty('redirect')){
 			session.privacy.redirectUrl = gatewayLinks.redirect.href
 		}
-
-		ckoUtility.buildResponseNote(gatewayResponse, order);
-
 	},
 	
 

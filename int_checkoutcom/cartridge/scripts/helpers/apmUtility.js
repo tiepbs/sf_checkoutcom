@@ -39,10 +39,6 @@ var apmUtility = {
 		if(gatewayLinks.hasOwnProperty('redirect')){
 			session.privacy.redirectUrl = gatewayLinks.redirect.href
 		}
-		
-		ckoUtility.buildResponseNote(gatewayResponse, order);
-		
-
 	},
 	
 	

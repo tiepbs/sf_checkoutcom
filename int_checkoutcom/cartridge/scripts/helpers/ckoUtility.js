@@ -282,49 +282,6 @@ var ckoUtility = {
 		app.getController('COBilling').Start();
 	},
 	
-	
-	/*
-	 * buildNote
-	 */
-	buildResponseNote: function(gatewayResponse, order){
-		// Prepare the transaction info for the order
-		var details = '';
-		if (gatewayResponse.hasOwnProperty('customer') && gatewayResponse.customer.hasOwnProperty('id')){
-			details += ckoUtility._("cko.customer.id", "cko") + ": " + gatewayResponse.customer.id + "\n";
-		}
-		
-		details += ckoUtility._("cko.transaction.status", "cko") + ": " + gatewayResponse.status + "\n";
-		details += ckoUtility._("cko.response.code", "cko") + ": " + gatewayResponse.response_code + "\n";
-		details += ckoUtility._("cko.response.message", "cko") + ": " + gatewayResponse.response_summary + "\n";
-		
-		if (gatewayResponse.hasOwnProperty('source') && gatewayResponse.source.hasOwnProperty('last4')){
-			details += ckoUtility._("cko.response.last4", "cko") + ": " + gatewayResponse.source.last4 + "\n";
-		}
-		
-		if (gatewayResponse.hasOwnProperty('source') && gatewayResponse.source.hasOwnProperty('type')){
-			details += ckoUtility._("cko.response.paymentMethod", "cko") + ": " + gatewayResponse.source.type + "\n";
-		}
-		
-		details += ckoUtility._("cko.authorization.code", "cko") + ": " + gatewayResponse.auth_code + "\n";
-		
-		// Add risk flag information if applicable
-		if(gatewayResponse.response_code == '10100'){
-			details += ckoUtility._("cko.risk.flag", "cko") + ": " + ckoUtility._("cko.risk.info", "cko") + "\n";
-		}
-		
-		// Add the details to the order
-		Transaction.wrap(function(){
-			order.addNote(ckoUtility._("cko.transaction.details", "cko"), details);
-		});
-		
-		// Confirm the payment
-		Transaction.wrap(function(){
-			order.setPaymentStatus(order.PAYMENT_STATUS_PAID);
-		});
-		
-	},
-	
-	
 	/*
 	 * Rebuild basket contents after a failed payment.
 	 */
