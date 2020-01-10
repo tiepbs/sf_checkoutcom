@@ -22,7 +22,6 @@ var CKOEvent = {
         var details = '';
         details += ckoUtility._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
         details += ckoUtility._('cko.transaction.id', 'cko') + ': ' + hook.action_id + '\n';
-        details += ckoUtility._('cko.transaction.status', 'cko') + ': ' + hook.message.response_summary + '\n';
         details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.message.response_code + '\n';
 
         // Process the transaction
