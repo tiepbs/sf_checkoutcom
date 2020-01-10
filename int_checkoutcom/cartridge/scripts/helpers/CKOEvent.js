@@ -16,29 +16,31 @@ var CKOEvent = {
      */
     addWebhookInfo: function (hook, paymentStatus, orderStatus) {
         // Load the order
-	    var order = OrderMgr.getOrder(hook.reference);
+        var order = OrderMgr.getOrder(hook.reference);
+        
+        if (order) {
+            // Prepare the webhook info
+            var details = '';
+            details += ckoUtility._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
+            details += ckoUtility._('cko.transaction.id', 'cko') + ': ' + hook.action_id + '\n';
+            details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.response_code + '\n';
 
-    	// Prepare the webhook info
-        var details = '';
-        details += ckoUtility._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
-        details += ckoUtility._('cko.transaction.id', 'cko') + ': ' + hook.action_id + '\n';
-        details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.response_code + '\n';
+            // Process the transaction
+            Transaction.wrap(function() {
+                // Add the details to the order
+                order.addNote(ckoUtility._('cko.webhook.info', 'cko'), details);
+    
+                // Update the payment status
+                if (paymentStatus) {
+                    order.setPaymentStatus(order[paymentStatus]);	
+                }
 
-        // Process the transaction
-        Transaction.wrap(function() {
-            // Add the details to the order
-            order.addNote(ckoUtility._('cko.webhook.info', 'cko'), details);
- 
-            // Update the payment status
-            if (paymentStatus) {
-            	order.setPaymentStatus(order[paymentStatus]);	
-            }
-
-            // Update the order status
-            if ((orderStatus) && (orderStatus.indexOf("CANCELLED") != -1 || orderStatus.indexOf("FAILED") != -1)) {
-                OrderMgr.failOrder(order);
-            }
-        });
+                // Update the order status
+                if ((orderStatus) && (orderStatus.indexOf("CANCELLED") != -1 || orderStatus.indexOf("FAILED") != -1)) {
+                    OrderMgr.failOrder(order);
+                }
+            });
+        }
     },
 
     /**
