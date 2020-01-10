@@ -16,7 +16,7 @@ var CKOEvent = {
      */
     addWebhookInfo: function (hook, paymentStatus, orderStatus) {
         // Load the order
-	    var order = OrderMgr.getOrder(hook.message.trackId);
+	    var order = OrderMgr.getOrder(hook.reference);
 
     	// Prepare the webhook info
         var details = '';
