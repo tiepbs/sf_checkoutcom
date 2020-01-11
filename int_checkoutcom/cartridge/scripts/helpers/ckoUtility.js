@@ -73,11 +73,11 @@ var ckoUtility = {
     /*
      * Check if the gateway response is valid.
      */
-    isValidResponse: function() {
+    isValidResponse: function(gatewayResponse) {
         var requestKey = request.httpHeaders.get("authorization");
 		var privateSharedKey = this.getAccountKeys().privateKey;
 		
-        return requestKey == privateSharedKey
+        return requestKey == privateSharedKey && gatewayResponse;
 	}, 
 	
 	
@@ -292,7 +292,7 @@ var ckoUtility = {
 	/*
 	 * Confirm is a payment is valid from API response code
 	 */
-	paymentValidate: function(gatewayResponse){
+	paymentSuccess: function(gatewayResponse){
 		return gatewayResponse.response_code == "10000" || gatewayResponse.response_code == '10100' || gatewayResponse.response_code == '10200';
 	},
 	

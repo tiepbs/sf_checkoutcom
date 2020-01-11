@@ -35,7 +35,7 @@ var cardUtility = {
 			var gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayObject);
 			
 			// If the charge is valid, process the response
-			if (gatewayResponse && ckoUtility.paymentIsValid(gatewayResponse)) {
+			if (ckoUtility.isValidResponse(gatewayResponse) && ckoUtility.paymentSuccess(gatewayResponse)) {
 				this.handleFullChargeResponse(gatewayResponse, order);
 				return gatewayResponse;
 			} 
@@ -93,11 +93,7 @@ var cardUtility = {
 		
 		var authResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", authData);
 		
-		if(ckoUtility.paymentValidate(authResponse)){
-			return true;
-		}
-		
-		return false;
+		return ckoUtility.paymentSuccess(authResponse);
 	},
 	
 	
