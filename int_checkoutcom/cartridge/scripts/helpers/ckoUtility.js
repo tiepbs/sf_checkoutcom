@@ -149,7 +149,8 @@ var ckoUtility = {
 	/*
 	 * Create an HTTP client to handle request to gateway
 	 */
-	gatewayClientRequest: function(serviceId, requestData){
+	gatewayClientRequest: function(serviceId, requestData, method) {
+		var method = method || 'POST';
         var responseData = false;
 		var serv = ServiceRegistry.get(serviceId);
 		
@@ -159,6 +160,9 @@ var ckoUtility = {
             serv.setURL(requestUrl);
             delete requestData['chargeId'];
 		} 
+
+		// Set the request method
+		serv.setRequestMethod(method);	
 		
 		// Call the service
 	    var resp = serv.call(requestData);
@@ -211,21 +215,31 @@ var ckoUtility = {
 	/*
 	 * Get a parent transaction from a payment id
 	 */
-	getParentTransaction: function(paymentId, transactionType) {
+	getParentTransaction: function (paymentId, transactionType) {
 		// Prepare the payload
+		var mode = this.getValue('ckoMode');
 		var ckoChargeData = {
-			chargeId: request.httpParameterMap.get('pid').stringValue
+			chargeId: paymentId
 		}
 
 		// Get the payment actions
 		var paymentActions = this.gatewayClientRequest(
 			'cko.payment.actions.' + mode + '.service', 
-			paymentId
+			ckoChargeData,
+			'GET'
 		);	
 
-    	const logger = require('dw/system/Logger').getLogger('ckodebug');
-		logger.debug('paymentActions {0}', paymentActions);
+		// Convert the list to array
+		var paymentActionsArray = paymentActions.toArray();
+
+		// Return the requested transaction
+		for (var i = 0; i < paymentActionsArray.length; i++) {
+			if (paymentActionsArray[i].type == transactionType) {
+				return paymentActionsArray[i];
+			}
+		}
 		
+		return null;
 	},
 
 	/*
