@@ -59,7 +59,7 @@ function handleReturn() {
 				gResponse = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
 
 				// Process the response data
-				if (ckoUtility.paymentSuccess(gResponse)) {
+				if (ckoUtility.paymentIsValid(gResponse)) {
 					app.getController('COSummary').ShowConfirmation(order);
 				}
 				else {
@@ -95,12 +95,11 @@ function handleFail() {
  * Handles webhook responses from the Checkout.com payment gateway.
  */
 function handleWebhook() {
-	// Get the response as JSON object
-	var hook = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
-
-	// Process the response
-	var isValidResponse = ckoUtility.isValidResponse(hook);
+	var isValidResponse = ckoUtility.isValidResponse();
 	if (isValidResponse) {
+		// Get the response as JSON object
+		var hook = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
+
 		// Check the webhook event
 		if (hook !== null && hook.hasOwnProperty('type')) {
 			// Get a camel case function name from event type
