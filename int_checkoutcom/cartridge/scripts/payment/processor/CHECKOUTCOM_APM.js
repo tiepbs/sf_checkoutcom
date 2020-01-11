@@ -309,9 +309,9 @@ function SGJCTransAuthObject(payObject, args){
 		if (session.privacy.redirectUrl) {
 			// Create the authorization transaction
 		    Transaction.wrap(function() {
-		        paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
+		        paymentInstrument.paymentTransaction.transactionID = apmResponse.action_id;
 				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-				paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
+				paymentInstrument.paymentTransaction.custom.ckoPaymentId = apmResponse.id;
 				paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
 				paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
 		        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
