@@ -61,13 +61,6 @@ var CKOEvent = {
                
         // Get the parent transaction
         var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Authorization');
-       
-        // Close the parent transaction
-        if (parentTransaction) {
-            Transaction.wrap(function() {
-                parentTransaction.custom.ckoTransactionOpened = false;     
-            });        
-        }
 
         // Create the captured transaction
         Transaction.wrap(function() {
@@ -118,13 +111,6 @@ var CKOEvent = {
                
         // Get the parent transaction
         var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Capture');
-       
-        // Close the parent transaction
-        if (parentTransaction) {
-            Transaction.wrap(function() {
-                parentTransaction.custom.ckoTransactionOpened = false;     
-            });        
-        }
 
         // Create the captured transaction
         Transaction.wrap(function() {
@@ -154,14 +140,7 @@ var CKOEvent = {
                
         // Get the parent transaction
         var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Authorization');
-       
-        // Close the parent transaction
-        if (parentTransaction) {
-            Transaction.wrap(function() {
-                parentTransaction.custom.ckoTransactionOpened = false;     
-            });        
-        }
-        
+
         // Create the captured transaction
         Transaction.wrap(function() {
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
