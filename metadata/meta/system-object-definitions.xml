@@ -33,20 +33,12 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
-            <attribute-definition attribute-id="ckoTransactionOpened">
-                <display-name xml:lang="x-default">Checkout.com Transaction Opened</display-name>
-                <type>string</type>
-                <mandatory-flag>false</mandatory-flag>
-                <externally-managed-flag>false</externally-managed-flag>
-                <min-length>0</min-length>
-            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="Checkout.com">
                 <display-name xml:lang="x-default">Checkout.com</display-name>
                 <attribute attribute-id="ckoPaymentId"/>
                 <attribute attribute-id="ckoParentTransactionId"/>
-                <attribute attribute-id="ckoTransactionOpened"/>
            </attribute-group>
         </group-definitions>
     </type-extension>

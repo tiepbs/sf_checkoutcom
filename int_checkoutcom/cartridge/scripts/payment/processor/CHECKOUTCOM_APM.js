@@ -313,7 +313,6 @@ function SGJCTransAuthObject(payObject, args){
 				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
 				paymentInstrument.paymentTransaction.custom.ckoPaymentId = apmResponse.id;
 				paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-				paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
 		        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
 			});
 			
