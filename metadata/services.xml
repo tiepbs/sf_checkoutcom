@@ -205,7 +205,7 @@
         <credential-id>cko.transaction.capture.live.credential</credential-id>
     </service>
 
-    <service service-id="cko.transaction.void.sandbox.service">
+    <service service-id="cko.transaction.void.live.service">
         <service-type>HTTP</service-type>
         <enabled>true</enabled>
         <log-prefix/>
