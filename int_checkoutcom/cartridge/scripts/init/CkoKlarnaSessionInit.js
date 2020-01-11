@@ -2,7 +2,7 @@
 var svc = require('dw/svc');
 
 /* Utility */
-var util = require('~/cartridge/scripts/utility/util');
+var util = require('~/cartridge/scripts/helpers/ckoUtility');
 
 /**
  * Initialize HTTP service for the Checkout.com sandbox full card charge.
