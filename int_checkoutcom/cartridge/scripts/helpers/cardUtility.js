@@ -35,11 +35,11 @@ var cardUtility = {
 			var gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayObject);
 			
 			// If the charge is valid, process the response
-			if(gatewayResponse){
+			if (gatewayResponse && ckoUtility.paymentIsValid(gatewayResponse)) {
 				this.handleFullChargeResponse(gatewayResponse, order);
 				return gatewayResponse;
-			}else{
-				
+			} 
+			else {
 				// update the transaction
 				Transaction.wrap(function(){
 					OrderMgr.failOrder(order);
