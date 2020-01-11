@@ -3,6 +3,8 @@
 /* API Includes */
 var OrderMgr = require('dw/order/OrderMgr');
 var Transaction = require('dw/system/Transaction');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
+var PaymentMgr = require('dw/order/PaymentMgr');
 
 /* Checkout.com Helper functions */
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
@@ -48,7 +50,23 @@ var CKOEvent = {
      * Payment captured event.
      */
     paymentCaptured: function(hook) {  
+        // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);
+
+        // Load the order
+        var order = OrderMgr.getOrder(hook.data.reference);
+
+        // Get the payment processor
+        var paymentMethod = PaymentMgr.getPaymentMethod(order.getPaymentInstruments()[0].getPaymentMethod());
+        var paymentProcessor = paymentMethod.getPaymentProcessor();
+           	
+        // Create the captured transaction
+        Transaction.wrap(function() {
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessor, order.totalGrossPrice);
+            paymentInstrument.paymentTransaction.paymentProcessor = hook.data.metadata.payment_processor;
+            paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
+            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CAPTURE);
+        }); 
     },
 
     /**

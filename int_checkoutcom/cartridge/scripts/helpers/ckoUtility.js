@@ -6,6 +6,7 @@ var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var Logger = require('dw/system/Logger');
 var BasketMgr = require('dw/order/BasketMgr');
+var PaymentMgr = require('dw/order/PaymentMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var SiteController = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
@@ -738,16 +739,21 @@ var ckoUtility = {
 	/*
 	 * Build metadata object
 	 */
-	getMetadataObject: function(Data){
-		var meta;
-
-		meta = {
+	getMetadataObject: function(Data, args){
+		// Prepare the base metadata
+		var meta = {
 			udf1				: Data.type,
 			integration_data	: this.getCartridgeMeta(),
 			platform_data		: "SiteGenesis Version: 19.10 Last Updated: Oct 21, 2019 (Compatibility Mode: 16.2)"
 		}
 
-		
+		// Get the payment processor
+		var paymentInstrument = args.PaymentInstrument;
+		var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+
+		// Add the payment processor to the metadata
+		meta.payment_processor = paymentProcessor;
+	
 		return meta;
 	},
 	

@@ -67,7 +67,7 @@ var apmUtility = {
 			    "source_data"			: payObject.source_data,
 				"reference"				: args.OrderNo,
 				"payment_ip"			: ckoUtility.getHost(args),
-			    "metadata"				: ckoUtility.getMetadataObject(payObject),
+			    "metadata"				: ckoUtility.getMetadataObject(payObject, args),
 			    "billing_descriptor"	: ckoUtility.getBillingDescriptorObject()
 			};
 			
@@ -126,7 +126,7 @@ var apmUtility = {
 			    "source"				: payObject.source,
 				"reference"				: args.OrderNo,
 				"payment_ip"			: ckoUtility.getHost(args),
-			    "metadata"				: ckoUtility.getMetadataObject(payObject),
+			    "metadata"				: ckoUtility.getMetadataObject(payObject, args),
 			    "billing_descriptor"	: ckoUtility.getBillingDescriptorObject()
 			};
 			
@@ -140,7 +140,7 @@ var apmUtility = {
 			    "source"				: payObject.source,
 				"reference"				: args.OrderNo,
 				"payment_ip"			: ckoUtility.getHost(args),
-			    "metadata"				: ckoUtility.getMetadataObject(payObject),
+			    "metadata"				: ckoUtility.getMetadataObject(payObject, args),
 			    "billing_descriptor"	: ckoUtility.getBillingDescriptorObject()
 			};
 			
