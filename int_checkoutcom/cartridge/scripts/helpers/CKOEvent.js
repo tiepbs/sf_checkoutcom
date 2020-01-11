@@ -107,7 +107,29 @@ var CKOEvent = {
      * Payment voided event.
      */    
     paymentVoided: function(hook) {
+        // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_CANCELLED');
+
+        // Load the order
+        var order = OrderMgr.getOrder(hook.data.reference);
+
+        // Get the payment processor id
+        var paymentProcessorId = hook.data.metadata.payment_processor;
+               
+        // Get the parent transaction
+        var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Authorization');
+       
+        // Create the captured transaction
+        Transaction.wrap(function() {
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
+            paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
+            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+            paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
+            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.id;
+            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = false;
+            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH_REVERSAL);
+        }); 
     }, 
 
     /**

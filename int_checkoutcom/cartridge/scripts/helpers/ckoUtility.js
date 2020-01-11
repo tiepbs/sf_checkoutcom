@@ -230,12 +230,14 @@ var ckoUtility = {
 		);	
 
 		// Convert the list to array
-		var paymentActionsArray = paymentActions.toArray();
+		if (paymentActions) {
+			var paymentActionsArray = paymentActions.toArray();
 
-		// Return the requested transaction
-		for (var i = 0; i < paymentActionsArray.length; i++) {
-			if (paymentActionsArray[i].type == transactionType) {
-				return paymentActionsArray[i];
+			// Return the requested transaction
+			for (var i = 0; i < paymentActionsArray.length; i++) {
+				if (paymentActionsArray[i].type == transactionType) {
+					return paymentActionsArray[i];
+				}
 			}
 		}
 		
