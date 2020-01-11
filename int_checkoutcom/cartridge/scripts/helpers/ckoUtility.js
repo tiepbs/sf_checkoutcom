@@ -7,6 +7,7 @@ var OrderMgr = require('dw/order/OrderMgr');
 var Logger = require('dw/system/Logger');
 var BasketMgr = require('dw/order/BasketMgr');
 var PaymentMgr = require('dw/order/PaymentMgr');
+var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var SiteController = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
@@ -201,7 +202,6 @@ var ckoUtility = {
 		
 	},
 	
-	
 	/*
 	 * Format price for cko gateway
 	 */
@@ -236,7 +236,9 @@ var ckoUtility = {
 			// Return the requested transaction
 			for (var i = 0; i < paymentActionsArray.length; i++) {
 				if (paymentActionsArray[i].type == transactionType) {
-					return paymentActionsArray[i];
+					return this.loadCkoTransaction(
+						paymentActionsArray[i].id
+					);
 				}
 			}
 		}
@@ -244,6 +246,83 @@ var ckoUtility = {
 		return null;
 	},
 
+    /**
+     * Checks if an object already exists in an array.
+     */
+    containsObject: function (obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+            if (list[i] === obj) {
+                return true;
+            }
+        }
+
+        return false;
+	},
+	
+    /**
+     * Get the Checkout.com orders.
+     */
+    getCkoOrders: function () {
+        // Prepare the output array
+        var data = [];
+    
+        // Query the orders
+        var result  = SystemObjectMgr.querySystemObjects('Order', '', 'creationDate desc');
+        
+        // Loop through the results
+        for each (var item in result) {
+            // Get the payment instruments
+            var paymentInstruments = item.getPaymentInstruments();
+            
+            // Loop through the payment instruments
+            for each (var instrument in paymentInstruments) {
+                if (this.isCkoItem(instrument.paymentMethod) && !this.containsObject(item, data)) {
+                    data.push(item);	
+                }
+            }
+        }
+
+        return data;
+	},
+	
+    /**
+     * Checks if a payment instrument is Checkout.com.
+     */
+    isCkoItem: function (item) {
+        return item.length > 0 && item.indexOf('CHECKOUTCOM_') >= 0;
+	},
+	
+    /**
+     * Load a Checkout.com transaction by Id.
+     */
+    loadCkoTransaction: function (transactionId) {
+        // Query the orders
+        var result  = this.getCkoOrders();
+
+        // Loop through the results
+        for each (var item in result) {
+            // Get the payment instruments
+            var paymentInstruments = item.getPaymentInstruments();
+            
+            // Loop through the payment instruments
+            for each (var instrument in paymentInstruments) {
+                // Get the payment transaction
+                var paymentTransaction = instrument.getPaymentTransaction();
+
+                // Prepare the filter condition
+                var isIdMatch = paymentTransaction.transactionID == transactionId;
+
+                // Add the payment transaction to the output
+                if (isIdMatch) {                    	
+                    return paymentTransaction;
+                }
+            }
+        } 
+        
+        return null;
+	},
+	
 	/*
 	 * get Order Quantities
 	 */
@@ -256,8 +335,6 @@ var ckoUtility = {
 		return currency;
 		
 	},
-	
-	
 	
 	/*
 	 * get Order Quantities
