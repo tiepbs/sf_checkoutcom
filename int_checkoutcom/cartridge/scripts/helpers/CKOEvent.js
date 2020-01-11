@@ -56,14 +56,21 @@ var CKOEvent = {
         // Load the order
         var order = OrderMgr.getOrder(hook.data.reference);
 
-        // Get the payment processor
-        var paymentProcessor = hook.data.metadata.payment_processor;
-           	
+        // Get the payment processor id
+        var paymentProcessorId = hook.data.metadata.payment_processor;
+               
+        // Get the parent transaction
+        ckoUtility.getParentTransaction();
+        
         // Create the captured transaction
         Transaction.wrap(function() {
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessor, order.totalGrossPrice);
-            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
+            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+            paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
+            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CAPTURE);
         }); 
     },

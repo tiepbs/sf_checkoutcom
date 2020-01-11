@@ -150,11 +150,18 @@ var ckoUtility = {
 	 * Create an HTTP client to handle request to gateway
 	 */
 	gatewayClientRequest: function(serviceId, requestData){
-		
         var responseData = false;
-        var serv = ServiceRegistry.get(serviceId);
+		var serv = ServiceRegistry.get(serviceId);
+		
+        // Prepare the request URL and data
+        if (requestData.hasOwnProperty('chargeId')) {
+            var requestUrl = serv.getURL().replace('chargeId', requestData.chargeId);
+            serv.setURL(requestUrl);
+            delete requestData['chargeId'];
+		} 
+		
+		// Call the service
 	    var resp = serv.call(requestData);
-	    
         if (resp.status == 'OK') {
         	
             responseData = resp.object
@@ -201,7 +208,25 @@ var ckoUtility = {
 		return orderTotalFormated.toFixed();
 	},
 	
-	
+	/*
+	 * Get a parent transaction from a payment id
+	 */
+	getParentTransaction: function(paymentId, transactionType) {
+		// Prepare the payload
+		var ckoChargeData = {
+			chargeId: request.httpParameterMap.get('pid').stringValue
+		}
+
+		// Get the payment actions
+		var paymentActions = this.gatewayClientRequest(
+			'cko.payment.actions.' + mode + '.service', 
+			paymentId
+		);	
+
+    	const logger = require('dw/system/Logger').getLogger('ckodebug');
+		logger.debug('paymentActions {0}', paymentActions);
+		
+	},
 
 	/*
 	 * get Order Quantities
