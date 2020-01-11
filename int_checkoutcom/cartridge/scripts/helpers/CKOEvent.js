@@ -57,13 +57,12 @@ var CKOEvent = {
         var order = OrderMgr.getOrder(hook.data.reference);
 
         // Get the payment processor
-        var paymentMethod = PaymentMgr.getPaymentMethod(order.getPaymentInstruments()[0].getPaymentMethod());
-        var paymentProcessor = paymentMethod.getPaymentProcessor();
+        var paymentProcessor = hook.data.metadata.payment_processor;
            	
         // Create the captured transaction
         Transaction.wrap(function() {
             var paymentInstrument = order.createPaymentInstrument(paymentProcessor, order.totalGrossPrice);
-            paymentInstrument.paymentTransaction.paymentProcessor = hook.data.metadata.payment_processor;
+            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CAPTURE);
         }); 
