@@ -110,7 +110,7 @@ var CKOEvent = {
         var paymentProcessorId = hook.data.metadata.payment_processor;
                
         // Get the parent transaction
-        var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Authorization');
+        var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Capture');
        
         // Create the captured transaction
         Transaction.wrap(function() {
@@ -139,7 +139,7 @@ var CKOEvent = {
         var paymentProcessorId = hook.data.metadata.payment_processor;
                
         // Get the parent transaction
-        var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Capture');
+        var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Authorization');
        
         // Create the captured transaction
         Transaction.wrap(function() {
