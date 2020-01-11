@@ -60,8 +60,8 @@ var CKOEvent = {
         var paymentProcessorId = hook.data.metadata.payment_processor;
                
         // Get the parent transaction
-        ckoUtility.getParentTransaction();
-        
+        var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Authorization');
+       
         // Create the captured transaction
         Transaction.wrap(function() {
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
@@ -69,7 +69,7 @@ var CKOEvent = {
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
-            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.id;
             paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CAPTURE);
         }); 
