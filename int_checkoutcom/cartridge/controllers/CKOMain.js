@@ -25,18 +25,14 @@ function handleReturn() {
 	
 	// If there is a track id
 	if (orderId) {
-		
 		// Load the order
 		var order = OrderMgr.getOrder(orderId);	
-		
 		if (order) {
-			
 			// Check the payment token if exists		
 			var paymentToken = 	request.httpParameterMap.get('cko-session-id').stringValue;
 			
 			// If there is a payment session id available, verify
 			if (paymentToken) {
-				
 				// Perform the request to the payment gateway
 				gVerify = ckoUtility.gatewayClientRequest(
 					'cko.verify.charges.' + mode + '.service', 
@@ -48,7 +44,6 @@ function handleReturn() {
 					
 					// Show order confirmation page
 					app.getController('COSummary').ShowConfirmation(order);
-					
 				}
 				else {
 					
@@ -60,7 +55,6 @@ function handleReturn() {
 
 			// Else it's a normal transaction
 			else {
-				
 				// Get the response
 				gResponse = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
 
@@ -71,21 +65,15 @@ function handleReturn() {
 				else {
 					ckoUtility.handleFail(gResponse);
 				}
-				
 			}
-			
 		}
 		else {
-			
 			ckoUtility.handleFail(null);
-			
 		}
-		
 	}
 	else {
 		response.getWriter().println('error!');
 		//CKOHelper.handleFail(null);
-		
 	}
 }
 
@@ -111,12 +99,12 @@ function handleWebhook() {
 	if (isValidResponse) {
 		// Get the response as JSON object
 		var hook = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
-		
+
 		// Check the webhook event
-		if (hook !== null && hook.hasOwnProperty('eventType') && hook.hasOwnProperty('message')) {
+		if (hook !== null && hook.hasOwnProperty('type')) {
 			// Get a camel case function name from event type
 			var func = '';
-			var parts = hook.eventType.split('.');
+			var parts = hook.type.split('_');
 			for (var i = 0; i < parts.length; i++) {
 				func += (i == 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
 			}
