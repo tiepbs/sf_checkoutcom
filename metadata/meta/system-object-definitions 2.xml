@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <type-extension type-id="Profile">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="ckoCustomerId">
+                <display-name xml:lang="x-default">Checkout.com Customer ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Checkout.com">
+                <display-name xml:lang="x-default">Checkout.com</display-name>
+                <attribute attribute-id="ckoCustomerId"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+    <type-extension type-id="PaymentTransaction">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="ckoPaymentId">
+                <display-name xml:lang="x-default">Checkout.com Payment ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoParentTransactionId">
+                <display-name xml:lang="x-default">Checkout.com Parent Transaction ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoTransactionOpened">
+                <display-name xml:lang="x-default">Checkout.com Transaction Opened</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Checkout.com">
+                <display-name xml:lang="x-default">Checkout.com</display-name>
+                <attribute attribute-id="ckoPaymentId"/>
+                <attribute attribute-id="ckoParentTransactionId"/>
+                <attribute attribute-id="ckoTransactionOpened"/>
+           </attribute-group>
+        </group-definitions>
+    </type-extension>
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="ckoUserAgent">
+                <type>string</type>
+                <default-value>SFCC Checkout.com Cartridge</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoVersion">
+                <type>string</type>
+                <default-value>19.1.0</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBillingDescriptor1">
+                <display-name xml:lang="x-default">Billing Descriptor Line1</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Billing Descriptor For Invoice (Max-25 characters)</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Sfcc Shop</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBillingDescriptor2">
+                <display-name xml:lang="x-default">Billing Descriptor Line2</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Billing Descriptor For Invoice (Max-30 characters)</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Sfcc City</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBusinessName">
+                <display-name xml:lang="x-default">Buisness Name</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Name (Max-20 characters)</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Sfcc Shop</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBusinessAddressLine1">
+                <display-name xml:lang="x-default">Buisness AddressLine1</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Business AddressLine1 (Max-20 characters)</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Sfcc Shop</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBusinessAddressLine2">
+                <display-name xml:lang="x-default">Buisness AddressLine2</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Business AddressLine1 (Max-20 characters)</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Sfcc Shop</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBusinessCity">
+                <display-name xml:lang="x-default">Buisness City</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Business City (Max-20 characters)</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Sfcc Shop</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBusinessCountry">
+                <display-name xml:lang="x-default">Buisness Country</display-name>
+                <description xml:lang="x-default">Your SFCC Shop Business Country (Max-20 characters)</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>3</min-length>
+                <default-value>Sfcc Shop</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoEnabled">
+                <display-name xml:lang="x-default">Enable</display-name>
+                <description xml:lang="x-default">If set to yes, the Checkout.com payment form will be enabled and the default credit card form disabled.</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoMode">
+                <display-name xml:lang="x-default">Mode</display-name>
+                <description xml:lang="x-default">Should the Checkout.com payment method should run in sandbox or live mode.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <select-multiple-flag>false</select-multiple-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Sandbox</display>
+                        <value>sandbox</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Live</display>
+                        <value>live</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoStorefrontCore">
+                <display-name xml:lang="x-default">Storefront Core Folder</display-name>
+                <description xml:lang="x-default">SiteGenesis Core Folder Name</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>sitegenesis_storefront_core</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoStorefrontController">
+                <display-name xml:lang="x-default">Storefront Controller Folder</display-name>
+                <description xml:lang="x-default">SiteGenesis Controllers Folder Name</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>sitegenesis_storefront_controllers</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoDebugEnabled">
+                <display-name xml:lang="x-default">Enable debug mode</display-name>
+                <description xml:lang="x-default">If set to yes, the gateway requests and responses are displayed in the request log.</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="cko3ds">
+                <display-name xml:lang="x-default">3D Secure</display-name>
+                <description xml:lang="x-default">If set to yes, 3D Secure verification will be enabled for all transactions.</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoN3ds">
+                <display-name xml:lang="x-default">Attempt Non 3D Secure</display-name>
+                <description xml:lang="x-default">If set to yes, Non 3D Secure payment will be attempted if 3D Secure fails. Works only with 3D Secure enabled.</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoAutoCapture">
+                <display-name xml:lang="x-default">Auto capture</display-name>
+                <description xml:lang="x-default">If set to yes, the payment will be captured immediately. Otherwise, specify the capture below.</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoAutoCaptureTime">
+                <display-name xml:lang="x-default">Auto capture time</display-name>
+                <description xml:lang="x-default">Auto capture time in minutes</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>0</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoMada">
+                <display-name xml:lang="x-default">Enable MADA Payment Cards</display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers in the Middle East</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoSandboxPublicKey">
+                <display-name xml:lang="x-default">Public key</display-name>
+                <description xml:lang="x-default">Sandbox Public Key provided by Checkout.com</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoSandboxPrivateKey">
+                <display-name xml:lang="x-default">Private key</display-name>
+                <description xml:lang="x-default">Sandbox Private Key provided by Checkout.com</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoSandboxSecreteKey">
+                <display-name xml:lang="x-default">Secrete key</display-name>
+                <description xml:lang="x-default">Sandbox Secrete Key provided by Checkout.com</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoLivePublicKey">
+                <display-name xml:lang="x-default">Public key</display-name>
+                <description xml:lang="x-default">Live Public Key provided by Checkout.com</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoLivePrivateKey">
+                <display-name xml:lang="x-default">Private key</display-name>
+                <description xml:lang="x-default">Live Private Key provided by Checkout.com</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoLiveSecreteKey">
+                <display-name xml:lang="x-default">Secrete key</display-name>
+                <description xml:lang="x-default">Live Secrete Key provided by Checkout.com</description>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Checkout.com [Sandbox Keys]">
+                <display-name xml:lang="x-default">Sandbox API Keys</display-name>
+                <attribute attribute-id="ckoSandboxPublicKey"/>
+                <attribute attribute-id="ckoSandboxSecreteKey"/>
+                <attribute attribute-id="ckoSandboxPrivateKey"/>
+            </attribute-group>
+            <attribute-group group-id="Checkout.com [Live Keys]">
+                <display-name xml:lang="x-default">Live API Keys</display-name>
+                <attribute attribute-id="ckoLivePublicKey"/>
+                <attribute attribute-id="ckoLiveSecreteKey"/>
+                <attribute attribute-id="ckoLivePrivateKey"/>
+            </attribute-group>
+            <attribute-group group-id="Checkout.com [Settings]">
+                <display-name xml:lang="x-default">Account Settings</display-name>
+                <attribute attribute-id="ckoEnabled"/>
+                <attribute attribute-id="ckoMode"/>
+                <attribute attribute-id="ckoBillingDescriptor1"/>
+                <attribute attribute-id="ckoBillingDescriptor2"/>
+                <attribute attribute-id="ckoBusinessName"/>
+                <attribute attribute-id="ckoBusinessAddressLine1"/>
+                <attribute attribute-id="ckoBusinessAddressLine2"/>
+                <attribute attribute-id="ckoBusinessCity"/>
+                <attribute attribute-id="ckoBusinessCountry"/>
+                <attribute attribute-id="cko3ds"/>
+                <attribute attribute-id="ckoN3ds"/>
+                <attribute attribute-id="ckoAutoCapture"/>
+                <attribute attribute-id="ckoAutoCaptureTime"/>
+                <attribute attribute-id="ckoMada"/>
+                <attribute attribute-id="ckoStorefrontCore"/>
+                <attribute attribute-id="ckoStorefrontController"/>
+                <attribute attribute-id="ckoDebugEnabled"/>
+            </attribute-group>
+       </group-definitions>
+    </type-extension>
+</metadata>
