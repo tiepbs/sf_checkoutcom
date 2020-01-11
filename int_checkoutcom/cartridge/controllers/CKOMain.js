@@ -59,7 +59,7 @@ function handleReturn() {
 				gResponse = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
 
 				// Process the response data
-				if (ckoUtility.paymentIsValid(gResponse)) {
+				if (ckoUtility.paymentSuccess(gResponse)) {
 					app.getController('COSummary').ShowConfirmation(order);
 				}
 				else {
