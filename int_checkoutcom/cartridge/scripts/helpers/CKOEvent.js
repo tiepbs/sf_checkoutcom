@@ -3,6 +3,8 @@
 /* API Includes */
 var OrderMgr = require('dw/order/OrderMgr');
 var Transaction = require('dw/system/Transaction');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
+var PaymentMgr = require('dw/order/PaymentMgr');
 
 /* Checkout.com Helper functions */
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
@@ -16,88 +18,153 @@ var CKOEvent = {
      */
     addWebhookInfo: function (hook, paymentStatus, orderStatus) {
         // Load the order
-	    var order = OrderMgr.getOrder(hook.message.trackId);
+        var order = OrderMgr.getOrder(hook.data.reference);
+        if (order) {
+            // Prepare the webhook info
+            var details = '';
+            details += ckoUtility._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
+            details += ckoUtility._('cko.transaction.id', 'cko') + ': ' + hook.data.action_id + '\n';
+            details += ckoUtility._('cko.transaction.paymentId', 'cko') + ': ' + hook.data.id + '\n';
+            details += ckoUtility._('cko.transaction.eventId', 'cko') + ': ' + hook.id + '\n';
+            details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.data.response_code + '\n';
 
-    	// Prepare the webhook info
-        var details = '';
-        details += ckoUtility._('cko.webhook.event', 'cko') + ': ' + hook.eventType + '\n';
-        details += ckoUtility._('cko.transaction.id', 'cko') + ': ' + hook.message.id + '\n';
-        details += ckoUtility._('cko.transaction.oid', 'cko') + ': ' + hook.message.originalId + '\n';
-        details += ckoUtility._('cko.transaction.status', 'cko') + ': ' + hook.message.status + '\n';
-        details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.message.response_code + '\n';
-        details += ckoUtility._('cko.response.message', 'cko') + ': ' + hook.message.responseMessage + '\n';
-        details += ckoUtility._('cko.response.info', 'cko') + ': ' + hook.message.responseAdvancedInfo + '\n';
+            // Process the transaction
+            Transaction.wrap(function() {
+                // Add the details to the order
+                order.addNote(ckoUtility._('cko.webhook.info', 'cko'), details);
+    
+                // Update the payment status
+                if (paymentStatus) {
+                    order.setPaymentStatus(order[paymentStatus]);	
+                }
 
-        // Process the transaction
-        Transaction.wrap(function() {
-            // Add the details to the order
-            order.addNote(ckoUtility._('cko.webhook.info', 'cko'), details);
- 
-            // Update the payment status
-            if (paymentStatus) {
-            	order.setPaymentStatus(order[paymentStatus]);	
-            }
-
-            // Update the order status
-            if ((orderStatus) && (orderStatus.indexOf("CANCELLED") != -1 || orderStatus.indexOf("FAILED") != -1)) {
-                OrderMgr.failOrder(order);
-            }
-        });
+                // Update the order status
+                if ((orderStatus) && (orderStatus.indexOf("CANCELLED") != -1 || orderStatus.indexOf("FAILED") != -1)) {
+                    OrderMgr.failOrder(order);
+                }
+            });
+        }
     },
 
     /**
-     * Charge captured event.
+     * Payment captured event.
      */
-    chargeCaptured: function(hook) {  
+    paymentCaptured: function(hook) {  
+        // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);
+
+        // Load the order
+        var order = OrderMgr.getOrder(hook.data.reference);
+
+        // Get the payment processor id
+        var paymentProcessorId = hook.data.metadata.payment_processor;
+               
+        // Get the parent transaction
+        var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Authorization');
+
+        // Create the captured transaction
+        Transaction.wrap(function() {
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
+            paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
+            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+            paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
+            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.id;
+            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CAPTURE);
+        }); 
     },
 
     /**
-     * Charge succeded event.
+     * Payment authorized event.
      */
-    chargeSucceeded: function(hook) {
+    paymentApproved: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
     },   
 
     /**
-     * Charge failed event.
+     * Authorization failed event.
      */
-    chargeFailed: function(hook) {
+    paymentDeclined: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
     },   
 
     /**
-     * Charge capture failed event.
+     * Capture failed event.
      */
-    chargeCapturedFailed: function(hook) {
+    paymentCapturedDeclined: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
     },  
 
     /**
-     * Charge refunded event.
+     * Payment refunded event.
      */
-    chargeRefunded: function(hook) {
+    paymentRefunded: function(hook) {
+        // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', 'ORDER_STATUS_CANCELLED');
+
+        // Load the order
+        var order = OrderMgr.getOrder(hook.data.reference);
+
+        // Get the payment processor id
+        var paymentProcessorId = hook.data.metadata.payment_processor;
+               
+        // Get the parent transaction
+        var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Capture');
+
+        // Create the captured transaction
+        Transaction.wrap(function() {
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
+            paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
+            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+            paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
+            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.id;
+            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CREDIT);
+        }); 
     },  
 
     /**
-     * Charge voided event.
+     * Payment voided event.
      */    
-    chargeVoided: function(hook) {
+    paymentVoided: function(hook) {
+        // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_CANCELLED');
+
+        // Load the order
+        var order = OrderMgr.getOrder(hook.data.reference);
+
+        // Get the payment processor id
+        var paymentProcessorId = hook.data.metadata.payment_processor;
+               
+        // Get the parent transaction
+        var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Authorization');
+
+        // Create the captured transaction
+        Transaction.wrap(function() {
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
+            paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
+            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+            paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
+            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.id;
+            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = false;
+            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH_REVERSAL);
+        }); 
     }, 
 
     /**
-     * Charge refund failed event.
+     * Refund failed event.
      */
-    chargeRefundedFailed: function(hook) {
+    paymentRefundDeclined: function(hook) {
         this.addWebhookInfo(hook, null, null);
     }, 
 
     /**
      * Charge void failed event.
      */
-    chargeVoidedFailed: function(hook) {
+    paymentVoidDeclined: function(hook) {
         this.addWebhookInfo(hook, null, null);
     }  
 };

@@ -24,6 +24,12 @@
         <password/>
     </service-credential>
 
+    <service-credential service-credential-id="cko.payment.actions.sandbox.credential">
+        <url>https://api.sandbox.checkout.com/payments/chargeId/actions</url>
+        <user-id/>
+        <password/>
+    </service-credential>
+
     <service-credential service-credential-id="cko.transaction.capture.sandbox.credential">
         <url>https://api.sandbox.checkout.com/payments/chargeId/captures</url>
         <user-id/>
@@ -66,6 +72,12 @@
         <password/>
     </service-credential>
 
+    <service-credential service-credential-id="cko.payment.actions.live.credential">
+        <url>https://api.checkout.com/payments/chargeId/actions</url>
+        <user-id/>
+        <password/>
+    </service-credential>
+
     <service-credential service-credential-id="cko.transaction.capture.live.credential">
         <url>https://api.checkout.com/payments/chargeId/captures</url>
         <user-id/>
@@ -103,6 +115,15 @@
         <credential-id>cko.card.charge.sandbox.credential</credential-id>
     </service>
 
+    <service service-id="cko.payment.actions.sandbox.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <profile-id>CheckoutCom</profile-id>
+        <credential-id>cko.payment.actions.sandbox.credential</credential-id>
+    </service>
+    
     <service service-id="cko.transaction.capture.sandbox.service">
         <service-type>HTTP</service-type>
         <enabled>true</enabled>
@@ -166,6 +187,15 @@
         <credential-id>cko.card.charge.live.credential</credential-id>
     </service>
 
+    <service service-id="cko.payment.actions.live.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <profile-id>CheckoutCom</profile-id>
+        <credential-id>cko.payment.actions.live.credential</credential-id>
+    </service>
+
     <service service-id="cko.transaction.capture.live.service">
         <service-type>HTTP</service-type>
         <enabled>true</enabled>
@@ -175,7 +205,7 @@
         <credential-id>cko.transaction.capture.live.credential</credential-id>
     </service>
 
-    <service service-id="cko.transaction.void.sandbox.service">
+    <service service-id="cko.transaction.void.live.service">
         <service-type>HTTP</service-type>
         <enabled>true</enabled>
         <log-prefix/>

@@ -27,7 +27,8 @@ var cardUtility = {
 		var gatewayObject = this.gatewayObject(cardData, args);
 		
 		// Pre_Authorize card
-		var preAuthorize = this.preAuthorizeCard(gatewayObject);
+		//var preAuthorize = this.preAuthorizeCard(gatewayObject);
+		var preAuthorize = true;
 		
 		if(preAuthorize){
 			// Perform the request to the payment gateway
@@ -74,9 +75,6 @@ var cardUtility = {
 		if(gatewayLinks.hasOwnProperty('redirect')){
 			session.privacy.redirectUrl = gatewayLinks.redirect.href
 		}
-
-		ckoUtility.buildResponseNote(gatewayResponse, order);
-
 	},
 	
 
@@ -110,7 +108,7 @@ var cardUtility = {
 	gatewayObject: function(cardData, args){
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
-
+	
 		// Prepare chargeData object
 		var chargeData = {
 				"source"				: this.getSourceObject(cardData, args),
@@ -125,7 +123,7 @@ var cardUtility = {
 				"3ds"					: this.get3Ds(),
 				"risk"					: {enabled: true},
 				"payment_ip"			: ckoUtility.getHost(args),
-				"metadata"				: ckoUtility.getMetadataObject(cardData)
+				"metadata"				: ckoUtility.getMetadataObject(cardData, args)
 			};
 		
 		return chargeData;

@@ -66,7 +66,7 @@ function initTable(tableData) {
 		data: JSON.parse(tableData), 
 		layout: 'fitColumns',
 		pagination: 'local',
-		paginationSize: 10,
+		paginationSize: 100,
 		columns: getTableColumns(),
 		tableBuilt: function() {
 			// Set the pagination controls
@@ -124,9 +124,9 @@ function getButtonsHtml(cell) {
 	
 	// Build the auth button
 	if (rowData.opened) {
-		html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" onclick="openModal(this)" class="btn btn-primary">Capture</button>';
-		html += '<button type="button" id="void-button-' + rowData.transaction_id + '" onclick="openModal(this)" class="btn btn-primary">Void</button>';
-		html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" onclick="openModal(this)" class="btn btn-primary">Refund</button>';
+		html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Capture</button>';
+		html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Void</button>';
+		html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Refund</button>';
 	}
 
 	return html;

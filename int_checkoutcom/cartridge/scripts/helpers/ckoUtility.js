@@ -6,6 +6,7 @@ var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var Logger = require('dw/system/Logger');
 var BasketMgr = require('dw/order/BasketMgr');
+var PaymentMgr = require('dw/order/PaymentMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var SiteController = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
@@ -68,19 +69,17 @@ var ckoUtility = {
 		return hostname;
 	},
 	
-    /**
+	
+    /*
      * Check if the gateway response is valid.
      */
     isValidResponse: function() {
-        var requestKey = request.httpHeaders.get("Authorization");
-        var privateSharedKey = this.getAccountKeys().privateKey;
-        
-        if (requestKey == privateSharedKey) {
-        	return true;
-        }
-
-        return false;
+        var requestKey = request.httpHeaders.get("authorization");
+		var privateSharedKey = this.getAccountKeys().privateKey;
+		
+        return requestKey == privateSharedKey
 	}, 
+	
 	
 	/* 
 	 * get value from custom preferences
@@ -89,12 +88,14 @@ var ckoUtility = {
 		return dw.system.Site.getCurrent().getCustomPreferenceValue(field);
 	},
 	
+	
 	/*
 	 * Handles string translation with language resource files.
 	 */
 	_: function(strValue, strFile){
 		return Resource.msg(strValue, strFile, null);
 	},
+	
 		
 	/*
 	 * Write gateway information to the website's custom log files.
@@ -108,7 +109,10 @@ var ckoUtility = {
 		}
 	},
 	
-	/* return order id */
+	
+	/* 
+	 * return order id 
+	 */
 	getOrderId: function(){
 		var orderId = (this.getValue('cko3ds')) ? request.httpParameterMap.get('reference').stringValue : request.httpParameterMap.get('reference').stringValue;
 		if(orderId === null){
@@ -119,10 +123,13 @@ var ckoUtility = {
 	},
 	
 	
-	/* cartridge metadata. */
+	/* 
+	 * cartridge metadata. 
+	 */
 	getCartridgeMeta: function(){
 		return this.getValue("ckoUserAgent") + ' ' + this.getValue("ckoVersion");
 	},
+	
 	
 	/*
 	 * get Account API Keys
@@ -138,15 +145,27 @@ var ckoUtility = {
         return keys;
 	},
 	
+	
 	/*
 	 * Create an HTTP client to handle request to gateway
 	 */
-	gatewayClientRequest: function(serviceId, requestData){
-		
+	gatewayClientRequest: function(serviceId, requestData, method) {
+		var method = method || 'POST';
         var responseData = false;
-        var serv = ServiceRegistry.get(serviceId);
+		var serv = ServiceRegistry.get(serviceId);
+		
+        // Prepare the request URL and data
+        if (requestData.hasOwnProperty('chargeId')) {
+            var requestUrl = serv.getURL().replace('chargeId', requestData.chargeId);
+            serv.setURL(requestUrl);
+            delete requestData['chargeId'];
+		} 
+
+		// Set the request method
+		serv.setRequestMethod(method);	
+		
+		// Call the service
 	    var resp = serv.call(requestData);
-	    
         if (resp.status == 'OK') {
         	
             responseData = resp.object
@@ -193,7 +212,37 @@ var ckoUtility = {
 		return orderTotalFormated.toFixed();
 	},
 	
-	
+	/*
+	 * Get a parent transaction from a payment id
+	 */
+	getParentTransaction: function (paymentId, transactionType) {
+		// Prepare the payload
+		var mode = this.getValue('ckoMode');
+		var ckoChargeData = {
+			chargeId: paymentId
+		}
+
+		// Get the payment actions
+		var paymentActions = this.gatewayClientRequest(
+			'cko.payment.actions.' + mode + '.service', 
+			ckoChargeData,
+			'GET'
+		);	
+
+		// Convert the list to array
+		if (paymentActions) {
+			var paymentActionsArray = paymentActions.toArray();
+
+			// Return the requested transaction
+			for (var i = 0; i < paymentActionsArray.length; i++) {
+				if (paymentActionsArray[i].type == transactionType) {
+					return paymentActionsArray[i];
+				}
+			}
+		}
+		
+		return null;
+	},
 
 	/*
 	 * get Order Quantities
@@ -239,12 +288,14 @@ var ckoUtility = {
 		return result;
 	},
 	
+	
 	/*
 	 * Confirm is a payment is valid from API response code
 	 */
 	paymentValidate: function(gatewayResponse){
 		return gatewayResponse.response_code == "10000" || gatewayResponse.response_code == '10100' || gatewayResponse.response_code == '10200';
 	},
+	
 	
 	/*
 	 * Write order information to session for the current shopper.
@@ -259,6 +310,7 @@ var ckoUtility = {
 		}
 	},
 	
+	
 	/*
 	 * Handle a failed payment response
 	 */
@@ -271,49 +323,6 @@ var ckoUtility = {
 		// Load the error template
 		app.getController('COBilling').Start();
 	},
-	
-	
-	/*
-	 * buildNote
-	 */
-	buildResponseNote: function(gatewayResponse, order){
-		// Prepare the transaction info for the order
-		var details = '';
-		if (gatewayResponse.hasOwnProperty('customer') && gatewayResponse.customer.hasOwnProperty('id')){
-			details += ckoUtility._("cko.customer.id", "cko") + ": " + gatewayResponse.customer.id + "\n";
-		}
-		
-		details += ckoUtility._("cko.transaction.status", "cko") + ": " + gatewayResponse.status + "\n";
-		details += ckoUtility._("cko.response.code", "cko") + ": " + gatewayResponse.response_code + "\n";
-		details += ckoUtility._("cko.response.message", "cko") + ": " + gatewayResponse.response_summary + "\n";
-		
-		if (gatewayResponse.hasOwnProperty('source') && gatewayResponse.source.hasOwnProperty('last4')){
-			details += ckoUtility._("cko.response.last4", "cko") + ": " + gatewayResponse.source.last4 + "\n";
-		}
-		
-		if (gatewayResponse.hasOwnProperty('source') && gatewayResponse.source.hasOwnProperty('type')){
-			details += ckoUtility._("cko.response.paymentMethod", "cko") + ": " + gatewayResponse.source.type + "\n";
-		}
-		
-		details += ckoUtility._("cko.authorization.code", "cko") + ": " + gatewayResponse.auth_code + "\n";
-		
-		// Add risk flag information if applicable
-		if(gatewayResponse.response_code == '10100'){
-			details += ckoUtility._("cko.risk.flag", "cko") + ": " + ckoUtility._("cko.risk.info", "cko") + "\n";
-		}
-		
-		// Add the details to the order
-		Transaction.wrap(function(){
-			order.addNote(ckoUtility._("cko.transaction.details", "cko"), details);
-		});
-		
-		// Confirm the payment
-		Transaction.wrap(function(){
-			order.setPaymentStatus(order.PAYMENT_STATUS_PAID);
-		});
-		
-	},
-	
 	
 	/*
 	 * Rebuild basket contents after a failed payment.
@@ -390,6 +399,7 @@ var ckoUtility = {
 		}
 	},
 	
+	
 	/*
 	 * return customer object
 	 */
@@ -406,6 +416,7 @@ var ckoUtility = {
 		return customer;
 	},
 	
+	
 	/*
 	 * get Basket Quantities
 	 */
@@ -418,8 +429,10 @@ var ckoUtility = {
 		
 	},
 	
+	
 	/*
-	 * get Basket Quantities
+	 * get Billing Descriptor Object
+	 * from custom preferences
 	 */
 	getBillingDescriptorObject : function(){
 		
@@ -431,6 +444,7 @@ var ckoUtility = {
 		return billingDescriptor;
 		
 	},
+	
 	
 	/*
 	 * get Products Information
@@ -470,6 +484,7 @@ var ckoUtility = {
 		return products;
 		
 	},
+	
 	
 	/*
 	 * return tax object
@@ -576,6 +591,7 @@ var ckoUtility = {
 		
 	},
 	
+	
 	/*
 	 * get Product IDs
 	 */
@@ -595,6 +611,7 @@ var ckoUtility = {
 		return productIds;
 		
 	},
+	
 	
 	/*
 	 * get Each Product Quantity
@@ -616,6 +633,7 @@ var ckoUtility = {
 		
 	},
 	
+	
 	/*
 	 * get Each Product Quantity
 	 */
@@ -635,6 +653,7 @@ var ckoUtility = {
 		return products_quantites;
 		
 	},
+	
 	
 	/*
 	 * get Host IP
@@ -677,6 +696,7 @@ var ckoUtility = {
 		return phone;
 	},
 	
+	
 	/*
 	 * Return Customer FullName
 	 */
@@ -692,6 +712,7 @@ var ckoUtility = {
 		return fullname;
 	},
 	
+	
 	/*
 	 * Return Customer FirstName
 	 */
@@ -706,6 +727,7 @@ var ckoUtility = {
 		
 		return firstname;
 	},
+	
 	
 	/*
 	 * Return Customer LastName
@@ -732,7 +754,8 @@ var ckoUtility = {
 		if(captureOn > 0){
 			
 			var t = new Date();
-			t.setSeconds(t.getSeconds() + captureOn);
+			var m = parseInt(t.getMinutes()) + parseInt(captureOn);
+			t.setMinutes(m);
 			
 			return t;
 		}
@@ -757,16 +780,21 @@ var ckoUtility = {
 	/*
 	 * Build metadata object
 	 */
-	getMetadataObject: function(Data){
-		var meta;
-
-		meta = {
+	getMetadataObject: function(Data, args){
+		// Prepare the base metadata
+		var meta = {
 			udf1				: Data.type,
 			integration_data	: this.getCartridgeMeta(),
 			platform_data		: "SiteGenesis Version: 19.10 Last Updated: Oct 21, 2019 (Compatibility Mode: 16.2)"
 		}
 
-		
+		// Get the payment processor
+		var paymentInstrument = args.PaymentInstrument;
+		var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+
+		// Add the payment processor to the metadata
+		meta.payment_processor = paymentProcessor.getID();
+	
 		return meta;
 	},
 	

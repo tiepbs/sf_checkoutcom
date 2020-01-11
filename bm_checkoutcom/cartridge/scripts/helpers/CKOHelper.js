@@ -167,7 +167,7 @@ var CKOHelper = {
      */
     getGatewayClient: function (serviceId, requestData, method) { 
         var method = method || 'POST';     
-        //var responseData = false;
+        var responseData = false;
         var serv = ServiceRegistry.get(serviceId);
 
         // Prepare the request URL and data
