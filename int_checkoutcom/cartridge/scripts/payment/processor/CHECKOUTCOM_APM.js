@@ -6,6 +6,7 @@ var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('c
 
 /* API Includes */
 var PaymentMgr = require('dw/order/PaymentMgr');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
 var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
@@ -290,63 +291,55 @@ function SGJCTransHandleObject(args){
 	});
 }
 
-
-
 /*
  * Creates Site Genesis Transaction Object
  * @return object
  */
 function SGJCTransAuthObject(payObject, args){
-
 	// Preparing payment parameters
 	var orderNo = args.OrderNo;
 	var paymentInstrument = args.PaymentInstrument;
 	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 	
 	// perform the charge
-	var apmRequest = apmUtility.handleApmRequest(payObject, args);
-	
+	var apmResponse = apmUtility.handleApmRequest(payObject, args);
 	
 	// Handle apm result
-	if(apmRequest){
-		
-		// Transaction wrapper
-		Transaction.wrap(function(){
-			paymentInstrument.paymentTransaction.transactionID = orderNo;
-			paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-		});
-		
-		if(session.privacy.redirectUrl){
+	if (apmResponse) {
+		if (session.privacy.redirectUrl) {
+			// Create the authorization transaction
+		    Transaction.wrap(function() {
+		        paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
+				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+				paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
+				paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+				paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+		        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+			});
 			
-			if(payObject.type == "sepa"){
-				
-				ISML.renderTemplate('redirects/sepaMandate.isml', {
-					redirectUrl: session.privacy.redirectUrl
-				});
-				
-			}else{
-			
-			
-				ISML.renderTemplate('redirects/APM.isml', {
-					redirectUrl: session.privacy.redirectUrl
-				});
-				
+			// Set the redirection template
+			var templatePath;
+			if (payObject.type == "sepa") {
+				templatePath = 'redirects/sepaMandate.isml';
 			}
+			else {
+				templatePath = 'redirects/APM.isml';
+			}
+
+			// Redirect
+			ISML.renderTemplate(templatePath, {
+				redirectUrl: session.privacy.redirectUrl
+			});
 			
 			return {authorized: true, redirected: true};
-			
-			
-		}else{
+		}
+		else {
 			return {authorized: true};
 		}
-		
-	}else{
+	} else {
 		return {error: true};
 	}
-	
-	
 }
-
 
 /*
  * Ideal Pay Authorization

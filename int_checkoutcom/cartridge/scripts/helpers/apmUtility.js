@@ -74,20 +74,18 @@ var apmUtility = {
 			// Perform the request to the payment gateway
 			gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.sources." + ckoUtility.getValue('ckoMode') + ".service", chargeData);
 			
-		}else{
-			
+		}
+		else {
 			// Perform the request to the payment gateway
 			gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayObject);
-			
 		}
 		
 		// If the charge is valid, process the response
-		if(gatewayResponse){
-			
+		if (gatewayResponse) {
 			this.handleAPMChargeResponse(gatewayResponse, order);
-			
-		}else{
-			
+			return gatewayResponse;
+		}
+		else {
 			// update the transaction
 			Transaction.wrap(function(){
 				OrderMgr.failOrder(order);
