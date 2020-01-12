@@ -10,4 +10,9 @@
         <enabled-flag>false</enabled-flag>
         <processor-id>CHECKOUTCOM_APM</processor-id>
     </payment-method>
+    <payment-method method-id="CHECKOUTCOM_GOOGLE_PAY">
+        <name xml:lang="x-default">Checkout.com Google Pay</name>
+        <enabled-flag>false</enabled-flag>
+        <processor-id>CHECKOUTCOM_GOOGLE_PAY</processor-id>
+    </payment-method>
 </payment-settings>

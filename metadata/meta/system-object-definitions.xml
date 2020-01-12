@@ -224,6 +224,22 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>false</default-value>
             </attribute-definition>
+            <attribute-definition attribute-id="ckoGooglePayEnabled">
+                <display-name xml:lang="x-default">Enable Google Pay</display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Google Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoGooglePayMerchantId">
+                <display-name xml:lang="x-default">Google Pay merchant ID</display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Google Pay</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
             <attribute-definition attribute-id="ckoSandboxPublicKey">
                 <display-name xml:lang="x-default">Public key</display-name>
                 <description xml:lang="x-default">Sandbox Public Key provided by Checkout.com</description>
@@ -302,6 +318,8 @@
                 <attribute attribute-id="ckoAutoCapture"/>
                 <attribute attribute-id="ckoAutoCaptureTime"/>
                 <attribute attribute-id="ckoMada"/>
+                <attribute attribute-id="ckoGooglePayEnabled"/>
+                <attribute attribute-id="ckoGooglePayMerchantId"/>
                 <attribute attribute-id="ckoStorefrontCore"/>
                 <attribute attribute-id="ckoStorefrontController"/>
                 <attribute attribute-id="ckoDebugEnabled"/>

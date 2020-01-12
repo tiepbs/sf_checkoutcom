@@ -1,0 +1,7 @@
+<script type="text/javascript" src="https://pay.google.com/gp/p/js/pay.js"></script>
+<style>
+	@import url("${URLUtils.staticURL('/css/googlepay.css')}");
+</style>
+
+<button id="ckoGooglePayButton" type="button" class="cko-google-pay-button google-pay-button-white"></button>
+<script src="${URLUtils.staticURL('/js/googlepay.js')}"></script>
