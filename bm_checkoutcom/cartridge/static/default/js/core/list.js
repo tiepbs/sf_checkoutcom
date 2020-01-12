@@ -126,13 +126,13 @@ function getButtonsHtml(cell) {
 	if (rowData.opened) {
 		// Capture
 		if (rowData.type == 'AUTH') {
-			html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Void</button>';
-			html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Capture</button>';
+			html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">Void</button>';
+			html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-info ckoAction">Capture</button>';
 		}
 
 		// Void
 		if (rowData.type == 'CAPTURE') {
-			html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Refund</button>';	
+			html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-secondary ckoAction">Refund</button>';	
 
 		}
 	}
