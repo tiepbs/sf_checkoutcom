@@ -124,7 +124,7 @@ var CKOEvent = {
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
             paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = false;
             paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Refund';
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CREDIT);
         }); 
@@ -156,7 +156,7 @@ var CKOEvent = {
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
             paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = false;
             paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Void';
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH_REVERSAL);
         }); 
