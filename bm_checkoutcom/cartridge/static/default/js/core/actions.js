@@ -25,7 +25,6 @@ function initButtons() {
 		}
 	},  true);
 	
-	
 	// Submit the action request
 	jQuery('.ckoModal .modal-content .submit').click(function() {
 		performAction(jQuery(this).closest('.modal-content').find('input'));
@@ -95,6 +94,18 @@ function getTransactionData(members) {
 	});
 }
 
+function showErrorMessage() {
+	// Show the error message
+	jQuery('.ckoErrorMessage').show(
+		'fast',
+		function () {
+			setTimeout(function () {
+				jQuery('.ckoErrorMessage').hide('fast');
+			}, 7000);
+		}
+	);
+}
+
 function performAction(elt) {
 	// Prepare the action URL
 	var actionUrl = jQuery('[id="actionControllerUrl"]').val();
@@ -129,11 +140,12 @@ function performAction(elt) {
 				alert('The transaction could not be processed.');
 			}
 			else {
-				// Reload the table data
-				reloadTransactionsData();
 
 				// Close the modal window
 				jQuery('.ckoModal .modal-content .close').trigger('click');
+
+				// Reload the table data
+				reloadTransactionsData();
 			}
 		},
 		error: function (request, status, error) {

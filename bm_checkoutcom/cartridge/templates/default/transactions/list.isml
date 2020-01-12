@@ -18,6 +18,13 @@
 	<!-- Tab navigation table -->	
     <isinclude template="inc/tabs">
 	
+	<div class="alert alert-warning alert-dismissible ckoSuccessMessage" role="alert">
+		<span>The transaction was processed successfully.</span>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
 	<!-- Main content table -->	
 	<div class="transactions-table-controls">
 		Rows per page: 

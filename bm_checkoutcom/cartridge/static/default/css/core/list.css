@@ -65,3 +65,8 @@
 .ckoAction {
     min-width: 82px;
 }
+
+.ckoSuccessMessage {
+    margin-top: 20px;
+    display: none;
+}

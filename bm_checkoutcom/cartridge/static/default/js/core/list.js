@@ -76,11 +76,29 @@ function initTable(tableData) {
 }
 
 function reloadTransactionsData() {
+	// Get the row data
 	var row = window.ckoTransactionsTable.getRow(window.ckoSelectedRowIndex);
 	var rowData = row.getData();
+
+	// Update the row data
 	rowData.opened = false;
 	window.ckoTransactionsTable.updateData([rowData]);
 	window.ckoSelectedRowIndex = 0;
+
+	// Show the success message
+	showSuccessMessage();
+}
+
+function showSuccessMessage() {
+	// Show the success message
+	jQuery('.ckoSuccessMessage').show(
+		'fast',
+		function () {
+			setTimeout(function () {
+				jQuery('.ckoSuccessMessage').hide('fast');
+			}, 7000);
+		}
+	);
 }
 
 function setPagination(table) {
