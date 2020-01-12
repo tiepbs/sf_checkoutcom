@@ -130,12 +130,13 @@ function getTableColumns() {
 		{title: 'Currency', field: 'currency', visible: false},
 		{title: 'Date', field: 'creation_date', width: 140, headerFilter: 'input'},
 		{title: 'Type', field: 'type', width: 110, headerFilter: 'input'},
-		{title: 'Opened', field: 'opened', width: 110, formatter: 'tickCross'},
+		{title: 'Opened', field: 'opened', width: 110, formatter: 'tickCross', visible: false},
 		{title: 'Processor', field: 'processor', width: 190, headerFilter: 'input'},
 		{
 			title:'Actions',
 			field: 'actions',
 			headerSort: false,
+			align: 'center',
 			width: 200,
 			formatter: function (cell, formatterParams, onRendered) {
 				return getButtonsHtml(cell);

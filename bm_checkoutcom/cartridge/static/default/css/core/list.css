@@ -11,8 +11,8 @@
 
 .tabulator-cell button {
     cursor: pointer;
-    margin-left: 0px;
-    margin-right: 14px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .tabulator-row .tabulator-cell, .tabulator-col {
