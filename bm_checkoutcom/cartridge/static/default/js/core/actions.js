@@ -17,7 +17,7 @@ function initButtons() {
 
 	// Define the transaction buttons click events
 	document.addEventListener('click', function(e) {  
-		if (e.target.className.indexOf('ckoAction') !== -1) {
+		if (typeof e.target.className === 'string' && e.target.className.indexOf('ckoAction') !== -1) {
 			// Ignore double cliks
 			if (e.detail > 1) {
 				return;
@@ -129,6 +129,13 @@ function performAction(elt) {
 			var success = JSON.parse(res);
 			if (!success) {
 				alert('The transaction could not be processed.');
+			}
+			else {
+				// Reload the table data
+				reloadTransactionsData();
+
+				// Close the modal window
+				jQuery('.ckoModal .modal-content .close').trigger('click');
 			}
 		},
 		error: function (request, status, error) {

@@ -54,9 +54,26 @@ function getTransactionsData(controllerUrl) {
 	});
 }
 
+function reloadTransactionsData() {
+	// Prepare the table data
+	var controllerUrl = jQuery('[id="transactionsControllerUrl"]').val();
+
+	// Send the request
+	jQuery.ajax({
+		type: 'POST',
+		url: controllerUrl,
+		success: function (data) {
+			window.ckoRransactionsTable.setData(data);
+		},
+		error: function (request, status, error) {
+			console.log(error);
+		}
+	});
+}
+
 function initTable(tableData) {
 	// Build the table instance
-	var table = new Tabulator('#transactions-table', {
+	window.ckoRransactionsTable = new Tabulator('#transactions-table', {
 		responsiveLayout:true,
 		selectable: 'highlight',
 		headerFilterPlaceholder: '>',
@@ -124,7 +141,7 @@ function getButtonsHtml(cell) {
 	var html = '';
 	
 	// Build the action buttons
-	if (rowData.opened) {
+	if (JSON.parse(rowData.opened)) {
 		// Capture
 		if (rowData.type == 'AUTH') {
 			html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">Void</button>';
@@ -134,8 +151,10 @@ function getButtonsHtml(cell) {
 		// Void
 		if (rowData.type == 'CAPTURE') {
 			html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-secondary ckoAction">Refund</button>';	
-
 		}
+	}
+	else {
+		html += '------- Not available -------';
 	}
 
 	return html;
