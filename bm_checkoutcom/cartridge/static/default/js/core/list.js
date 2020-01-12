@@ -107,7 +107,7 @@ function getTableColumns() {
 			title:'Actions',
 			field: 'actions',
 			headerSort: false,
-			width: 252,
+			width: 200,
 			formatter: function (cell, formatterParams, onRendered) {
 				return getButtonsHtml(cell);
 			}
@@ -122,13 +122,20 @@ function getButtonsHtml(cell) {
 	// Prepare the variable
 	var html = '';
 	
-	// Build the auth button
+	// Build the action buttons
 	if (rowData.opened) {
-		html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Capture</button>';
-		html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Void</button>';
-		html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Refund</button>';
-	}
+		// Capture
+		if (rowData.type == 'AUTH') {
+			html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Void</button>';
+			html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Capture</button>';
+		}
 
+		// Void
+		if (rowData.type == 'CAPTURE') {
+			html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Refund</button>';	
+
+		}
+	}
 
 	return html;
 }
