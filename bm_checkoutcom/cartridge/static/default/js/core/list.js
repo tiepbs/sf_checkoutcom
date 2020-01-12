@@ -57,14 +57,15 @@ function getTransactionsData(controllerUrl) {
 function initTable(tableData) {
 	// Build the table instance
 	var table = new Tabulator('#transactions-table', {
+		responsiveLayout:true,
+		selectable: 'highlight',
 		headerFilterPlaceholder: '>',
 		placeholder: 'No results found for this request.',
 		layout: 'fitColumns',
-		height: '100%',
 		data: JSON.parse(tableData), 
 		layout: 'fitColumns',
 		pagination: 'local',
-		paginationSize: 30,
+		paginationSize: 50,
 		columns: getTableColumns(),
 		tableBuilt: function() {
 			// Set the pagination controls
