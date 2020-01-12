@@ -224,22 +224,6 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>false</default-value>
             </attribute-definition>
-            <attribute-definition attribute-id="ckoGooglePayEnabled">
-                <display-name xml:lang="x-default">Enable Google Pay</display-name>
-                <description xml:lang="x-default">Enable to accept payments from customers with Google Pay</description>
-                <type>boolean</type>
-                <mandatory-flag>true</mandatory-flag>
-                <externally-managed-flag>false</externally-managed-flag>
-                <default-value>false</default-value>
-            </attribute-definition>
-            <attribute-definition attribute-id="ckoGooglePayMerchantId">
-                <display-name xml:lang="x-default">Google Pay merchant ID</display-name>
-                <description xml:lang="x-default">Enable to accept payments from customers with Google Pay</description>
-                <type>string</type>
-                <mandatory-flag>false</mandatory-flag>
-                <externally-managed-flag>false</externally-managed-flag>
-                <default-value>12345678</default-value>
-            </attribute-definition>
             <attribute-definition attribute-id="ckoSandboxPublicKey">
                 <display-name xml:lang="x-default">Public key</display-name>
                 <description xml:lang="x-default">Sandbox Public Key provided by Checkout.com</description>
@@ -288,21 +272,115 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
+
+            <attribute-definition attribute-id="ckoGooglePayEnabled">
+                <display-name xml:lang="x-default">Enable Google Pay</display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Google Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoGooglePayEnvironment">
+                <display-name xml:lang="x-default">Environment</display-name>
+                <description xml:lang="x-default">Should the Google Pay option run in test or production mode.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>TEST</default-value>
+                <select-multiple-flag>false</select-multiple-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Test</display>
+                        <value>TEST</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Production</display>
+                        <value>PRODUCTION</value>
+                    </value-definition> 
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoGooglePayMerchantId">
+                <display-name xml:lang="x-default">Google Pay merchant ID</display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Google Pay</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>12345678</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoGooglePayNetworks">
+                <display-name xml:lang="x-default">Supported Networks</display-name>
+                <description xml:lang="x-default">Select the Google Pay supported cards.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>white</default-value>
+                <select-multiple-flag>true</select-multiple-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Visa</display>
+                        <value>VISA</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Mastercard</display>
+                        <value>MASTERCARD</value>
+                    </value-definition> 
+                    <value-definition>
+                        <display xml:lang="x-default">American Express</display>
+                        <value>AMEX</value>
+                    </value-definition> 
+                    <value-definition>
+                        <display xml:lang="x-default">JCB</display>
+                        <value>JCB</value>
+                    </value-definition> 
+                    <value-definition>
+                        <display xml:lang="x-default">Discover</display>
+                        <value>DISCOVER</value>
+                    </value-definition> 
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoGooglePayButton">
+                <display-name xml:lang="x-default">Button Style</display-name>
+                <description xml:lang="x-default">The Google Pay option button style.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>white</default-value>
+                <select-multiple-flag>false</select-multiple-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Black</display>
+                        <value>black</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">White</display>
+                        <value>white</value>
+                    </value-definition> 
+                </value-definitions>
+            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
-            <attribute-group group-id="Checkout.com [Sandbox Keys]">
+            <attribute-group group-id="Checkout.com Account Sandbox">
                 <display-name xml:lang="x-default">Sandbox API Keys</display-name>
                 <attribute attribute-id="ckoSandboxPublicKey"/>
                 <attribute attribute-id="ckoSandboxSecreteKey"/>
                 <attribute attribute-id="ckoSandboxPrivateKey"/>
             </attribute-group>
-            <attribute-group group-id="Checkout.com [Live Keys]">
+            <attribute-group group-id="Checkout.com Account Live">
                 <display-name xml:lang="x-default">Live API Keys</display-name>
                 <attribute attribute-id="ckoLivePublicKey"/>
                 <attribute attribute-id="ckoLiveSecreteKey"/>
                 <attribute attribute-id="ckoLivePrivateKey"/>
             </attribute-group>
-            <attribute-group group-id="Checkout.com [Settings]">
+            <attribute-group group-id="Checkout.com Google Pay">
+                <display-name xml:lang="x-default">Google Pay Settings</display-name>
+                <attribute attribute-id="ckoGooglePayEnabled"/>
+                <attribute attribute-id="ckoGooglePayEnvironment"/>
+                <attribute attribute-id="ckoGooglePayMerchantId"/>
+                <attribute attribute-id="ckoGooglePayNetworks"/>
+                <attribute attribute-id="ckoGooglePayButton"/>
+            </attribute-group>
+            <attribute-group group-id="Checkout.com Global Settings">
                 <display-name xml:lang="x-default">Account Settings</display-name>
                 <attribute attribute-id="ckoEnabled"/>
                 <attribute attribute-id="ckoMode"/>
