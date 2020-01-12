@@ -68,7 +68,7 @@ var CKOHelper = {
                 if (!this.containsObject(paymentTransaction, data) && this.isTransactionNeeded(paymentTransaction, instrument)) {                    	
                     // Build the row data
                     var row = {
-                        order_no: '<a href="' + URLUtils.url('ViewOrder-FindByNumber', 'OrderID', item.orderNo) + '" target="_blank">' + item.orderNo + "</a>",
+                        order_no: item.orderNo,
                         transaction_id: paymentTransaction.transactionID,
                         parent_transaction_id: paymentTransaction.custom.ckoParentTransactionId,
                         payment_id: paymentTransaction.custom.ckoPaymentId,
