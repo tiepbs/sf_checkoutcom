@@ -166,7 +166,7 @@ function getButtonsHtml(cell) {
 		}
 	}
 	else {
-		html += '------- Not available -------';
+		html += '<div class="ckoLocked">&#x1f512;</div>';
 	}
 
 	return html;
