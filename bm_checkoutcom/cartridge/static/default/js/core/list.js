@@ -59,14 +59,12 @@ function initTable(tableData) {
 	var table = new Tabulator('#transactions-table', {
 		headerFilterPlaceholder: '>',
 		placeholder: 'No results found for this request.',
-		persistentSort: true,
 		layout: 'fitColumns',
-		responsiveLayout: true,
 		height: '100%',
 		data: JSON.parse(tableData), 
 		layout: 'fitColumns',
 		pagination: 'local',
-		paginationSize: 100,
+		paginationSize: 30,
 		columns: getTableColumns(),
 		tableBuilt: function() {
 			// Set the pagination controls
@@ -87,9 +85,9 @@ function setPagination(table) {
 function getTableColumns() {
 	return [
 		{title: 'Order No', field: 'order_no', width: 120, formatter: 'html', headerFilter: 'input'},
-		{title: 'Transaction Id', field:'transaction_id', width: 250, headerFilter: 'input'},
-		{title: 'Parent transaction Id', field:'parent_transaction_id', width: 250, headerFilter: 'input'},
-		{title: 'Payment Id', field: 'payment_id', width: 250, headerFilter: 'input'},
+		{title: 'Transaction Id', field:'transaction_id', headerFilter: 'input'},
+		{title: 'Parent transaction Id', field:'parent_transaction_id', headerFilter: 'input'},
+		{title: 'Payment Id', field: 'payment_id', headerFilter: 'input'},
 		{
 			title: 'Amount',
 			field: 'amount',
@@ -109,6 +107,7 @@ function getTableColumns() {
 			title:'Actions',
 			field: 'actions',
 			headerSort: false,
+			width: 252,
 			formatter: function (cell, formatterParams, onRendered) {
 				return getButtonsHtml(cell);
 			}
