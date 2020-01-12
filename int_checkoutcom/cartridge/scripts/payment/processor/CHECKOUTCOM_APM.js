@@ -314,6 +314,7 @@ function SGJCTransAuthObject(payObject, args){
 				paymentInstrument.paymentTransaction.custom.ckoPaymentId = apmResponse.id;
 				paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
 				paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+				paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
 		        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
 			});
 			
