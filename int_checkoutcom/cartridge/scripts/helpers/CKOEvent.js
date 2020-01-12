@@ -70,6 +70,7 @@ var CKOEvent = {
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
             paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.id;
+            paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Capture';
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CAPTURE);
         }); 
     },
