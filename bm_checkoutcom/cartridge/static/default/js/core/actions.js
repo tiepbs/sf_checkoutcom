@@ -22,9 +22,6 @@ function initButtons() {
 			if (e.detail > 1) {
 				return;
 			}
-
-			// Open the transaction action modal window
-			openModal(e.target);
 		}
 	},  true);
 	
@@ -35,14 +32,15 @@ function initButtons() {
 	});	
 }
 
-function openModal(elt) {
+function openModal(elt, rowIndex) {
 	// Prepare the origin element id members
 	var members = elt.id.split('-');
 
 	// Get the transaction data
 	var tidExists = members[2] != null && members[2] != 'undefined';
 	var isValidTid = members[2].length > 0 && members[2].indexOf('act_') == 0;
-	if (tidExists && isValidTid) { 
+	if (tidExists && isValidTid) {
+		window.ckoSelectedRowIndex = rowIndex;
 		getTransactionData(members);
 	}
 	else {

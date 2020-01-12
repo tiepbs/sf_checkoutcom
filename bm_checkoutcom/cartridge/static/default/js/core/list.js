@@ -54,26 +54,10 @@ function getTransactionsData(controllerUrl) {
 	});
 }
 
-function reloadTransactionsData() {
-	// Prepare the table data
-	var controllerUrl = jQuery('[id="transactionsControllerUrl"]').val();
-
-	// Send the request
-	jQuery.ajax({
-		type: 'POST',
-		url: controllerUrl,
-		success: function (data) {
-			window.ckoRransactionsTable.setData(data);
-		},
-		error: function (request, status, error) {
-			console.log(error);
-		}
-	});
-}
-
 function initTable(tableData) {
 	// Build the table instance
-	window.ckoRransactionsTable = new Tabulator('#transactions-table', {
+	window.ckoTransactionsTable = new Tabulator('#transactions-table', {
+		index: 'id',
 		responsiveLayout:true,
 		selectable: 'highlight',
 		headerFilterPlaceholder: '>',
@@ -91,6 +75,14 @@ function initTable(tableData) {
 	});
 }
 
+function reloadTransactionsData() {
+	var row = window.ckoTransactionsTable.getRow(window.ckoSelectedRowIndex);
+	var rowData = row.getData();
+	rowData.opened = false;
+	window.ckoTransactionsTable.updateData([rowData]);
+	window.ckoSelectedRowIndex = 0;
+}
+
 function setPagination(table) {
 	// Add the pager event
 	jQuery('.transactions-table-controls .transactions-table-pager').change(function() {
@@ -102,6 +94,7 @@ function setPagination(table) {
 
 function getTableColumns() {
 	return [
+		{title: 'Id', field: 'id', visible: false},
 		{title: 'Order No', field: 'order_no', width: 120, formatter: 'html', headerFilter: 'input'},
 		{title: 'Transaction Id', field:'transaction_id', headerFilter: 'input'},
 		{title: 'Parent transaction Id', field:'parent_transaction_id', headerFilter: 'input'},
@@ -135,7 +128,8 @@ function getTableColumns() {
 
 function getButtonsHtml(cell) {
 	// Get the row data
-	var rowData = cell.getRow().getData();
+	var row = cell.getRow();
+	var rowData = row.getData();
 
 	// Prepare the variable
 	var html = '';
@@ -144,13 +138,13 @@ function getButtonsHtml(cell) {
 	if (JSON.parse(rowData.opened)) {
 		// Capture
 		if (rowData.type == 'AUTH') {
-			html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">Void</button>';
-			html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-info ckoAction">Capture</button>';
+			html += '<button type="button" onclick="openModal(this,\'' + row.getIndex() + '\')" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">Void</button>';
+			html += '<button type="button" onclick="openModal(this,\'' + row.getIndex() + '\')" id="capture-button-' + rowData.transaction_id + '" class="btn btn-info ckoAction">Capture</button>';
 		}
 
 		// Void
 		if (rowData.type == 'CAPTURE') {
-			html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-secondary ckoAction">Refund</button>';	
+			html += '<button type="button" onclick="openModal(this,\'' + row.getIndex() + '\')" id="refund-button-' + rowData.transaction_id + '" class="btn btn-secondary ckoAction">Refund</button>';	
 		}
 	}
 	else {

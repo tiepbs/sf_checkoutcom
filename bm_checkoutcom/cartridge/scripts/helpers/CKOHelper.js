@@ -60,6 +60,7 @@ var CKOHelper = {
             var paymentInstruments = item.getPaymentInstruments();
             
             // Loop through the payment instruments
+            var i = 1;
             for each (var instrument in paymentInstruments) {
                 // Get the payment transaction
                 var paymentTransaction = instrument.getPaymentTransaction();
@@ -68,6 +69,7 @@ var CKOHelper = {
                 if (!this.containsObject(paymentTransaction, data) && this.isTransactionNeeded(paymentTransaction, instrument)) {                    	
                     // Build the row data
                     var row = {
+                        id: i,
                         order_no: item.orderNo,
                         transaction_id: paymentTransaction.transactionID,
                         parent_transaction_id: paymentTransaction.custom.ckoParentTransactionId,
@@ -82,6 +84,7 @@ var CKOHelper = {
                     
                     // Add the transaction
                     data.push(row);
+                    i++;
                 }
             }
         } 
