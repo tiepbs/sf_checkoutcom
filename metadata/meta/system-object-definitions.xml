@@ -288,7 +288,7 @@
                 <mandatory-flag>true</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>TEST</default-value>
-                <select-multiple-flag>false</select-multiple-flag>
+                <select-multiple-flag>true</select-multiple-flag>
                 <value-definitions>
                     <value-definition>
                         <display xml:lang="x-default">Test</display>
@@ -346,7 +346,7 @@
                 <mandatory-flag>true</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>white</default-value>
-                <select-multiple-flag>false</select-multiple-flag>
+                <select-multiple-flag>true</select-multiple-flag>
                 <value-definitions>
                     <value-definition>
                         <display xml:lang="x-default">Black</display>
