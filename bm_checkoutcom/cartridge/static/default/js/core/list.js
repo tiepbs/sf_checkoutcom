@@ -103,6 +103,7 @@ function getTableColumns() {
 		{title: 'Currency', field: 'currency', visible: false},
 		{title: 'Date', field: 'creation_date', width: 140, headerFilter: 'input'},
 		{title: 'Type', field: 'type', width: 110, headerFilter: 'input'},
+		{title: 'Opened', field: 'opened', width: 110, formatter: 'tickCross'},
 		{title: 'Processor', field: 'processor', width: 190, headerFilter: 'input'},
 		{
 			title:'Actions',
@@ -123,9 +124,11 @@ function getButtonsHtml(cell) {
 	var html = '';
 	
 	// Build the auth button
-	html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Capture</button>';
-	html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Void</button>';
-	html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Refund</button>';
+	if (rowData.opened) {
+		html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Capture</button>';
+		html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Void</button>';
+		html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-primary ckoAction">Refund</button>';
+	}
 
 
 	return html;

@@ -72,6 +72,7 @@ var CKOHelper = {
                         transaction_id: paymentTransaction.transactionID,
                         parent_transaction_id: paymentTransaction.custom.ckoParentTransactionId,
                         payment_id: paymentTransaction.custom.ckoPaymentId,
+                        opened: paymentTransaction.custom.ckoTransactionOpened,
                         amount: paymentTransaction.amount.value,
                         currency: paymentTransaction.amount.currencyCode,
                         creation_date: paymentTransaction.getCreationDate().toDateString(),
