@@ -18,12 +18,19 @@
 	<!-- Tab navigation table -->	
     <isinclude template="inc/tabs">
 	
+	<div class="alert alert-warning alert-dismissible ckoSuccessMessage" role="alert">
+		<span>The transaction was processed successfully.</span>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
 	<!-- Main content table -->	
 	<div class="transactions-table-controls">
 		Rows per page: 
 		<select class="transactions-table-pager" name="transactions-table-pager">
 			<option value="10">10</option>
-			<option value="50">50</option>
+			<option value="50" selected>50</option>
 			<option value="100">100</option>
 			<option value="150">150</option>
 			<option value="200">200</option>

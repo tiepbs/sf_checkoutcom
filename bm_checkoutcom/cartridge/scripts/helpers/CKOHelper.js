@@ -60,6 +60,7 @@ var CKOHelper = {
             var paymentInstruments = item.getPaymentInstruments();
             
             // Loop through the payment instruments
+            var i = 1;
             for each (var instrument in paymentInstruments) {
                 // Get the payment transaction
                 var paymentTransaction = instrument.getPaymentTransaction();
@@ -68,19 +69,22 @@ var CKOHelper = {
                 if (!this.containsObject(paymentTransaction, data) && this.isTransactionNeeded(paymentTransaction, instrument)) {                    	
                     // Build the row data
                     var row = {
-                        order_no: '<a href="' + URLUtils.url('ViewOrder-FindByNumber', 'OrderID', item.orderNo) + '" target="_blank">' + item.orderNo + "</a>",
+                        id: i,
+                        order_no: item.orderNo,
                         transaction_id: paymentTransaction.transactionID,
+                        parent_transaction_id: paymentTransaction.custom.ckoParentTransactionId,
                         payment_id: paymentTransaction.custom.ckoPaymentId,
+                        opened: paymentTransaction.custom.ckoTransactionOpened,
                         amount: paymentTransaction.amount.value,
                         currency: paymentTransaction.amount.currencyCode,
                         creation_date: paymentTransaction.getCreationDate().toDateString(),
                         type: paymentTransaction.type.displayValue,
-                        opened: paymentTransaction.custom.ckoTransactionOpened,
                         processor: this.getProcessorId(instrument)
                     };
                     
                     // Add the transaction
                     data.push(row);
+                    i++;
                 }
             }
         } 

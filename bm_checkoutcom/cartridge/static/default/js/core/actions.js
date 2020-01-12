@@ -17,17 +17,13 @@ function initButtons() {
 
 	// Define the transaction buttons click events
 	document.addEventListener('click', function(e) {  
-		if (e.target.className.indexOf('ckoAction') !== -1) {
+		if (typeof e.target.className === 'string' && e.target.className.indexOf('ckoAction') !== -1) {
 			// Ignore double cliks
 			if (e.detail > 1) {
 				return;
 			}
-
-			// Open the transaction action modal window
-			openModal(e.target);
 		}
 	},  true);
-	
 	
 	// Submit the action request
 	jQuery('.ckoModal .modal-content .submit').click(function() {
@@ -35,14 +31,15 @@ function initButtons() {
 	});	
 }
 
-function openModal(elt) {
+function openModal(elt, rowIndex) {
 	// Prepare the origin element id members
 	var members = elt.id.split('-');
 
 	// Get the transaction data
 	var tidExists = members[2] != null && members[2] != 'undefined';
 	var isValidTid = members[2].length > 0 && members[2].indexOf('act_') == 0;
-	if (tidExists && isValidTid) { 
+	if (tidExists && isValidTid) {
+		window.ckoSelectedRowIndex = rowIndex;
 		getTransactionData(members);
 	}
 	else {
@@ -97,6 +94,18 @@ function getTransactionData(members) {
 	});
 }
 
+function showErrorMessage() {
+	// Show the error message
+	jQuery('.ckoErrorMessage').show(
+		'fast',
+		function () {
+			setTimeout(function () {
+				jQuery('.ckoErrorMessage').hide('fast');
+			}, 7000);
+		}
+	);
+}
+
 function performAction(elt) {
 	// Prepare the action URL
 	var actionUrl = jQuery('[id="actionControllerUrl"]').val();
@@ -129,6 +138,14 @@ function performAction(elt) {
 			var success = JSON.parse(res);
 			if (!success) {
 				alert('The transaction could not be processed.');
+			}
+			else {
+
+				// Close the modal window
+				jQuery('.ckoModal .modal-content .close').trigger('click');
+
+				// Reload the table data
+				reloadTransactionsData();
 			}
 		},
 		error: function (request, status, error) {
