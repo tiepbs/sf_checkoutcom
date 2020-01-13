@@ -166,8 +166,9 @@ var ckoUtility = {
 		serv.setRequestMethod(method);	
 		
 		// Call the service
-	    var resp = serv.call(requestData);
-        if (resp.status == 'OK') {
+		var resp = serv.call(requestData);
+
+		if (resp.status == 'OK') {
         	
             responseData = resp.object
             
