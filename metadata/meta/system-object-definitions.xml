@@ -17,6 +17,31 @@
             </attribute-group>
         </group-definitions>
     </type-extension>
+    <type-extension type-id="PaymentInstrument">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="ckoGooglePayData">
+                <display-name xml:lang="x-default">Checkout.com Google Pay Data</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoApplePayData">
+                <display-name xml:lang="x-default">Checkout.com Apple Pay Data</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Checkout.com">
+                <display-name xml:lang="x-default">Checkout.com</display-name>
+                <attribute attribute-id="ckoGooglePayData"/>
+                <attribute attribute-id="ckoApplePayData"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
     <type-extension type-id="PaymentTransaction">
         <custom-attribute-definitions>
             <attribute-definition attribute-id="ckoPaymentId">
@@ -272,7 +297,6 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
-
             <attribute-definition attribute-id="ckoGooglePayEnabled">
                 <display-name xml:lang="x-default">Enable Google Pay</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Google Pay</description>
@@ -287,8 +311,6 @@
                 <type>enum-of-string</type>
                 <mandatory-flag>true</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
-                <default-value>TEST</default-value>
-                <select-multiple-flag>true</select-multiple-flag>
                 <value-definitions>
                     <value-definition>
                         <display xml:lang="x-default">Test</display>
@@ -314,8 +336,6 @@
                 <type>enum-of-string</type>
                 <mandatory-flag>true</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
-                <default-value>white</default-value>
-                <select-multiple-flag>true</select-multiple-flag>
                 <value-definitions>
                     <value-definition>
                         <display xml:lang="x-default">Visa</display>
@@ -345,8 +365,6 @@
                 <type>enum-of-string</type>
                 <mandatory-flag>true</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
-                <default-value>white</default-value>
-                <select-multiple-flag>true</select-multiple-flag>
                 <value-definitions>
                     <value-definition>
                         <display xml:lang="x-default">Black</display>
@@ -360,13 +378,13 @@
             </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
-            <attribute-group group-id="Checkout.com Account Sandbox">
+            <attribute-group group-id="Checkout.com Sandbox API">
                 <display-name xml:lang="x-default">Sandbox API Keys</display-name>
                 <attribute attribute-id="ckoSandboxPublicKey"/>
                 <attribute attribute-id="ckoSandboxSecreteKey"/>
                 <attribute attribute-id="ckoSandboxPrivateKey"/>
             </attribute-group>
-            <attribute-group group-id="Checkout.com Account Live">
+            <attribute-group group-id="Checkout.com Live API">
                 <display-name xml:lang="x-default">Live API Keys</display-name>
                 <attribute attribute-id="ckoLivePublicKey"/>
                 <attribute attribute-id="ckoLiveSecreteKey"/>

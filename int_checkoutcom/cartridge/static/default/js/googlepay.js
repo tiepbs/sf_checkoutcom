@@ -17,7 +17,7 @@ function launchGooglePay() {
             tokenizationType: 'PAYMENT_GATEWAY',
             parameters: {
                 'gateway': 'checkoutltd',
-                'gatewayMerchantId': 'pk_test_4789efbe-aadc-43f9-b2f8-5f6e65bbec20'
+                'gatewayMerchantId': jQuery('[id="ckoGatewayMerchantId"]').val()
             }
         }
 
@@ -53,7 +53,7 @@ function launchGooglePay() {
         {
             return (new google.payments.api.PaymentsClient(
                 {
-                    environment: 'TEST'
+                    environment: jQuery('[id="ckoGooglePayEnvironment"]').val()
                 }
             ));
         }
@@ -88,7 +88,7 @@ function launchGooglePay() {
         function getGooglePaymentDataConfiguration()
         {
             return {
-                merchantId: '12345678',
+                merchantId: jQuery('[id="ckoGooglePayMerchantId"]').val(),
                 paymentMethodTokenizationParameters: tokenizationParameters,
                 allowedPaymentMethods: allowedPaymentMethods,
                 cardRequirements: {
@@ -106,9 +106,9 @@ function launchGooglePay() {
         function getGoogleTransactionInfo()
         {
             return {
-                currencyCode: 'GBP',
+                currencyCode: jQuery('[id="ckoGooglePayCurrency"]').val(),
                 totalPriceStatus: 'FINAL',
-                totalPrice: '50.22'
+                totalPrice: jQuery('[id="ckoGooglePayAmount"]').val()
             };
         }
 
@@ -122,7 +122,7 @@ function launchGooglePay() {
             // TransactionInfo must be set but does not affect cache
             paymentDataRequest.transactionInfo = {
                 totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
-                currencyCode: 'GBP'
+                currencyCode: jQuery('[id="ckoGooglePayCurrency"]').val()
             };
 
             var paymentsClient = getGooglePaymentsClient();
@@ -148,8 +148,8 @@ function launchGooglePay() {
                 source: 'CHECKOUTCOM_GOOGLE_PAY'
             };
 
-            // Send the request
-            console.log(payload);
+            // Store the payload
+            jQuery('[id="dwfrm_googlePayForm_data"]').val(JSON.stringify(payload));
         }
     });
 }

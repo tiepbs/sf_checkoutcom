@@ -26,38 +26,17 @@ function Handle(args) {
 	var cart = Cart.get(args.Basket);
 	var paymentMethod = args.PaymentMethodID;
 	
+	// get the payload data
+	var googlePayData = app.getForm('googlePayForm').get('data').value();
 
-	// get card payment form
-	var paymentForm = app.getForm('cardPaymentForm');
-	
-	// prepare card data object
-	var cardData = {
-			
-		owner		: paymentForm.get('owner').value(),
-		number		: ckoUtility.getFormattedNumber(paymentForm.get('number').value()),
-		month		: paymentForm.get('expiration.month').value(),
-		year		: paymentForm.get('expiration.year').value(),
-		cvn			: paymentForm.get('cvn').value(),
-		cardType	: paymentForm.get('type').value()
-		
-	};	
-	
 	// proceed with transaction
 	Transaction.wrap(function(){
 		cart.removeExistingPaymentInstruments(paymentMethod);
-		
 		var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-		
-		paymentInstrument.creditCardHolder = cardData.owner;
-		paymentInstrument.creditCardNumber = cardData.number;
-		paymentInstrument.creditCardExpirationMonth = cardData.month;
-		paymentInstrument.creditCardExpirationYear = cardData.year;
-		paymentInstrument.creditCardType = cardData.cardType;
+		paymentInstrument.custom.ckoGooglePayData = googlePayData;
 	});
 	
 	return {success: true};
-	
-
 }
 
 /**
@@ -66,7 +45,6 @@ function Handle(args) {
  * logic to authorise credit card payment.
  */
 function Authorize(args) {
-
 	// Preparing payment parameters
 	var orderNo = args.OrderNo;
 	var paymentInstrument = args.PaymentInstrument;
@@ -74,51 +52,26 @@ function Authorize(args) {
 	
 	// Add order number to the session global object 
 	session.privacy.ckoOrderId = args.OrderNo;
-	
-	
-	// build card data object
-	var cardData = {
-		"name"			: paymentInstrument.creditCardHolder,
-		"number"		: paymentInstrument.creditCardNumber,
-		"expiryMonth"	: paymentInstrument.creditCardExpirationMonth,
-		"expiryYear"	: paymentInstrument.creditCardExpirationYear,
-		"cvv"			: app.getForm("cardPaymentForm").get('cvn').value(),
-		"type"			: paymentInstrument.creditCardType,
-	};
-	
-	// make the charge request
-	var chargeResponse = cardUtility.handleCardRequest(cardData, args);
-	
-	// Handle card charge request result
-	if(chargeResponse){
-		
-		if(ckoUtility.getValue('cko3ds')){
-			
-			ISML.renderTemplate('redirects/3DSecure.isml', {
-				redirectUrl: session.privacy.redirectUrl
-			});
-			
-			return {authorized: true, redirected: true};
-			
-		} else {
-			// Create the authorization transaction
-		    Transaction.wrap(function() {
-		        paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-				paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-				paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-				paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-				paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-				paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-		        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-		    });
-			
-			return {authorized: true};
-		}
-		
-	}else{
-		return {error: true};
-	}	
 
+	// Make the charge request
+	var chargeResponse = googlePayUtility.handleRequest(args);
+	if (chargeResponse) {
+		// Create the authorization transaction
+		Transaction.wrap(function() {
+			paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
+			paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+			paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
+			paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+			paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+			paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+			paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+		});
+		
+		return {authorized: true};
+	}
+	else{
+		return {error: true};
+	}
 }
 
 /*
