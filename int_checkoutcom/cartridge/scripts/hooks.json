@@ -7,6 +7,14 @@
 		{
 			"name": "app.payment.processor.CHECKOUTCOM_APM",
 			"script": "./payment/processor/CHECKOUTCOM_APM"		
+		},	
+		{
+			"name": "app.payment.processor.CHECKOUTCOM_GOOGLE_PAY",
+			"script": "./payment/processor/CHECKOUTCOM_GOOGLE_PAY"		
+		},
+		{
+			"name": "app.payment.processor.CHECKOUTCOM_APPLE_PAY",
+			"script": "./payment/processor/CHECKOUTCOM_APPLE_PAY"		
 		}	
 	]
 }

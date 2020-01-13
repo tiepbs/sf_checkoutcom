@@ -47,6 +47,20 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
+            <attribute-definition attribute-id="ckoGooglePayData">
+                <display-name xml:lang="x-default">Checkout.com Google Pay Data</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoApplePayData">
+                <display-name xml:lang="x-default">Checkout.com Apple Pay Data</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="Checkout.com">
@@ -54,7 +68,8 @@
                 <attribute attribute-id="ckoPaymentId"/>
                 <attribute attribute-id="ckoParentTransactionId"/>
                 <attribute attribute-id="ckoTransactionType"/>
-                <attribute attribute-id="ckoTransactionOpened"/>
+                <attribute attribute-id="ckoGooglePayData"/>
+                <attribute attribute-id="ckoApplePayData"/>
            </attribute-group>
         </group-definitions>
     </type-extension>
@@ -272,21 +287,135 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
+            <attribute-definition attribute-id="ckoGooglePayEnabled">
+                <display-name xml:lang="x-default">Enable Google Pay</display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Google Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoGooglePayEnvironment">
+                <display-name xml:lang="x-default">Environment</display-name>
+                <description xml:lang="x-default">Should the Google Pay option run in test or production mode.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Test</display>
+                        <value>TEST</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Production</display>
+                        <value>PRODUCTION</value>
+                    </value-definition> 
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoGooglePayMerchantId">
+                <display-name xml:lang="x-default">Google Pay merchant ID</display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Google Pay</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>12345678</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoGooglePayButton">
+                <display-name xml:lang="x-default">Button Style</display-name>
+                <description xml:lang="x-default">The Google Pay option button style.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Black</display>
+                        <value>black</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">White</display>
+                        <value>white</value>
+                    </value-definition> 
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoApplePayEnabled">
+                <display-name xml:lang="x-default">Enable Apple Pay</display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Apple Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoApplePayEnvironment">
+                <display-name xml:lang="x-default">Environment</display-name>
+                <description xml:lang="x-default">Should the Apple Pay option run in test or production mode.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Test</display>
+                        <value>TEST</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Production</display>
+                        <value>PRODUCTION</value>
+                    </value-definition> 
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoApplePayMerchantId">
+                <display-name xml:lang="x-default">Apple Pay merchant ID</display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Apple Pay</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>12345678</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoApplePayButton">
+                <display-name xml:lang="x-default">Button Style</display-name>
+                <description xml:lang="x-default">The Apple Pay option button style.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Black</display>
+                        <value>black</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">White</display>
+                        <value>white</value>
+                    </value-definition> 
+                </value-definitions>
+            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
-            <attribute-group group-id="Checkout.com [Sandbox Keys]">
+            <attribute-group group-id="Checkout.com Sandbox API">
                 <display-name xml:lang="x-default">Sandbox API Keys</display-name>
                 <attribute attribute-id="ckoSandboxPublicKey"/>
                 <attribute attribute-id="ckoSandboxSecreteKey"/>
                 <attribute attribute-id="ckoSandboxPrivateKey"/>
             </attribute-group>
-            <attribute-group group-id="Checkout.com [Live Keys]">
+            <attribute-group group-id="Checkout.com Live API">
                 <display-name xml:lang="x-default">Live API Keys</display-name>
                 <attribute attribute-id="ckoLivePublicKey"/>
                 <attribute attribute-id="ckoLiveSecreteKey"/>
                 <attribute attribute-id="ckoLivePrivateKey"/>
             </attribute-group>
-            <attribute-group group-id="Checkout.com [Settings]">
+            <attribute-group group-id="Checkout.com Apple Pay">
+                <display-name xml:lang="x-default">Google Pay Settings</display-name>
+                <attribute attribute-id="ckoApplePayEnabled"/>
+                <attribute attribute-id="ckoApplePayEnvironment"/>
+                <attribute attribute-id="ckoApplePayMerchantId"/>
+                <attribute attribute-id="ckoApplePayButton"/>
+            </attribute-group>
+            <attribute-group group-id="Checkout.com Google Pay">
+                <display-name xml:lang="x-default">Google Pay Settings</display-name>
+                <attribute attribute-id="ckoGooglePayEnabled"/>
+                <attribute attribute-id="ckoGooglePayEnvironment"/>
+                <attribute attribute-id="ckoGooglePayMerchantId"/>
+                <attribute attribute-id="ckoGooglePayButton"/>
+            </attribute-group>
+            <attribute-group group-id="Checkout.com Global Settings">
                 <display-name xml:lang="x-default">Account Settings</display-name>
                 <attribute attribute-id="ckoEnabled"/>
                 <attribute attribute-id="ckoMode"/>
@@ -302,6 +431,8 @@
                 <attribute attribute-id="ckoAutoCapture"/>
                 <attribute attribute-id="ckoAutoCaptureTime"/>
                 <attribute attribute-id="ckoMada"/>
+                <attribute attribute-id="ckoGooglePayEnabled"/>
+                <attribute attribute-id="ckoGooglePayMerchantId"/>
                 <attribute attribute-id="ckoStorefrontCore"/>
                 <attribute attribute-id="ckoStorefrontController"/>
                 <attribute attribute-id="ckoDebugEnabled"/>
