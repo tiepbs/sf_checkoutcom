@@ -447,6 +447,8 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Obj
 	
 	var requestObject = JSON.parse(Object);
 	var billingAddress = JSON.parse(Address);
+	var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val();  //email
+	billingAddress.email = emailAddress;
 	
     Klarna.Payments.authorize(
         // options

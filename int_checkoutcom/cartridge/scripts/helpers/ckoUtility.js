@@ -1058,16 +1058,16 @@ var ckoUtility = {
 	getBasketAddress: function(basket){
 		
         var address = {
-            given_name					: this.getAppModeValue('John', basket.defaultShipment.shippingAddress.firstName),
-            family_name					: this.getAppModeValue('Doe', basket.defaultShipment.shippingAddress.lastName),
-            email						: "john@doe.com",
-            title						: this.getAppModeValue('Mr', basket.defaultShipment.shippingAddress.title),
-            street_address				: this.getAppModeValue('13 New Burlington St', basket.defaultShipment.shippingAddress.address1),
-            street_address2				: this.getAppModeValue('Apt 214', basket.defaultShipment.shippingAddress.address2),
-            postal_code					: this.getAppModeValue('W13 3BG', basket.defaultShipment.shippingAddress.postalCode),
-            city						: this.getAppModeValue('London', basket.defaultShipment.shippingAddress.city),
-            phone						: this.getAppModeValue('01895808221', basket.defaultShipment.shippingAddress.phone),
-            country						: this.getAppModeValue("GB", basket.defaultShipment.shippingAddress.countryCode.valueOf())
+            given_name					: basket.defaultShipment.shippingAddress.firstName,
+            family_name					: basket.defaultShipment.shippingAddress.lastName,
+            email						: null,
+            title						: basket.defaultShipment.shippingAddress.title,
+            street_address				: basket.defaultShipment.shippingAddress.address1,
+            street_address2				: basket.defaultShipment.shippingAddress.address2,
+            postal_code					: basket.defaultShipment.shippingAddress.postalCode,
+            city						: basket.defaultShipment.shippingAddress.city,
+            phone						: basket.defaultShipment.shippingAddress.phone,
+            country						: basket.defaultShipment.shippingAddress.countryCode.valueOf()
             
         }
 		
@@ -1083,16 +1083,16 @@ var ckoUtility = {
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
         var address = {
-            given_name					: this.getAppModeValue('John', order.defaultShipment.shippingAddress.firstName),
-            family_name					: this.getAppModeValue('Doe', order.defaultShipment.shippingAddress.lastName),
-            email						: this.getAppModeValue('john@doe.com', order.customerEmail),
-            title						: this.getAppModeValue('Mr', order.defaultShipment.shippingAddress.title),
-            street_address				: this.getAppModeValue('13 New Burlington St', order.defaultShipment.shippingAddress.address1),
-            street_address2				: this.getAppModeValue('Apt 214', order.defaultShipment.shippingAddress.address2),
-            postal_code					: this.getAppModeValue('W13 3BG', order.defaultShipment.shippingAddress.postalCode),
-            city						: this.getAppModeValue('London', order.defaultShipment.shippingAddress.city),
-            phone						: this.getAppModeValue('01895808221', order.defaultShipment.shippingAddress.phone),
-            country						: this.getAppModeValue("GB", order.defaultShipment.shippingAddress.countryCode.valueOf())
+            given_name					: order.defaultShipment.shippingAddress.firstName,
+            family_name					: order.defaultShipment.shippingAddress.lastName,
+            email						: order.customerEmail,
+            title						: order.defaultShipment.shippingAddress.title,
+            street_address				: order.defaultShipment.shippingAddress.address1,
+            street_address2				: order.defaultShipment.shippingAddress.address2,
+            postal_code					: order.defaultShipment.shippingAddress.postalCode,
+            city						: order.defaultShipment.shippingAddress.city,
+            phone						: order.defaultShipment.shippingAddress.phone,
+            country						: order.defaultShipment.shippingAddress.countryCode.valueOf()
             
         }
 		

@@ -704,9 +704,9 @@ function klarnaPayAuthorization(args){
 	
 	
 
-	var countryCode = ckoUtility.getAppModeValue('GB', ckoUtility.getBillingObject(args).country);
-	var currency = ckoUtility.getAppModeValue('GBP', ckoUtility.getCurrencyCode(args));
-	var locale = ckoUtility.getAppModeValue('en-GB', ckoUtility.getLanguage());
+	var countryCode = ckoUtility.getBillingObject(args).country;
+	var currency = ckoUtility.getCurrencyCode(args);
+	var locale = ckoUtility.getLanguage();
 	var total = ckoUtility.getFormattedPrice(order.totalGrossPrice.value, currency);
 	var tax =  ckoUtility.getFormattedPrice(order.totalTax.value, currency);
 	var products = ckoUtility.getOrderBasketObject(args);
