@@ -33,7 +33,7 @@ function Handle(args) {
 	Transaction.wrap(function(){
 		cart.removeExistingPaymentInstruments(paymentMethod);
 		var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-		paymentInstrument.custom.ckoGooglePayData = googlePayData;
+		paymentInstrument.paymentTransaction.custom.ckoGooglePayData = googlePayData;
 	});
 	
 	return {success: true};

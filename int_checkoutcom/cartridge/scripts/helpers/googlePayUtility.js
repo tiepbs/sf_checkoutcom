@@ -16,14 +16,15 @@ var googlePayUtility = {
 	 * Handle full charge Request to CKO API
 	 */
 	handleRequest: function(args) {
-		// load the card and order information
+		// load the order information
 		var order = OrderMgr.getOrder(args.OrderNo);
+		var paymentInstrument = args.PaymentInstrument;
+		var ckoGooglePayData =  paymentInstrument.paymentTransaction.custom.ckoGooglePayData;
 
 		// Prepare the parameters
-		var paymentInstrument = args.PaymentInstrument;
 		var requestData = {
 			"type": "googlepay",
-			"token_data": paymentInstrument.custom.ckoGooglePayData
+			"token_data": ckoGooglePayData
 		};
 
 		// Perform the request to the payment gateway

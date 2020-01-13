@@ -5,6 +5,8 @@
         "./cartridge/scripts/init/CkoCardChargeInit.js",  
         "./cartridge/scripts/init/CkoCardSourcesInit.js",
         "./cartridge/scripts/init/CkoKlarnaSessionInit.js",
-        "./cartridge/scripts/init/CkoPaymentActions.js"
+        "./cartridge/scripts/init/CkoPaymentActionsInit.js",
+        "./cartridge/scripts/init/CkoNetworkTokenInit.js"
+
     ]   	
 }

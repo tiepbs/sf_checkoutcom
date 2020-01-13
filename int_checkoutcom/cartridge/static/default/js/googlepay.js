@@ -139,13 +139,9 @@ function launchGooglePay() {
         {
             // Prepare the payload
             var payload = {
-                methodId: 'CHECKOUTCOM_GOOGLE_PAY',
-                cardToken: {
-                    signature: JSON.parse(paymentData.paymentMethodToken.token).signature,
-                    protocolVersion: JSON.parse(paymentData.paymentMethodToken.token).protocolVersion,
-                    signedMessage: JSON.parse(paymentData.paymentMethodToken.token).signedMessage,
-                },
-                source: 'CHECKOUTCOM_GOOGLE_PAY'
+                signature: JSON.parse(paymentData.paymentMethodToken.token).signature,
+                protocolVersion: JSON.parse(paymentData.paymentMethodToken.token).protocolVersion,
+                signedMessage: JSON.parse(paymentData.paymentMethodToken.token).signedMessage,
             };
 
             // Store the payload

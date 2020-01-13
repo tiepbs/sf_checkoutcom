@@ -5,8 +5,12 @@
 
 <isscript>
 var buttonStyle = 'google-pay-button-' + dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayButton');
-var ckoMode = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode');
-var publicKey = 'cko' + ckoMode.charAt(0).toUpperCase() + 'PublicKey';
+<!--
+var ckoMode = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode').value; 
+var publicKey = 'cko' + ckoMode.toUpperCase() + 'PublicKey';
+-->
+
+var publicKey = 'ckoTestPublicKey';
 var gatewayMerchantId = dw.system.Site.getCurrent().getCustomPreferenceValue(publicKey);
 </isscript>
 
