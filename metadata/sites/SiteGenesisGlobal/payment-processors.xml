@@ -16,4 +16,12 @@
             <production/>
         </preferences>
     </payment-processor>
+    <payment-processor processor-id="CHECKOUTCOM_GOOGLE_PAY">
+        <preferences>
+            <all-instances/>
+            <development/>
+            <staging/>
+            <production/>
+        </preferences>
+    </payment-processor>
 </payment-processors>

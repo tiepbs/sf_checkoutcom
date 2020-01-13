@@ -48,6 +48,12 @@
         <password/>
     </service-credential>
 
+    <service-credential service-credential-id="cko.network.token.sandbox.credential">
+        <url>https://api.sandbox.checkout.com/tokens</url>
+        <user-id/>
+        <password/>
+    </service-credential>
+
     <service-credential service-credential-id="cko.verify.charges.live.credential">
         <url>https://api.checkout.com/payments</url>
         <user-id/>
@@ -92,6 +98,12 @@
 
     <service-credential service-credential-id="cko.transaction.refund.live.credential">
         <url>https://api.checkout.com/payments/chargeId/refunds</url>
+        <user-id/>
+        <password/>
+    </service-credential>
+
+    <service-credential service-credential-id="cko.network.token.live.credential">
+        <url>https://api.checkout.com/tokens</url>
         <user-id/>
         <password/>
     </service-credential>
@@ -149,6 +161,15 @@
         <comm-log-enabled>false</comm-log-enabled>
         <profile-id>CheckoutCom</profile-id>
         <credential-id>cko.transaction.refund.sandbox.credential</credential-id>
+    </service>
+
+    <service service-id="cko.network.token.sandbox.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <profile-id>CheckoutCom</profile-id>
+        <credential-id>cko.network.token.sandbox.credential</credential-id>
     </service>
 
     <service service-id="cko.card.sources.sandbox.service">
@@ -221,6 +242,15 @@
         <comm-log-enabled>false</comm-log-enabled>
         <profile-id>CheckoutCom</profile-id>
         <credential-id>cko.transaction.refund.live.credential</credential-id>
+    </service>
+
+    <service service-id="cko.network.token.live.service">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <profile-id>CheckoutCom</profile-id>
+        <credential-id>cko.network.token.live.credential</credential-id>
     </service>
 
     <service service-id="cko.card.sources.live.service">
