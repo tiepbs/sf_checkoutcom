@@ -18,7 +18,6 @@ var gatewayMerchantId = dw.system.Site.getCurrent().getCustomPreferenceValue(pub
 
 <input type="hidden" id="ckoGooglePayEnvironment" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnvironment').value)}">
 <input type="hidden" id="ckoGooglePayMerchantId" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayMerchantId'))}">
-<input type="hidden" id="ckoGooglePayNetworks" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayNetworks'))}">
 <input type="hidden" id="ckoGooglePayCurrency" value="${pdict.Basket.getCurrencyCode()}">
 <input type="hidden" id="ckoGooglePayAmount" value="${pdict.OrderTotal}">
 <input type="hidden" id="ckoGatewayMerchantId" value="${gatewayMerchantId}">
