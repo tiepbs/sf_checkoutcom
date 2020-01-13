@@ -24,18 +24,39 @@ var googlePayUtility = {
 		// Prepare the parameters
 		var requestData = {
 			"type": "googlepay",
-			"token_data": ckoGooglePayData
+			"token_data": JSON.parse(ckoGooglePayData)
 		};
 
 		// Perform the request to the payment gateway
-		var gatewayResponse = ckoUtility.gatewayClientRequest(
+		var tokenResponse = ckoUtility.gatewayClientRequest(
 			"cko.network.token." + ckoUtility.getValue('ckoMode') + ".service",
 			requestData
 		);
 
-		// If the charge is valid, process the response
-		if (gatewayResponse) {
-			this.handleResponse(gatewayResponse, order);
+		// If the request is valid, process the response
+		if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
+			var chargeData = {
+				"source"				: this.getSourceObject(tokenResponse),
+				"amount"				: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency()),	
+				"currency"				: ckoUtility.getCurrency(),
+				"reference"				: args.OrderNo,
+				"capture"				: ckoUtility.getValue('ckoAutoCapture'),
+				"capture_on"			: ckoUtility.getCaptureTime(),
+				"customer"				: ckoUtility.getCustomer(args),
+				"billing_descriptor"	: ckoUtility.getBillingDescriptorObject(),
+				"shipping"				: this.getShippingObject(args),
+				"3ds"					: this.get3Ds(),
+				"risk"					: {enabled: true},
+				"payment_ip"			: ckoUtility.getHost(args),
+				"metadata"				: ckoUtility.getMetadataObject(cardData, args)
+			};
+
+			// Perform the request to the payment gateway
+			var gatewayResponse = ckoUtility.gatewayClientRequest(
+				"cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service",
+				chargeData
+			);
+
 			return gatewayResponse;
 		} else {
 			// update the transaction
@@ -61,6 +82,18 @@ var googlePayUtility = {
 		ckoUtility.updateCustomerData(gatewayResponse);
 	},
 	
+	/*
+	 * Build Gateway Source Object
+	 */
+	getSourceObject: function(tokenData) {
+		// source object
+		var source = {
+			type: "token",
+			token: tokenData.token
+		}
+		
+		return source;
+	}
 }
 
 /*
