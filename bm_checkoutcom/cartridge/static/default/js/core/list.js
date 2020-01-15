@@ -5,16 +5,8 @@
  */
 document.addEventListener('DOMContentLoaded', function() {
 	buildTabs();
-	buildTable();
+	getTransactions(initTable);
 }, false);
-
-function buildTable() {
-	// Prepare the table data
-	var controllerUrl = jQuery('[id="transactionsControllerUrl"]').val();
-
-	// Instantiate the table
-	getTransactionsData(controllerUrl);
-}
 
 function buildTabs() {
 	// Get the active tab id
@@ -41,12 +33,13 @@ function getCookie(cname) {
     return "";
 }
 
-function getTransactionsData(controllerUrl) {
+function getTransactions(callBackFn) {
+	var controllerUrl = jQuery('[id="transactionsControllerUrl"]').val();
 	jQuery.ajax({
 		type: 'POST',
 		url: controllerUrl,
 		success: function (data) {
-			initTable(data);
+			callBackFn(data);
 		},
 		error: function (request, status, error) {
 			console.log(error);
@@ -75,17 +68,9 @@ function initTable(tableData) {
 	});
 }
 
-function reloadTransactionsData() {
-	// Get the row data
-	var row = window.ckoTransactionsTable.getRow(window.ckoSelectedRowIndex);
-	var rowData = row.getData();
-
-	console.log(rowData);
-
+function reloadTable(tableData) {
 	// Update the row data
-	rowData.opened = false;
-	window.ckoTransactionsTable.updateData([rowData]);
-	window.ckoSelectedRowIndex = 0;
+	window.ckoTransactionsTable.replaceData(tableData);
 
 	// Show the success message
 	showSuccessMessage();
@@ -158,13 +143,13 @@ function getButtonsHtml(cell) {
 	if (JSON.parse(rowData.opened)) {
 		// Capture
 		if (rowData.type == 'AUTH') {
-			html += '<button type="button" data-rowindex="' + rowData.id + '" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">Void</button>';
-			html += '<button type="button" data-rowindex="' + rowData.id + '" id="capture-button-' + rowData.transaction_id + '" class="btn btn-info ckoAction">Capture</button>';
+			html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">Void</button>';
+			html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-info ckoAction">Capture</button>';
 		}
 
 		// Void
 		if (rowData.type == 'CAPTURE') {
-			html += '<button type="button" data-rowindex="' + rowData.id + '" id="refund-button-' + rowData.transaction_id + '" class="btn btn-secondary ckoAction">Refund</button>';	
+			html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-secondary ckoAction">Refund</button>';	
 		}
 	}
 	else {

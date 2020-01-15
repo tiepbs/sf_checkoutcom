@@ -25,10 +25,7 @@ function initButtons() {
 			}
 
 			// Open the modal
-			openModal(
-				e.target, 
-				jQuery(e.target).data('rowindex')
-			);
+			openModal(e.target);
 		}
 	},  true);
 	
@@ -46,7 +43,6 @@ function openModal(elt, rowIndex) {
 	var tidExists = members[2] != null && members[2] != 'undefined';
 	var isValidTid = members[2].length > 0 && members[2].indexOf('act_') == 0;
 	if (tidExists && isValidTid) {
-		window.ckoSelectedRowIndex = rowIndex;
 		getTransactionData(members);
 	}
 	else {
@@ -151,7 +147,7 @@ function performAction(elt) {
 				jQuery('.ckoModal .modal-content .close').trigger('click');
 
 				// Reload the table data
-				reloadTransactionsData();
+				getTransactions(reloadTable);
 			}
 		},
 		error: function (request, status, error) {
