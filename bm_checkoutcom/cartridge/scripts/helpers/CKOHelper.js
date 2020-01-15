@@ -103,7 +103,10 @@ var CKOHelper = {
         var condition1 = (tid && paymentTransaction.transactionID == tid) || !tid;
         var condition2 = this.isCkoItem(paymentInstrument.paymentMethod);
         var condition3 = this.isCkoItem(this.getProcessorId(paymentInstrument));
-        if (condition1 && condition2 && condition3) {
+        var condition4 = paymentTransaction.custom.ckoPaymentId !==null && paymentTransaction.custom.ckoPaymentId != '';
+        var condition5 = paymentTransaction.transactionID && paymentTransaction.transactionID != '';
+
+        if (condition1 && condition2 && condition3 && condition4 && condition5) {
             return true;
         }
 
