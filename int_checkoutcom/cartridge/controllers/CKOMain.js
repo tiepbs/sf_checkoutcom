@@ -85,7 +85,7 @@ function handleFail() {
 	var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
     // Restore the cart
-	CKOUtils.checkAndRestoreBasket(order);
+	ckoUtility.checkAndRestoreBasket(order);
 
 	// Send back to the error page
 	ISML.renderTemplate('custom/common/response/failed.isml');

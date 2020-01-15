@@ -11,7 +11,7 @@ var publicKey = 'cko' + ckoMode.toUpperCase() + 'PublicKey';
 -->
 
 var publicKey = 'ckoTestPublicKey';
-var gatewayMerchantId = dw.system.Site.getCurrent().getCustomPreferenceValue(publicKey);
+var gatewayMerchantId = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoPublicKey');
 </isscript>
 
 <button id="ckoGooglePayButton" type="button" class="cko-google-pay-button ${buttonStyle}"></button>

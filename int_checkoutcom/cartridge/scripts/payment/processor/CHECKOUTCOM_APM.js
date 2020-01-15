@@ -347,9 +347,9 @@ function SGJCTransAuthObject(payObject, args){
  */
 function idealPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
-	var language = ckoUtility.getAppModeValue('nl', ckoUtility.getLanguage());
-	var bic = ckoUtility.getAppModeValue('INGBNL2A', paymentForm.get('ideal_bic').value());
+	var currency = ckoUtility.getCurrency(args);
+	var language = ckoUtility.getLanguage();
+	var bic = paymentForm.get('ideal_bic').value();
 	
 	// building ideal pay object
     var payObject = {
@@ -413,7 +413,7 @@ function bancontactPayAuthorization(args){
 				"account_holder_name"	: ckoUtility.getCustomerName(args),
 				"billing_descriptor" 	: businessName
 			},
-			"type"		: 'boleto',
+			"type"		: 'bancontact',
 			"purpose"	: businessName,
 			"currency"	: currency
 		};
@@ -453,7 +453,7 @@ function benefitPayAuthorization(args){
  */
 function giroPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
+	var currency = ckoUtility.getCurrency(args);
 
 	// building pay object
 	var payObject = {
@@ -477,7 +477,7 @@ function giroPayAuthorization(args){
  */
 function epsPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
+	var currency = ckoUtility.getCurrency(args);
 	
 	// building pay object
 	var payObject = {
@@ -522,8 +522,8 @@ function sofortPayAuthorization(args){
  */
 function knetPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('KWD', ckoUtility.getCurrency(args));
-	var language = ckoUtility.getAppModeValue('en', ckoUtility.getLanguage());
+	var currency = ckoUtility.getCurrency(args);
+	var language = ckoUtility.getLanguage().substr(0, 2);
 	
 	// building pay object
 	var payObject = {
@@ -547,9 +547,9 @@ function knetPayAuthorization(args){
  */
 function qPayAuthorization(args){
 	
-	var nationalId = ckoUtility.getAppModeValue('070AYY010BU234M', paymentForm.get('qpay_national_id').value());
-	var language = ckoUtility.getAppModeValue('en', ckoUtility.getLanguage());
-	var currency = ckoUtility.getAppModeValue('QAR', ckoUtility.getCurrency(args));
+	var nationalId = paymentForm.get('qpay_national_id').value();
+	var language = ckoUtility.getLanguage().substr(0, 2);
+	var currency = ckoUtility.getCurrency(args);
 	
 	// building pay object
 	var payObject = {
@@ -576,7 +576,7 @@ function qPayAuthorization(args){
  */
 function fawryPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EGP', ckoUtility.getCurrency(args));
+	var currency = ckoUtility.getCurrency(args);
 	
 	// building pay object
 	var payObject = {
@@ -629,8 +629,8 @@ function sepaPayAuthorization(args){
  */
 function multibancoPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
-	var country = ckoUtility.getAppModeValue('PT', ckoUtility.getBillingCountry(args));
+	var currency = ckoUtility.getCurrency(args);
+	var country = ckoUtility.getBillingCountry(args);
 	
 	var payObject = {
 	        "type"		: "multibanco",
@@ -653,7 +653,7 @@ function multibancoPayAuthorization(args){
  */
 function poliPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('NZD', ckoUtility.getCurrency(args));
+	var currency = ckoUtility.getCurrency(args);
 	
 	var payObject = {
 	        "type"		: "poli",
@@ -673,8 +673,8 @@ function poliPayAuthorization(args){
  */
 function p24PayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('PLN', ckoUtility.getCurrency(args));
-	var country = ckoUtility.getAppModeValue('PL', ckoUtility.getBillingCountry(args));
+	var currency = ckoUtility.getCurrency(args);
+	var country = ckoUtility.getBillingCountry(args);
 	
 	var payObject = {
 		    "type"			: "p24",
@@ -750,7 +750,7 @@ function klarnaPayAuthorization(args){
  */
 function paypalPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
+	var currency = ckoUtility.getCurrency(args);
 
 	var payObject = {
 		    "type"			: "paypal",
