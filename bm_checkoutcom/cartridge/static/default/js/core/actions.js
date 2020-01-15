@@ -137,10 +137,9 @@ function performAction(elt) {
 		success: function (res) {
 			var success = JSON.parse(res);
 			if (!success) {
-				alert('The transaction could not be processed.');
+				showErrorMessage();
 			}
 			else {
-
 				// Close the modal window
 				jQuery('.ckoModal .modal-content .close').trigger('click');
 
