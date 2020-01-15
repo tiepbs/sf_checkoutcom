@@ -17,11 +17,18 @@ function initButtons() {
 
 	// Define the transaction buttons click events
 	document.addEventListener('click', function(e) {  
+		// Prevent double click
 		if (typeof e.target.className === 'string' && e.target.className.indexOf('ckoAction') !== -1) {
 			// Ignore double cliks
 			if (e.detail > 1) {
 				return;
 			}
+
+			// Open the modal
+			openModal(
+				e.target, 
+				jQuery(e.target).data('rowindex')
+			);
 		}
 	},  true);
 	

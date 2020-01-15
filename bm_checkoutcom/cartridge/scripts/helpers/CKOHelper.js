@@ -55,12 +55,12 @@ var CKOHelper = {
         var result  = this.getCkoOrders();
 
         // Loop through the results
+        var i = 1;
         for each (var item in result) {
             // Get the payment instruments
             var paymentInstruments = item.getPaymentInstruments();
             
             // Loop through the payment instruments
-            var i = 1;
             for each (var instrument in paymentInstruments) {
                 // Get the payment transaction
                 var paymentTransaction = instrument.getPaymentTransaction();
