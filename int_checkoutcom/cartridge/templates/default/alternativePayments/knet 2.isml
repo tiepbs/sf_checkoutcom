@@ -1,0 +1,9 @@
+<!-- Knet pay APM Option -->
+<H4>
+	<img alt="knet" id="knet_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/knet.jpeg')}" width="10%"/>
+	${Resource.msg('cko.knet.name','cko',null)}
+	<input id="knet_apm_radio_btn" type="radio" name="apm_payment_types" value="knet">
+</H4>
+
+
+<hr/>

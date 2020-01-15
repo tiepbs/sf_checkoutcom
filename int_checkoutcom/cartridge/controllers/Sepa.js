@@ -25,7 +25,7 @@ function mandate() {
 	if(url){
 		app.getView({
 			creditAmount: order.totalGrossPrice.value.toFixed(2),
-			formatedAmount: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), 'EUR'),
+			formatedAmount: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency()),
 			debtor:	order.defaultShipment.shippingAddress.firstName + " " + order.defaultShipment.shippingAddress.lastName,
 			debtorAddress1: order.billingAddress.address1,
 			debtorAddress2: order.billingAddress.address2,
@@ -76,34 +76,40 @@ function handleMandate() {
                 app.getForm('sepaForm').clear();
                 
                 // get the response object from session
-                var responseObject = session.privacy.sepaResponse;
+                var responseObjectId = session.privacy.sepaResponseId;
         		
-            	if(orderId){
-            		
-            		// load the order
-            		var order = OrderMgr.getOrder(orderId);
-            		
-            		var payObject = {
-	        			    "source": {
-	        			        "type": "id",
-	        			        "id": responseObject.id
-	        			    },
-	        			    "amount": ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), 'EUR'),
-	        			    "currency": "EUR",
-	        			    "reference": orderId
-	            		};
-            		
-            		session.privacy.sepaResponse = null;
-            		
-            		apmUtility.handleSepaRequest(payObject, order);
-            		
-                	var confirmation = app.getController('COSummary');
-                	
-            		confirmation.ShowConfirmation(order);
-            	}else{
-                    
-                    app.getController('COBilling').Start();
-            	}
+                if(responseObjectId){
+                	if(orderId){
+                		
+                		// load the order
+                		var order = OrderMgr.getOrder(orderId);
+                		
+                		var payObject = {
+    	        			    "source": {
+    	        			        "type": "id",
+    	        			        "id": responseObjectId
+    	        			    },
+    	        			    "amount": ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency()),
+    	        			    "currency": ckoUtility.getCurrency(),
+    	        			    "reference": orderId
+    	            		};
+                		
+                		session.privacy.sepaResponseId = null;
+                		
+                		apmUtility.handleSepaRequest(payObject, order);
+                		
+                    	var confirmation = app.getController('COSummary');
+                    	
+                		confirmation.ShowConfirmation(order);
+                	}else{
+                        
+                        app.getController('COBilling').Start();
+                	}
+                }else{
+                	//app.getController('COBilling').Start();
+                	// print out a message
+            		response.getWriter().println('Error!');
+                }
             	
             	
         	}else{

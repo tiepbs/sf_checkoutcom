@@ -374,9 +374,9 @@ function idealPayAuthorization(args){
  */
 function boletoPayAuthorization(args){
 	
-	var cpfNumber = paymentForm.get('boleto_cpf').value();
-	var birthday = paymentForm.get('boleto_birthDate').value();
-	var currency = ckoUtility.getCurrency(args);
+	var cpfNumber = ckoUtility.getAppModeValue('00003456789', paymentForm.get('boleto_cpf').value());
+	var birthday = ckoUtility.getAppModeValue('1984-03-04', paymentForm.get('boleto_birthDate').value());
+	var currency = ckoUtility.getAppModeValue('BRL', ckoUtility.getCurrency(args));
 	
 	// building pay object
 	var payObject = {
@@ -402,8 +402,8 @@ function boletoPayAuthorization(args){
  */
 function bancontactPayAuthorization(args){
 	
-	var country = ckoUtility.getBillingCountry(args);
-	var currency = ckoUtility.getCurrency(args);
+	var country = ckoUtility.getAppModeValue('BE', ckoUtility.getBillingCountry(args));
+	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
 	
 	// building pay object
 	var payObject = {
@@ -429,7 +429,7 @@ function bancontactPayAuthorization(args){
  */
 function benefitPayAuthorization(args){
 	
-	var currency = ckoUtility.getCurrency(args);
+	var currency = ckoUtility.getAppModeValue('BHD', ckoUtility.getCurrency(args));
 	
 	// process benefit pay
 	var payObject = {
@@ -501,7 +501,7 @@ function epsPayAuthorization(args){
  */
 function sofortPayAuthorization(args){
 	
-	var currency = ckoUtility.getCurrency(args);
+	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
 
 	// building pay object
 	var payObject = {
@@ -602,8 +602,8 @@ function fawryPayAuthorization(args){
  */
 function sepaPayAuthorization(args){
 	
-	var accountIban = paymentForm.get('sepa_iban').value() + paymentForm.get('sepa_bic').value();
-	var currency = ckoUtility.getCurrency(args);
+	var accountIban = ckoUtility.getAppModeValue('DE25100100101234567893', paymentForm.get('sepa_iban').value() + paymentForm.get('sepa_bic').value());
+	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
 	
 	// building pay object
 	var payObject = {

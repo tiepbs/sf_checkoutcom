@@ -588,7 +588,7 @@ function getApmObject(){
 			},
 			sepa		: {
 				countries	: ["AT", "BE", "CY", "DE", "EE", "ES", "FI", "FR", "GR", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PT", "SI", "SK", "AD", "BG", "CH", "CZ", "DK", "GB", "HR", "HU", "IS", "LI", "MC", "NO", "PL", "RO", "SM", "SE", "VA"],
-				currencies	: ["EUR", "GBP"]
+				currencies	: "EUR"
 			},
 			p24			: {
 				countries	: "PL",
@@ -619,6 +619,8 @@ function AlternativePaymentsFilter(){
 			if (this.readyState == 4 && this.status == 200) {
 				
 				var filterObject = JSON.parse(this.responseText);
+				
+				console.log(filterObject);
 		    	
 		    	var amps;
 		    	
