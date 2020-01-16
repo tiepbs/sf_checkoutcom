@@ -33,9 +33,6 @@ var googlePayUtility = {
 			requestData
 		);
 
-		const logger = require('dw/system/Logger').getLogger('ckodebug');
-    	logger.debug('tokenResponse {0}', tokenResponse);
-
 		// If the request is valid, process the response
 		if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
 			var chargeData = {
