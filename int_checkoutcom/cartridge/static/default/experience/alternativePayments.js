@@ -619,8 +619,6 @@ function AlternativePaymentsFilter(){
 			if (this.readyState == 4 && this.status == 200) {
 				
 				var filterObject = JSON.parse(this.responseText);
-				
-				console.log(filterObject);
 		    	
 		    	var amps;
 		    	
