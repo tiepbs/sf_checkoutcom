@@ -1,0 +1,95 @@
+<!-- Sandbox Mode APMs -->
+
+<div id="apmsBox">
+
+	<div id="ideal" style="display: none;">
+		<!-- This to include the ideal pay apm form -->
+		<isinclude template="alternativePayments/ideal.isml"/>
+	</div>
+	
+	<div id="boleto" style="display: none;">	
+		<!-- This to include the boleto pay apm form -->
+		<isinclude template="alternativePayments/boleto.isml"/>
+	</div>
+	
+	<div id="bancontact" style="display: none;">	
+		<!-- This to include the bancontact pay apm form -->
+		<isinclude template="alternativePayments/bancontact.isml"/>
+	</div>
+	
+	<div id="benefit" style="display: none;">	
+		<!-- This to include the benefit pay apm form -->
+		<isinclude template="alternativePayments/benefit.isml"/>
+	</div>
+	
+	<div id="giro" style="display: none;">	
+		<!-- This to include the giro pay apm form -->
+		<isinclude template="alternativePayments/giro.isml"/>
+	</div>
+	
+	<div id="eps" style="display: none;">	
+		<!-- This to include the eps pay apm form -->
+		<isinclude template="alternativePayments/eps.isml"/>
+	</div>
+	
+	<div id="sofort" style="display: none;">		
+		<!-- This to include the sofort pay apm form -->
+		<isinclude template="alternativePayments/sofort.isml"/>
+	</div>
+	
+	<div id="knet" style="display: none;">
+		<!-- This to include the knet pay apm form -->
+		<isinclude template="alternativePayments/knet.isml"/>
+	</div>
+	
+	<div id="qpay" style="display: none;">	
+		<!-- This to include the qpay apm form -->
+		<isinclude template="alternativePayments/qpay.isml"/>
+	</div>
+	
+	<div id="fawry" style="display: none;">	
+		<!-- This to include the fawry apm form -->
+		<isinclude template="alternativePayments/fawry.isml"/>
+	</div>
+	
+	<div id="multibanco" style="display: none;">	
+		<!-- This to include the multibanco apm form -->
+		<isinclude template="alternativePayments/multibanco.isml"/>
+	</div>
+	
+	<div id="poli" style="display: none;">	
+		<!-- This to include the poli apm form -->
+		<isinclude template="alternativePayments/poli.isml"/>
+	</div>
+	
+	<div id="sepa" style="display: none;">	
+		<!-- This to include the sepa apm form -->
+		<isinclude template="alternativePayments/sepa.isml"/>
+	</div>
+	
+	<div id="p24" style="display: none;">
+		<!-- This to include the p24 apm form -->
+		<isinclude template="alternativePayments/p24.isml"/>
+	</div>
+	
+	<div id="klarna" style="display: none;">	
+		<!-- This to include the klarna apm form -->
+		<isinclude template="alternativePayments/klarna.isml"/>	
+	</div>
+	
+	<div id="paypal">	
+		<!-- This to include the Paypal apm form -->
+		<isinclude template="alternativePayments/paypal.isml"/>
+	</div>
+
+</div>
+
+	
+<!-- field for alternative payment chosen -->
+<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.alternative_payments}" />
+
+<script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
+
+<script src="${URLUtils.staticURL('/libraries/cleave/cleave.js')}"></script>
+
+<script src="${URLUtils.staticURL('experience/alternativePayments.js')}"></script>
