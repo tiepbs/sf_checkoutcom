@@ -860,12 +860,16 @@ var ckoUtility = {
 	/*
 	 * Build metadata object
 	 */
-	getMetadataObject: function(Data, args){
+	getMetadataObject: function(data, args) {
 		// Prepare the base metadata
 		var meta = {
-			udf1				: Data.type,
 			integration_data	: this.getCartridgeMeta(),
 			platform_data		: this.getValue('ckoPlatformData')
+		}
+
+		// Add the type if needed
+		if (data.hasOwnProperty('type')) {
+			meta.udf1 = data.type;
 		}
 
 		// Get the payment processor
