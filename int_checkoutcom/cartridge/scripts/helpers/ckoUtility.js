@@ -543,7 +543,7 @@ var ckoUtility = {
 			var product = {
 					"product_id" 	: pli.productID,
 					"quantity"		: pli.quantityValue,
-					"price"			: this.getFormattedPrice(pli.getPriceValue().toFixed(2), this.getCurrency()),
+					"price"			: this.getFormattedPrice(pli.adjustedPrice.value.toFixed(2), this.getCurrency()),
 					"description"	: pli.productName
 			}
 			
@@ -551,6 +551,7 @@ var ckoUtility = {
 			products.push(product);
 			
 		}
+		
 		
 		if(this.getShippingValue(args)){
 			products.push(this.getShippingValue(args));
@@ -603,7 +604,7 @@ var ckoUtility = {
 			var shippment = {
 					"product_id"	: shipping.getShippingMethod().getID(),
 					"quantity"		: 1,
-					"price"			: this.getFormattedPrice(shipping.getShippingTotalPrice().valueOf().toFixed(2), this.getCurrency()),
+					"price"			: this.getFormattedPrice(shipping.adjustedShippingTotalPrice.value.toFixed(2), this.getCurrency()),
 					"description"	: shipping.getShippingMethod().getDisplayName() + " Shipping : " + shipping.getShippingMethod().getDescription()
 			}
 			
