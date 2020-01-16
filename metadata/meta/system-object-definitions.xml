@@ -75,6 +75,10 @@
     </type-extension>
     <type-extension type-id="SitePreferences">
         <custom-attribute-definitions>
+            <attribute-definition attribute-id="ckoPlatformData">
+                <type>string</type>
+                <default-value>SiteGenesis Version: 19.10 Last Updated: Oct 21, 2019 (Compatibility Mode: 16.2)</default-value>
+            </attribute-definition>
             <attribute-definition attribute-id="ckoUserAgent">
                 <type>string</type>
                 <default-value>SFCC Checkout.com Cartridge</default-value>
@@ -239,6 +243,134 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>false</default-value>
             </attribute-definition>
+            <attribute-definition attribute-id="ckoIdealEnabled">
+                <display-name xml:lang="x-default">Enable iDEAL PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Ideal Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBoletoEnabled">
+                <display-name xml:lang="x-default">Enable BOLETO BANCARIO PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Boleto Bancario Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBancontactEnabled">
+                <display-name xml:lang="x-default">Enable BANCANTACT PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Bancontact Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoBenefitEnabled">
+                <display-name xml:lang="x-default">Enable BENEFIT PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Benefit Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoGiroEnabled">
+                <display-name xml:lang="x-default">Enable GIRO PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Giro Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoEpsEnabled">
+                <display-name xml:lang="x-default">Enable EPS PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Eps Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoSofortEnabled">
+                <display-name xml:lang="x-default">Enable SOFORT PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Sofort Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoKnetEnabled">
+                <display-name xml:lang="x-default">Enable KNET PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Knet Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoQpayEnabled">
+                <display-name xml:lang="x-default">Enable QPAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Q Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoFawryEnabled">
+                <display-name xml:lang="x-default">Enable FAWRY PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Fawry Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoSepaEnabled">
+                <display-name xml:lang="x-default">Enable SEPA PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Sepa Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoMultibancoEnabled">
+                <display-name xml:lang="x-default">Enable MULTIBANCO PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Multibanco Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoPoliEnabled">
+                <display-name xml:lang="x-default">Enable POLI PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Poli Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoP24Enabled">
+                <display-name xml:lang="x-default">Enable P24 PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with P24 Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoKlarnaEnabled">
+                <display-name xml:lang="x-default">Enable KLARNA PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Karna Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoPaypalEnabled">
+                <display-name xml:lang="x-default">Enable PAYPAL PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Paypal Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
             <attribute-definition attribute-id="ckoSandboxPublicKey">
                 <display-name xml:lang="x-default">Public key</display-name>
                 <description xml:lang="x-default">Sandbox Public Key provided by Checkout.com</description>
@@ -309,7 +441,7 @@
                     <value-definition>
                         <display xml:lang="x-default">Production</display>
                         <value>PRODUCTION</value>
-                    </value-definition> 
+                    </value-definition>
                 </value-definitions>
             </attribute-definition>
             <attribute-definition attribute-id="ckoGooglePayMerchantId">
@@ -334,7 +466,7 @@
                     <value-definition>
                         <display xml:lang="x-default">White</display>
                         <value>white</value>
-                    </value-definition> 
+                    </value-definition>
                 </value-definitions>
             </attribute-definition>
             <attribute-definition attribute-id="ckoApplePayEnabled">
@@ -359,7 +491,7 @@
                     <value-definition>
                         <display xml:lang="x-default">Production</display>
                         <value>PRODUCTION</value>
-                    </value-definition> 
+                    </value-definition>
                 </value-definitions>
             </attribute-definition>
             <attribute-definition attribute-id="ckoApplePayMerchantId">
@@ -384,7 +516,7 @@
                     <value-definition>
                         <display xml:lang="x-default">White</display>
                         <value>white</value>
-                    </value-definition> 
+                    </value-definition>
                 </value-definitions>
             </attribute-definition>
         </custom-attribute-definitions>
@@ -400,6 +532,25 @@
                 <attribute attribute-id="ckoLivePublicKey"/>
                 <attribute attribute-id="ckoLiveSecreteKey"/>
                 <attribute attribute-id="ckoLivePrivateKey"/>
+            </attribute-group>
+            <attribute-group group-id="Checkout.com APM Settings">
+                <display-name xml:lang="x-default">APM Settings</display-name>
+                <attribute attribute-id="ckoIdealEnabled"/>
+                <attribute attribute-id="ckoBoletoEnabled"/>
+                <attribute attribute-id="ckoBancontactEnabled"/>
+                <attribute attribute-id="ckoBenefitEnabled"/>
+                <attribute attribute-id="ckoGiroEnabled"/>
+                <attribute attribute-id="ckoEpsEnabled"/>
+                <attribute attribute-id="ckoSofortEnabled"/>
+                <attribute attribute-id="ckoKnetEnabled"/>
+                <attribute attribute-id="ckoQpayEnabled"/>
+                <attribute attribute-id="ckoFawryEnabled"/>
+                <attribute attribute-id="ckoSepaEnabled"/>
+                <attribute attribute-id="ckoMultibancoEnabled"/>
+                <attribute attribute-id="ckoPoliEnabled"/>
+                <attribute attribute-id="ckoP24Enabled"/>
+                <attribute attribute-id="ckoKlarnaEnabled"/>
+                <attribute attribute-id="ckoPaypalEnabled"/>
             </attribute-group>
             <attribute-group group-id="Checkout.com Apple Pay">
                 <display-name xml:lang="x-default">Google Pay Settings</display-name>
