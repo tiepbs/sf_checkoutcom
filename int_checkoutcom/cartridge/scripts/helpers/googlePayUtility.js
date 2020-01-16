@@ -33,6 +33,9 @@ var googlePayUtility = {
 			requestData
 		);
 
+		const logger = require('dw/system/Logger').getLogger('ckodebug');
+    	logger.debug('tokenResponse {0}', tokenResponse);
+
 		// If the request is valid, process the response
 		if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
 			var chargeData = {
@@ -45,8 +48,8 @@ var googlePayUtility = {
 				"customer"				: ckoUtility.getCustomer(args),
 				"billing_descriptor"	: ckoUtility.getBillingDescriptorObject(),
 				"shipping"				: ckoUtility.getShippingObject(args),
-				"payment_ip"			: ckoUtility.getHost(args),
-				"metadata"				: ckoUtility.getMetadataObject([], args)
+				"payment_ip"			: ckoUtility.getHost(args)
+				//"metadata"				: ckoUtility.getMetadataObject(cardData, args)
 			};
 
 			// Perform the request to the payment gateway
