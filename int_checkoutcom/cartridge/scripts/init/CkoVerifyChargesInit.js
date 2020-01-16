@@ -14,7 +14,7 @@ svc.ServiceRegistry.configure("cko.verify.charges.sandbox.service", {
         // Prepare the http service
         svc.setURL(serviceUrl);
         svc.setRequestMethod("GET");
-        svc.addHeader("Authorization", util.getAccountKeys().secreteKey);
+        svc.addHeader("Authorization", util.getAccountKeys().secretKey);
         svc.addHeader("User-Agent", util.getCartridgeMeta());
         svc.addHeader("Content-Type", 'application/json;charset=UTF-8');    
         
@@ -36,7 +36,7 @@ svc.ServiceRegistry.configure("cko.verify.charges.live.service", {
         // Prepare the http service
         svc.setURL(serviceUrl);
         svc.setRequestMethod("GET");
-        svc.addHeader("Authorization", util.getAccountKeys().secreteKey);
+        svc.addHeader("Authorization", util.getAccountKeys().secretKey);
         svc.addHeader("User-Agent", util.getCartridgeMeta());
         svc.addHeader("Content-Type", 'application/json;charset=UTF-8');
         

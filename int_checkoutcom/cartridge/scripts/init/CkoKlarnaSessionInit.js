@@ -10,7 +10,7 @@ var util = require('~/cartridge/scripts/helpers/ckoUtility');
 svc.ServiceRegistry.configure("cko.klarna.session.sandbox.service", {
     createRequest: function(svc, args) {  	
   		// Prepare the http service
-        svc.addHeader("Authorization", util.getAccountKeys().secreteKey);
+        svc.addHeader("Authorization", util.getAccountKeys().secretKey);
         svc.addHeader("User-Agent", util.getCartridgeMeta());
         svc.addHeader("Content-Type", 'application/json;charset=UTF-8');
         
@@ -28,7 +28,7 @@ svc.ServiceRegistry.configure("cko.klarna.session.sandbox.service", {
 svc.ServiceRegistry.configure("cko.klarna.session.live.service", {
     createRequest: function(svc, args) {
 		// Prepare the http service
-	    svc.addHeader("Authorization", util.getAccountKeys().secreteKey);
+	    svc.addHeader("Authorization", util.getAccountKeys().secretKey);
 	    svc.addHeader("User-Agent", util.getCartridgeMeta());
 	    svc.addHeader("Content-Type", 'application/json;charset=UTF-8');
 	   
