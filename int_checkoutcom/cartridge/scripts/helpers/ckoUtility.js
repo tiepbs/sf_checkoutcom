@@ -865,7 +865,7 @@ var ckoUtility = {
 		var meta = {
 			udf1				: Data.type,
 			integration_data	: this.getCartridgeMeta(),
-			platform_data		: "SiteGenesis Version: 19.10 Last Updated: Oct 21, 2019 (Compatibility Mode: 16.2)"
+			platform_data		: this.getValue('ckoPlatformData')
 		}
 
 		// Get the payment processor
