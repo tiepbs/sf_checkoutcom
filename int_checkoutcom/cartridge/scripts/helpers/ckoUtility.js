@@ -76,7 +76,7 @@ var ckoUtility = {
      */
     isValidResponse: function() {
         var requestKey = request.httpHeaders.get("authorization");
-		var privateSharedKey = this.getAccountKeys().privateKey;
+		var privateSharedKey = this.getAccountKeys().privateSharedKey;
 		
         return requestKey == privateSharedKey
 	}, 
@@ -140,8 +140,8 @@ var ckoUtility = {
         var str = this.getValue('ckoMode') == 'live' ? 'Live' : 'Sandbox';
 
         keys.publicKey = this.getValue('cko' + str + 'PublicKey');
-        keys.secreteKey = this.getValue('cko' +  str + 'SecreteKey');
-        keys.privateKey = this.getValue('cko' +  str + 'PrivateKey');
+        keys.secretKey = this.getValue('cko' +  str + 'SecretKey');
+        keys.privateSharedKey = this.getValue('cko' +  str + 'PrivateSharedKey');
 
         return keys;
 	},
