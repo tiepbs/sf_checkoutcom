@@ -17,3 +17,7 @@
     margin-top: 20px;
     display: none;
 }
+
+.ckoErrorMessage .msg {
+    display: inline;
+}

@@ -9,6 +9,12 @@
 		<div>
 			<h1>Capture transaction</h1>
 			<hr>
+			<div class="alert alert-danger alert-dismissible ckoErrorMessage" role="alert">
+				<div class="msg">The transaction could not be processed.</div>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
 			<div>
 				<p><span class="label">Order No:</span><span id="capture_order_no"></span></p>
 				<p><span class="label">Transaction ID:</span><span id="capture_transaction_id"></span></p>
@@ -35,6 +41,12 @@
 		<div>
 			<h1>Void transaction</h1>
 			<hr>
+			<div class="alert alert-danger alert-dismissible ckoErrorMessage" role="alert">
+				<div class="msg">The transaction could not be processed.</div>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
 			<div>
 				<p><span class="label">Order No:</span><span id="void_order_no"></span></p>
 				<p><span class="label">Transaction ID:</span><span id="void_transaction_id"></span></p>
@@ -62,7 +74,7 @@
 			<h1>Refund transaction</h1>
 			<hr>
 			<div class="alert alert-danger alert-dismissible ckoErrorMessage" role="alert">
-				<span>The transaction could not be processed.</span>
+				<div class="msg">The transaction could not be processed.</div>
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>

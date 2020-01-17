@@ -55,12 +55,12 @@ var CKOHelper = {
         var result  = this.getCkoOrders();
 
         // Loop through the results
+        var i = 1;
         for each (var item in result) {
             // Get the payment instruments
             var paymentInstruments = item.getPaymentInstruments();
             
             // Loop through the payment instruments
-            var i = 1;
             for each (var instrument in paymentInstruments) {
                 // Get the payment transaction
                 var paymentTransaction = instrument.getPaymentTransaction();
@@ -103,7 +103,10 @@ var CKOHelper = {
         var condition1 = (tid && paymentTransaction.transactionID == tid) || !tid;
         var condition2 = this.isCkoItem(paymentInstrument.paymentMethod);
         var condition3 = this.isCkoItem(this.getProcessorId(paymentInstrument));
-        if (condition1 && condition2 && condition3) {
+        var condition4 = paymentTransaction.custom.ckoPaymentId !==null && paymentTransaction.custom.ckoPaymentId != '';
+        var condition5 = paymentTransaction.transactionID && paymentTransaction.transactionID != '';
+
+        if (condition1 && condition2 && condition3 && condition4 && condition5) {
             return true;
         }
 
