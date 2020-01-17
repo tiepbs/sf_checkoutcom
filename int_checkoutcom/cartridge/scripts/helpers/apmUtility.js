@@ -33,6 +33,7 @@ var apmUtility = {
 		// add redirect to sepa source reqeust
 		if(type == 'Sepa'){
 			session.privacy.redirectUrl = "${URLUtils.url('Sepa-Mandate')}";
+			session.privacy.sepaResponseId = gatewayResponse.id;
 		}
 		
 		// Add redirect URL to session if exists

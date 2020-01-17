@@ -76,7 +76,7 @@ var ckoUtility = {
      */
     isValidResponse: function() {
         var requestKey = request.httpHeaders.get("authorization");
-		var privateSharedKey = this.getAccountKeys().privateKey;
+		var privateSharedKey = this.getAccountKeys().privateSharedKey;
 		
         return requestKey == privateSharedKey
 	}, 
@@ -140,8 +140,8 @@ var ckoUtility = {
         var str = this.getValue('ckoMode') == 'live' ? 'Live' : 'Sandbox';
 
         keys.publicKey = this.getValue('cko' + str + 'PublicKey');
-        keys.secreteKey = this.getValue('cko' +  str + 'SecreteKey');
-        keys.privateKey = this.getValue('cko' +  str + 'PrivateKey');
+        keys.secretKey = this.getValue('cko' +  str + 'SecretKey');
+        keys.privateSharedKey = this.getValue('cko' +  str + 'PrivateSharedKey');
 
         return keys;
 	},
@@ -543,7 +543,7 @@ var ckoUtility = {
 			var product = {
 					"product_id" 	: pli.productID,
 					"quantity"		: pli.quantityValue,
-					"price"			: this.getFormattedPrice(pli.getPriceValue().toFixed(2), this.getCurrency()),
+					"price"			: this.getFormattedPrice(pli.adjustedPrice.value.toFixed(2), this.getCurrency()),
 					"description"	: pli.productName
 			}
 			
@@ -551,6 +551,7 @@ var ckoUtility = {
 			products.push(product);
 			
 		}
+		
 		
 		if(this.getShippingValue(args)){
 			products.push(this.getShippingValue(args));
@@ -603,7 +604,7 @@ var ckoUtility = {
 			var shippment = {
 					"product_id"	: shipping.getShippingMethod().getID(),
 					"quantity"		: 1,
-					"price"			: this.getFormattedPrice(shipping.getShippingTotalPrice().valueOf().toFixed(2), this.getCurrency()),
+					"price"			: this.getFormattedPrice(shipping.adjustedShippingTotalPrice.value.toFixed(2), this.getCurrency()),
 					"description"	: shipping.getShippingMethod().getDisplayName() + " Shipping : " + shipping.getShippingMethod().getDescription()
 			}
 			
@@ -859,12 +860,16 @@ var ckoUtility = {
 	/*
 	 * Build metadata object
 	 */
-	getMetadataObject: function(Data, args){
+	getMetadataObject: function(data, args) {
 		// Prepare the base metadata
 		var meta = {
-			udf1				: Data.type,
 			integration_data	: this.getCartridgeMeta(),
-			platform_data		: "SiteGenesis Version: 19.10 Last Updated: Oct 21, 2019 (Compatibility Mode: 16.2)"
+			platform_data		: this.getValue('ckoPlatformData')
+		}
+
+		// Add the data info if needed
+		if (data.hasOwnProperty('type')) {
+			meta.udf1 = data.type;
 		}
 
 		// Get the payment processor
@@ -1058,16 +1063,16 @@ var ckoUtility = {
 	getBasketAddress: function(basket){
 		
         var address = {
-            given_name					: this.getAppModeValue('John', basket.defaultShipment.shippingAddress.firstName),
-            family_name					: this.getAppModeValue('Doe', basket.defaultShipment.shippingAddress.lastName),
-            email						: "john@doe.com",
-            title						: this.getAppModeValue('Mr', basket.defaultShipment.shippingAddress.title),
-            street_address				: this.getAppModeValue('13 New Burlington St', basket.defaultShipment.shippingAddress.address1),
-            street_address2				: this.getAppModeValue('Apt 214', basket.defaultShipment.shippingAddress.address2),
-            postal_code					: this.getAppModeValue('W13 3BG', basket.defaultShipment.shippingAddress.postalCode),
-            city						: this.getAppModeValue('London', basket.defaultShipment.shippingAddress.city),
-            phone						: this.getAppModeValue('01895808221', basket.defaultShipment.shippingAddress.phone),
-            country						: this.getAppModeValue("GB", basket.defaultShipment.shippingAddress.countryCode.valueOf())
+            given_name					: basket.defaultShipment.shippingAddress.firstName,
+            family_name					: basket.defaultShipment.shippingAddress.lastName,
+            email						: null,
+            title						: basket.defaultShipment.shippingAddress.title,
+            street_address				: basket.defaultShipment.shippingAddress.address1,
+            street_address2				: basket.defaultShipment.shippingAddress.address2,
+            postal_code					: basket.defaultShipment.shippingAddress.postalCode,
+            city						: basket.defaultShipment.shippingAddress.city,
+            phone						: basket.defaultShipment.shippingAddress.phone,
+            country						: basket.defaultShipment.shippingAddress.countryCode.valueOf()
             
         }
 		
@@ -1083,16 +1088,16 @@ var ckoUtility = {
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
         var address = {
-            given_name					: this.getAppModeValue('John', order.defaultShipment.shippingAddress.firstName),
-            family_name					: this.getAppModeValue('Doe', order.defaultShipment.shippingAddress.lastName),
-            email						: this.getAppModeValue('john@doe.com', order.customerEmail),
-            title						: this.getAppModeValue('Mr', order.defaultShipment.shippingAddress.title),
-            street_address				: this.getAppModeValue('13 New Burlington St', order.defaultShipment.shippingAddress.address1),
-            street_address2				: this.getAppModeValue('Apt 214', order.defaultShipment.shippingAddress.address2),
-            postal_code					: this.getAppModeValue('W13 3BG', order.defaultShipment.shippingAddress.postalCode),
-            city						: this.getAppModeValue('London', order.defaultShipment.shippingAddress.city),
-            phone						: this.getAppModeValue('01895808221', order.defaultShipment.shippingAddress.phone),
-            country						: this.getAppModeValue("GB", order.defaultShipment.shippingAddress.countryCode.valueOf())
+            given_name					: order.defaultShipment.shippingAddress.firstName,
+            family_name					: order.defaultShipment.shippingAddress.lastName,
+            email						: order.customerEmail,
+            title						: order.defaultShipment.shippingAddress.title,
+            street_address				: order.defaultShipment.shippingAddress.address1,
+            street_address2				: order.defaultShipment.shippingAddress.address2,
+            postal_code					: order.defaultShipment.shippingAddress.postalCode,
+            city						: order.defaultShipment.shippingAddress.city,
+            phone						: order.defaultShipment.shippingAddress.phone,
+            country						: order.defaultShipment.shippingAddress.countryCode.valueOf()
             
         }
 		

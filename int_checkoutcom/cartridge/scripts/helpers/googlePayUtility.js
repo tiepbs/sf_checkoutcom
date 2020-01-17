@@ -44,11 +44,9 @@ var googlePayUtility = {
 				"capture_on"			: ckoUtility.getCaptureTime(),
 				"customer"				: ckoUtility.getCustomer(args),
 				"billing_descriptor"	: ckoUtility.getBillingDescriptorObject(),
-				"shipping"				: this.getShippingObject(args),
-				"3ds"					: this.get3Ds(),
-				"risk"					: {enabled: true},
+				"shipping"				: ckoUtility.getShippingObject(args),
 				"payment_ip"			: ckoUtility.getHost(args),
-				"metadata"				: ckoUtility.getMetadataObject(cardData, args)
+				"metadata"				: ckoUtility.getMetadataObject([], args)
 			};
 
 			// Perform the request to the payment gateway

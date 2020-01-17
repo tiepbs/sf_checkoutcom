@@ -21,9 +21,9 @@ function klarnaSession(){
 	
 	if(basket){
 
-		var countryCode = ckoUtility.getAppModeValue('GB', ckoUtility.getBasketCountyCode(basket));
-		var currency = ckoUtility.getAppModeValue('GBP', basket.getCurrencyCode());
-		var locale = ckoUtility.getAppModeValue('en-GB', ckoUtility.getLanguage());
+		var countryCode = ckoUtility.getBasketCountyCode(basket);
+		var currency = basket.getCurrencyCode();
+		var locale = ckoUtility.getLanguage();
 		var total = ckoUtility.getFormattedPrice(basket.getTotalGrossPrice().value, currency);
 		var tax =  ckoUtility.getFormattedPrice(basket.getTotalTax().value, currency);
 		var products = ckoUtility.getBasketObject(basket);
