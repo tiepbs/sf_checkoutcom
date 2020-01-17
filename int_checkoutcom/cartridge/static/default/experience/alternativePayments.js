@@ -447,6 +447,8 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Obj
 	
 	var requestObject = JSON.parse(Object);
 	var billingAddress = JSON.parse(Address);
+	var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val();  //email
+	billingAddress.email = emailAddress;
 	
     Klarna.Payments.authorize(
         // options
@@ -586,7 +588,7 @@ function getApmObject(){
 			},
 			sepa		: {
 				countries	: ["AT", "BE", "CY", "DE", "EE", "ES", "FI", "FR", "GR", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PT", "SI", "SK", "AD", "BG", "CH", "CZ", "DK", "GB", "HR", "HU", "IS", "LI", "MC", "NO", "PL", "RO", "SM", "SE", "VA"],
-				currencies	: ["EUR", "GBP"]
+				currencies	: "EUR"
 			},
 			p24			: {
 				countries	: "PL",

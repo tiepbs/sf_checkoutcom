@@ -347,9 +347,9 @@ function SGJCTransAuthObject(payObject, args){
  */
 function idealPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
-	var language = ckoUtility.getAppModeValue('nl', ckoUtility.getLanguage());
-	var bic = ckoUtility.getAppModeValue('INGBNL2A', paymentForm.get('ideal_bic').value());
+	var currency = ckoUtility.getCurrency(args);
+	var language = ckoUtility.getLanguage();
+	var bic = paymentForm.get('ideal_bic').value();
 	
 	// building ideal pay object
     var payObject = {
@@ -374,9 +374,9 @@ function idealPayAuthorization(args){
  */
 function boletoPayAuthorization(args){
 	
-	var cpfNumber = ckoUtility.getAppModeValue('00003456789', paymentForm.get('boleto_cpf').value());
-	var birthday = ckoUtility.getAppModeValue('1984-03-04', paymentForm.get('boleto_birthDate').value());
-	var currency = ckoUtility.getAppModeValue('BRL', ckoUtility.getCurrency(args));
+	var cpfNumber = paymentForm.get('boleto_cpf').value();
+	var birthday = paymentForm.get('boleto_birthDate').value();
+	var currency = ckoUtility.getCurrency(args);
 	
 	// building pay object
 	var payObject = {
@@ -402,8 +402,8 @@ function boletoPayAuthorization(args){
  */
 function bancontactPayAuthorization(args){
 	
-	var country = ckoUtility.getAppModeValue('BE', ckoUtility.getBillingCountry(args));
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
+	var country = ckoUtility.getBillingCountry(args);
+	var currency = ckoUtility.getCurrency(args);
 	
 	// building pay object
 	var payObject = {
@@ -413,7 +413,7 @@ function bancontactPayAuthorization(args){
 				"account_holder_name"	: ckoUtility.getCustomerName(args),
 				"billing_descriptor" 	: businessName
 			},
-			"type"		: 'boleto',
+			"type"		: 'bancontact',
 			"purpose"	: businessName,
 			"currency"	: currency
 		};
@@ -429,7 +429,7 @@ function bancontactPayAuthorization(args){
  */
 function benefitPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('BHD', ckoUtility.getCurrency(args));
+	var currency = ckoUtility.getCurrency(args);
 	
 	// process benefit pay
 	var payObject = {
@@ -453,7 +453,7 @@ function benefitPayAuthorization(args){
  */
 function giroPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
+	var currency = ckoUtility.getCurrency(args);
 
 	// building pay object
 	var payObject = {
@@ -477,7 +477,7 @@ function giroPayAuthorization(args){
  */
 function epsPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
+	var currency = ckoUtility.getCurrency(args);
 	
 	// building pay object
 	var payObject = {
@@ -501,7 +501,7 @@ function epsPayAuthorization(args){
  */
 function sofortPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
+	var currency = ckoUtility.getCurrency(args);
 
 	// building pay object
 	var payObject = {
@@ -522,8 +522,8 @@ function sofortPayAuthorization(args){
  */
 function knetPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('KWD', ckoUtility.getCurrency(args));
-	var language = ckoUtility.getAppModeValue('en', ckoUtility.getLanguage());
+	var currency = ckoUtility.getCurrency(args);
+	var language = ckoUtility.getLanguage().substr(0, 2);
 	
 	// building pay object
 	var payObject = {
@@ -547,9 +547,9 @@ function knetPayAuthorization(args){
  */
 function qPayAuthorization(args){
 	
-	var nationalId = ckoUtility.getAppModeValue('070AYY010BU234M', paymentForm.get('qpay_national_id').value());
-	var language = ckoUtility.getAppModeValue('en', ckoUtility.getLanguage());
-	var currency = ckoUtility.getAppModeValue('QAR', ckoUtility.getCurrency(args));
+	var nationalId = paymentForm.get('qpay_national_id').value();
+	var language = ckoUtility.getLanguage().substr(0, 2);
+	var currency = ckoUtility.getCurrency(args);
 	
 	// building pay object
 	var payObject = {
@@ -576,7 +576,7 @@ function qPayAuthorization(args){
  */
 function fawryPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EGP', ckoUtility.getCurrency(args));
+	var currency = ckoUtility.getCurrency(args);
 	
 	// building pay object
 	var payObject = {
@@ -602,8 +602,8 @@ function fawryPayAuthorization(args){
  */
 function sepaPayAuthorization(args){
 	
-	var accountIban = ckoUtility.getAppModeValue('DE25100100101234567893', paymentForm.get('sepa_iban').value() + paymentForm.get('sepa_bic').value());
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
+	var accountIban = paymentForm.get('sepa_iban').value() + paymentForm.get('sepa_bic').value();
+	var currency = ckoUtility.getCurrency(args);
 	
 	// building pay object
 	var payObject = {
@@ -629,8 +629,8 @@ function sepaPayAuthorization(args){
  */
 function multibancoPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
-	var country = ckoUtility.getAppModeValue('PT', ckoUtility.getBillingCountry(args));
+	var currency = ckoUtility.getCurrency(args);
+	var country = ckoUtility.getBillingCountry(args);
 	
 	var payObject = {
 	        "type"		: "multibanco",
@@ -653,7 +653,7 @@ function multibancoPayAuthorization(args){
  */
 function poliPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('NZD', ckoUtility.getCurrency(args));
+	var currency = ckoUtility.getCurrency(args);
 	
 	var payObject = {
 	        "type"		: "poli",
@@ -673,8 +673,8 @@ function poliPayAuthorization(args){
  */
 function p24PayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('PLN', ckoUtility.getCurrency(args));
-	var country = ckoUtility.getAppModeValue('PL', ckoUtility.getBillingCountry(args));
+	var currency = ckoUtility.getCurrency(args);
+	var country = ckoUtility.getBillingCountry(args);
 	
 	var payObject = {
 		    "type"			: "p24",
@@ -704,9 +704,9 @@ function klarnaPayAuthorization(args){
 	
 	
 
-	var countryCode = ckoUtility.getAppModeValue('GB', ckoUtility.getBillingObject(args).country);
-	var currency = ckoUtility.getAppModeValue('GBP', ckoUtility.getCurrencyCode(args));
-	var locale = ckoUtility.getAppModeValue('en-GB', ckoUtility.getLanguage());
+	var countryCode = ckoUtility.getBillingObject(args).country;
+	var currency = ckoUtility.getCurrencyCode(args);
+	var locale = ckoUtility.getLanguage();
 	var total = ckoUtility.getFormattedPrice(order.totalGrossPrice.value, currency);
 	var tax =  ckoUtility.getFormattedPrice(order.totalTax.value, currency);
 	var products = ckoUtility.getOrderBasketObject(args);
@@ -750,7 +750,7 @@ function klarnaPayAuthorization(args){
  */
 function paypalPayAuthorization(args){
 	
-	var currency = ckoUtility.getAppModeValue('EUR', ckoUtility.getCurrency(args));
+	var currency = ckoUtility.getCurrency(args);
 
 	var payObject = {
 		    "type"			: "paypal",

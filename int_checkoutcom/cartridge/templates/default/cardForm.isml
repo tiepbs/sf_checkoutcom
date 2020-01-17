@@ -1,2 +1,0 @@
-	<!-- This includes the card payment forms and buttons -->
-	<isinclude template="cardPayments/cardPayment.isml"/>

@@ -17,11 +17,15 @@ function initButtons() {
 
 	// Define the transaction buttons click events
 	document.addEventListener('click', function(e) {  
+		// Prevent double click
 		if (typeof e.target.className === 'string' && e.target.className.indexOf('ckoAction') !== -1) {
 			// Ignore double cliks
 			if (e.detail > 1) {
 				return;
 			}
+
+			// Open the modal
+			openModal(e.target);
 		}
 	},  true);
 	
@@ -39,7 +43,6 @@ function openModal(elt, rowIndex) {
 	var tidExists = members[2] != null && members[2] != 'undefined';
 	var isValidTid = members[2].length > 0 && members[2].indexOf('act_') == 0;
 	if (tidExists && isValidTid) {
-		window.ckoSelectedRowIndex = rowIndex;
 		getTransactionData(members);
 	}
 	else {
@@ -137,15 +140,14 @@ function performAction(elt) {
 		success: function (res) {
 			var success = JSON.parse(res);
 			if (!success) {
-				alert('The transaction could not be processed.');
+				showErrorMessage();
 			}
 			else {
-
 				// Close the modal window
 				jQuery('.ckoModal .modal-content .close').trigger('click');
 
 				// Reload the table data
-				reloadTransactionsData();
+				getTransactions(reloadTable);
 			}
 		},
 		error: function (request, status, error) {
