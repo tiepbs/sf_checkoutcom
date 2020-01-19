@@ -56,11 +56,7 @@ var googlePayUtility = {
 			);
 
 			// Validate the response
-			if (ckoUtility.isValidResponse() && ckoUtility.paymentSuccess(gatewayResponse)) {
-				return gatewayResponse;
-			}
-
-			return false;
+			return ckoUtility.paymentSuccess(gatewayResponse);
 
 		} else {
 			// update the transaction
