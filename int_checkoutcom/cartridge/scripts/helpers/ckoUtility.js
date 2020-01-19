@@ -371,7 +371,7 @@ var ckoUtility = {
 	/*
 	 * Confirm is a payment is valid from API response code
 	 */
-	paymentValidate: function(gatewayResponse){
+	paymentSuccess: function(gatewayResponse){
 		return gatewayResponse.response_code == "10000" || gatewayResponse.response_code == '10100' || gatewayResponse.response_code == '10200';
 	},
 	

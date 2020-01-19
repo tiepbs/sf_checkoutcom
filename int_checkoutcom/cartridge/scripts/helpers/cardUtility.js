@@ -93,7 +93,7 @@ var cardUtility = {
 		
 		var authResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", authData);
 		
-		if(ckoUtility.paymentValidate(authResponse)){
+		if(ckoUtility.paymentSuccess(authResponse)){
 			return true;
 		}
 		
