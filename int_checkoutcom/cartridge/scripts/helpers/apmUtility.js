@@ -48,7 +48,6 @@ var apmUtility = {
 	 * Apm Request
 	 */
 	handleApmRequest: function(payObject, args){
-		
 		var gatewayResponse = false;
 		
 		// load the card and order information
@@ -84,7 +83,7 @@ var apmUtility = {
 		// If the charge is valid, process the response
 		if (gatewayResponse) {
 			this.handleAPMChargeResponse(gatewayResponse, order);
-			return gatewayResponse;
+			return ckoUtility.paymentSuccess(gatewayResponse);
 		}
 		else {
 			// update the transaction
@@ -97,6 +96,7 @@ var apmUtility = {
 			
 			return false;
 		}
+
 		return true;
 	},
 	
