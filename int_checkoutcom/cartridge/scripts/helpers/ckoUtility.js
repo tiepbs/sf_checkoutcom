@@ -393,7 +393,7 @@ var ckoUtility = {
 	/*
 	 * Handle a failed payment response
 	 */
-	handleFail: function(gatewayResponse){
+	handleFail: function(gatewayResponse) {
 		if(gatewayResponse){
 			// Logging
 			this.logThis('checkout.com cartridge failed response', gatewayResponse);
