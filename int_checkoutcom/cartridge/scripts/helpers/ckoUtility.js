@@ -471,9 +471,6 @@ var ckoUtility = {
 			basket.defaultShipment.setShippingMethod(order.defaultShipment.getShippingMethod());
 			
 			Transaction.commit();
-			
-			
-			
 		}
 	},
 	
@@ -494,7 +491,6 @@ var ckoUtility = {
 		return customer;
 	},
 	
-	
 	/*
 	 * get Basket Quantities
 	 */
@@ -506,7 +502,6 @@ var ckoUtility = {
 		return quantity;
 		
 	},
-	
 	
 	/*
 	 * get Billing Descriptor Object
@@ -520,9 +515,7 @@ var ckoUtility = {
 		}
 		
 		return billingDescriptor;
-		
 	},
-	
 	
 	/*
 	 * get Products Information
@@ -530,11 +523,10 @@ var ckoUtility = {
 	getProductInformation : function(args){
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
-		
 		var it = order.productLineItems.iterator();
-
 		var products = [];
-		
+
+		// Loop through the itemd
 		while (it.hasNext()){
 			var pli = it.next();
 			
@@ -551,7 +543,6 @@ var ckoUtility = {
 			
 		}
 		
-		
 		if(this.getShippingValue(args)){
 			products.push(this.getShippingValue(args));
 		}
@@ -561,9 +552,7 @@ var ckoUtility = {
 		}
 		
 		return products;
-		
 	},
-	
 	
 	/*
 	 * return tax object
@@ -609,16 +598,17 @@ var ckoUtility = {
 			
 			return shippment;
 		
-		}else{
+		}
+		else {
 			return false;
 		}
 	},
 	
-	
 	/*
 	 * Return Order Currency Code
 	 */
-	getCurrencyCode: function(args){
+	getCurrencyCode: function(args) {
+		// Get the order
 		var order = OrderMgr.getOrder(args.OrderNo);
 
 		// Get shipping address object
@@ -628,48 +618,45 @@ var ckoUtility = {
 		return shippingCurrency;
 	},
 
-	
 	/*
 	 * get Product Names
 	 */
 	getProductNames : function(args){
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
-		
+
+		// Prepare the iterator
 		var it = order.productLineItems.iterator();
 
+		// Prepare the product array
 		var products = [];
-		
 		while (it.hasNext()){
 			var pli = it.next();
 			products.push(pli.productName);
 		}
 		
-		return products;
-		
+		return products;	
 	},
 
-	
 	/*
 	 * get Product price array
 	 */
 	getProductPrices : function(args){
-		// load the card and order information
+		// Load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
+		// Get the product itemas
 		var items = order.productLineItems.iterator();
 
+		// Prepare the product array
 		var products = [];
-		
 		while (items.hasNext()){
 			var item = items.next();
 			products.push(item.getPriceValue());
 		}
 		
 		return products;
-		
 	},
-	
 	
 	/*
 	 * get Product IDs
@@ -688,9 +675,7 @@ var ckoUtility = {
 		}
 		
 		return productIds;
-		
 	},
-	
 	
 	/*
 	 * get Each Product Quantity
@@ -699,10 +684,11 @@ var ckoUtility = {
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
+		// Prepare the iterator
 		var it = order.productLineItems.iterator();
 		
+        // Loop through the items
 		var products_quantites = 0;
-		
 		while (it.hasNext()){
 			var pli = it.next();
 			products_quantites += pli.quantityValue;
@@ -711,8 +697,7 @@ var ckoUtility = {
 		return products_quantites;
 		
 	},
-	
-	
+		
 	/*
 	 * get Each Product Quantity
 	 */
@@ -720,20 +705,19 @@ var ckoUtility = {
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
+		// Prepare the iterator
 		var it = order.productLineItems.iterator();
 
+		// Loop through the items
 		var products_quantites = [];
-		
 		while (it.hasNext()){
 			var pli = it.next();
 			products_quantites.push(pli.quantityValue);
 		}
 		
 		return products_quantites;
-		
 	},
-	
-	
+
 	/*
 	 * get Host IP
 	 */
@@ -744,8 +728,7 @@ var ckoUtility = {
 		
 		return host;
 	},
-	
-	
+
 	/*
 	 * return order amount
 	 */
@@ -754,7 +737,6 @@ var ckoUtility = {
 		var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getCurrency());
 		return amount;
 	},
-	
 	
 	/*
 	 * return phone object
@@ -775,7 +757,6 @@ var ckoUtility = {
 		return phone;
 	},
 	
-	
 	/*
 	 * Return Customer FullName
 	 */
@@ -790,7 +771,6 @@ var ckoUtility = {
 		
 		return fullname;
 	},
-	
 	
 	/*
 	 * Return Customer FirstName
@@ -807,7 +787,6 @@ var ckoUtility = {
 		return firstname;
 	},
 	
-	
 	/*
 	 * Return Customer LastName
 	 */
@@ -823,7 +802,6 @@ var ckoUtility = {
 		return lastname;
 	},
 		
-	
 	/*
 	 * return capture time
 	 */
@@ -920,7 +898,6 @@ var ckoUtility = {
 		return country;
 	},
 	
-	
 	/*
 	 * Build the Shipping object
 	 */
@@ -995,21 +972,18 @@ var ckoUtility = {
 		return products_quantites;
 	},
 	
-	
 	/*
 	 * Return Basket Item object
 	 */
-	getOrderBasketObject: function(args){
-		
+	getOrderBasketObject: function(args) {
+		// Prepare some variables
 		var currency = this.getAppModeValue('GBP', this.getCurrencyCode(args));
-		
 		var order = OrderMgr.getOrder(args.OrderNo);
-		
 		var it = order.productLineItems.iterator();
-
 		var products_quantites = [];
 		
-		while (it.hasNext()){
+		// Iterate through the products
+		while (it.hasNext()) {
 			var pli = it.next();
 			var productTaxRate = pli.taxRate * 100 * 100;
 			var productQuantity = pli.quantityValue;
@@ -1026,6 +1000,8 @@ var ckoUtility = {
 			
 			products_quantites.push(products);
 		}
+
+		// Set the shipping variables
 		var shippingTaxRate = order.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100;
 		var shipping = {
 			"name"				: order.defaultShipment.shippingMethod.displayName + " Shipping",
@@ -1041,26 +1017,20 @@ var ckoUtility = {
 		}
 		
 		return products_quantites;
-		
 	},
 	
 	/*
 	 * Return Basket Item CountryCode
 	 */
 	getBasketCountyCode: function(basket){
-		
 		var countyCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
-		
 		return countyCode;
-		
 	},
-	
 	
 	/*
 	 * Return Basket Item CountryCode
 	 */
 	getBasketAddress: function(basket){
-		
         var address = {
             given_name					: basket.defaultShipment.shippingAddress.firstName,
             family_name					: basket.defaultShipment.shippingAddress.lastName,
@@ -1076,16 +1046,13 @@ var ckoUtility = {
         }
 		
 		return address;
-		
 	},
 	
 	/*
 	 * Return Basket Item CountryCode
 	 */
 	getOrderBasketAddress: function(args){
-		
 		var order = OrderMgr.getOrder(args.OrderNo);
-		
         var address = {
             given_name					: order.defaultShipment.shippingAddress.firstName,
             family_name					: order.defaultShipment.shippingAddress.lastName,
@@ -1097,18 +1064,11 @@ var ckoUtility = {
             city						: order.defaultShipment.shippingAddress.city,
             phone						: order.defaultShipment.shippingAddress.phone,
             country						: order.defaultShipment.shippingAddress.countryCode.valueOf()
-            
         }
 		
 		return address;
-		
 	}
-	
-	
-	
 }
-
-
 
 /*
 * Module exports
