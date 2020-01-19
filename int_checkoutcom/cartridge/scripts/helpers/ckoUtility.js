@@ -389,7 +389,6 @@ var ckoUtility = {
 		}
 	},
 	
-	
 	/*
 	 * Handle a failed payment response
 	 */
