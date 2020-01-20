@@ -185,10 +185,10 @@ var ckoUtility = {
 	 */
 	getCKOFormatedValue: function(currency){
 		
-		if(ckoCurrencyConfig.byZero.currencies.match(currency)){
-			return ckoCurrencyConfig.byZero.multiple;
-		}else if(ckoCurrencyConfig.byThree.currencies.match(currency)){
-			return ckoCurrencyConfig.byThree.multiple;
+		if(ckoCurrencyConfig.x1.currencies.match(currency)){
+			return ckoCurrencyConfig.x1.multiple;
+		}else if(ckoCurrencyConfig.x1000.currencies.match(currency)){
+			return ckoCurrencyConfig.x1000.multiple;
 		}else{
 			return 100;
 		}
