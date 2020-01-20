@@ -4,7 +4,7 @@
  * CKO Card Currency Conversion Object
  */
 
-var ckoCardCurrency = {
+var ckoCurrencyConfig = {
 		
 	byZero	: {
 			currencies 	: "BIF DJF GNF ISK KMF XAF CLF XPF JPY PYG RWF KRW VUV VND XOF",
@@ -27,4 +27,4 @@ var ckoCardCurrency = {
 * Module exports
 */
 
-module.exports = ckoCardCurrency;
+module.exports = ckoCurrencyConfig;

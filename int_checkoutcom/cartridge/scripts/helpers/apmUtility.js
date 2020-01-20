@@ -1,9 +1,12 @@
 "use strict"
 
-
 /* API Includes */
+var PaymentMgr = require('dw/order/PaymentMgr');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
+var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
+
 
 /* Utility */
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
@@ -13,11 +16,64 @@ var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 * Utility functions for my cartridge integration.
 */
 var apmUtility = {
+		
+		
+	/*
+	 * Creates Site Genesis Transaction Object
+	 * @return object
+	 */
+	SGJCTransAuthObject: function(payObject, args){
+		// Preparing payment parameters
+		var paymentInstrument = args.PaymentInstrument;
+		var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+		
+		// perform the charge
+		var apmResponse = this.handleApmRequest(payObject, args);
+		
+		// Handle apm result
+		if (apmResponse) {
+			if (session.privacy.redirectUrl) {
+				// Create the authorization transaction
+			    Transaction.wrap(function() {
+			        paymentInstrument.paymentTransaction.transactionID = apmResponse.action_id;
+					paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+					paymentInstrument.paymentTransaction.custom.ckoPaymentId = apmResponse.id;
+					paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+					paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+					paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+			        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+				});
+				
+				// Set the redirection template
+				var templatePath;
+				if (payObject.type == "sepa") {
+					templatePath = 'redirects/sepaMandate.isml';
+				}
+				else {
+					templatePath = 'redirects/APM.isml';
+				}
+
+				// Redirect
+				ISML.renderTemplate(templatePath, {
+					redirectUrl: session.privacy.redirectUrl
+				});
+				
+				return {authorized: true, redirected: true};
+			}
+			else {
+				return {authorized: true};
+			}
+		} else {
+			return {error: true};
+		}
+	},
+		
+		
 	
 	/*
 	 * Handle APM charge Response from CKO API
 	 */
-	handleAPMChargeResponse: function(gatewayResponse, order){
+	handleAPMChargeResponse: function(gatewayResponse){
 		// clean the session
 		session.privacy.redirectUrl = null;
 		
@@ -83,7 +139,7 @@ var apmUtility = {
 		
 		// If the charge is valid, process the response
 		if (gatewayResponse) {
-			this.handleAPMChargeResponse(gatewayResponse, order);
+			this.handleAPMChargeResponse(gatewayResponse);
 			return gatewayResponse;
 		}
 		else {
@@ -97,7 +153,7 @@ var apmUtility = {
 			
 			return false;
 		}
-		return true;
+		
 	},
 	
 	/*
@@ -110,8 +166,8 @@ var apmUtility = {
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
-		var currency = ckoUtility.getApmCurrency(payObject.currency);
-		var amount = ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getApmCurrency(currency));
+		var currency = ckoUtility.getCurrency(payObject.currency);
+		var amount = ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), currency);
 		
 		// object apm is sepa
 		if(payObject.type == 'klarna'){

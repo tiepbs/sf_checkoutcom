@@ -15,7 +15,7 @@ var app = require(SiteController + "/cartridge/scripts/app");
 
 
 /* Card Currency Config */
-var ckoCardCurrency = require('~/cartridge/scripts/config/ckoCardCurrency');
+var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 
 
 /*
@@ -185,10 +185,10 @@ var ckoUtility = {
 	 */
 	getCKOFormatedValue: function(currency){
 		
-		if(ckoCardCurrency.byZero.currencies.match(currency)){
-			return ckoCardCurrency.byZero.multiple;
-		}else if(ckoCardCurrency.byThree.currencies.match(currency)){
-			return ckoCardCurrency.byThree.multiple;
+		if(ckoCurrencyConfig.byZero.currencies.match(currency)){
+			return ckoCurrencyConfig.byZero.multiple;
+		}else if(ckoCurrencyConfig.byThree.currencies.match(currency)){
+			return ckoCurrencyConfig.byThree.multiple;
 		}else{
 			return 100;
 		}
@@ -325,26 +325,6 @@ var ckoUtility = {
 		var currency = order.getCurrencyCode();
 		
 		return currency;
-		
-	},
-	
-	
-	
-	/*
-	 * get Order Quantities
-	 */
-	getApmCurrency : function(currency){
-		var orderId = this.getOrderId();
-		// load the card and order information
-		var order = OrderMgr.getOrder(orderId);
-		
-		if(this.getValue('ckoMode') == 'sandbox'){
-			return currency;
-		}else{
-			currency = order.getCurrencyCode();
-			
-			return currency;
-		}
 		
 	},
 	

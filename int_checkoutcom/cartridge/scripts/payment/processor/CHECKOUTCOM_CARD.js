@@ -70,7 +70,6 @@ function Handle(args) {
 function Authorize(args) {
 
 	// Preparing payment parameters
-	var orderNo = args.OrderNo;
 	var paymentInstrument = args.PaymentInstrument;
 	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 	
