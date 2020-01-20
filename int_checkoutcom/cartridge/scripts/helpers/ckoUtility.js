@@ -40,11 +40,9 @@ var ckoUtility = {
 	 */	
 	getLanguage: function(){
 		
-		var language = dw.system.Site.getCurrent().defaultLocale;
+		var language = request.locale;
 		
-		language = language.replace('_', '-');
-		
-		return language;
+		return language.replace('_', '-');
 	},
 	
 	
