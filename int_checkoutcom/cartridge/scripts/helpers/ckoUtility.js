@@ -14,6 +14,10 @@ var SiteController = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSt
 var app = require(SiteController + "/cartridge/scripts/app");
 
 
+/* Card Currency Config */
+var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
+
+
 /*
 * Utility functions for my cartridge integration.
 */
@@ -40,11 +44,9 @@ var ckoUtility = {
 	 */	
 	getLanguage: function(){
 		
-		var language = dw.system.Site.getCurrent().defaultLocale;
+		var language = request.locale;
 		
-		language = language.replace('_', '-');
-		
-		return language;
+		return language.replace('_', '-');
 	},
 	
 	
@@ -183,20 +185,10 @@ var ckoUtility = {
 	 */
 	getCKOFormatedValue: function(currency){
 		
-		var byZero = {
-			currencies 	: "BIF DJF GNF ISK KMF XAF CLF XPF JPY PYG RWF KRW VUV VND XOF",
-			multiple 	: '1'
-		}
-		
-		var byThree = {
-			currencies	: "BHD LYD JOD KWD OMR TND",
-			multiple	: '1000'
-		}
-		
-		if(byZero.currencies.match(currency)){
-			return byZero.multiple;
-		}else if(byThree.currencies.match(currency)){
-			return byThree.multiple;
+		if(ckoCurrencyConfig.x1.currencies.match(currency)){
+			return ckoCurrencyConfig.x1.multiple;
+		}else if(ckoCurrencyConfig.x1000.currencies.match(currency)){
+			return ckoCurrencyConfig.x1000.multiple;
 		}else{
 			return 100;
 		}
@@ -333,26 +325,6 @@ var ckoUtility = {
 		var currency = order.getCurrencyCode();
 		
 		return currency;
-		
-	},
-	
-	
-	
-	/*
-	 * get Order Quantities
-	 */
-	getApmCurrency : function(currency){
-		var orderId = this.getOrderId();
-		// load the card and order information
-		var order = OrderMgr.getOrder(orderId);
-		
-		if(this.getValue('ckoMode') == 'sandbox'){
-			return currency;
-		}else{
-			currency = order.getCurrencyCode();
-			
-			return currency;
-		}
 		
 	},
 	

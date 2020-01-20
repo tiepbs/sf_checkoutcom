@@ -1,8 +1,12 @@
 "use strict"
 
 /* API Includes */
+var PaymentMgr = require('dw/order/PaymentMgr');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
+var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
+
 
 /* Utility */
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
@@ -14,7 +18,7 @@ var apmUtility = {
 	/*
 	 * Handle APM charge Response from CKO API
 	 */
-	handleAPMChargeResponse: function(gatewayResponse, order){
+	handleAPMChargeResponse: function(gatewayResponse){
 		// clean the session
 		session.privacy.redirectUrl = null;
 		
@@ -78,8 +82,8 @@ var apmUtility = {
 		
 		// If the charge is valid, process the response
 		if (gatewayResponse) {
-			this.handleAPMChargeResponse(gatewayResponse, order);
-			return ckoUtility.paymentSuccess(gatewayResponse);
+			this.handleAPMChargeResponse(gatewayResponse);
+			return gatewayResponse;
 		}
 		else {
 			// Update the transaction
@@ -92,8 +96,6 @@ var apmUtility = {
 			
 			return false;
 		}
-
-		return true;
 	},
 	
 	/*
@@ -107,8 +109,8 @@ var apmUtility = {
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
 		// Load the currency and amount
-		var currency = ckoUtility.getApmCurrency(payObject.currency);
-		var amount = ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getApmCurrency(currency));
+		var currency = ckoUtility.getCurrency(payObject.currency);
+		var amount = ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), currency);
 		
 		// Object APM is SEPA
 		if (payObject.type == 'klarna'){
