@@ -14,6 +14,10 @@ var SiteController = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSt
 var app = require(SiteController + "/cartridge/scripts/app");
 
 
+/* Card Currency Config */
+var ckoCardCurrency = require('~/cartridge/scripts/config/ckoCardCurrency');
+
+
 /*
 * Utility functions for my cartridge integration.
 */
@@ -181,20 +185,10 @@ var ckoUtility = {
 	 */
 	getCKOFormatedValue: function(currency){
 		
-		var byZero = {
-			currencies 	: "BIF DJF GNF ISK KMF XAF CLF XPF JPY PYG RWF KRW VUV VND XOF",
-			multiple 	: '1'
-		}
-		
-		var byThree = {
-			currencies	: "BHD LYD JOD KWD OMR TND",
-			multiple	: '1000'
-		}
-		
-		if(byZero.currencies.match(currency)){
-			return byZero.multiple;
-		}else if(byThree.currencies.match(currency)){
-			return byThree.multiple;
+		if(ckoCardCurrency.byZero.currencies.match(currency)){
+			return ckoCardCurrency.byZero.multiple;
+		}else if(ckoCardCurrency.byThree.currencies.match(currency)){
+			return ckoCardCurrency.byThree.multiple;
 		}else{
 			return 100;
 		}
