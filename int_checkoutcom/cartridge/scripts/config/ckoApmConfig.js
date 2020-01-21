@@ -356,7 +356,7 @@ var ckoApmConfig = {
 			
 			 var payObject = {
 				"type"		: "klarna",
-			    "amount"	: ckoUtility.getFormattedPrice(order.totalGrossPrice.valueto.Fixed(2), ckoUtility.getCurrency(args)),
+			    "amount"	: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency(args)),
 			    "currency"	: ckoUtility.getCurrency(args),
 			    "capture"	: false,
 			    "source"	: {
