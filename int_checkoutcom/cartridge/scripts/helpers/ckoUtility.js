@@ -938,7 +938,7 @@ var ckoUtility = {
 			var pli = it.next();
 			var productTaxRate = pli.taxRate * 100 * 100;
 			var productQuantity = pli.quantityValue;
-			var unitPrice = this.getFormattedPrice(pli.adjustedGrossPrice.value, currency) / productQuantity;
+			var unitPrice = Math.round(this.getFormattedPrice(pli.adjustedGrossPrice.value.toFixed(2), currency) / productQuantity);
 			var totalAmount = this.getFormattedPrice(pli.adjustedGrossPrice.value, currency);
 			var products = {
 				"name"				: pli.productName,
@@ -986,7 +986,7 @@ var ckoUtility = {
 			var pli = it.next();
 			var productTaxRate = pli.taxRate * 100 * 100;
 			var productQuantity = pli.quantityValue;
-			var unitPrice = this.getFormattedPrice(pli.adjustedGrossPrice.value, currency) / productQuantity;
+			var unitPrice = Math.round(this.getFormattedPrice(pli.adjustedGrossPrice.value.toFixed(2), currency) / productQuantity);
 			var totalAmount = this.getFormattedPrice(pli.adjustedGrossPrice.value, currency);
 			var products = {
 				"name"				: pli.productName,

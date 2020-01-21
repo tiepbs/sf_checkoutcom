@@ -448,6 +448,34 @@ var ckoApmConfig = {
 		
 		return payObject;
 		
+	},
+	
+	
+	/*
+	 * Oxxo Pay Object
+	 */
+	oxxoPayAuthorization:	function(args){
+		
+		var countryCode = ckoUtility.getBillingObject(args).country;
+		var identification = paymentForm.get('oxxo_identification').value();
+		var currency = ckoUtility.getCurrency(args);
+		
+		var payObject = {
+		    "source": {
+		        "type": "oxxo",
+		        "integration_type": "redirect",
+		        "country": countryCode,
+		        "payer": {
+		            "name": ckoUtility.getCustomerName(args),
+		            "email": ckoUtility.getCustomer(args).email,
+		            "document": identification
+		        }
+		    },
+	    "type"			: "oxxo",
+	    "currency"		: currency,
+		};
+		
+		return payObject;
 	}
 		
 }

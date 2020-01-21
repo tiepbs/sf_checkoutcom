@@ -1,4 +1,4 @@
-<!-- Sandbox Mode APMs -->
+<!-- APMs -->
 
 <div id="apmsBox">
 
@@ -113,6 +113,13 @@
 		</div>
 	</isif>
 	
+	<!-- This to include the Oxxo apm form -->
+	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoOxxoEnabled'))}">
+		<div id="oxxo" style="display: none;">	
+			<isinclude template="alternativePayments/oxxo.isml"/>
+		</div>
+	</isif>
+	
 	
 	<!-- This to include the klarna apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoKlarnaEnabled'))}">
@@ -128,6 +135,7 @@
 			<isinclude template="alternativePayments/paypal.isml"/>
 		</div>
 	</isif>
+	
 
 </div>
 

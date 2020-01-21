@@ -22,7 +22,7 @@ var apmUtility = {
 	 * Creates Site Genesis Transaction Object
 	 * @return object
 	 */
-	SGJCTransAuthObject: function(payObject, args){
+	apmAuthorization: function(payObject, args){
 		// Preparing payment parameters
 		var paymentInstrument = args.PaymentInstrument;
 		var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
