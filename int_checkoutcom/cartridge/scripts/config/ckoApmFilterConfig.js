@@ -65,7 +65,7 @@ var ckoApmFilterConfig = {
 		},
 		oxxo		: {
 			countries	: "MX",
-			currencies	: "MXD"
+			currencies	: "MXN"
 		}
 }
 
