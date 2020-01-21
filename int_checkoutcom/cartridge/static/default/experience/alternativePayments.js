@@ -412,8 +412,6 @@ function toggleAPMS(apms, apmBox){
 
 function AlternativePaymentsFilter(){
 	
-	var apmsFilterObject = getApmObject();
-	
 	var creditCard = $('#is-CHECKOUTCOM_APM');
 	
 	creditCard.on('click', function(){
@@ -424,7 +422,11 @@ function AlternativePaymentsFilter(){
 		xhttpFilter.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				
-				var filterObject = JSON.parse(this.responseText);
+				var responseObject = JSON.parse(this.responseText);
+				
+				var filterObject = responseObject.filterObject;
+				
+				var apmsFilterObject = responseObject.ckoApmFilterConfig;
 		    	
 		    	for(var apms in apmsFilterObject){
 		    		
@@ -470,6 +472,8 @@ function callKlarnaController(controllerUrl){
 	    	
 	    	var klarnaBox = $('#klarna-buttons');
 	    	
+	    	klarnaBox.empty();
+	    	
 	    	for(var i = 0; i < categories.length; i++){
 		    	
 		    	var klarnaButton = "<div style='padding: 10px; border: solid 0.5px #eee; border-radius: 5px;'> " + categories[i].name 
@@ -481,7 +485,7 @@ function callKlarnaController(controllerUrl){
 		    	+ "_aproved' style='color: #84bd00; float: right; display: none;'><span style='font-size:20px;'>&#10003;</span> Approved By <span style='color: black;'>Klarna</span></p> <p style='color: #990000; float: right; display: none;' id='" 
 		    	+ categories[i].identifier + "_rejected'><span style='font-size:20px;'>&#10007;</span>Rejected By <span style='color: black;'>Klarna</span></p><div>";
 	    		
-	    		klarnaBox.append(klarnaButton);
+		    	klarnaBox.append(klarnaButton);
 	    		
 	    	}
 
@@ -594,79 +598,6 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Obj
    );
 }
 
-
-
-function getApmObject(){
-	
-	var apmsFilterObject = {
-			ideal 		: {
-				countries	: "NL",
-				currencies	: "EUR"
-			},
-			boleto		: {
-				countries	: "BR",
-				currencies	: ["BRL", "USD"]
-			},
-			bancontact	: {
-				countries	: "BE",
-				currencies	: "EUR"
-			},
-			benefit		: {
-				countries	: "BH",
-				currencies	: "BHD"
-			},
-			giro		: {
-				countries	: "DE",
-				currencies	: "EUR"
-			},
-			eps			: {
-				countries	: "AT",
-				currencies	: "EUR"
-			},
-			sofort		: {
-				countries	: ["AT", "BE", "DE", "ES", "IT", "NL"],
-				currencies	: "EUR"
-			},
-			knet		: {
-				countries	: "KW",
-				currencies	: "KWD"
-			},
-			qpay		: {
-				countries	: "QA",
-				currencies	: "QAR"
-			},
-			fawry		: {
-				countries	: "EG",
-				currencies	: "EGP"
-			},
-			multibanco	: {
-				countries	: "PT",
-				currencies	: "EUR"
-			},
-			poli		: {
-				countries	: ["AU", "NZ"],
-				currencies	: ["AUD", "NZD"]
-			},
-			sepa		: {
-				countries	: ["AT", "BE", "CY", "DE", "EE", "ES", "FI", "FR", "GR", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PT", "SI", "SK", "AD", "BG", "CH", "CZ", "DK", "GB", "HR", "HU", "IS", "LI", "MC", "NO", "PL", "RO", "SM", "SE", "VA"],
-				currencies	: "EUR"
-			},
-			p24			: {
-				countries	: "PL",
-				currencies	: ["EUR", "PLN"]
-			},
-			klarna		: {
-				countries	: ["AT", "DK", "FI", "DE", "NL", "NO", "SE", "UK", "GB"],
-				currencies	: ["EUR", "DKK", "GBP", "NOK", "SEK"]
-			},
-			oxxo		: {
-				countries	: "MX",
-				currencies	: "MXD"
-			}
-		};
-	
-	return apmsFilterObject;
-}
 
 
 

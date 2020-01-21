@@ -18,8 +18,8 @@
 
 	<!-- field for Boleto pay -->
     <field formid="boleto" type="string" label="PAY WITH BOLETO BANCÁRIO" mandatory="false" binding="boleto" />
-    <field formid="boleto_birthDate" label="Birth Date" type="string" mandatory="true" max-length="40" description="Example: YYYY-MM-DD" binding="boleto_birthDate"/>
-    <field formid="boleto_cpf" label="CPF" type="string" mandatory="true" max-length="40" binding="bolito_cpf"/>
+    <field formid="boleto_birthDate" label="label.birthdate" type="string" mandatory="true" max-length="40" description="label.example" binding="boleto_birthDate"/>
+    <field formid="boleto_cpf" label="label.cpf" type="string" mandatory="true" max-length="40" binding="bolito_cpf"/>
     <field formid="boleto_customerName" label="Customer Name" type="string" mandatory="true" max-length="40" binding="boleto_customerName"/>
     
     
@@ -55,7 +55,7 @@
     
     <!-- field for Qpay pay -->
     <field formid="qpay" type="string" label="PAY WITH QPAY" mandatory="false" binding="qpay" />
-    <field formid="qpay_national_id" type="string" mandatory="true" label="National Id" max-length="40" binding="qpay_national_id"/>
+    <field formid="qpay_national_id" type="string" mandatory="true" label="label.id" max-length="40" binding="qpay_national_id"/>
     
         <!-- field for Fawry pay -->
     <field formid="fawry" type="string" label="PAY WITH FAWRY" mandatory="false" binding="fawry" />
