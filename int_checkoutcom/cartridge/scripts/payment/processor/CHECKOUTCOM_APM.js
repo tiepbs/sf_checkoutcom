@@ -59,10 +59,15 @@ function Authorize(args) {
 	// Get the required apm pay config object
 	var payObject = apmConfig[func](args);
 	
-	
-	apmUtility.apmAuthorization(payObject, args);
-	
-	return {success: false};
+	if(apmUtility.apmAuthorization(payObject, args)){
+		
+		return {success: true};
+		
+	}else{
+		
+		return {error: true};
+	}
+
 
 }
 

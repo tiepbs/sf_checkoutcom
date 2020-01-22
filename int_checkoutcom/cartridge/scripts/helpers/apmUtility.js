@@ -28,16 +28,16 @@ var apmUtility = {
 		var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 		
 		// perform the charge
-		var apmResponse = this.handleApmRequest(payObject, args);
+		var apmRequest = this.handleApmRequest(payObject, args);
 		
 		// Handle apm result
-		if (apmResponse) {
+		if (apmRequest) {
 			if (session.privacy.redirectUrl) {
 				// Create the authorization transaction
 			    Transaction.wrap(function() {
-			        paymentInstrument.paymentTransaction.transactionID = apmResponse.action_id;
+			        paymentInstrument.paymentTransaction.transactionID = apmRequest.action_id;
 					paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-					paymentInstrument.paymentTransaction.custom.ckoPaymentId = apmResponse.id;
+					paymentInstrument.paymentTransaction.custom.ckoPaymentId = apmRequest.id;
 					paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
 					paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
 					paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
@@ -64,7 +64,7 @@ var apmUtility = {
 				return {authorized: true};
 			}
 		} else {
-			return {error: true};
+			return false
 		}
 	},
 		
@@ -96,6 +96,7 @@ var apmUtility = {
 		if(gatewayLinks.hasOwnProperty('redirect')){
 			session.privacy.redirectUrl = gatewayLinks.redirect.href
 		}
+		
 	},
 	
 	
@@ -117,9 +118,9 @@ var apmUtility = {
 			
 			var chargeData = {
 				"customer"				: ckoUtility.getCustomer(args),
-				"amount"				: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getApmCurrency(payObject.currency)),
+				"amount"				: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), payObject.currency),
 			    "type"					: payObject.type,
-				"currency"				: ckoUtility.getApmCurrency(payObject.currency),
+				"currency"				: payObject.currency,
 				"billing_address"		: ckoUtility.getBillingObject(args),
 			    "source_data"			: payObject.source_data,
 				"reference"				: args.OrderNo,
@@ -138,20 +139,15 @@ var apmUtility = {
 		}
 		
 		// If the charge is valid, process the response
-		if (gatewayResponse) {
+		if (ckoUtility.paymentValidate(gatewayResponse)) {
 			this.handleAPMChargeResponse(gatewayResponse);
 			return gatewayResponse;
 		}
 		else {
 			// update the transaction
 			Transaction.wrap(function(){
-				OrderMgr.failOrder(order);
+				OrderMgr.failOrder(order, true);
 			});
-			
-			// Restore the cart
-			ckoUtility.checkAndRestoreBasket(order);
-			
-			return false;
 		}
 		
 	},
@@ -203,6 +199,7 @@ var apmUtility = {
 		
 		return chargeData;
 	},
+	
 	
 	
 	/*
