@@ -63,7 +63,6 @@
 	    description="creditcard.numberexample" binding="creditCardNumber"
 	    missing-error="creditcard.numbermissingerror" value-error="creditcard.numbervalueerror"/>
 	    
-
 	<!-- field for credit card security code -->
     <field formid="cvn" label="creditcard.cvnlabel" type="string" mandatory="true" masked="0"
      	missing-error="creditcard.cvnmissingerror" value-error="creditcard.cvnrangeerror"/>
