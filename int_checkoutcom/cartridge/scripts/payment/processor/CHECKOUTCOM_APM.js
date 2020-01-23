@@ -56,13 +56,18 @@ function Authorize(args) {
 	
 	var func = apm + "PayAuthorization";
 	
-	// Get the required apm config object
-	var apmObject = apmConfig[func](args);
+	// Get the required apm pay config object
+	var payObject = apmConfig[func](args);
 	
-	
-	apmUtility.SGJCTransAuthObject(apmObject, args);
-	
-	return {success: false};
+	if(apmUtility.apmAuthorization(payObject, args)){
+		
+		return {success: true};
+		
+	}else{
+		
+		return {error: true};
+	}
+
 
 }
 

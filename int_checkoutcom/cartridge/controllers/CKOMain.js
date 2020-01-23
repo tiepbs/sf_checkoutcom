@@ -14,6 +14,9 @@ var CKOEvent = require('~/cartridge/scripts/helpers/CKOEvent');
 /** Utility **/
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 
+/** Apm Filter Configuration file **/
+var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig');
+
 
 /**
  * Handles responses from the Checkout.com payment gateway.
@@ -160,7 +163,12 @@ function getApmFilter(){
 			currency	: currencyCode
 	}
 	
-	response.getWriter().println(JSON.stringify(filterObject));
+	var responseObject = {
+		'filterObject'			: filterObject,
+		'ckoApmFilterConfig'	: ckoApmFilterConfig
+	}
+	
+	response.getWriter().println(JSON.stringify(responseObject));
 	
 }
 

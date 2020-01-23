@@ -26,21 +26,17 @@ var ckoApmConfig = {
 	 */
 	idealPayAuthorization: function(args){
 		
-		var currency = ckoUtility.getCurrency(args);
-		var language = ckoUtility.getLanguage();
-		var bic = paymentForm.get('ideal_bic').value();
-		
 		// building ideal pay object
 	    var payObject = {
 				"source"	: {
 			        "type"			: "ideal",
-			        "bic"			: bic,
+			        "bic"			: paymentForm.get('ideal_bic').value(),
 			        "description"	: args.OrderNo,
-			        "language"		: language,
+			        "language"		: ckoUtility.getLanguage(),
 			    },
 			    "type"		: 'ideal',
 			    "purpose"	: businessName,
-			    "currency"	: currency
+			    "currency"	: ckoUtility.getCurrency(args)
 			};
 	    
 	    return payObject;
@@ -54,21 +50,17 @@ var ckoApmConfig = {
 	 */
 	boletoPayAuthorization: function(args){
 		
-		var cpfNumber = paymentForm.get('boleto_cpf').value();
-		var birthday = paymentForm.get('boleto_birthDate').value();
-		var currency = ckoUtility.getCurrency(args);
-		
 		// building pay object
 		var payObject = {
 			"source"		: {
 				"type"	: "boleto",
-				"birthDate" : birthday,
-				"cpf"		: cpfNumber,
+				"birthDate" : paymentForm.get('boleto_birthDate').value(),
+				"cpf"		: paymentForm.get('boleto_cpf').value(),
 				"customerName" : ckoUtility.getCustomerName(args)
 			},
 			"type"		: 'boleto',
 			"purpose"	: businessName,
-			"currency"	: currency
+			"currency"	: ckoUtility.getCurrency(args)
 		};
 		
 		return payObject;
@@ -82,20 +74,17 @@ var ckoApmConfig = {
 	 */
 	bancontactPayAuthorization: function(args){
 		
-		var country = ckoUtility.getBillingCountry(args);
-		var currency = ckoUtility.getCurrency(args);
-		
 		// building pay object
 		var payObject = {
 				"source"		: {
 					"type"					: "bancontact",
-					"payment_country" 		: country,
+					"payment_country" 		: ckoUtility.getBillingCountry(args),
 					"account_holder_name"	: ckoUtility.getCustomerName(args),
 					"billing_descriptor" 	: businessName
 				},
 				"type"		: 'bancontact',
 				"purpose"	: businessName,
-				"currency"	: currency
+				"currency"	: ckoUtility.getCurrency(args)
 			};
 		
 		return payObject;
@@ -109,8 +98,6 @@ var ckoApmConfig = {
 	 */
 	benefitPayAuthorization: function(args){
 		
-		var currency = ckoUtility.getCurrency(args);
-		
 		// process benefit pay
 		var payObject = {
 			    "source"		: {
@@ -119,7 +106,7 @@ var ckoApmConfig = {
 			    },
 			    "type"		: "benefit",
 			    "purpose"	: businessName,
-			    "currency"	: currency
+			    "currency"	: ckoUtility.getCurrency(args)
 			};
 		
 		return payObject;
@@ -132,8 +119,6 @@ var ckoApmConfig = {
 	 * Giro Pay Authorization
 	 */
 	giroPayAuthorization: function(args){
-		
-		var currency = ckoUtility.getCurrency(args);
 
 		// building pay object
 		var payObject = {
@@ -143,7 +128,7 @@ var ckoApmConfig = {
 				},
 			    "type"		: "giropay",
 			    "purpose"	: businessName,
-			    "currency"	: currency
+			    "currency"	: ckoUtility.getCurrency(args)
 				
 			};
 		
@@ -158,8 +143,6 @@ var ckoApmConfig = {
 	 */
 	epsPayAuthorization: function(args){
 		
-		var currency = ckoUtility.getCurrency(args);
-		
 		// building pay object
 		var payObject = {
 				"source"	: {
@@ -168,7 +151,7 @@ var ckoApmConfig = {
 				},
 			    "type"		: "eps",
 			    "purpose"	: businessName,
-			    "currency"	: currency
+			    "currency"	: ckoUtility.getCurrency(args)
 			};
 		
 		return payObject;
@@ -181,8 +164,6 @@ var ckoApmConfig = {
 	 * Sofort Pay Authorization
 	 */
 	sofortPayAuthorization: function(args){
-		
-		var currency = ckoUtility.getCurrency(args);
 
 		// building pay object
 		var payObject = {
@@ -191,7 +172,7 @@ var ckoApmConfig = {
 				},
 			"type"		: "sofort",
 			"purpose"	: businessName,
-			"currency" 	: currency
+			"currency" 	: ckoUtility.getCurrency(args)
 		};
 		
 		return payObject;
@@ -205,18 +186,15 @@ var ckoApmConfig = {
 	 */
 	knetPayAuthorization: function(args){
 		
-		var currency = ckoUtility.getCurrency(args);
-		var language = ckoUtility.getLanguage().substr(0, 2);
-		
 		// building pay object
 		var payObject = {
 		    "source"	: 	{
 		        "type"			: "knet",
-		        "language"		: language,
+		        "language"		: ckoUtility.getLanguage().substr(0, 2),
 		    },
 		    "type"		: "knet",
 		    "purpose"	: businessName,
-		    "currency"	: currency
+		    "currency"	: ckoUtility.getCurrency(args)
 		};
 		
 		return payObject;
@@ -230,22 +208,18 @@ var ckoApmConfig = {
 	 */
 	qpayPayAuthorization: function(args){
 		
-		var nationalId = paymentForm.get('qpay_national_id').value();
-		var language = ckoUtility.getLanguage().substr(0, 2);
-		var currency = ckoUtility.getCurrency(args);
-		
 		// building pay object
 		var payObject = {
 			"source"	: {
 		        "type"			: "qpay",
 		        "description"	: businessName,
-		        "language"		: language,
+		        "language"		: ckoUtility.getLanguage().substr(0, 2),
 		        "quantity"		: ckoUtility.getProductQuantity(args),
-		        "national_id"	: nationalId
+		        "national_id"	: paymentForm.get('qpay_national_id').value()
 		    },
 		    "type"		: "qpay",
 		    "purpose"	: businessName,
-		    "currency"	: currency
+		    "currency"	: ckoUtility.getCurrency(args)
 		};
 		
 		return payObject;
@@ -259,8 +233,6 @@ var ckoApmConfig = {
 	 */
 	fawryPayAuthorization: function(args){
 		
-		var currency = ckoUtility.getCurrency(args);
-		
 		// building pay object
 		var payObject = {
 		    "source"	: {
@@ -272,7 +244,7 @@ var ckoApmConfig = {
 		    },
 			"type"		: "fawry",
 			"purpose"	: businessName,
-		    "currency"	: currency
+		    "currency"	: ckoUtility.getCurrency(args)
 		 };
 		
 		return payObject;
@@ -286,17 +258,14 @@ var ckoApmConfig = {
 	 */
 	sepaPayAuthorization: function(args){
 		
-		var accountIban = paymentForm.get('sepa_iban').value() + paymentForm.get('sepa_bic').value();
-		var currency = ckoUtility.getCurrency(args);
-		
 		// building pay object
 		var payObject = {
 			"type"			: "sepa",
-			"currency"		: currency,
+			"currency"		: ckoUtility.getCurrency(args),
 		    "source_data"	: {
 		        "first_name"			: ckoUtility.getCustomerFirstName(args),
 		        "last_name"				: ckoUtility.getCustomerLastName(args),
-		        "account_iban"			: accountIban,
+		        "account_iban"			: paymentForm.get('sepa_iban').value() + paymentForm.get('sepa_bic').value(),
 		        "billing_descriptor"	: businessName,
 		        "mandate_type"			: "single"
 		    }
@@ -314,15 +283,12 @@ var ckoApmConfig = {
 	 */
 	multibancoPayAuthorization: function(args){
 		
-		var currency = ckoUtility.getCurrency(args);
-		var country = ckoUtility.getBillingCountry(args);
-		
 		var payObject = {
 		        "type"		: "multibanco",
-			    "currency"	: currency,
+			    "currency"	: ckoUtility.getCurrency(args),
 			    "source"	: {
 			        "type"					: "multibanco",
-			        "payment_country"		: country,
+			        "payment_country"		: ckoUtility.getBillingCountry(args),
 			        "account_holder_name"	: ckoUtility.getCustomerName(args),
 			        "billing_descriptor"	: businessName
 			    }
@@ -339,11 +305,9 @@ var ckoApmConfig = {
 	 */
 	poliPayAuthorization: function(args){
 		
-		var currency = ckoUtility.getCurrency(args);
-		
 		var payObject = {
 		        "type"		: "poli",
-			    "currency"	: currency,
+			    "currency"	: ckoUtility.getCurrency(args),
 			    "source"	: {
 			        "type"		: "poli"
 			     }
@@ -360,15 +324,12 @@ var ckoApmConfig = {
 	 */
 	p24PayAuthorization: function(args){
 		
-		var currency = ckoUtility.getCurrency(args);
-		var country = ckoUtility.getBillingCountry(args);
-		
 		var payObject = {
 			    "type"			: "p24",
-			    "currency"		: currency,
+			    "currency"		: ckoUtility.getCurrency(args),
 			    "source"		: {
 			        "type"					: "p24",
-			        "payment_country"		: country,
+			        "payment_country"		: ckoUtility.getBillingCountry(args),
 			        "account_holder_name"	: ckoUtility.getCustomerName(args),
 			        "account_holder_email"	: ckoUtility.getCustomer(args).email,
 			        "billing_descriptor"	: businessName
@@ -388,35 +349,24 @@ var ckoApmConfig = {
 		
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
-		
-
-		var countryCode = ckoUtility.getBillingObject(args).country;
-		var currency = ckoUtility.getCurrencyCode(args);
-		var locale = ckoUtility.getLanguage();
-		var total = ckoUtility.getFormattedPrice(order.totalGrossPrice.value, currency);
-		var tax =  ckoUtility.getFormattedPrice(order.totalTax.value, currency);
-		var products = ckoUtility.getOrderBasketObject(args);
-		
 		// Klarna Form Inputs
-		var klarna_token = paymentForm.get('klarna_token').value();
 		var klarna_approved = paymentForm.get('klarna_approved').value();
-		var billingAddress = ckoUtility.getOrderBasketAddress(args);
 		
 		if(klarna_approved){
 			
 			 var payObject = {
 				"type"		: "klarna",
-			    "amount"	: total,
-			    "currency"	: currency,
+			    "amount"	: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency(args)),
+			    "currency"	: ckoUtility.getCurrency(args),
 			    "capture"	: false,
 			    "source"	: {
 			        "type"					: "klarna",
-			        "authorization_token"	: klarna_token,
-			        "locale"				: locale,
-			        "purchase_country"		: countryCode,
-			        "tax_amount"			: tax,
-			        "billing_address"		: billingAddress,
-			        "products"				: products
+			        "authorization_token"	: paymentForm.get('klarna_token').value(),
+			        "locale"				: ckoUtility.getLanguage(),
+			        "purchase_country"		: ckoUtility.getBillingObject(args).country,
+			        "tax_amount"			: ckoUtility.getFormattedPrice(order.totalTax.value, ckoUtility.getCurrency(args)),
+			        "billing_address"		: ckoUtility.getOrderBasketAddress(args),
+			        "products"				: ckoUtility.getOrderBasketObject(args)
 			    }
 			 };
 			 
@@ -434,12 +384,10 @@ var ckoApmConfig = {
 	 * Paypal Pay Authorization
 	 */
 	paypalPayAuthorization: function(args){
-		
-		var currency = ckoUtility.getCurrency(args);
 
 		var payObject = {
 			    "type"			: "paypal",
-			    "currency"		: currency,
+			    "currency"		: ckoUtility.getCurrency(args),
 			    "source"		: {
 			        "type"				: "paypal",
 			        "invoice_number"	: args.OrderNo
@@ -448,6 +396,30 @@ var ckoApmConfig = {
 		
 		return payObject;
 		
+	},
+	
+	
+	/*
+	 * Oxxo Pay Object
+	 */
+	oxxoPayAuthorization:	function(args){
+		
+		var payObject = {
+		    "source": {
+		        "type": "oxxo",
+		        "integration_type": "redirect",
+		        "country": ckoUtility.getBillingObject(args).country,
+		        "payer": {
+		            "name": ckoUtility.getCustomerName(args),
+		            "email": ckoUtility.getCustomer(args).email,
+		            "document": paymentForm.get('oxxo_identification').value()
+		        }
+		    },
+	    "type"			: "oxxo",
+	    "currency"		: ckoUtility.getCurrency(args),
+		};
+		
+		return payObject;
 	}
 		
 }

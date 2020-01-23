@@ -75,6 +75,9 @@ function AlternativePayments(){
 		case"paypal":
 			paypalPayBox();
 			break;
+		case"oxxo":
+			oxxoPayBox();
+			break;
 		default:
 			console.log('Apm unknown');
 		}
@@ -325,6 +328,7 @@ function p24PayBox(){
  * Paypal Pay decorator
  */
 function paypalPayBox(){
+	
 	// multibanco pay radio button element
 	var paypalPay = $('#paypalPay_apm_radio_btn');
 	
@@ -340,6 +344,7 @@ function paypalPayBox(){
  * Poli Pay decorator
  */
 function klarnaPayBox(){
+	
 	// multibanco pay radio button element
 	var klarnaPay = $('#klarna_apm_radio_btn');
 	
@@ -348,6 +353,100 @@ function klarnaPayBox(){
 	
 	// set input fields toggle
 	toggleAPMS(klarnaPay, klarnaPayBox);
+	
+}
+
+
+/*
+ * Oxxo Pay decorator
+ */
+function oxxoPayBox(){
+	
+	// multibanco pay radio button element
+	var oxxoPay = $('#oxxo_apm_radio_btn');
+	
+	// multibanco pay input elements div
+	var oxxoPayBox = $('#oxxo_pay_box');
+	
+	// set input fields toggle
+	toggleAPMS(oxxoPay, oxxoPayBox);
+	
+}
+
+
+/*
+ * Set APM Forms
+ */
+function toggleAPMS(apms, apmBox){
+	
+	// if another apm is selected
+	if(apm_selected){
+		apm_selected.toggle();
+		apmBox.toggle();
+		apm_selected = apmBox;
+		
+		// set alternative payment value
+		var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
+		apmSelect.val(apms.val());
+		
+		// set shop url value
+		var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
+		apmShopUrl.val(location.hostname);
+		
+	}else{
+		apmBox.toggle();
+		apm_selected = apmBox;
+		
+		// set alternative payment value
+		var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
+		apmSelect.val(apms.val());
+		
+		// set shop url value
+		var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
+		apmShopUrl.val(location.hostname);
+		
+	}
+
+}
+
+
+function AlternativePaymentsFilter(){
+	
+	var creditCard = $('#is-CHECKOUTCOM_APM');
+	
+	creditCard.on('click', function(){
+		
+		var controllerUrl = $('#ckoApmFilterUrl').val();
+			
+		var xhttpFilter = new XMLHttpRequest();
+		xhttpFilter.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				
+				var responseObject = JSON.parse(this.responseText);
+				
+				var filterObject = responseObject.filterObject;
+				
+				var apmsFilterObject = responseObject.ckoApmFilterConfig;
+		    	
+		    	for(var apms in apmsFilterObject){
+		    		
+		    		var apmObjects = apmsFilterObject[apms];
+		    		
+		    		if(apmObjects.countries.includes(filterObject.country.toUpperCase()) && apmObjects.currencies.includes(filterObject.currency)){
+		    			
+		    			$('#'+ apms).show();
+		    			
+		    		}
+		    		
+		    	}
+	  	    	
+		    }
+		};
+		
+		xhttpFilter.open("GET", controllerUrl, true);
+		xhttpFilter.send();	
+	
+	});
 	
 }
 
@@ -373,6 +472,8 @@ function callKlarnaController(controllerUrl){
 	    	
 	    	var klarnaBox = $('#klarna-buttons');
 	    	
+	    	klarnaBox.empty();
+	    	
 	    	for(var i = 0; i < categories.length; i++){
 		    	
 		    	var klarnaButton = "<div style='padding: 10px; border: solid 0.5px #eee; border-radius: 5px;'> " + categories[i].name 
@@ -384,7 +485,7 @@ function callKlarnaController(controllerUrl){
 		    	+ "_aproved' style='color: #84bd00; float: right; display: none;'><span style='font-size:20px;'>&#10003;</span> Approved By <span style='color: black;'>Klarna</span></p> <p style='color: #990000; float: right; display: none;' id='" 
 		    	+ categories[i].identifier + "_rejected'><span style='font-size:20px;'>&#10007;</span>Rejected By <span style='color: black;'>Klarna</span></p><div>";
 	    		
-	    		klarnaBox.append(klarnaButton);
+		    	klarnaBox.append(klarnaButton);
 	    		
 	    	}
 
@@ -499,154 +600,5 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Obj
 
 
 
-/*
- * Set APM Forms
- */
-function toggleAPMS(apms, apmBox){
-	
-	// if another apm is selected
-	if(apm_selected){
-		apm_selected.toggle();
-		apmBox.toggle();
-		apm_selected = apmBox;
-		
-		// set alternative payment value
-		var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
-		apmSelect.val(apms.val());
-		
-		// set shop url value
-		var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
-		apmShopUrl.val(location.hostname);
-		
-	}else{
-		apmBox.toggle();
-		apm_selected = apmBox;
-		
-		// set alternative payment value
-		var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
-		apmSelect.val(apms.val());
-		
-		// set shop url value
-		var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
-		apmShopUrl.val(location.hostname);
-		
-	}
-
-}
-
-
-function getApmObject(){
-	
-	var apmsFilterObject = {
-			ideal 		: {
-				countries	: "NL",
-				currencies	: "EUR"
-			},
-			boleto		: {
-				countries	: "BR",
-				currencies	: ["BRL", "USD"]
-			},
-			bancontact	: {
-				countries	: "BE",
-				currencies	: "EUR"
-			},
-			benefit		: {
-				countries	: "BH",
-				currencies	: "BHD"
-			},
-			giro		: {
-				countries	: "DE",
-				currencies	: "EUR"
-			},
-			eps			: {
-				countries	: "AT",
-				currencies	: "EUR"
-			},
-			sofort		: {
-				countries	: ["AT", "BE", "DE", "ES", "IT", "NL"],
-				currencies	: "EUR"
-			},
-			knet		: {
-				countries	: "KW",
-				currencies	: "KWD"
-			},
-			qpay		: {
-				countries	: "QA",
-				currencies	: "QAR"
-			},
-			fawry		: {
-				countries	: "EG",
-				currencies	: "EGP"
-			},
-			multibanco	: {
-				countries	: "PT",
-				currencies	: "EUR"
-			},
-			poli		: {
-				countries	: ["AU", "NZ"],
-				currencies	: ["AUD", "NZD"]
-			},
-			sepa		: {
-				countries	: ["AT", "BE", "CY", "DE", "EE", "ES", "FI", "FR", "GR", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PT", "SI", "SK", "AD", "BG", "CH", "CZ", "DK", "GB", "HR", "HU", "IS", "LI", "MC", "NO", "PL", "RO", "SM", "SE", "VA"],
-				currencies	: "EUR"
-			},
-			p24			: {
-				countries	: "PL",
-				currencies	: ["EUR", "PLN"]
-			},
-			klarna		: {
-				countries	: ["AT", "DK", "FI", "DE", "NL", "NO", "SE", "UK", "GB"],
-				currencies	: ["EUR", "DKK", "GBP", "NOK", "SEK"]
-			}
-		}
-	
-	return apmsFilterObject;
-}
-
-
-function AlternativePaymentsFilter(){
-	
-	var apmsFilterObject = getApmObject();
-	
-	var creditCard = $('#is-CHECKOUTCOM_APM');
-	
-	creditCard.on('click', function(){
-		
-		var controllerUrl = $('#ckoApmFilterUrl').val();
-			
-		var xhttpFilter = new XMLHttpRequest();
-		xhttpFilter.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				
-				var filterObject = JSON.parse(this.responseText);
-		    	
-		    	var amps;
-		    	
-		    	for(amps in apmsFilterObject){
-		    		
-		    		var apmObjects = apmsFilterObject[amps];
-		    		
-		    		if(apmObjects.countries.includes(filterObject.country.toUpperCase()) && apmObjects.currencies.includes(filterObject.currency)){
-		    			
-		    			showThisApm(amps);
-		    			
-		    		}
-		    		
-		    	}
-	  	    	
-		    }
-		};
-		
-		xhttpFilter.open("GET", controllerUrl, true);
-		xhttpFilter.send();	
-	
-	});
-	
-}
-
-
-function showThisApm(apmId){
-	$('#'+ apmId).show();
-}
 
 

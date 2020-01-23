@@ -15,6 +15,57 @@ var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 * Utility functions for my cartridge integration.
 */
 var apmUtility = {
+  
+	/*
+	 * Creates Site Genesis Transaction Object
+	 * @return object
+	 */
+	apmAuthorization: function(payObject, args){
+		// Preparing payment parameters
+		var paymentInstrument = args.PaymentInstrument;
+		var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+		
+		// perform the charge
+		var apmRequest = this.handleApmRequest(payObject, args);
+		
+		// Handle apm result
+		if (apmRequest) {
+			if (session.privacy.redirectUrl) {
+				// Create the authorization transaction
+			    Transaction.wrap(function() {
+			        paymentInstrument.paymentTransaction.transactionID = apmRequest.action_id;
+					paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+					paymentInstrument.paymentTransaction.custom.ckoPaymentId = apmRequest.id;
+					paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+					paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+					paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+			        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+				});
+				
+				// Set the redirection template
+				var templatePath;
+				if (payObject.type == "sepa") {
+					templatePath = 'redirects/sepaMandate.isml';
+				}
+				else {
+					templatePath = 'redirects/APM.isml';
+				}
+
+				// Redirect
+				ISML.renderTemplate(templatePath, {
+					redirectUrl: session.privacy.redirectUrl
+				});
+				
+				return {authorized: true, redirected: true};
+			}
+			else {
+				return {authorized: true};
+			}
+		} else {
+			return false
+		}
+	},
+		
 	/*
 	 * Handle APM charge Response from CKO API
 	 */
@@ -41,6 +92,7 @@ var apmUtility = {
 		if (gatewayLinks.hasOwnProperty('redirect')){
 			session.privacy.redirectUrl = gatewayLinks.redirect.href
 		}
+		
 	},
 	
 	/*
@@ -61,9 +113,9 @@ var apmUtility = {
 			// Prepare the charge data
 			var chargeData = {
 				"customer"				: ckoUtility.getCustomer(args),
-				"amount"				: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getApmCurrency(payObject.currency)),
+				"amount"				: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), payObject.currency),
 			    "type"					: payObject.type,
-				"currency"				: ckoUtility.getApmCurrency(payObject.currency),
+				"currency"				: payObject.currency,
 				"billing_address"		: ckoUtility.getBillingObject(args),
 			    "source_data"			: payObject.source_data,
 				"reference"				: args.OrderNo,
@@ -81,20 +133,15 @@ var apmUtility = {
 		}
 		
 		// If the charge is valid, process the response
-		if (gatewayResponse) {
+		if (ckoUtility.paymentValidate(gatewayResponse)) {
 			this.handleAPMChargeResponse(gatewayResponse);
 			return gatewayResponse;
 		}
 		else {
 			// Update the transaction
 			Transaction.wrap(function(){
-				OrderMgr.failOrder(order);
+				OrderMgr.failOrder(order, true);
 			});
-			
-			// Restore the cart
-			ckoUtility.checkAndRestoreBasket(order);
-			
-			return false;
 		}
 	},
 	
