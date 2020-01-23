@@ -138,13 +138,10 @@ var cardUtility = {
 	 * Build 3ds object
 	 */
 	get3Ds:	function(){
-		// 3ds object
-		var ds = {
-			"enabled"				: ckoUtility.getValue('cko3ds'),
-			"attempt_n3d"			: ckoUtility.getValue('ckoN3ds')
+		return {
+			'enabled' : ckoUtility.getValue('cko3ds'),
+			'attempt_n3d' : ckoUtility.getValue('ckoN3ds')
 		}
-		
-		return ds;
 	},
 	
 	/*
