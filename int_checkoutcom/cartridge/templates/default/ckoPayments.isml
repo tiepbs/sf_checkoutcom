@@ -1,7 +1,7 @@
 <!-- This includes the card payment forms and buttons -->
 <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_CARD'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_CARD">
     <div class="form-row form-caption cko-form">
-		<isinclude template="cardPayments/cardPayment.isml"/>
+		<isinclude template="cardPayments/cardPaymentForm.isml"/>
     </div>
 </div>
 

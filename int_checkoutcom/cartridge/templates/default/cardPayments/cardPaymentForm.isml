@@ -1,6 +1,5 @@
 
 <div id="card_payment_box">	
-
 	<isif condition="${pdict.CurrentCustomer.authenticated}">
 		<div id="ckoCardSelector" class="form-row" style="display:none;">
 			<label class="label">${Resource.msg('billing.selectcreditcard','checkout',null)}</label>

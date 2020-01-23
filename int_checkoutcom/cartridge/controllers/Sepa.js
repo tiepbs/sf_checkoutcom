@@ -40,7 +40,7 @@ function mandate() {
 			creditorCity: ckoUtility.getValue('ckoBusinessCity'),
 			creditorCountry: ckoUtility.getValue('ckoBusinessCountry'),
 		    ContinueURL: URLUtils.https('Sepa-HandleMandate')
-		    }).render('sepaform');
+		    }).render('sepaForm');
 	}else{
 		// print out a message
 		response.getWriter().println('Error!');
@@ -114,7 +114,7 @@ function handleMandate() {
             	
         	}else{
         		
-        		app.getView().render('sepaform');
+        		app.getView().render('sepaForm');
         	}
         }
     });
