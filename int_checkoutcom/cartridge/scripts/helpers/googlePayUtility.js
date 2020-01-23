@@ -55,7 +55,9 @@ var googlePayUtility = {
 				chargeData
 			);
 
-			return gatewayResponse;
+			// Validate the response
+			return ckoUtility.paymentSuccess(gatewayResponse);
+
 		} else {
 			// update the transaction
 			Transaction.wrap(function(){

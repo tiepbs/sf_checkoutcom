@@ -1,6 +1,5 @@
 "use strict"
 
-
 /* API Includes */
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
@@ -8,18 +7,14 @@ var OrderMgr = require('dw/order/OrderMgr');
 /** Utility **/
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 
-
 /*
 * Utility functions for my cartridge integration.
 */
 var cardUtility = {
-	
-	
 	/*
 	 * Handle full charge Request to CKO API
 	 */
 	handleCardRequest: function(cardData, args){
-		
 		// load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
@@ -29,16 +24,16 @@ var cardUtility = {
 		// Pre_Authorize card
 		var preAuthorize = this.preAuthorizeCard(gatewayObject);
 		
-		if(preAuthorize){
+		if (preAuthorize) {
 			// Perform the request to the payment gateway
 			var gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayObject);
 			
 			// If the charge is valid, process the response
-			if(gatewayResponse){
+			if (gatewayResponse) {
 				this.handleFullChargeResponse(gatewayResponse, order);
-				return gatewayResponse;
-			}else{
-				
+				return ckoUtility.paymentSuccess(gatewayResponse);
+			} 
+			else {
 				// update the transaction
 				Transaction.wrap(function(){
 					OrderMgr.failOrder(order);
@@ -49,13 +44,10 @@ var cardUtility = {
 				
 				return false;
 			}
-			
-		}else{
+		} else {
 			return false;
 		}
-		
 	},
-	
 	
 	/*
 	 * Handle full charge Response from CKO API
@@ -76,13 +68,10 @@ var cardUtility = {
 		}
 	},
 	
-
-	
 	/*
 	 * Pre_Authorize card with zero value
 	 */
 	preAuthorizeCard: function(chargeData){
-		
 		// Prepare the 0 auth charge
 		var authData = JSON.parse(JSON.stringify(chargeData));
 		
@@ -92,15 +81,9 @@ var cardUtility = {
 		
 		var authResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", authData);
 		
-		if(ckoUtility.paymentValidate(authResponse)){
-			return true;
-		}
-		
-		return false;
+		return ckoUtility.paymentSuccess(authResponse);
 	},
 	
-	
-		
 	/*
 	 * Build the Gateway Object
 	 */
@@ -128,8 +111,6 @@ var cardUtility = {
 		return chargeData;
 	},	
 	
-	
-	
 	/*
 	 * Build Gateway Source Object
 	 */
@@ -150,12 +131,10 @@ var cardUtility = {
 		return source;
 	},
 	
-	
 	/*
 	 * Build 3ds object
 	 */
 	get3Ds:	function(){
-		
 		// 3ds object
 		var ds = {
 			"enabled"				: ckoUtility.getValue('cko3ds'),
@@ -188,7 +167,6 @@ var cardUtility = {
 		return billingDetails;
 	},
 	
-	
 	/*
 	 * Build the Shipping object
 	 */
@@ -217,12 +195,7 @@ var cardUtility = {
 		
 		return shipping;
 	}
-	
-	
-	
 }
-
-
 
 /*
 * Module exports
