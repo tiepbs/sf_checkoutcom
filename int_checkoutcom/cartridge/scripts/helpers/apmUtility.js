@@ -133,7 +133,7 @@ var apmUtility = {
 		}
 		
 		// If the charge is valid, process the response
-		if (ckoUtility.paymentValidate(gatewayResponse)) {
+		if (ckoUtility.paymentSuccess(gatewayResponse)) {
 			this.handleAPMChargeResponse(gatewayResponse);
 			return gatewayResponse;
 		}

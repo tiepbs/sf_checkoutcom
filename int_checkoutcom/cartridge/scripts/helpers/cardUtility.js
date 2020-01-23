@@ -24,35 +24,46 @@ var cardUtility = {
 		// Pre_Authorize card
 		var preAuthorize = this.preAuthorizeCard(gatewayObject);
 		
+		
 		if (preAuthorize) {
+
+			// Logging
+			ckoUtility.doLog('response', 'Michael Testings');
+			
 			// Perform the request to the payment gateway
 			var gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayObject);
 			
 			// If the charge is valid, process the response
-			if (gatewayResponse) {
+			if (ckoUtility.paymentSuccess(gatewayResponse)) {
+
+				// Logging
+				ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
+				
 				this.handleFullChargeResponse(gatewayResponse, order);
-				return ckoUtility.paymentSuccess(gatewayResponse);
-			} 
-			else {
+				return gatewayResponse;
+				
+			} else {
+				
 				// update the transaction
 				Transaction.wrap(function(){
 					OrderMgr.failOrder(order);
 				});
 				
-				// Restore the cart
-				ckoUtility.checkAndRestoreBasket(order);
-				
-				return false;
 			}
 		} else {
+			
 			return false;
+			
 		}
+		
 	},
 	
 	/*
 	 * Handle full charge Response from CKO API
 	 */
-	handleFullChargeResponse: function(gatewayResponse, order){
+	handleFullChargeResponse: function(gatewayResponse){
+		// clean the session
+		session.privacy.redirectUrl = null;
 		
 		// Logging
 		ckoUtility.doLog('response', JSON.stringify(gatewayResponse));	
