@@ -23,23 +23,16 @@ var cardUtility = {
 		
 		// Pre_Authorize card
 		var preAuthorize = true;
-		
-		
-		if (preAuthorize) {
-
-			// Logging
-			ckoUtility.doLog('response', 'Michael Testings');
-			
+		if (preAuthorize) {			
 			// Perform the request to the payment gateway
 			var gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayObject);
 			
 			// If the charge is valid, process the response
 			if (gatewayResponse) {
-
 				// Logging
 				ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
 				
-				if(this.handleFullChargeResponse(gatewayResponse)){
+				if (this.handleFullChargeResponse(gatewayResponse)){
 					return gatewayResponse;
 				}else{
 					return false;
