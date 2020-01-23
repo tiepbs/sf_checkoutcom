@@ -91,7 +91,7 @@ var cardUtility = {
 	},
 	
 	/*
-	 * Build the Gateway Object
+	 * Build the gateway object
 	 */
 	gatewayObject: function(cardData, args) {
 		// Load the card and order information
