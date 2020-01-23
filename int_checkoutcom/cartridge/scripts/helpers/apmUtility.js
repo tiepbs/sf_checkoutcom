@@ -91,6 +91,9 @@ var apmUtility = {
 		// Add redirect URL to session if exists
 		if (gatewayLinks.hasOwnProperty('redirect')){
 			session.privacy.redirectUrl = gatewayLinks.redirect.href
+			return true;
+		}else{
+			ckoUtility.paymentSuccess(gatewayResponse);
 		}
 		
 	},
@@ -131,11 +134,24 @@ var apmUtility = {
 			// Perform the request to the payment gateway
 			gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayObject);
 		}
+
+
+		// Logging
+		ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
 		
 		// If the charge is valid, process the response
-		if (ckoUtility.paymentSuccess(gatewayResponse)) {
-			this.handleAPMChargeResponse(gatewayResponse);
-			return gatewayResponse;
+		if (gatewayResponse) {
+			
+			if(this.handleAPMChargeResponse(gatewayResponse)){
+				
+				return gatewayResponse;
+				
+			}else{
+				
+				return false;
+				
+			}
+			
 		}
 		else {
 			// Update the transaction

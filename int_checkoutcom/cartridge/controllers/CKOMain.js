@@ -45,10 +45,23 @@ function handleReturn() {
 				// If there is a valid response
 				if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
 					
-					// Show order confirmation page
-					app.getController('COSummary').ShowConfirmation(order);
-				}
-				else {
+					var verify = false;
+					
+					if(ckoUtility.redirectPaymentSuccess(gVerify)){
+						
+						// Show order confirmation page
+						app.getController('COSummary').ShowConfirmation(order);
+						
+					}else{
+						
+					    // Restore the cart
+						ckoUtility.checkAndRestoreBasket(order);
+
+						// Send back to the error page
+						ISML.renderTemplate('custom/common/response/failed.isml');
+					}
+					
+				}else {
 					
 					ckoUtility.handleFail(gVerify);
 					

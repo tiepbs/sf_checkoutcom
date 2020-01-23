@@ -349,6 +349,14 @@ var ckoUtility = {
 	
 	
 	/*
+	 * Confirm is a payment is valid from API redirect response code
+	 */
+	redirectPaymentSuccess: function(gatewayResponse){
+		return gatewayResponse.actions[0].response_code == "10000" || gatewayResponse.actions[0].response_code == '10100' || gatewayResponse.actions[0].response_code == '10200';
+	},
+	
+	
+	/*
 	 * Write order information to session for the current shopper.
 	 */
 	updateCustomerData: function(gatewayResponse){
@@ -367,11 +375,14 @@ var ckoUtility = {
 	handleFail: function(gatewayResponse) {
 		if(gatewayResponse){
 			// Logging
-			this.logThis('checkout.com cartridge failed response', gatewayResponse);
+			this.doLog('checkout.com cartridge failed response', JSON.stringify(gatewayResponse));
 		}
 		
 		// Load the error template
-		app.getController('COBilling').Start();
+		//app.getController('COBilling').Start();
+
+		// Send back to the error page
+		ISML.renderTemplate('custom/common/response/failed.isml');
 	},
 	
 	/*
