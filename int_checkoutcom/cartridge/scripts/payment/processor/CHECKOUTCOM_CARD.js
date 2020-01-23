@@ -19,7 +19,6 @@ var app = require(SiteControllerName + '/cartridge/scripts/app');
 var cardUtility = require('~/cartridge/scripts/helpers/cardUtility');
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 
-
 /**
  * Verifies a credit card against a valid card number and expiration date and possibly invalidates invalid form fields.
  * If the verification was successful a credit card payment instrument is created.
@@ -28,28 +27,23 @@ function Handle(args) {
 	var cart = Cart.get(args.Basket);
 	var paymentMethod = args.PaymentMethodID;
 	
-
 	// Get card payment form
 	var paymentForm = app.getForm('cardPaymentForm');
 	
 	// Prepare card data object
 	var cardData = {
-			
 		owner		: paymentForm.get('owner').value(),
 		number		: ckoUtility.getFormattedNumber(paymentForm.get('number').value()),
 		month		: paymentForm.get('expiration.month').value(),
 		year		: paymentForm.get('expiration.year').value(),
 		cvn			: paymentForm.get('cvn').value(),
 		cardType	: paymentForm.get('type').value()
-		
 	};	
 	
 	// Proceed with transaction
-	Transaction.wrap(function(){
+	Transaction.wrap(function() {
 		cart.removeExistingPaymentInstruments(paymentMethod);
-		
 		var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-		
 		paymentInstrument.creditCardHolder = cardData.owner;
 		paymentInstrument.creditCardNumber = cardData.number;
 		paymentInstrument.creditCardExpirationMonth = cardData.month;
@@ -73,7 +67,6 @@ function Authorize(args) {
 	// Add order number to the session global object 
 	session.privacy.ckoOrderId = args.OrderNo;
 	
-	
 	// Build card data object
 	var cardData = {
 		"name"			: paymentInstrument.creditCardHolder,
@@ -88,15 +81,14 @@ function Authorize(args) {
 	var chargeResponse = cardUtility.handleCardRequest(cardData, args);
 	
 	// Handle card charge request result
-	if(chargeResponse){
-		if(ckoUtility.getValue('cko3ds')){
+	if (chargeResponse) {
+		if (ckoUtility.getValue('cko3ds')) {
 			// 3ds redirection
 			ISML.renderTemplate('redirects/3DSecure.isml', {
 				redirectUrl: session.privacy.redirectUrl
 			});
 			
 			return {authorized: true, redirected: true};
-			
 		} else {
 			// Create the authorization transaction
 		    Transaction.wrap(function() {
@@ -111,7 +103,6 @@ function Authorize(args) {
 			
 			return {authorized: true};
 		}
-		
 	} else {
 		return {error: true};
 	}	
