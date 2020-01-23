@@ -59,7 +59,7 @@
     <field formid="ckoCurrency" type="string" mandatory="false" max-length="40" binding="ckoCurrency" />
      	
 	<!-- field for credit card number -->
-    <field formid="number" label="creditcard.number" type="string" mandatory="true"
+    <field formid="number" label="creditcard.number" type="string" mandatory="true" masked="0"
 	    description="creditcard.numberexample" binding="creditCardNumber"
 	    missing-error="creditcard.numbermissingerror" value-error="creditcard.numbervalueerror"/>
 	    
