@@ -24,7 +24,6 @@
 	<!-- Card Number and Image -->
 	<div class="form-row">
 		<div id="dw_cardTypeDone" style='width: 30px; height: 30px; border: solid 1px none; position: absolute; z-index: 2; margin-top: 0.5em; margin-left: 0.4em;'> 
-		
 			<img id="default_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/card.svg')}" width="65%"/>
 			<img id="visacard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/visa.svg')}" width="100%"/>
 			<img id="mastercard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/mastercard.svg')}" width="100%"/>
