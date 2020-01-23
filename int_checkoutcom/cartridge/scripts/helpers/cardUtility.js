@@ -14,7 +14,7 @@ var cardUtility = {
 	/*
 	 * Handle full charge Request to CKO API
 	 */
-	handleCardRequest: function(cardData, args){
+	handleCardRequest: function(cardData, args) {
 		// Load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
@@ -49,7 +49,7 @@ var cardUtility = {
 	/*
 	 * Handle full charge Response from CKO API
 	 */
-	handleFullChargeResponse: function(gatewayResponse){
+	handleFullChargeResponse: function(gatewayResponse) {
 		// Clean the session
 		session.privacy.redirectUrl = null;
 		
@@ -73,7 +73,7 @@ var cardUtility = {
 	/*
 	 * Pre_Authorize card with zero value
 	 */
-	preAuthorizeCard: function(chargeData){
+	preAuthorizeCard: function(chargeData) {
 		// Prepare the pre authorization charge
 		var authData = JSON.parse(JSON.stringify(chargeData));
 		authData['3ds'].enabled = false;
@@ -90,7 +90,7 @@ var cardUtility = {
 	/*
 	 * Build the Gateway Object
 	 */
-	gatewayObject: function(cardData, args){
+	gatewayObject: function(cardData, args) {
 		// Load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 	
@@ -117,7 +117,7 @@ var cardUtility = {
 	/*
 	 * Build Gateway Source Object
 	 */
-	getSourceObject: function(cardData, args){
+	getSourceObject: function(cardData, args) {
 		// Source object
 		var source = {
 			type				: "card",
@@ -137,7 +137,7 @@ var cardUtility = {
 	/*
 	 * Build 3ds object
 	 */
-	get3Ds:	function(){
+	get3Ds:	function() {
 		return {
 			'enabled' : ckoUtility.getValue('cko3ds'),
 			'attempt_n3d' : ckoUtility.getValue('ckoN3ds')
@@ -147,7 +147,7 @@ var cardUtility = {
 	/*
 	 * Build the Billing object
 	 */
-	getBillingObject: function(args){
+	getBillingObject: function(args) {
 		// Load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -170,7 +170,7 @@ var cardUtility = {
 	/*
 	 * Build the Shipping object
 	 */
-	getShippingObject: function(args){
+	getShippingObject: function(args) {
 		// Load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 
