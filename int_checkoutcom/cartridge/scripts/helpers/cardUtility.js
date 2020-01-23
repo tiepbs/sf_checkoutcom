@@ -15,15 +15,14 @@ var cardUtility = {
 	 * Handle full charge Request to CKO API
 	 */
 	handleCardRequest: function(cardData, args){
-		// load the card and order information
+		// Load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
-		// creating billing address object
+		// Create billing address object
 		var gatewayObject = this.gatewayObject(cardData, args);
 		
-		// Pre_Authorize card
-		var preAuthorize = this.preAuthorizeCard(gatewayObject);
-		if (preAuthorize) {			
+		// Pre authorize the card
+		if (this.preAuthorizeCard(gatewayObject)) {			
 			// Perform the request to the payment gateway
 			var gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayObject);
 			
@@ -32,33 +31,26 @@ var cardUtility = {
 				// Logging
 				ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
 				
-				if (this.handleFullChargeResponse(gatewayResponse)){
-					return gatewayResponse;
-				}else{
-					return false;
-				}
-				
+				// Handle the response
+				return this.handleFullChargeResponse(gatewayResponse);
 			} else {
-				
-				// update the transaction
+				// Fail the order
 				Transaction.wrap(function(){
 					OrderMgr.failOrder(order);
 				});
-				
+
+				return false;
 			}
-		} else {
-			
-			return false;
-			
 		}
-		
+			
+		return false;
 	},
 	
 	/*
 	 * Handle full charge Response from CKO API
 	 */
 	handleFullChargeResponse: function(gatewayResponse){
-		// clean the session
+		// Clean the session
 		session.privacy.redirectUrl = null;
 		
 		// Logging
@@ -74,7 +66,7 @@ var cardUtility = {
 			session.privacy.redirectUrl = gatewayLinks.redirect.href;
 			return true;
 		}else{
-			ckoUtility.paymentSuccess(gatewayResponse);
+			return ckoUtility.paymentSuccess(gatewayResponse);
 		}
 	},
 	
@@ -82,15 +74,16 @@ var cardUtility = {
 	 * Pre_Authorize card with zero value
 	 */
 	preAuthorizeCard: function(chargeData){
-		// Prepare the 0 auth charge
+		// Prepare the pre authorization charge
 		var authData = JSON.parse(JSON.stringify(chargeData));
-		
 		authData['3ds'].enabled = false;
 		authData.amount = 0;
 		authData.currency = "USD";	
 		
+		// Send the request
 		var authResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", authData);
 		
+		// Return the response
 		return ckoUtility.paymentSuccess(authResponse);
 	},
 	
@@ -98,7 +91,7 @@ var cardUtility = {
 	 * Build the Gateway Object
 	 */
 	gatewayObject: function(cardData, args){
-		// load the card and order information
+		// Load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 	
 		// Prepare chargeData object
@@ -125,7 +118,7 @@ var cardUtility = {
 	 * Build Gateway Source Object
 	 */
 	getSourceObject: function(cardData, args){
-		// source object
+		// Source object
 		var source = {
 			type				: "card",
 			number				: cardData.number,
@@ -158,13 +151,13 @@ var cardUtility = {
 	 * Build the Billing object
 	 */
 	getBillingObject: function(args){
-		
-		// load the card and order information
+		// Load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 
 		// Get billing address information
 		var billingAddress = order.getBillingAddress();
-		// creating billing address object
+
+		// Creating billing address object
 		var billingDetails = {
 			address_line1		: billingAddress.getAddress1(),
 			address_line2		: billingAddress.getAddress2(),
@@ -181,13 +174,13 @@ var cardUtility = {
 	 * Build the Shipping object
 	 */
 	getShippingObject: function(args){
-		// load the card and order information
+		// Load the card and order information
 		var order = OrderMgr.getOrder(args.OrderNo);
 
 		// Get shipping address object
 		var shippingAddress = order.getDefaultShipment().getShippingAddress();
 		
-		// creating address object
+		// Creating address object
 		var shippingDetails = {
 			address_line1		: shippingAddress.getAddress1(),
 			address_line2		: shippingAddress.getAddress2(),
@@ -197,7 +190,7 @@ var cardUtility = {
 			country				: shippingAddress.getCountryCode().value
 		};
 		
-		// shipping object
+		// Build the shipping object
 		var shipping = {
 			address				: shippingDetails,
 			phone				: ckoUtility.getPhoneObject(args)

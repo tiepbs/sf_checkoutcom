@@ -29,10 +29,10 @@ function Handle(args) {
 	var paymentMethod = args.PaymentMethodID;
 	
 
-	// get card payment form
+	// Get card payment form
 	var paymentForm = app.getForm('cardPaymentForm');
 	
-	// prepare card data object
+	// Prepare card data object
 	var cardData = {
 			
 		owner		: paymentForm.get('owner').value(),
@@ -44,7 +44,7 @@ function Handle(args) {
 		
 	};	
 	
-	// proceed with transaction
+	// Proceed with transaction
 	Transaction.wrap(function(){
 		cart.removeExistingPaymentInstruments(paymentMethod);
 		
@@ -58,8 +58,6 @@ function Handle(args) {
 	});
 	
 	return {success: true};
-	
-
 }
 
 /**
@@ -68,7 +66,6 @@ function Handle(args) {
  * logic to authorise credit card payment.
  */
 function Authorize(args) {
-
 	// Preparing payment parameters
 	var paymentInstrument = args.PaymentInstrument;
 	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
@@ -77,7 +74,7 @@ function Authorize(args) {
 	session.privacy.ckoOrderId = args.OrderNo;
 	
 	
-	// build card data object
+	// Build card data object
 	var cardData = {
 		"name"			: paymentInstrument.creditCardHolder,
 		"number"		: paymentInstrument.creditCardNumber,
@@ -87,14 +84,13 @@ function Authorize(args) {
 		"type"			: paymentInstrument.creditCardType,
 	};
 	
-	// make the charge request
+	// Make the charge request
 	var chargeResponse = cardUtility.handleCardRequest(cardData, args);
 	
 	// Handle card charge request result
 	if(chargeResponse){
-		
 		if(ckoUtility.getValue('cko3ds')){
-			
+			// 3ds redirection
 			ISML.renderTemplate('redirects/3DSecure.isml', {
 				redirectUrl: session.privacy.redirectUrl
 			});
@@ -116,10 +112,9 @@ function Authorize(args) {
 			return {authorized: true};
 		}
 		
-	}else{
+	} else {
 		return {error: true};
 	}	
-
 }
 
 /*
