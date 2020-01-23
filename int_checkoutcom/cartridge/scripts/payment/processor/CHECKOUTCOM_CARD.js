@@ -69,12 +69,12 @@ function Authorize(args) {
 	
 	// Build card data object
 	var cardData = {
-		"name"			: paymentInstrument.creditCardHolder,
-		"number"		: paymentInstrument.creditCardNumber,
-		"expiryMonth"	: paymentInstrument.creditCardExpirationMonth,
-		"expiryYear"	: paymentInstrument.creditCardExpirationYear,
-		"cvv"			: app.getForm("cardPaymentForm").get('cvn').value(),
-		"type"			: paymentInstrument.creditCardType,
+		'name'			: paymentInstrument.creditCardHolder,
+		'number'		: paymentInstrument.creditCardNumber,
+		'expiryMonth'	: paymentInstrument.creditCardExpirationMonth,
+		'expiryYear'	: paymentInstrument.creditCardExpirationYear,
+		'cvv'			: app.getForm('cardPaymentForm').get('cvn').value(),
+		'type'			: paymentInstrument.creditCardType,
 	};
 	
 	// Make the charge request
