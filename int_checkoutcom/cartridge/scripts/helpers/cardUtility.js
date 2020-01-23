@@ -78,10 +78,13 @@ var cardUtility = {
 		var authData = JSON.parse(JSON.stringify(chargeData));
 		authData['3ds'].enabled = false;
 		authData.amount = 0;
-		authData.currency = "USD";	
+		authData.currency = 'USD';	
 		
 		// Send the request
-		var authResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", authData);
+		var authResponse = ckoUtility.gatewayClientRequest(
+			'cko.card.charge.' + ckoUtility.getValue('ckoMode') + '.service',
+			authData
+		);
 		
 		// Return the response
 		return ckoUtility.paymentSuccess(authResponse);
