@@ -32,14 +32,14 @@ function handleReturn() {
 		var order = OrderMgr.getOrder(orderId);	
 		if (order) {
 			// Check the payment token if exists		
-			var paymentToken = 	request.httpParameterMap.get('cko-session-id').stringValue;
+			var sessionId = request.httpParameterMap.get('cko-session-id').stringValue;
 			
 			// If there is a payment session id available, verify
-			if (paymentToken) {
+			if (sessionId) {
 				// Perform the request to the payment gateway
 				gVerify = ckoUtility.gatewayClientRequest(
 					'cko.verify.charges.' + mode + '.service', 
-					{'paymentToken': paymentToken}
+					{'paymentToken': sessionId}
 				);	
 				
 				// If there is a valid response

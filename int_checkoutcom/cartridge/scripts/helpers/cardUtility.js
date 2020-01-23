@@ -22,7 +22,7 @@ var cardUtility = {
 		var gatewayObject = this.gatewayObject(cardData, args);
 		
 		// Pre_Authorize card
-		var preAuthorize = this.preAuthorizeCard(gatewayObject);
+		var preAuthorize = true;
 		
 		
 		if (preAuthorize) {
@@ -34,13 +34,16 @@ var cardUtility = {
 			var gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayObject);
 			
 			// If the charge is valid, process the response
-			if (ckoUtility.paymentSuccess(gatewayResponse)) {
+			if (gatewayResponse) {
 
 				// Logging
 				ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
 				
-				this.handleFullChargeResponse(gatewayResponse, order);
-				return gatewayResponse;
+				if(this.handleFullChargeResponse(gatewayResponse)){
+					return gatewayResponse;
+				}else{
+					return false;
+				}
 				
 			} else {
 				
@@ -75,7 +78,10 @@ var cardUtility = {
 		
 		// Add 3DS redirect URL to session if exists
 		if(gatewayLinks.hasOwnProperty('redirect')){
-			session.privacy.redirectUrl = gatewayLinks.redirect.href
+			session.privacy.redirectUrl = gatewayLinks.redirect.href;
+			return true;
+		}else{
+			ckoUtility.paymentSuccess(gatewayResponse);
 		}
 	},
 	
