@@ -99,20 +99,20 @@ var cardUtility = {
 	
 		// Prepare chargeData object
 		var chargeData = {
-				"source"				: this.getSourceObject(cardData, args),
-				"amount"				: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency()),	
-				"currency"				: ckoUtility.getCurrency(),
-				"reference"				: args.OrderNo,
-				"capture"				: ckoUtility.getValue('ckoAutoCapture'),
-				"capture_on"			: ckoUtility.getCaptureTime(),
-				"customer"				: ckoUtility.getCustomer(args),
-				"billing_descriptor"	: ckoUtility.getBillingDescriptorObject(),
-				"shipping"				: this.getShippingObject(args),
-				"3ds"					: this.get3Ds(),
-				"risk"					: {enabled: true},
-				"payment_ip"			: ckoUtility.getHost(args),
-				"metadata"				: ckoUtility.getMetadataObject(cardData, args)
-			};
+			'source'				: this.getSourceObject(cardData, args),
+			'amount'				: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency()),	
+			'currency'				: ckoUtility.getCurrency(),
+			'reference'				: args.OrderNo,
+			'capture'				: ckoUtility.getValue('ckoAutoCapture'),
+			'capture_on'			: ckoUtility.getCaptureTime(),
+			'customer'				: ckoUtility.getCustomer(args),
+			'billing_descriptor'	: ckoUtility.getBillingDescriptorObject(),
+			'shipping'				: this.getShippingObject(args),
+			'3ds'					: this.get3Ds(),
+			'risk'					: {enabled: true},
+			'payment_ip'			: ckoUtility.getHost(args),
+			'metadata'				: ckoUtility.getMetadataObject(cardData, args)
+		};
 		
 		return chargeData;
 	},	
