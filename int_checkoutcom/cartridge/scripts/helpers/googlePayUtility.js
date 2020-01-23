@@ -61,7 +61,6 @@ var googlePayUtility = {
 			}
 
 			return false;
-
 		} else {
 			// update the transaction
 			Transaction.wrap(function(){
