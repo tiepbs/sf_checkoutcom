@@ -35,7 +35,6 @@
 			<img id="madacard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/mada.svg')}" width="100%">
 		</div>
 		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.number}" id="creditCardNumber" type="input"/>
-		
 	</div>
 	
 	<!-- Card Expiration -->
