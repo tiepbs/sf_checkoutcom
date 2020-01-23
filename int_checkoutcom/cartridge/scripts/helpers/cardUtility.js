@@ -131,7 +131,6 @@ var cardUtility = {
 			cvv					: cardData.cvv,
 			billing_address		: this.getBillingObject(args),
 			phone				: ckoUtility.getPhoneObject(args)
-
 		}
 		
 		return source;
