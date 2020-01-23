@@ -3,7 +3,6 @@
 /* API Includes */
 var PaymentMgr = require('dw/order/PaymentMgr');
 var Transaction = require('dw/system/Transaction');
-var ISML = require('dw/template/ISML');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
 
 /* Site controller */
@@ -46,7 +45,6 @@ function Handle(args) {
  */
 function Authorize(args) {
 	// Preparing payment parameters
-	var orderNo = args.OrderNo;
 	var paymentInstrument = args.PaymentInstrument;
 	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 	
