@@ -83,18 +83,21 @@ var cardUtility = {
     /*
      * Pre_Authorize card with zero value
      */
-    preAuthorizeCard: function (chargeData) {
+    preAuthorizeCard: function (requestData) {
+        // Clone the request data
+        var authData = JSON.parse(JSON.stringify(requestData));
+
         // Prepare the pre authorization charge
-        chargeData['3ds'].enabled = false;
-        chargeData.amount = 0;
-        chargeData.currency = 'USD';
-        chargeData.capture = false;
-        delete chargeData['capture_on'];
+        authData['3ds'].enabled = false;
+        authData.amount = 0;
+        authData.currency = 'USD';
+        authData.capture = false;
+        delete authData['capture_on'];
         
         // Send the request
         var authResponse = ckoUtility.gatewayClientRequest(
             'cko.card.charge.' + ckoUtility.getValue('ckoMode') + '.service',
-            chargeData
+            authData
         );
         
         // Return the response
