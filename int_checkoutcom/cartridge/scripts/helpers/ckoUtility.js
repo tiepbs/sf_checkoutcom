@@ -10,9 +10,6 @@ var PaymentMgr = require('dw/order/PaymentMgr');
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
-var SiteController = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
-var app = require(SiteController + "/cartridge/scripts/app");
-
 
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
@@ -36,31 +33,22 @@ var ckoUtility = {
     /*
      * get user language
      */
-    getLanguage: function () {
-        
-        var language = request.locale;
-        
-        return language.replace('_', '-');
+    getLanguage: function () {        
+        return request.locale.replace('_', '-');
     },
     
     /*
      * get Site Name
      */
-    getSiteName: function () {
-        
-        var siteName = dw.system.Site.getCurrent().name;
-        
-        return siteName;
-        
+    getSiteName: function () {        
+        return dw.system.Site.getCurrent().name;
     },
     
     /*
      * get site Hostname
      */
-    getSiteHostName: function () {
-        var hostname = dw.system.Site.getCurrent().httpHostName;
-        
-        return hostname;
+    getSiteHostName: function () {        
+        return dw.system.Site.getCurrent().httpHostName;
     },
     
     /*
@@ -172,7 +160,6 @@ var ckoUtility = {
         } else {
             return 100;
         }
-        
     },
     
     /*
@@ -304,7 +291,6 @@ var ckoUtility = {
         var currency = order.getCurrencyCode();
         
         return currency;
-        
     },
 
     /*
