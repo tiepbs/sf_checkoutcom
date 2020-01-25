@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Set schema image
     setSchema('#dwfrm_cardPaymentForm_number');
+
+    // Add expiration years
+    setExpirationYears();
 });
 
 // Sets schema box
@@ -26,9 +29,25 @@ var setBox = function () {
     }
 }
 
+// Sets the expiration years in the form
+var setExpirationYears = function() {
+    // Get the current year
+    var d = new Date();
+    var currentYear = d.getFullYear();
+
+    // Add the select list options
+    for (var i = 0; i < 10; i++) {
+        $('#dwfrm_cardPaymentForm_expiration_year').append(
+            new Option(
+                currentYear + i,
+                currentYear + i
+            )
+        );
+    }
+}
+
 // Sets schema image in box
 var setSchema = function (inputId) {
-    
     // Format user input with cleave.js
     var cleaveCreditCard = new Cleave(inputId, {
         creditCard: true,
@@ -211,11 +230,3 @@ var Mada = {
         return cardNumber.charAt(0);
     }
 }
-
-
-
-
-
-
-
-
