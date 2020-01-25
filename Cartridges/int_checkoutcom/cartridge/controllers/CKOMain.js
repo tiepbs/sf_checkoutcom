@@ -9,7 +9,7 @@ var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
 
 /* Checkout.com Event functions */
-var CKOEvent = require('~/cartridge/scripts/helpers/CKOEvent');
+var eventsHelper = require('~/cartridge/scripts/helpers/eventsHelper');
 
 /** Utility **/
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
@@ -117,7 +117,7 @@ function handleWebhook()
             }
 
             // Call the event
-            CKOEvent[func](hook);
+            eventsHelper[func](hook);
         }
     }
 }

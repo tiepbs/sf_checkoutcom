@@ -16,7 +16,7 @@ var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
 /* Utility */
-var cardUtility = require('~/cartridge/scripts/helpers/cardUtility');
+var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 
 /**
@@ -83,7 +83,7 @@ function Authorize(args)
     };
     
     // Make the charge request
-    var chargeResponse = cardUtility.handleCardRequest(cardData, args);
+    var chargeResponse = cardHelper.handleCardRequest(cardData, args);
     
     // Handle card charge request result
     if (chargeResponse) {
