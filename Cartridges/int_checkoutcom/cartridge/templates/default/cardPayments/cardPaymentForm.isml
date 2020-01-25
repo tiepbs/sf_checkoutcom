@@ -11,17 +11,17 @@
 		</div>
 	</isif>
 
-	<!-- Cards Image -->
+	<!-- Card icons -->
 	<fieldset>
 	<div>
 		<img alt="" src="${URLUtils.staticURL('/images/card-schema.png')}" width="80%" style="margin-left: auto; margin-right: auto; display: block;">
 	</div>
 	</fieldset>
 	
-	<!-- Card Owner Info -->
+	<!-- Card owner info -->
 	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.owner}" id="creditCardOwner" type="input" />
 	
-	<!-- Card Number and Image -->
+	<!-- Card number and icon -->
 	<div class="form-row">
 		<div id="dw_cardTypeDone" style='width: 30px; height: 30px; border: solid 1px none; position: absolute; z-index: 2; margin-top: 0.5em; margin-left: 0.4em;'> 
 			<img id="default_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/card.svg')}" width="65%"/>
@@ -36,7 +36,7 @@
 		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.number}" id="creditCardNumber" type="input"/>
 	</div>
 	
-	<!-- Card Expiration -->
+	<!-- Card expiration -->
 	<div class="form-row required">
 		<label>
 			<span class="required-indicator">${Resource.msg('billing.requiredindicator', 'checkout', null)}</span>
@@ -62,10 +62,10 @@
 		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.saveCard}" type="checkbox"/>
 	</isif>
 	
-	<!-- Card Type -->
+	<!-- Card type -->
 	<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.type}" id="creditCardType" />
 	
-	<!-- Mada -->
+	<!-- MADA -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMada'))}">
 		<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.mada}" id="mada" />
 	</isif>
@@ -75,15 +75,12 @@
 		<input type="hidden" id="ckoCardListUrl" value="${URLUtils.https('CKOMain-GetCardsList')}" />
 	</isif>
 	
-	<!-- APM Filter Url -->
+	<!-- APM filter URL -->
 	<input type="hidden" id="ckoApmFilterUrl" value="${URLUtils.https('CKOMain-GetApmFilter')}" />
-	
 </div>
 
-
-
+<!-- Imort card formatting scripts -->
 <script src="${URLUtils.staticURL('/js/cleave.js')}"></script>
-
 <script src="${URLUtils.staticURL('js/cardPayment.js')}"></script>
 
 
