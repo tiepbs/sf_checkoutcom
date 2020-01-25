@@ -147,4 +147,4 @@
 
 <script src="${URLUtils.staticURL('/libraries/cleave/cleave.js')}"></script>
 
-<script src="${URLUtils.staticURL('experience/alternativePayments.js')}"></script>
+<script src="${URLUtils.staticURL('js/alternativePayments.js')}"></script>
