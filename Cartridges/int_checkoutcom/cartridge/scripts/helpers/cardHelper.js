@@ -10,7 +10,7 @@ var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 /*
 * Utility functions for my cartridge integration.
 */
-var cardUtility = {
+var cardHelper = {
     /*
      * Handle full charge Request to CKO API
      */
@@ -217,4 +217,4 @@ var cardUtility = {
 * Module exports
 */
 
-module.exports = cardUtility;
+module.exports = cardHelper;

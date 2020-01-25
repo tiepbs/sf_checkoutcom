@@ -15,7 +15,7 @@ var OrderMgr = require('dw/order/OrderMgr');
 
 /** Utility **/
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
-var apmUtility = require('~/cartridge/scripts/helpers/apmUtility');
+var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 
 // Initiate the mandate session
 function mandate()
@@ -45,7 +45,7 @@ function mandate()
             creditorAddress2: ckoUtility.getValue('ckoBusinessAddressLine2'),
             creditorCity: ckoUtility.getValue('ckoBusinessCity'),
             creditorCountry: ckoUtility.getValue('ckoBusinessCountry'),
-            ContinueURL: URLUtils.https('Sepa-HandleMandate')
+            ContinueURL: URLUtils.https('CKOSepa-HandleMandate')
         }).render('sepaForm');
     } else {
         // Print out a message
@@ -103,7 +103,7 @@ function handleMandate()
                         session.privacy.sepaResponseId = null;
                         
                         // Handle the SEPA request
-                        apmUtility.handleSepaRequest(payObject, order);
+                        apmHelper.handleSepaRequest(payObject, order);
                         
                         // Show the confirmation screen
                         app.getController('COSummary').ShowConfirmation(order);

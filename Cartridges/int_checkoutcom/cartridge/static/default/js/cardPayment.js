@@ -1,68 +1,79 @@
 'use strict'
 
-
 var isSet = true;
 var isSetId = document.getElementById('default_thumb');
 
 // set event on page load
 document.addEventListener('DOMContentLoaded', function () {
-    
-    // set schema box
+    // Set schema box
     setBox();
     
-    // set schema image
+    // Set schema image
     setSchema('#dwfrm_cardPaymentForm_number');
-    
+
+    // Add expiration years
+    setExpirationYears();
 });
 
-
-// sets schema box
+// Sets schema box
 var setBox = function () {
-    // card number input styling
+    // Card number input styling
     $('#dwfrm_cardPaymentForm_number').css("padding", '0');
     $('#dwfrm_cardPaymentForm_number').css("padding-left", '40px');
     
-    // get object
+    // Get object
     var box = document.getElementById('dw_cardTypeDone');
     var input = document.getElementById('dwfrm_cardPaymentForm_number');
     if (input) {
         $(input.parentNode).prepend(box);
     }
-    
 }
 
-// sets schema image in box
+// Sets the expiration years in the form
+var setExpirationYears = function() {
+    // Get the current year
+    var d = new Date();
+    var currentYear = d.getFullYear();
+
+    // Add the select list options
+    for (var i = 0; i < 10; i++) {
+        $('#dwfrm_cardPaymentForm_expiration_year').append(
+            new Option(
+                currentYear + i,
+                currentYear + i
+            )
+        );
+    }
+}
+
+// Sets schema image in box
 var setSchema = function (inputId) {
-    
-    // format user input with cleave.js
+    // Format user input with cleave.js
     var cleaveCreditCard = new Cleave(inputId, {
         creditCard: true,
         onCreditCardTypeChanged: function (type) {
-            // sets the schema id
-            var imageId = getImageId(type);
-            //console.log(id);
-            
+            // Sets the schema id
+            var imageId = getImageId(type);            
             if (imageId) {
-                // set the schema image exist
+                // Set the schema image exist
                 isSet = true;
                 
-                // get element cardType from form
+                // Get element cardType from form
                 var cardType = document.getElementById('dwfrm_cardPaymentForm_type');
                 
-                // if element cardType exist set value to type
+                // If element cardType exist set value to type
                 if (cardType) {
                     cardType.value = type;
                 }
                 
-                // set card shema image
+                // Set card shema image
                 setImage(imageId);
             } else {
-                // is mada enabled by shop
+                // Is mada enabled by shop
                 var mada = document.getElementById('dwfrm_cardPaymentForm_mada');
                 
-                // if enabled do mada check
+                // If enabled do mada check
                 if (mada) {
-                    //console.log(mada);
                     setMada();
                 } else {
                     setImage('default_thumb');
@@ -72,38 +83,34 @@ var setSchema = function (inputId) {
     });
 }
 
-// sets mada image in box
+// Sets mada image in box
 var setMada = function () {
-    // set default shema image
-    //setDefault();
-    
-    
     var input = document.getElementById('dwfrm_cardPaymentForm_number');
     input.addEventListener('keyup', function () {
         var value = this.value;
         if (value.length > 6) {
             var cardNumber = value.replace(/\s/g, "");
             
-            // match cardnumber with mada bins
+            // Match cardnumber with mada bins
             var result = Mada.compare(cardNumber);
             
-            // if result match mada card
+            // If result match mada card
             if (result) {
-                // get element cardType from form
+                // Get element cardType from form
                 var cardType = document.getElementById('dwfrm_cardPaymentForm_type');
                 
-                // if element cardType exist set value to type
+                // If element cardType exist set value to type
                 if (cardType) {
                     cardType.value = result;
                 }
                 
-                // get card schema
+                // Get card schema
                 var imageId = getImageId(result);
                 
-                // set card schema image
+                // Set card schema image
                 setImage(imageId);
             } else {
-                // if there is an active schema image don't change
+                // If there is an active schema image don't change
                 if (!isSet) {
                     setImage('default_thumb');
                 }
@@ -116,11 +123,9 @@ var setMada = function () {
     });
 }
 
-
-// set schema card image
+// Set schema card image
 var setImage = function (element) {
-    
-    // if image is already set
+    // If image is already set
     if (isSetId) {
         isSetId.style.display = "none";
         var id = document.getElementById(element);
@@ -131,12 +136,10 @@ var setImage = function (element) {
         id.style.display = "block";
         isSetId = id;
     }
-    
 }
 
-// get image id
+// Get image id
 var getImageId  = function (schema) {
-    
     switch (schema) {
         case 'visa':
             return "visacard_thumb";
@@ -162,11 +165,8 @@ var getImageId  = function (schema) {
     }
 }
 
-
-
 var Mada = {
-
-    // mada BINs
+    // MADA BINs
     cards: {
         four: [
                 "484783", "489317", "410685", "446672", "428331", "419593", "440647", "493428", "417633", "446393", "486094", "489318", "432328", "483010", "439954",
@@ -185,10 +185,9 @@ var Mada = {
 
     // Compare card
     compare: function (cardNumber) {
-        // get first number
+        // Get first number
         var fNumber = this.firstNumber(cardNumber);
         var number = cardNumber.substr(0, 6);
-        //console.log(number);
 
         if (fNumber) {
             switch (fNumber) {
@@ -217,28 +216,17 @@ var Mada = {
                     }
                     break;
                 default:
-                    //console.log('not found');
                     return false;
             }
-        } else {
+        }
+        else {
             return "error";
         }
-
-
     },
 
-    // returns the first number of the card
+    // Returns the first number of the card
     firstNumber: function (cardNumber) {
-        // get first number
+        // Get first number
         return cardNumber.charAt(0);
     }
-
 }
-
-
-
-
-
-
-
-

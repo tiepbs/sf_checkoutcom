@@ -15,7 +15,7 @@ var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
 /* Utility */
-var applePayUtility = require('~/cartridge/scripts/helpers/applePayUtility');
+var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
 
 /**
  * Verifies a credit card against a valid card number and expiration date and possibly invalidates invalid form fields.
@@ -54,7 +54,7 @@ function Authorize(args)
     session.privacy.ckoOrderId = args.OrderNo;
 
     // Make the charge request
-    var chargeResponse = applePayUtility.handleRequest(args);
+    var chargeResponse = applePayHelper.handleRequest(args);
     if (chargeResponse) {
         // Create the authorization transaction
         Transaction.wrap(function () {

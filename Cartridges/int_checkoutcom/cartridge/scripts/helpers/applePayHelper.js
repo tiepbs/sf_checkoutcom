@@ -11,7 +11,7 @@ var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 /*
 * Utility functions for my cartridge integration.
 */
-var googlePayUtility = {
+var applePayHelper = {
     /*
      * Handle full charge Request to CKO API
      */
@@ -19,12 +19,12 @@ var googlePayUtility = {
         // load the order information
         var order = OrderMgr.getOrder(args.OrderNo);
         var paymentInstrument = args.PaymentInstrument;
-        var ckoGooglePayData =  paymentInstrument.paymentTransaction.custom.ckoGooglePayData;
+        var ckoApplePayData =  paymentInstrument.paymentTransaction.custom.ckoApplePayData;
 
         // Prepare the parameters
         var requestData = {
-            "type": "googlepay",
-            "token_data": JSON.parse(ckoGooglePayData)
+            "type": "applepay",
+            "token_data": JSON.parse(ckoApplePayData)
         };
 
         // Perform the request to the payment gateway
@@ -62,7 +62,7 @@ var googlePayUtility = {
 
             return false;
         } else {
-            // Update the transaction
+            // update the transaction
             Transaction.wrap(function () {
                 OrderMgr.failOrder(order);
             });
@@ -89,7 +89,7 @@ var googlePayUtility = {
      * Build Gateway Source Object
      */
     getSourceObject: function (tokenData) {
-        // Source object
+        // source object
         var source = {
             type: "token",
             token: tokenData.token
@@ -102,4 +102,5 @@ var googlePayUtility = {
 /*
 * Module exports
 */
-module.exports = googlePayUtility;
+
+module.exports = applePayHelper;

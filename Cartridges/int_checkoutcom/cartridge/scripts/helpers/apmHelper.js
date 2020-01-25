@@ -13,8 +13,7 @@ var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 /*
 * Utility functions for my cartridge integration.
 */
-var apmUtility = {
-
+var apmHelper = {
     /*
      * Creates Site Genesis Transaction Object
      * @return object
@@ -84,7 +83,7 @@ var apmUtility = {
         
         // Add redirect to sepa source reqeust
         if (type == 'Sepa') {
-            session.privacy.redirectUrl = "${URLUtils.url('Sepa-Mandate')}";
+            session.privacy.redirectUrl = "${URLUtils.url('CKOSepa-Mandate')}";
             session.privacy.sepaResponseId = gatewayResponse.id;
         }
         
@@ -230,4 +229,4 @@ var apmUtility = {
 * Module exports
 */
 
-module.exports = apmUtility;
+module.exports = apmHelper;

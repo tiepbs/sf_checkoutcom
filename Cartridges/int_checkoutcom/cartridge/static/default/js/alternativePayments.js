@@ -510,7 +510,7 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Obj
     var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val();  //email
     billingAddress.email = emailAddress;
     
-    // Au4thorize the Klarna charge
+    // Authorize the Klarna charge
     Klarna.Payments.authorize(
         // Options
         {
