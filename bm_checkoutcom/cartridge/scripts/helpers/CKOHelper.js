@@ -29,14 +29,14 @@ var CKOHelper = {
         var result  = SystemObjectMgr.querySystemObjects('Order', '', 'creationDate desc');
         
         // Loop through the results
-        for each (var item in result) {
+        for each(var item in result) {
             // Get the payment instruments
             var paymentInstruments = item.getPaymentInstruments();
             
             // Loop through the payment instruments
-            for each (var instrument in paymentInstruments) {
+            for each(var instrument in paymentInstruments) {
                 if (this.isCkoItem(instrument.paymentMethod) && !this.containsObject(item, data)) {
-                    data.push(item);	
+                    data.push(item);
                 }
             }
         }
@@ -56,17 +56,17 @@ var CKOHelper = {
 
         // Loop through the results
         var i = 1;
-        for each (var item in result) {
+        for each(var item in result) {
             // Get the payment instruments
             var paymentInstruments = item.getPaymentInstruments();
             
             // Loop through the payment instruments
-            for each (var instrument in paymentInstruments) {
+            for each(var instrument in paymentInstruments) {
                 // Get the payment transaction
                 var paymentTransaction = instrument.getPaymentTransaction();
 
                 // Add the payment transaction to the output
-                if (!this.containsObject(paymentTransaction, data) && this.isTransactionNeeded(paymentTransaction, instrument)) {                    	
+                if (!this.containsObject(paymentTransaction, data) && this.isTransactionNeeded(paymentTransaction, instrument)) {
                     // Build the row data
                     var row = {
                         id: i,
@@ -87,7 +87,7 @@ var CKOHelper = {
                     i++;
                 }
             }
-        } 
+        }
         
         return data;
     },
@@ -124,13 +124,12 @@ var CKOHelper = {
      * Get the processor ID for a payment instrument.
      */
     getProcessorId: function (instrument) {
-    	var paymentMethod = PaymentMgr.getPaymentMethod(instrument.getPaymentMethod());
-    	if (paymentMethod) {
-    		return paymentMethod.getPaymentProcessor().getID();
-    	}
-    	else {
-    		return '';
-    	}
+        var paymentMethod = PaymentMgr.getPaymentMethod(instrument.getPaymentMethod());
+        if (paymentMethod) {
+            return paymentMethod.getPaymentProcessor().getID();
+        } else {
+            return '';
+        }
     },
     
     /**
@@ -172,8 +171,8 @@ var CKOHelper = {
     /**
      * Creates an HTTP Client to handle gateway queries.
      */
-    getGatewayClient: function (serviceId, requestData, method) { 
-        var method = method || 'POST';     
+    getGatewayClient: function (serviceId, requestData, method) {
+        var method = method || 'POST';
         var responseData = false;
         var serv = ServiceRegistry.get(serviceId);
 
@@ -182,7 +181,7 @@ var CKOHelper = {
             var requestUrl = serv.getURL().replace('chargeId', requestData.chargeId);
             serv.setURL(requestUrl);
             delete requestData['chargeId'];
-        } 
+        }
 
         var resp = serv.call(requestData);
         if (resp.status == 'OK') {
@@ -215,7 +214,9 @@ var CKOHelper = {
 
         // Set the URL
         url = url || null;
-        if (url) serviceInstance.setURL(url);
+        if (url) {
+            serviceInstance.setURL(url);
+        }
 
         // Set the default headers
         serviceInstance.setRequestMethod(method);
