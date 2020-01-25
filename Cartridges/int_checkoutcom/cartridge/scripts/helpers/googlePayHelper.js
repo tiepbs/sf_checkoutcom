@@ -11,7 +11,7 @@ var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 /*
 * Utility functions for my cartridge integration.
 */
-var googlePayUtility = {
+var googlePayHelper = {
     /*
      * Handle full charge Request to CKO API
      */
@@ -102,4 +102,4 @@ var googlePayUtility = {
 /*
 * Module exports
 */
-module.exports = googlePayUtility;
+module.exports = googlePayHelper;

@@ -15,7 +15,7 @@ var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
 /* Utility */
-var googlePayUtility = require('~/cartridge/scripts/helpers/googlePayUtility');
+var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
 
 /**
  * Verifies a credit card against a valid card number and expiration date and possibly invalidates invalid form fields.
@@ -54,7 +54,7 @@ function Authorize(args)
     session.privacy.ckoOrderId = args.OrderNo;
 
     // Make the charge request
-    var chargeResponse = googlePayUtility.handleRequest(args);
+    var chargeResponse = googlePayHelper.handleRequest(args);
     if (chargeResponse) {
         // Create the authorization transaction
         Transaction.wrap(function () {
