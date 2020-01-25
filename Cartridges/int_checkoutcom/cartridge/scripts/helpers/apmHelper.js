@@ -13,8 +13,7 @@ var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 /*
 * Utility functions for my cartridge integration.
 */
-var apmUtility = {
-
+var apmHelper = {
     /*
      * Creates Site Genesis Transaction Object
      * @return object
@@ -230,4 +229,4 @@ var apmUtility = {
 * Module exports
 */
 
-module.exports = apmUtility;
+module.exports = apmHelper;

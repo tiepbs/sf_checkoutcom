@@ -10,7 +10,7 @@ var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
 /* Utility */
-var apmUtility = require('~/cartridge/scripts/helpers/apmUtility');
+var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 
 /* APM Configuration */
 var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
@@ -46,7 +46,6 @@ function Handle(args)
  */
 function Authorize(args)
 {
-    
     // Add order Number to session
     session.privacy.ckoOrderId = args.OrderNo;
     
@@ -61,17 +60,12 @@ function Authorize(args)
     // Get the required apm pay config object
     var payObject = apmConfig[func](args);
     
-    if (apmUtility.apmAuthorization(payObject, args)) {
+    if (apmHelper.apmAuthorization(payObject, args)) {
         return {success: true};
     } else {
         return {error: true};
     }
-
-
 }
-
-
-
 
 /*
  * Local methods
