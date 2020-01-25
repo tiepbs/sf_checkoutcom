@@ -62,7 +62,7 @@ var googlePayUtility = {
 
             return false;
         } else {
-            // update the transaction
+            // Update the transaction
             Transaction.wrap(function () {
                 OrderMgr.failOrder(order);
             });
@@ -89,7 +89,7 @@ var googlePayUtility = {
      * Build Gateway Source Object
      */
     getSourceObject: function (tokenData) {
-        // source object
+        // Source object
         var source = {
             type: "token",
             token: tokenData.token
@@ -102,5 +102,4 @@ var googlePayUtility = {
 /*
 * Module exports
 */
-
 module.exports = googlePayUtility;
