@@ -389,6 +389,9 @@ function toggleAPMS(apms, apmBox)
     }
 }
 
+/*
+ * Get the APMs filter
+ */
 function AlternativePaymentsFilter()
 {   
     var creditCard = $('#is-CHECKOUTCOM_APM');
@@ -413,6 +416,9 @@ function AlternativePaymentsFilter()
     });
 }
 
+/*
+ * Get the Klarna controller
+ */
 function callKlarnaController(controllerUrl)
 {    
     if (controllerUrl) {
@@ -547,6 +553,3 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Obj
         }
     );
 }
-
-
-
