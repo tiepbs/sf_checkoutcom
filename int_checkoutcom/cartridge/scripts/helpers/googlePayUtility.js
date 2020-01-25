@@ -79,7 +79,7 @@ var googlePayUtility = {
      */
     handleResponse: function (gatewayResponse) {
         // Logging
-        ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
+        ckoUtility.doLog('response', gatewayResponse);
         
         // Update customer data
         ckoUtility.updateCustomerData(gatewayResponse);

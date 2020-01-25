@@ -84,7 +84,7 @@ var ckoUtility = {
             if (logger) {
                 logger.debug(
                     this._('cko.gateway.name', 'cko') + ' ' + dataType + ' : {0}',
-                    SON.stringify(gatewayData)
+                    JSON.stringify(gatewayData)
                 );
             }
         }
