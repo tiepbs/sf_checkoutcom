@@ -24,12 +24,11 @@ var cardUtility = {
 		// Pre authorize the card
 		if (this.preAuthorizeCard(gatewayObject)) {			
 			// Perform the request to the payment gateway
-			var gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayObject);
+			var gatewayResponse = ckoUtility.gatewayClientRequest(
+				"cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service",
+				gatewayObject
+			);
 		
-			var logger = require('dw/system/Logger').getLogger('ckodebug');
-			logger.debug('this is my test 2 {0}', JSON.stringify(gatewayResponse));
-
-			
 			// If the charge is valid, process the response
 			if (gatewayResponse) {
 				// Logging
@@ -97,13 +96,6 @@ var cardUtility = {
 			'cko.card.charge.' + ckoUtility.getValue('ckoMode') + '.service',
 			chargeData
 		);	
-
-		var logger = require('dw/system/Logger').getLogger('ckodebug');
-		logger.debug('this is my test 0 {0}', JSON.stringify(chargeData));
-
-		var logger = require('dw/system/Logger').getLogger('ckodebug');
-		logger.debug('this is my test 1 {0}', JSON.stringify(authResponse));
-
 		
 		// Return the response
 		return ckoUtility.paymentSuccess(authResponse);
