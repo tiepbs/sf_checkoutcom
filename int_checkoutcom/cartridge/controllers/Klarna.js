@@ -51,6 +51,7 @@ function klarnaSession() {
 		gSession.requestObject = requestObject;
 		gSession.addressInfo = ckoUtility.getBasketAddress(basket);
 
+		// Write the session
 	    if (gSession) {
 		   response.getWriter().println(JSON.stringify(gSession));
 	    }
@@ -60,4 +61,7 @@ function klarnaSession() {
 	}
 }
 
+/*
+ * Module exports
+ */
 exports.klarnaSession = guard.ensure(['https'], klarnaSession);

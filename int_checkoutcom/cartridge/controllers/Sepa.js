@@ -17,13 +17,17 @@ var OrderMgr = require('dw/order/OrderMgr');
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 var apmUtility = require('~/cartridge/scripts/helpers/apmUtility');
 
+// Initiate the mandate session
 function mandate() {
+	// Prepare the varirables
 	var url = session.privacy.redirectUrl;
 	var orderId = ckoUtility.getOrderId();
 	var order = OrderMgr.getOrder(orderId);
 	
-	if(url){
+	// Process the URL
+	if (url) {
 		app.getView({
+			// Prepare the view parameters
 			creditAmount: order.totalGrossPrice.value.toFixed(2),
 			formatedAmount: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency()),
 			debtor:	order.defaultShipment.shippingAddress.firstName + " " + order.defaultShipment.shippingAddress.lastName,
@@ -34,32 +38,33 @@ function mandate() {
 			debtorStateCode: order.billingAddress.stateCode,
 			debtorCountryCode: order.billingAddress.countryCode,
 			
+			// Prepare the creditor information
 			creditor: ckoUtility.getValue('ckoBusinessName'),
 			creditorAddress1: ckoUtility.getValue('ckoBusinessAddressLine1'),
 			creditorAddress2: ckoUtility.getValue('ckoBusinessAddressLine2'),
 			creditorCity: ckoUtility.getValue('ckoBusinessCity'),
 			creditorCountry: ckoUtility.getValue('ckoBusinessCountry'),
 		    ContinueURL: URLUtils.https('Sepa-HandleMandate')
-		    }).render('sepaForm');
-	}else{
-		// print out a message
+		}).render('sepaForm');
+	}
+	else {
+		// Print out a message
 		response.getWriter().println('Error!');
 	}
 }
 
 function handleMandate() {
-	
-	// set session redirect url to null
+	// Set session redirect url to null
 	session.privacy.redirectUrl = null;
 	var orderId = ckoUtility.getOrderId();
 	
     app.getForm('sepaForm').handleAction({
         cancel: function () {
-        	// clear form
+        	// Clear form
             app.getForm('sepaForm').clear();
             
-            if(orderId){
-        		// load the order
+            if (orderId) {
+        		// Load the order
         		var order = OrderMgr.getOrder(orderId);
                 ckoUtility.checkAndRestoreBasket(order);
             }
@@ -70,20 +75,19 @@ function handleMandate() {
         	var sepa = app.getForm('sepaForm');
         	var mandate = sepa.get('mandate').value();
         	
-        	// mandate is true
-        	if(mandate){
-        		// clear form
+        	// Mandate is true
+        	if (mandate) {
+        		// Clear form
                 app.getForm('sepaForm').clear();
                 
-                // get the response object from session
+                // Get the response object from session
                 var responseObjectId = session.privacy.sepaResponseId;
-        		
-                if(responseObjectId){
-                	if(orderId){
-                		
-                		// load the order
+                if (responseObjectId) {
+                	if (orderId) {
+                		// Load the order
                 		var order = OrderMgr.getOrder(orderId);
-                		
+						
+						// Prepare the payment object
                 		var payObject = {
     	        			    "source": {
     	        			        "type": "id",
@@ -93,34 +97,35 @@ function handleMandate() {
     	        			    "currency": ckoUtility.getCurrency(),
     	        			    "reference": orderId
     	            		};
-                		
+						
+						// Reset the response in session
                 		session.privacy.sepaResponseId = null;
-                		
+						
+						// Handle the SEPA request
                 		apmUtility.handleSepaRequest(payObject, order);
-                		
-                    	var confirmation = app.getController('COSummary');
-                    	
-                		confirmation.ShowConfirmation(order);
-                	}else{
-                        
+						
+						// Show the confirmation screen
+                		app.getController('COSummary').ShowConfirmation(order);
+					} 
+					else {
                         app.getController('COBilling').Start();
                 	}
-                }else{
+				}
+				else {
                 	//app.getController('COBilling').Start();
                 	// print out a message
             		response.getWriter().println('Error!');
                 }
-            	
-            	
-        	}else{
-        		
+			}
+			else {	
         		app.getView().render('sepaForm');
         	}
         }
     });
 }
 
-
-/** Shows the template page. */
+/*
+ * Module exports
+ */
 exports.Mandate = guard.ensure(['get'], mandate);
 exports.HandleMandate = guard.ensure(['post'], handleMandate);
