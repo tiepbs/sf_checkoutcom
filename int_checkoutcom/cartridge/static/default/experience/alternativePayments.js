@@ -92,7 +92,6 @@ function idealPayBox()
     
     // input fields
     toggleAPMS(ideal, idealBox);
-    
 }
 
 /*
