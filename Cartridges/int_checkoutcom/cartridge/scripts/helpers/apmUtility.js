@@ -84,7 +84,7 @@ var apmUtility = {
         
         // Add redirect to sepa source reqeust
         if (type == 'Sepa') {
-            session.privacy.redirectUrl = "${URLUtils.url('Sepa-Mandate')}";
+            session.privacy.redirectUrl = "${URLUtils.url('CKOSepa-Mandate')}";
             session.privacy.sepaResponseId = gatewayResponse.id;
         }
         

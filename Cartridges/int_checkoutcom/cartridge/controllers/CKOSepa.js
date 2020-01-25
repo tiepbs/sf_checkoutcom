@@ -45,7 +45,7 @@ function mandate()
             creditorAddress2: ckoUtility.getValue('ckoBusinessAddressLine2'),
             creditorCity: ckoUtility.getValue('ckoBusinessCity'),
             creditorCountry: ckoUtility.getValue('ckoBusinessCountry'),
-            ContinueURL: URLUtils.https('Sepa-HandleMandate')
+            ContinueURL: URLUtils.https('CKOSepa-HandleMandate')
         }).render('sepaForm');
     } else {
         // Print out a message
