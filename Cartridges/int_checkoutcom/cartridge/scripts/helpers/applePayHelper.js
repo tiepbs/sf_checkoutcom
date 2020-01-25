@@ -11,7 +11,7 @@ var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 /*
 * Utility functions for my cartridge integration.
 */
-var applePayUtility = {
+var applePayHelper = {
     /*
      * Handle full charge Request to CKO API
      */
@@ -103,4 +103,4 @@ var applePayUtility = {
 * Module exports
 */
 
-module.exports = applePayUtility;
+module.exports = applePayHelper;
