@@ -68,5 +68,4 @@
 
 	<!-- Confirm action -->
     <action formid="confirm" valid-form="true"/>
-
 </form>
