@@ -17,27 +17,21 @@ var app = require(SiteController + "/cartridge/scripts/app");
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 
-
 /*
 * Utility functions for my cartridge integration.
 */
-var ckoUtility = {
-        
+var ckoUtility = {  
     /*
      * get the required value for each mode
      */
     getAppModeValue: function (sandboxValue, liveValue) {
-        
         var appMode = this.getValue('ckoMode');
-        
         if (appMode == 'sandbox') {
             return sandboxValue;
         } else {
             return liveValue;
         }
-        
     },
-    
     
     /*
      * get user language
@@ -48,8 +42,6 @@ var ckoUtility = {
         
         return language.replace('_', '-');
     },
-    
-    
     
     /*
      * get Site Name
@@ -62,7 +54,6 @@ var ckoUtility = {
         
     },
     
-    
     /*
      * get site Hostname
      */
@@ -71,7 +62,6 @@ var ckoUtility = {
         
         return hostname;
     },
-    
     
     /*
      * Check if the gateway response is valid.
@@ -83,14 +73,12 @@ var ckoUtility = {
         return requestKey == privateSharedKey
     },
     
-    
     /*
      * get value from custom preferences
      */
     getValue: function (field) {
         return dw.system.Site.getCurrent().getCustomPreferenceValue(field);
     },
-    
     
     /*
      * Handles string translation with language resource files.
@@ -99,7 +87,6 @@ var ckoUtility = {
         return Resource.msg(strValue, strFile, null);
     },
     
-        
     /*
      * Write gateway information to the website's custom log files.
      */
@@ -111,7 +98,6 @@ var ckoUtility = {
             }
         }
     },
-    
     
     /*
      * return order id
@@ -125,14 +111,12 @@ var ckoUtility = {
         return orderId;
     },
     
-    
     /*
      * cartridge metadata.
      */
     getCartridgeMeta: function () {
         return this.getValue("ckoUserAgent") + ' ' + this.getValue("ckoVersion");
     },
-    
     
     /*
      * get Account API Keys
@@ -147,7 +131,6 @@ var ckoUtility = {
 
         return keys;
     },
-    
     
     /*
      * Create an HTTP client to handle request to gateway
@@ -177,7 +160,6 @@ var ckoUtility = {
         return responseData;
     },
     
-    
     /*
      * Currency Conversion Ratio
      */
@@ -192,7 +174,6 @@ var ckoUtility = {
         }
         
     },
-    
     
     /*
      * Format price for cko gateway
@@ -325,9 +306,7 @@ var ckoUtility = {
         return currency;
         
     },
-    
-    
-    
+
     /*
      * Stripe spaces form number
      */
@@ -337,7 +316,6 @@ var ckoUtility = {
         return result;
     },
     
-    
     /*
      * Confirm is a payment is valid from API response code
      */
@@ -345,14 +323,12 @@ var ckoUtility = {
         return gatewayResponse.response_code == "10000" || gatewayResponse.response_code == '10100' || gatewayResponse.response_code == '10200';
     },
     
-    
     /*
      * Confirm is a payment is valid from API redirect response code
      */
     redirectPaymentSuccess: function (gatewayResponse) {
         return gatewayResponse.actions[0].response_code == "10000" || gatewayResponse.actions[0].response_code == '10100' || gatewayResponse.actions[0].response_code == '10200';
     },
-    
     
     /*
      * Write order information to session for the current shopper.
@@ -453,7 +429,6 @@ var ckoUtility = {
             Transaction.commit();
         }
     },
-    
     
     /*
      * return customer object
@@ -671,7 +646,6 @@ var ckoUtility = {
         }
         
         return products_quantites;
-        
     },
         
     /*
@@ -742,7 +716,6 @@ var ckoUtility = {
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
-        
         var fullname = billingAddress.getFullName();
         
         return fullname;
@@ -772,7 +745,6 @@ var ckoUtility = {
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
-        
         var lastname = billingAddress.getLastName();
         
         return lastname;
@@ -783,7 +755,6 @@ var ckoUtility = {
      */
     getCaptureTime: function () {
         var captureOn = this.getValue('ckoAutoCaptureTime');
-        
         if (captureOn > 0) {
             var t = new Date();
             var m = parseInt(t.getMinutes()) + parseInt(captureOn);
@@ -838,7 +809,6 @@ var ckoUtility = {
      * Build the Billing object
      */
     getBillingObject: function (args) {
-        
         // load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -906,13 +876,9 @@ var ckoUtility = {
      * Return Basket Item object
      */
     getBasketObject: function (basket) {
-        
         var currency = this.getAppModeValue('GBP', basket.getCurrencyCode());
-        
         var products_quantites = [];
-        
         var it = basket.productLineItems.iterator();
-        
         while (it.hasNext()) {
             var pli = it.next();
             var productTaxRate = pli.taxRate * 100 * 100;
