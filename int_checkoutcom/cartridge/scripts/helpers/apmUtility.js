@@ -7,7 +7,6 @@ var Transaction = require('dw/system/Transaction');
 var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
 
-
 /* Utility */
 var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 
@@ -15,7 +14,7 @@ var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 * Utility functions for my cartridge integration.
 */
 var apmUtility = {
-  
+
     /*
      * Creates Site Genesis Transaction Object
      * @return object
