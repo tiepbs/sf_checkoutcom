@@ -86,6 +86,13 @@ var CKOEvent = {
     },
 
     /**
+     * Card verified event.
+     */
+    cardVerified: function (hook) {
+        this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
+    },
+
+    /**
      * Authorization failed event.
      */
     paymentDeclined: function (hook) {
