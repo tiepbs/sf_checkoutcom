@@ -29,13 +29,13 @@ var CKOEvent = {
             details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.data.response_code + '\n';
 
             // Process the transaction
-            Transaction.wrap(function() {
+            Transaction.wrap(function () {
                 // Add the details to the order
                 order.addNote(ckoUtility._('cko.webhook.info', 'cko'), details);
     
                 // Update the payment status
                 if (paymentStatus) {
-                    order.setPaymentStatus(order[paymentStatus]);	
+                    order.setPaymentStatus(order[paymentStatus]);
                 }
 
                 // Update the order status
@@ -49,7 +49,7 @@ var CKOEvent = {
     /**
      * Payment captured event.
      */
-    paymentCaptured: function(hook) {  
+    paymentCaptured: function (hook) {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);
 
@@ -57,10 +57,10 @@ var CKOEvent = {
         var order = OrderMgr.getOrder(hook.data.reference);
 
         // Get the payment processor id
-        var paymentProcessorId = hook.data.metadata.payment_processor;    
+        var paymentProcessorId = hook.data.metadata.payment_processor;
 
         // Create the captured transaction
-        Transaction.wrap(function() {
+        Transaction.wrap(function () {
             // Update the parent transaction state
             var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Authorization');
             parentTransaction.custom.ckoTransactionOpened = false;
@@ -75,34 +75,41 @@ var CKOEvent = {
             paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
             paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Capture';
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CAPTURE);
-        }); 
+        });
     },
 
     /**
      * Payment authorized event.
      */
-    paymentApproved: function(hook) {
+    paymentApproved: function (hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
-    },   
+    },
+
+    /**
+     * Card verified event.
+     */
+    cardVerified: function (hook) {
+        this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
+    },
 
     /**
      * Authorization failed event.
      */
-    paymentDeclined: function(hook) {
+    paymentDeclined: function (hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
-    },   
+    },
 
     /**
      * Capture failed event.
      */
-    paymentCapturedDeclined: function(hook) {
+    paymentCapturedDeclined: function (hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
-    },  
+    },
 
     /**
      * Payment refunded event.
      */
-    paymentRefunded: function(hook) {
+    paymentRefunded: function (hook) {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', 'ORDER_STATUS_CANCELLED');
 
@@ -113,7 +120,7 @@ var CKOEvent = {
         var paymentProcessorId = hook.data.metadata.payment_processor;
  
         // Create the refunded transaction
-        Transaction.wrap(function() {
+        Transaction.wrap(function () {
             // Update the parent transaction state
             var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Capture');
             parentTransaction.custom.ckoTransactionOpened = false;
@@ -127,13 +134,13 @@ var CKOEvent = {
             paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = false;
             paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Refund';
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CREDIT);
-        }); 
-    },  
+        });
+    },
 
     /**
      * Payment voided event.
-     */    
-    paymentVoided: function(hook) {
+     */
+    paymentVoided: function (hook) {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_CANCELLED');
 
@@ -144,7 +151,7 @@ var CKOEvent = {
         var paymentProcessorId = hook.data.metadata.payment_processor;
                
         // Create the voided transaction
-        Transaction.wrap(function() {
+        Transaction.wrap(function () {
             // Update the parent transaction state
             var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Authorization');
             parentTransaction.custom.ckoTransactionOpened = false;
@@ -159,22 +166,22 @@ var CKOEvent = {
             paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = false;
             paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Void';
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH_REVERSAL);
-        }); 
-    }, 
+        });
+    },
 
     /**
      * Refund failed event.
      */
-    paymentRefundDeclined: function(hook) {
+    paymentRefundDeclined: function (hook) {
         this.addWebhookInfo(hook, null, null);
-    }, 
+    },
 
     /**
      * Charge void failed event.
      */
-    paymentVoidDeclined: function(hook) {
+    paymentVoidDeclined: function (hook) {
         this.addWebhookInfo(hook, null, null);
-    }  
+    }
 };
 
 /*
