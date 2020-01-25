@@ -72,7 +72,7 @@ var apmUtility = {
         session.privacy.redirectUrl = null;
         
         // Logging
-        ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
+        ckoUtility.doLog('response', gatewayResponse);
         
         // Update customer data
         ckoUtility.updateCustomerData(gatewayResponse);
@@ -137,7 +137,7 @@ var apmUtility = {
 
 
         // Logging
-        ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
+        ckoUtility.doLog('response', gatewayResponse);
         
         // If the charge is valid, process the response
         if (gatewayResponse) {

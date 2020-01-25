@@ -79,10 +79,13 @@ var ckoUtility = {
      * Write gateway information to the website's custom log files.
      */
     doLog: function (dataType, gatewayData) {
-        if (this.getValue("ckoDebugEnabled") == true && (gatewayData)) {
+        if (this.getValue("ckoDebugEnabled") == true) {
             var logger = Logger.getLogger('ckodebug');
             if (logger) {
-                logger.debug(this._('cko.gateway.name', 'cko') + ' ' + dataType + ' : {0}', gatewayData);
+                logger.debug(
+                    this._('cko.gateway.name', 'cko') + ' ' + dataType + ' : {0}',
+                    SON.stringify(gatewayData)
+                );
             }
         }
     },
