@@ -12,7 +12,7 @@ var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 /**
  * Gateway event functions for the Checkout.com cartridge integration.
  */
-var CKOEvent = {
+var eventsHelper = {
     /**
      * Adds the gateway webhook information to the newly created order.
      */
@@ -188,4 +188,4 @@ var CKOEvent = {
  * Module exports
  */
 
-module.exports = CKOEvent;
+module.exports = eventsHelper;

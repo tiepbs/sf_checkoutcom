@@ -1,12 +1,12 @@
 {
 	"hooks": "./cartridge/scripts/hooks.json",
     "init": [
-        "./cartridge/scripts/init/CkoVerifyChargesInit.js",
-        "./cartridge/scripts/init/CkoCardChargeInit.js",  
-        "./cartridge/scripts/init/CkoCardSourcesInit.js",
-        "./cartridge/scripts/init/CkoKlarnaSessionInit.js",
-        "./cartridge/scripts/init/CkoPaymentActionsInit.js",
-        "./cartridge/scripts/init/CkoNetworkTokenInit.js"
+        "./cartridge/scripts/init/verifyChargesInit.js",
+        "./cartridge/scripts/init/cardChargeInit.js",  
+        "./cartridge/scripts/init/cardSourcesInit.js",
+        "./cartridge/scripts/init/klarnaSessionInit.js",
+        "./cartridge/scripts/init/paymentActionsInit.js",
+        "./cartridge/scripts/init/networkTokenInit.js"
 
     ]   	
 }

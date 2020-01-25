@@ -10,7 +10,7 @@ var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
 /* Utility */
-var apmUtility = require('~/cartridge/scripts/helpers/apmUtility');
+var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 
 /* APM Configuration */
 var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
@@ -21,23 +21,18 @@ var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
  */
 function Handle(args)
 {
-
-    
-    // proceed with transaction
+    // Proceed with transaction
     var cart = Cart.get(args.Basket);
     var paymentMethod = args.PaymentMethodID;
     
-    // proceed with transact
+    // Proceed with transact
     Transaction.wrap(function () {
         cart.removeExistingPaymentInstruments(paymentMethod);
-        
         var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
     });
     
     return {success: true};
-
 }
-
 
 /**
  * Authorises a payment using a credit card. The payment is authorised by using the BASIC_CREDIT processor
@@ -46,32 +41,24 @@ function Handle(args)
  */
 function Authorize(args)
 {
-    
     // Add order Number to session
     session.privacy.ckoOrderId = args.OrderNo;
     
-    // get apms form
+    // Get apms form
     var paymentForm = app.getForm('alternativePaymentForm');
     
-    // get apm type chosen
+    // Get apm type chosen
     var apm = paymentForm.get('alternative_payments').value();
-    
     var func = apm + "PayAuthorization";
     
     // Get the required apm pay config object
     var payObject = apmConfig[func](args);
-    
-    if (apmUtility.apmAuthorization(payObject, args)) {
+    if (apmHelper.apmAuthorization(payObject, args)) {
         return {success: true};
     } else {
         return {error: true};
     }
-
-
 }
-
-
-
 
 /*
  * Local methods
