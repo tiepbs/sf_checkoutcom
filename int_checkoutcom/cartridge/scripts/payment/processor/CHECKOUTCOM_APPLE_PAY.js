@@ -21,21 +21,22 @@ var applePayUtility = require('~/cartridge/scripts/helpers/applePayUtility');
  * Verifies a credit card against a valid card number and expiration date and possibly invalidates invalid form fields.
  * If the verification was successful a credit card payment instrument is created.
  */
-function Handle(args) {
-	var cart = Cart.get(args.Basket);
-	var paymentMethod = args.PaymentMethodID;
-	
-	// get the payload data
-	var applePayData = app.getForm('applePayForm').get('data').value();
+function Handle(args)
+{
+    var cart = Cart.get(args.Basket);
+    var paymentMethod = args.PaymentMethodID;
+    
+    // get the payload data
+    var applePayData = app.getForm('applePayForm').get('data').value();
 
-	// proceed with transaction
-	Transaction.wrap(function(){
-		cart.removeExistingPaymentInstruments(paymentMethod);
-		var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-		paymentInstrument.paymentTransaction.custom.ckoApplePayData = applePayData;
-	});
-	
-	return {success: true};
+    // proceed with transaction
+    Transaction.wrap(function () {
+        cart.removeExistingPaymentInstruments(paymentMethod);
+        var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
+        paymentInstrument.paymentTransaction.custom.ckoApplePayData = applePayData;
+    });
+    
+    return {success: true};
 }
 
 /**
@@ -43,33 +44,33 @@ function Handle(args) {
  * only and setting the order no as the transaction ID. Customisations may use other processors and custom
  * logic to authorise credit card payment.
  */
-function Authorize(args) {
-	// Preparing payment parameters
-	var paymentInstrument = args.PaymentInstrument;
-	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
-	
-	// Add order number to the session global object 
-	session.privacy.ckoOrderId = args.OrderNo;
+function Authorize(args)
+{
+    // Preparing payment parameters
+    var paymentInstrument = args.PaymentInstrument;
+    var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+    
+    // Add order number to the session global object
+    session.privacy.ckoOrderId = args.OrderNo;
 
-	// Make the charge request
-	var chargeResponse = applePayUtility.handleRequest(args);
-	if (chargeResponse) {
-		// Create the authorization transaction
-		Transaction.wrap(function() {
-			paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-			paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-			paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-			paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-			paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-			paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-			paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-		});
-		
-		return {authorized: true};
-	}
-	else{
-		return {error: true};
-	}
+    // Make the charge request
+    var chargeResponse = applePayUtility.handleRequest(args);
+    if (chargeResponse) {
+        // Create the authorization transaction
+        Transaction.wrap(function () {
+            paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
+            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+            paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
+            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+            paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+        });
+        
+        return {authorized: true};
+    } else {
+        return {error: true};
+    }
 }
 
 /*

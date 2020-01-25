@@ -3,11 +3,12 @@
 /**
  * jQuery Ajax helpers on DOM ready.
  */
-document.addEventListener('DOMContentLoaded', function(){
-	launchGooglePay();
+document.addEventListener('DOMContentLoaded', function () {
+    launchGooglePay();
 }, false);
 
-function launchGooglePay() {
+function launchGooglePay()
+{
     jQuery('.cko-google-pay-button').click(function () {
         // Prepare the payment parameters
         var allowedPaymentMethods = ['CARD', 'TOKENIZED_CARD'];

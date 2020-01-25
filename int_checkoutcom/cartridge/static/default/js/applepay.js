@@ -3,23 +3,27 @@
 /**
  * jQuery Ajax helpers on DOM ready.
  */
-document.addEventListener('DOMContentLoaded', function(){
-	launchApplePay();
+document.addEventListener('DOMContentLoaded', function () {
+    launchApplePay();
 }, false);
 
-function getLineItems() {
+function getLineItems()
+{
     return [];
 }
 
-function getSupportedNetworks () {
+function getSupportedNetworks()
+{
     return ['amex', 'masterCard', 'visa'];
 }
 
-function getMerchantCapabilities() {
-   return ['supportsCredit', 'supportsDebit'];
+function getMerchantCapabilities()
+{
+    return ['supportsCredit', 'supportsDebit'];
 }
 
-function performValidation (valURL) {
+function performValidation(valURL)
+{
     var controllerUrl = jQuery('[id="ckoApplePayValidationUrl"]').val();
     var validationUrl = controllerUrl + '?u=' + valURL;
     
@@ -37,7 +41,8 @@ function performValidation (valURL) {
     );
 }
 
-function sendPaymentRequest(paymentData) {
+function sendPaymentRequest(paymentData)
+{
     return new Promise(
         function (resolve, reject) {
             resolve(true);
@@ -45,7 +50,8 @@ function sendPaymentRequest(paymentData) {
     );
 }
 
-function launchApplePay() {
+function launchApplePay()
+{
     // Check if the session is available
     if (window.ApplePaySession) {
         var merchantIdentifier = jQuery('[id="ckoApplePayMerchantId"]').val();

@@ -8,8 +8,8 @@ var util = require('~/cartridge/scripts/helpers/ckoUtility');
  * Initialize HTTP service for the Checkout.com sandbox full card charge.
  */
 svc.ServiceRegistry.configure("cko.card.charge.sandbox.service", {
-    createRequest: function(svc, args) {  	
-  		// Prepare the http service
+    createRequest: function (svc, args) {
+        // Prepare the http service
         svc.addHeader("Authorization", util.getAccountKeys().secretKey);
         svc.addHeader("User-Agent", util.getCartridgeMeta());
         svc.addHeader("Content-Type", 'application/json;charset=UTF-8');
@@ -17,7 +17,7 @@ svc.ServiceRegistry.configure("cko.card.charge.sandbox.service", {
         return (args) ? JSON.stringify(args) : null;
     },
 
-    parseResponse: function(svc, resp) {
+    parseResponse: function (svc, resp) {
         return JSON.parse(resp.text);
     }
 });
@@ -26,16 +26,16 @@ svc.ServiceRegistry.configure("cko.card.charge.sandbox.service", {
  * Initialize HTTP service for the Checkout.com live full card charge.
  */
 svc.ServiceRegistry.configure("cko.card.charge.live.service", {
-    createRequest: function(svc, args) {
-		// Prepare the http service
-	    svc.addHeader("Authorization", util.getAccountKeys().secretKey);
-	    svc.addHeader("User-Agent", util.getCartridgeMeta());
-	    svc.addHeader("Content-Type", 'application/json;charset=UTF-8');
-	   
+    createRequest: function (svc, args) {
+        // Prepare the http service
+        svc.addHeader("Authorization", util.getAccountKeys().secretKey);
+        svc.addHeader("User-Agent", util.getCartridgeMeta());
+        svc.addHeader("Content-Type", 'application/json;charset=UTF-8');
+       
         return (args) ? JSON.stringify(args) : null;
     },
 
-    parseResponse: function(svc, resp) {
+    parseResponse: function (svc, resp) {
         return JSON.parse(resp.text);
     }
 });
