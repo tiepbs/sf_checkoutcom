@@ -4,7 +4,6 @@
 
 "use strict";
 
-
 var apm_selected = false;
 var apm_selected_box = false;
 
@@ -12,21 +11,16 @@ var apm_selected_box = false;
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
-    
     AlternativePayments();
     AlternativePaymentsFilter();
-    
 }, false);
-
 
 /*
  * Alternative Payments
  */
 function AlternativePayments()
 {
-    
     $('input[name="apm_payment_types"]').change(function () {
-        
         switch (this.value) {
             case"ideal":
                 idealPayBox();
@@ -82,13 +76,8 @@ function AlternativePayments()
             default:
                 console.log('Apm unknown');
         }
-        
-        
     });
-    
 }
-
-
 
 /*
  * Ideal Pay decorator
@@ -119,7 +108,6 @@ function knetPayBox()
     
     // input fields
     toggleAPMS(knet, knetBox);
-    
 }
 
 /*
@@ -135,7 +123,6 @@ function sepaPayBox()
     
     // input fields
     toggleAPMS(sepa, sepaBox);
-    
 }
 
 /*
@@ -151,7 +138,6 @@ function klarnaPayBox()
     
     // input fields
     toggleAPMS(klarna, klarnaBox);
-    
 }
 
 /*
@@ -167,9 +153,7 @@ function qPayBox()
     
     // input fields
     toggleAPMS(qpay, qpayBox);
-    
 }
-
 
 /*
  * Fawry decorator
@@ -184,9 +168,7 @@ function fawryPayBox()
     
     // input fields
     toggleAPMS(fawry, fawrypayBox);
-    
 }
-
 
 /*
  * Sofort Pay decorator
@@ -201,9 +183,7 @@ function sofortPayBox()
     
     // input fields
     toggleAPMS(sofort, sofortBox);
-    
 }
-
 
 /*
  * EPS Pay decorator
@@ -218,9 +198,7 @@ function epsPayBox()
     
     // input fields
     toggleAPMS(eps, epsBox);
-    
 }
-
 
 /*
  * Boleto Pay decorator
@@ -242,9 +220,7 @@ function boletoPayBox()
     
     // set input fields toggle
     toggleAPMS(boleto, boletoBox);
-    
 }
-
 
 /*
  * Bancontact Pay decorator
@@ -261,7 +237,6 @@ function bancontactPayBox()
     toggleAPMS(bancontact, bancontactBox);
 }
 
-
 /*
  * Benefit Pay decorator
  */
@@ -277,7 +252,6 @@ function benefitPayBox()
     toggleAPMS(benefitPay, benefitPayBox);
 }
 
-
 /*
  * Giro Pay decorator
  */
@@ -292,7 +266,6 @@ function giroPayBox()
     // set input fields toggle
     toggleAPMS(giroPay, giroPayBox);
 }
-
 
 /*
  * Multibanco Pay decorator
@@ -339,13 +312,11 @@ function p24PayBox()
     toggleAPMS(p24Pay, p24PayBox);
 }
 
-
 /*
  * Paypal Pay decorator
  */
 function paypalPayBox()
 {
-    
     // multibanco pay radio button element
     var paypalPay = $('#paypalPay_apm_radio_btn');
     
@@ -356,118 +327,95 @@ function paypalPayBox()
     toggleAPMS(paypalPay, paypalPayBox);
 }
 
-
 /*
  * Poli Pay decorator
  */
 function klarnaPayBox()
 {
-    
-    // multibanco pay radio button element
+    // Multibanco pay radio button element
     var klarnaPay = $('#klarna_apm_radio_btn');
     
-    // multibanco pay input elements div
+    // Multibanco pay input elements div
     var klarnaPayBox = $('#klarnaPay_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleAPMS(klarnaPay, klarnaPayBox);
-    
 }
-
 
 /*
  * Oxxo Pay decorator
  */
 function oxxoPayBox()
 {
-    
-    // multibanco pay radio button element
+    // Multibanco pay radio button element
     var oxxoPay = $('#oxxo_apm_radio_btn');
     
-    // multibanco pay input elements div
+    // Multibanco pay input elements div
     var oxxoPayBox = $('#oxxo_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleAPMS(oxxoPay, oxxoPayBox);
-    
 }
-
 
 /*
  * Set APM Forms
  */
 function toggleAPMS(apms, apmBox)
 {
-    
-    // if another apm is selected
+    // If another APM is selected
     if (apm_selected) {
         apm_selected.toggle();
         apmBox.toggle();
         apm_selected = apmBox;
         
-        // set alternative payment value
+        // Set alternative payment value
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(apms.val());
         
-        // set shop url value
+        // Set shop url value
         var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
         apmShopUrl.val(location.hostname);
     } else {
+        // Apply a state
         apmBox.toggle();
         apm_selected = apmBox;
         
-        // set alternative payment value
+        // Set alternative payment value
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(apms.val());
         
-        // set shop url value
+        // Set shop url value
         var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
         apmShopUrl.val(location.hostname);
     }
-
 }
 
-
 function AlternativePaymentsFilter()
-{
-    
+{   
     var creditCard = $('#is-CHECKOUTCOM_APM');
-    
     creditCard.on('click', function () {
-        
         var controllerUrl = $('#ckoApmFilterUrl').val();
-            
         var xhttpFilter = new XMLHttpRequest();
         xhttpFilter.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var responseObject = JSON.parse(this.responseText);
-                
                 var filterObject = responseObject.filterObject;
-                
                 var apmsFilterObject = responseObject.ckoApmFilterConfig;
-                
-                for (var apms in apmsFilterObject) {
-                    var apmObjects = apmsFilterObject[apms];
-                    
-                    if (apmObjects.countries.includes(filterObject.country.toUpperCase()) && apmObjects.currencies.includes(filterObject.currency)) {
+                for (var apms in apmsFilterObject) {                    
+                    if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmObjects.currencies.includes(filterObject.currency)) {
                         $('#'+ apms).show();
                     }
                 }
             }
         };
         
-        xhttpFilter.open("GET", controllerUrl, true);
+        xhttpFilter.open('GET', controllerUrl, true);
         xhttpFilter.send();
-    
     });
-    
 }
 
-
 function callKlarnaController(controllerUrl)
-{
-    //console.log(controllerUrl);
-    
+{    
     if (controllerUrl) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
@@ -506,66 +454,62 @@ function callKlarnaController(controllerUrl)
         xhttp.open("GET", controllerUrl, true);
         xhttp.send();
     }
-    
 }
-
 
 /*
  * Load Klarna Widget
  */
 function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId)
 {
-
+    // Prepare parameters
     var requestObject = JSON.parse(requestObject);
     var addressInfo = JSON.parse(addressInfo);
     
-    //console.log(sessionId);
-    
+    // Empty the Klarna container
     $('#klarna-payments-container').empty();
     
+    // Load Klarna content
     Klarna.Payments.load({
         container                   : '#klarna-payments-container',
         payment_method_category     : paymentMethod,
         instance_id                 : sessionId
         }, function (res) {
-            console.debug(res);
-            klarnaAuthorizeButton('#klarna-payments-container', sessionId, paymentMethod, addressInfo, requestObject);
-        });
-    
+            klarnaAuthorizeButton(
+                '#klarna-payments-container',
+                sessionId, paymentMethod, addressInfo, requestObject
+            );
+        }
+    );
 }
-
 
 /*
  * Klarna Authorize button
  */
 function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject)
-{
-    //console.log(klarnaContainer);
-    
+{   
+    // Prepare paramters    
     var AuthorizeBtn = "<button type='button' style='width: 100%; margin-top: 30px;' onclick='klarnaAuthorize(`" + sessionId
     + "`, `" + klarnaContainer + "`, `" + paymentMethod + "`, ` " + JSON.stringify(billingAddress) + " ` , ` " + JSON.stringify(requestObject) + " `)'>Authorize</button>";
-    
     var klarna = $(klarnaContainer);
     
+    // Append the button
     klarna.append(AuthorizeBtn);
-    
-    
 }
-
 
 /*
  * Klarna Authorize
  */
 function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Object)
 {
-    
+    // Prepare the parameters
     var requestObject = JSON.parse(Object);
     var billingAddress = JSON.parse(Address);
     var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val();  //email
     billingAddress.email = emailAddress;
     
+    // Au4thorize the Klarna charge
     Klarna.Payments.authorize(
-        // options
+        // Options
         {
             instance_id         : sessionId,
             auto_finalize       : false,
@@ -580,10 +524,8 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Obj
             order_tax_amount          : requestObject.tax_amount,
             order_lines               : requestObject.products
         },
-        // callback
-        function (response) {
-            // ...
-            
+        // Callback
+        function (response) {            
             if (response.approved) {
                 $(klarnaContainer).empty();
                 $('#' + paymentMethod + '_image').hide();
@@ -605,12 +547,9 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Obj
                 $('#dwfrm_alternativePaymentForm_klarna__approved').val(response.approved);
                 $('#dwfrm_alternativePaymentForm_klarna__finalize__required').val(response.finalize_required);
             }
-            
         }
     );
 }
-
-
 
 
 

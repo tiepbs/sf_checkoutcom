@@ -19,14 +19,14 @@ var cardUtility = {
         var order = OrderMgr.getOrder(args.OrderNo);
         
         // Create billing address object
-        var gatewayObject = this.gatewayObject(cardData, args);
+        var gatewayRequest = this.getCardRequest(cardData, args);
         
         // Pre authorize the card
-        if (this.preAuthorizeCard(gatewayObject)) {
+        if (this.preAuthorizeCard(gatewayRequest)) {
             // Perform the request to the payment gateway
             var gatewayResponse = ckoUtility.gatewayClientRequest(
                 "cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service",
-                gatewayObject
+                gatewayRequest
             );
         
             // If the charge is valid, process the response
@@ -102,13 +102,13 @@ var cardUtility = {
     },
     
     /*
-     * Build the gateway object
+     * Build the gateway request
      */
-    gatewayObject: function (cardData, args) {
+    getCardRequest: function (cardData, args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
     
-        // Prepare chargeData object
+        // Prepare the charge data
         var chargeData = {
             'source'                : this.getSourceObject(cardData, args),
             'amount'                : ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency()),
@@ -134,7 +134,7 @@ var cardUtility = {
     getSourceObject: function (cardData, args) {
         // Source object
         var source = {
-            type                : "card",
+            type                : 'card',
             number              : cardData.number,
             expiry_month        : cardData.expiryMonth,
             expiry_year         : cardData.expiryYear,

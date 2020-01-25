@@ -110,7 +110,7 @@ var apmUtility = {
         var order = OrderMgr.getOrder(args.OrderNo);
         
         // Creating billing address object
-        var gatewayObject = this.apmObject(payObject, args);
+        var gatewayRequest = this.getApmRequest(payObject, args);
         
         // Test SEPA
         if (payObject.type == "sepa") {
@@ -132,7 +132,7 @@ var apmUtility = {
             gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.sources." + ckoUtility.getValue('ckoMode') + ".service", chargeData);
         } else {
             // Perform the request to the payment gateway
-            gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayObject);
+            gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayRequest);
         }
 
 
@@ -155,9 +155,9 @@ var apmUtility = {
     },
     
     /*
-     * return apm object
+     * Return the APM request data
      */
-    apmObject: function (payObject, args) {
+    getApmRequest: function (payObject, args) {
         // Charge data
         var chargeData = false;
         
