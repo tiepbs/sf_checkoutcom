@@ -11,7 +11,8 @@ var CKOHelper = require('~/cartridge/scripts/helpers/CKOHelper');
 /**
  * Get the transactions list
  */
-function listTransactions() {	
+function listTransactions()
+{
     // Render the template
     ISML.renderTemplate('transactions/list');
 }
@@ -19,8 +20,9 @@ function listTransactions() {
 /**
  * Get the transactions table data
  */
-function getTransactionsData() {	
-	// Prepare the output array
+function getTransactionsData()
+{
+    // Prepare the output array
     var data = CKOHelper.getCkoTransactions();
     
     // Send the AJAX response
@@ -30,7 +32,8 @@ function getTransactionsData() {
 /**
  * Perform a remote Hub Call
  */
-function remoteCall() {
+function remoteCall()
+{
     // Get the operating mode
     var mode = CKOHelper.getValue('ckoMode');
    

@@ -9,7 +9,7 @@ var CKOHelper = require('~/cartridge/scripts/helpers/CKOHelper');
  */
 svc.ServiceRegistry.configure("cko.transaction.capture.sandbox.service", {
     createRequest: function (svc, args) {
-        svc = CKOHelper.buildHttpServiceHeaders(svc);        
+        svc = CKOHelper.buildHttpServiceHeaders(svc);
         return (args) ? JSON.stringify(args) : null;
     },
 
@@ -23,7 +23,7 @@ svc.ServiceRegistry.configure("cko.transaction.capture.sandbox.service", {
  */
 svc.ServiceRegistry.configure("cko.transaction.capture.live.service", {
     createRequest: function (svc, args) {
-        svc = CKOHelper.buildHttpServiceHeaders(svc);        
+        svc = CKOHelper.buildHttpServiceHeaders(svc);
         return (args) ? JSON.stringify(args) : null;
     },
 
@@ -37,7 +37,7 @@ svc.ServiceRegistry.configure("cko.transaction.capture.live.service", {
  */
 svc.ServiceRegistry.configure("cko.transaction.void.sandbox.service", {
     createRequest: function (svc, args) {
-        svc = CKOHelper.buildHttpServiceHeaders(svc);        
+        svc = CKOHelper.buildHttpServiceHeaders(svc);
         return (args) ? JSON.stringify(args) : null;
     },
 
@@ -51,7 +51,7 @@ svc.ServiceRegistry.configure("cko.transaction.void.sandbox.service", {
  */
 svc.ServiceRegistry.configure("cko.transaction.void.live.service", {
     createRequest: function (svc, args) {
-        svc = CKOHelper.buildHttpServiceHeaders(svc);        
+        svc = CKOHelper.buildHttpServiceHeaders(svc);
         return (args) ? JSON.stringify(args) : null;
     },
 
@@ -65,7 +65,7 @@ svc.ServiceRegistry.configure("cko.transaction.void.live.service", {
  */
 svc.ServiceRegistry.configure("cko.transaction.refund.sandbox.service", {
     createRequest: function (svc, args) {
-        svc = CKOHelper.buildHttpServiceHeaders(svc);        
+        svc = CKOHelper.buildHttpServiceHeaders(svc);
         return (args) ? JSON.stringify(args) : null;
     },
 
@@ -79,7 +79,7 @@ svc.ServiceRegistry.configure("cko.transaction.refund.sandbox.service", {
  */
 svc.ServiceRegistry.configure("cko.transaction.refund.live.service", {
     createRequest: function (svc, args) {
-        svc = CKOHelper.buildHttpServiceHeaders(svc);        
+        svc = CKOHelper.buildHttpServiceHeaders(svc);
         return (args) ? JSON.stringify(args) : null;
     },
 
