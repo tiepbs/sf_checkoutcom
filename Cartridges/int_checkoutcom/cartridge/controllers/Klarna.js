@@ -1,7 +1,5 @@
 /**
  * Klarna controller.
- *
- * @module controllers/Hello
  */
 
 'use strict';
