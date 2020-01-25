@@ -25,6 +25,10 @@ var cardUtility = {
 		if (this.preAuthorizeCard(gatewayObject)) {			
 			// Perform the request to the payment gateway
 			var gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayObject);
+		
+			var logger = require('dw/system/Logger').getLogger('ckodebug');
+			logger.debug('this is my test 2 {0}', JSON.stringify(gatewayResponse));
+
 			
 			// If the charge is valid, process the response
 			if (gatewayResponse) {
@@ -32,7 +36,11 @@ var cardUtility = {
 				ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
 				
 				// Handle the response
-				return this.handleFullChargeResponse(gatewayResponse);
+				if (this.handleFullChargeResponse(gatewayResponse)) {
+					return gatewayResponse;
+				}
+
+				return false;
 			} else {
 				// Fail the order
 				Transaction.wrap(function(){
@@ -59,15 +67,18 @@ var cardUtility = {
 		// Update customer data
 		ckoUtility.updateCustomerData(gatewayResponse);
 		
+		// Get the gateway links
 		var gatewayLinks = gatewayResponse._links;
 		
 		// Add 3DS redirect URL to session if exists
-		if(gatewayLinks.hasOwnProperty('redirect')){
+		if (gatewayLinks.hasOwnProperty('redirect')) {
 			session.privacy.redirectUrl = gatewayLinks.redirect.href;
 			return true;
-		}else{
+		} else {
 			return ckoUtility.paymentSuccess(gatewayResponse);
 		}
+
+		return false;
 	},
 	
 	/*
@@ -75,16 +86,24 @@ var cardUtility = {
 	 */
 	preAuthorizeCard: function(chargeData) {
 		// Prepare the pre authorization charge
-		var authData = JSON.parse(JSON.stringify(chargeData));
-		authData['3ds'].enabled = false;
-		authData.amount = 0;
-		authData.currency = 'USD';	
+		chargeData['3ds'].enabled = false;
+		chargeData.amount = 0;
+		chargeData.currency = 'USD';
+		chargeData.capture = false;
+		delete chargeData['capture_on'];
 		
 		// Send the request
 		var authResponse = ckoUtility.gatewayClientRequest(
 			'cko.card.charge.' + ckoUtility.getValue('ckoMode') + '.service',
-			authData
+			chargeData
 		);	
+
+		var logger = require('dw/system/Logger').getLogger('ckodebug');
+		logger.debug('this is my test 0 {0}', JSON.stringify(chargeData));
+
+		var logger = require('dw/system/Logger').getLogger('ckodebug');
+		logger.debug('this is my test 1 {0}', JSON.stringify(authResponse));
+
 		
 		// Return the response
 		return ckoUtility.paymentSuccess(authResponse);

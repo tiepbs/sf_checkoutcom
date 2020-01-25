@@ -17,11 +17,11 @@ var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
 /** Apm Filter Configuration file **/
 var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig');
 
-
 /**
  * Handles responses from the Checkout.com payment gateway.
  */
 function handleReturn() {
+	// Prepare some variables
 	var gResponse = false;
 	var mode = ckoUtility.getValue('ckoMode');
 	var orderId = ckoUtility.getOrderId();	
@@ -44,27 +44,21 @@ function handleReturn() {
 				
 				// If there is a valid response
 				if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
-					
 					var verify = false;
-					
-					if(ckoUtility.redirectPaymentSuccess(gVerify)){
-						
+					if (ckoUtility.redirectPaymentSuccess(gVerify)) {
 						// Show order confirmation page
 						app.getController('COSummary').ShowConfirmation(order);
-						
-					}else{
-						
+					} 
+					else {
 					    // Restore the cart
 						ckoUtility.checkAndRestoreBasket(order);
 
 						// Send back to the error page
 						ISML.renderTemplate('custom/common/response/failed.isml');
 					}
-					
+
 				}else {
-					
 					ckoUtility.handleFail(gVerify);
-					
 				}
 				
 			}
