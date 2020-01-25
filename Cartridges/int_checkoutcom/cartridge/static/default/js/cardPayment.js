@@ -1,6 +1,5 @@
 'use strict'
 
-
 var isSet = true;
 var isSetId = document.getElementById('default_thumb');
 
@@ -118,7 +117,6 @@ var setImage = function (element) {
         id.style.display = "block";
         isSetId = id;
     }
-    
 }
 
 // Get image id
@@ -199,7 +197,6 @@ var Mada = {
                     }
                     break;
                 default:
-                    //console.log('not found');
                     return false;
             }
         }
