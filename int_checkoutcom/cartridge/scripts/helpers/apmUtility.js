@@ -79,10 +79,13 @@ var apmUtility = {
 		// Update customer data
 		ckoUtility.updateCustomerData(gatewayResponse);
 		
+		// Get the response links
 		var gatewayLinks = gatewayResponse._links;
+
+		// Get the response type
 		var type = gatewayResponse.type;
 		
-		// add redirect to sepa source reqeust
+		// Add redirect to sepa source reqeust
 		if (type == 'Sepa'){
 			session.privacy.redirectUrl = "${URLUtils.url('Sepa-Mandate')}";
 			session.privacy.sepaResponseId = gatewayResponse.id;
@@ -92,7 +95,8 @@ var apmUtility = {
 		if (gatewayLinks.hasOwnProperty('redirect')){
 			session.privacy.redirectUrl = gatewayLinks.redirect.href
 			return true;
-		}else{
+		}
+		else {
 			ckoUtility.paymentSuccess(gatewayResponse);
 		}
 		

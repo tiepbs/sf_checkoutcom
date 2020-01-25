@@ -234,7 +234,7 @@ var ckoApmConfig = {
 	/*
 	 * Multibanco Pay Authorization
 	 */
-	multibancoPayAuthorization: function(args){
+	multibancoPayAuthorization: function(args) {
 		// Building pay object
 		var payObject = {
 			'type'		: 'multibanco',
@@ -253,7 +253,7 @@ var ckoApmConfig = {
 	/*
 	 * Poli Pay Authorization
 	 */
-	poliPayAuthorization: function(args){
+	poliPayAuthorization: function(args) {
 		// Building pay object
 		var payObject = {
 			'type'		: 'poli',
@@ -269,7 +269,7 @@ var ckoApmConfig = {
 	/*
 	 * P24 Pay Authorization
 	 */
-	p24PayAuthorization: function(args){
+	p24PayAuthorization: function(args) {
 		// Building pay object
 		var payObject = {
 			'type'			: 'p24',
@@ -289,7 +289,7 @@ var ckoApmConfig = {
 	/*
 	 * Klarna Pay Authorization
 	 */
-	klarnaPayAuthorization: function(args){
+	klarnaPayAuthorization: function(args) {
 		// Gdt the order
 		var order = OrderMgr.getOrder(args.OrderNo);
 		
@@ -325,7 +325,7 @@ var ckoApmConfig = {
 	/*
 	 * Paypal Pay Authorization
 	 */
-	paypalPayAuthorization: function(args){
+	paypalPayAuthorization: function(args) {
 		// Build the payment object
 		var payObject = {
 			'type'			: 'paypal',
@@ -342,7 +342,7 @@ var ckoApmConfig = {
 	/*
 	 * Oxxo Pay Object
 	 */
-	oxxoPayAuthorization: function(args){
+	oxxoPayAuthorization: function(args) {
 		// Build the payment object
 		var payObject = {
 		    'source': {
