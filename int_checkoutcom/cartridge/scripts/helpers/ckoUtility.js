@@ -152,7 +152,6 @@ var ckoUtility = {
      * Currency Conversion Ratio
      */
     getCKOFormatedValue: function (currency) {
-        
         if (ckoCurrencyConfig.x1.currencies.match(currency)) {
             return ckoCurrencyConfig.x1.multiple;
         } else if (ckoCurrencyConfig.x1000.currencies.match(currency)) {
@@ -412,6 +411,7 @@ var ckoUtility = {
             // Handle shipping method
             basket.defaultShipment.setShippingMethod(order.defaultShipment.getShippingMethod());
             
+            // Commit the transaction
             Transaction.commit();
         }
     },
@@ -440,8 +440,7 @@ var ckoUtility = {
         var order = OrderMgr.getOrder(args.OrderNo);
         var quantity = order.getProductQuantityTotal();
         
-        return quantity;
-        
+        return quantity; 
     },
     
     /*
@@ -501,6 +500,7 @@ var ckoUtility = {
         // load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         
+        // Prepare the tax data
         var tax = {
             "product_id"    : args.OrderNo,
             "quantity"      : 1,
@@ -508,12 +508,12 @@ var ckoUtility = {
             "description"   : "Order Tax"
         }
         
+        // Test the order
         if (order.getTotalTax().valueOf() > 0) {
             return tax;
         } else {
             return false;
         }
-        
     },
         
     /*
@@ -601,11 +601,8 @@ var ckoUtility = {
     getProductIds : function (args) {
         // load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
-        
         var it = order.productLineItems.iterator();
-
         var productIds = [];
-        
         while (it.hasNext()) {
             var pli = it.next();
             productIds.push(pli.productID);
@@ -669,7 +666,6 @@ var ckoUtility = {
      * return order amount
      */
     getAmount: function (order) {
-        
         var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getCurrency());
         return amount;
     },
@@ -716,7 +712,6 @@ var ckoUtility = {
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
-        
         var firstname = billingAddress.getFirstName();
         
         return firstname;
@@ -817,13 +812,11 @@ var ckoUtility = {
      * get Billing Country
      */
     getBillingCountry: function (args) {
-        
         // load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
-        
         var country = billingAddress.getCountryCode().value
         
         return country;
@@ -1000,5 +993,4 @@ var ckoUtility = {
 /*
 * Module exports
 */
-
 module.exports = ckoUtility;
