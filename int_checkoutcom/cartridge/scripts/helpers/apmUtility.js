@@ -95,8 +95,7 @@ var apmUtility = {
             return true;
         } else {
             ckoUtility.paymentSuccess(gatewayResponse);
-        }
-        
+        }  
     },
     
     /*
