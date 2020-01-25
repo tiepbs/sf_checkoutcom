@@ -1,0 +1,14 @@
+<!-- TEMPLATENAME: TabNavigation.isml -->
+<table id="ckoTabs" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+        <tr>
+            <td nowrap="nowrap" class="e n s table_tabs_dis_background">
+                <a id="CKOTransactions-ListTransactions" class="table_tabs_dis" href="${URLUtils.url('CKOTransactions-ListTransactions')}">Transactions</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<script src="${URLUtils.staticURL('/js/core/tabs.js')}"></script>
+<script>
+setNavigationstate('${request.httpPath}');
+</script>
