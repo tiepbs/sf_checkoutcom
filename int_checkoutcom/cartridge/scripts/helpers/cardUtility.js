@@ -30,7 +30,7 @@ var cardUtility = {
             );
         
             // Logging
-            ckoUtility.doLog('response', gatewayResponse);
+            ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
 
             // If the charge is valid, process the response
             if (gatewayResponse) {                
@@ -61,7 +61,7 @@ var cardUtility = {
         session.privacy.redirectUrl = null;
         
         // Logging
-        ckoUtility.doLog('response', gatewayResponse);
+        ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
         
         // Update customer data
         ckoUtility.updateCustomerData(gatewayResponse);

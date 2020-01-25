@@ -69,13 +69,16 @@ function Authorize(args)
     // Add order number to the session global object
     session.privacy.ckoOrderId = args.OrderNo;
     
+    // Get card payment form
+    var paymentForm = app.getForm('cardPaymentForm');
+    
     // Build card data object
     var cardData = {
         'name'          : paymentInstrument.creditCardHolder,
-        'number'        : paymentInstrument.creditCardNumber,
+        'number'        : ckoUtility.getFormattedNumber(paymentForm.get('number').value()),
         'expiryMonth'   : paymentInstrument.creditCardExpirationMonth,
         'expiryYear'    : paymentInstrument.creditCardExpirationYear,
-        'cvv'           : app.getForm('cardPaymentForm').get('cvn').value(),
+        'cvv'           : paymentForm.get('cvn').value(),
         'type'          : paymentInstrument.creditCardType,
     };
     
