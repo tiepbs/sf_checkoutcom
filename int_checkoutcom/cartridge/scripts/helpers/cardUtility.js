@@ -29,11 +29,11 @@ var cardUtility = {
                 gatewayRequest
             );
         
+            // Logging
+            ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
+
             // If the charge is valid, process the response
-            if (gatewayResponse) {
-                // Logging
-                ckoUtility.doLog('response', JSON.stringify(gatewayResponse));
-                
+            if (gatewayResponse) {                
                 // Handle the response
                 if (this.handleFullChargeResponse(gatewayResponse)) {
                     return gatewayResponse;
