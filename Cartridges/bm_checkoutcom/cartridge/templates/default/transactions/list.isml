@@ -5,7 +5,7 @@
 	@import url("${URLUtils.staticURL('/css/core/list.css')}");
 	@import url("${URLUtils.staticURL('/css/bootstrap/bootstrap.min.css')}");
 </style>
-<isdecorate template="application/MenuFrame"><isprint value="${pdict.CurrentRequest.getLocale()}">
+<isdecorate template="application/MenuFrame">
 	<!-- Encoding -->
 	<iscontent type="text/html" charset="UTF-8">
 	
