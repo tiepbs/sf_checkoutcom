@@ -4,15 +4,19 @@
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
+    // Load the translation strings
+    loadTranslations();
+
     // Build the navigation tabs
     buildTabs();
-
-    // Load the translation strings
-    var l = JSON.parse($('#translationStrings').val());
 
     // Get the transactions
     getTransactions(initTable);
 }, false);
+
+function loadTranslations() {
+    window.ckolang = JSON.parse(jQuery('[id="translationStrings"]').val());
+}
 
 function buildTabs()
 {
@@ -64,18 +68,56 @@ function initTable(tableData)
         responsiveLayout:true,
         selectable: 'highlight',
         headerFilterPlaceholder: '>',
-        placeholder: l.noResults,
+        placeholder: window.ckolang.noResults,
         layout: 'fitColumns',
         data: JSON.parse(tableData),
         layout: 'fitColumns',
         pagination: 'local',
         paginationSize: 50,
         columns: getTableColumns(),
+        langs: getTableStrings(),
         tableBuilt: function () {
             // Set the pagination controls
             setPagination(this);
         }
     });
+}
+
+function getTableStrings() {
+    var tableLocale = getTableLocale();
+    return {
+        tableLocale: { 
+            'columns': {
+                'id': window.ckolang.rowId,
+                'order_no': window.ckolang.orderNo,
+                'transaction_id': window.ckolang.transactionId,
+                'parent_transaction_id': window.ckolang.parentTransactionId,
+                'payment_id': window.ckolang.paymentId,
+                'amount': window.ckolang.amount,
+                'currency': window.ckolang.currency,
+                'date': window.ckolang.date,
+                'type': window.ckolang.type,
+                'opened': window.ckolang.opened,
+                'processor': window.ckolang.processor,
+                'actions': window.ckolang.actions
+            },
+            'pagination': {
+                'first': window.ckolang.first,
+                'first_title': window.ckolang.firstTitle,
+                'last': window.ckolang.last,
+                'last_title': window.ckolang.lastTitle,
+                'prev': window.ckolang.prev,
+                'prev_title': window.ckolang.prevTitle,
+                'next': window.ckolang.next,
+                'next_title': window.ckolang.nextTitle,
+            }
+        }
+    };
+}
+
+function getTableLocale() {
+    var currentLocale = jQuery('[id="currentLocale"]').val();
+    return currentLocale + '-' + currentLocale;
 }
 
 function reloadTable(tableData)
@@ -113,13 +155,13 @@ function setPagination(table)
 function getTableColumns()
 {
     return [
-        {title: l.rowId, field: 'id', visible: false},
-        {title: l.orderNo, field: 'order_no', width: 120, formatter: 'html', headerFilter: 'input'},
-        {title: l.transactionId, field:'transaction_id', headerFilter: 'input'},
-        {title: l.parentTransactionId, field:'parent_transaction_id', headerFilter: 'input'},
-        {title: l.paymentId, field: 'payment_id', headerFilter: 'input'},
+        {title: 'Id', field: 'id', visible: false},
+        {title: 'Order No', field: 'order_no', width: 120, formatter: 'html', headerFilter: 'input'},
+        {title: 'Transaction id', field: 'transaction_id', headerFilter: 'input'},
+        {title: 'Parent tranaction id', field: 'parent_transaction_id', headerFilter: 'input'},
+        {title: 'Payment id', field: 'payment_id', headerFilter: 'input'},
         {
-            title: l.amount,
+            title: 'Amount',
             field: 'amount',
             width: 120,
             headerFilter: 'input',
@@ -127,14 +169,14 @@ function getTableColumns()
                 var rowData = cell.getRow().getData();
                 return cell.getValue() + ' ' + rowData.currency;
             }
-    },
-        {title: l.currency, field: 'currency', visible: false},
-        {title: l.date, field: 'creation_date', width: 140, headerFilter: 'input'},
-        {title: l.type, field: 'type', width: 110, headerFilter: 'input'},
-        {title: l.opened, field: 'opened', width: 110, formatter: 'tickCross', visible: false},
-        {title: l.processor, field: 'processor', width: 190, headerFilter: 'input'},
+        },
+        {title: 'Currency', field: 'currency', visible: false},
+        {title: 'Date', field: 'creation_date', width: 140, headerFilter: 'input'},
+        {title: 'Type', field: 'type', width: 110, headerFilter: 'input'},
+        {title: 'State', field: 'opened', width: 110, formatter: 'tickCross', visible: false},
+        {title: 'Processor', field: 'processor', width: 190, headerFilter: 'input'},
         {
-            title: l.actions,
+            title: 'Actions',
             field: 'actions',
             headerSort: false,
             align: 'center',
@@ -158,13 +200,13 @@ function getButtonsHtml(cell)
     if (JSON.parse(rowData.opened)) {
         // Capture
         if (rowData.type == 'AUTH') {
-            html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">' + l.void + '</button>';
-            html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-info ckoAction">' + l.capture + '</button>';
+            html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">Void</button>';
+            html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-info ckoAction">Capture</button>';
         }
 
         // Void
         if (rowData.type == 'CAPTURE') {
-            html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-secondary ckoAction">' + l.refund + '</button>';
+            html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-secondary ckoAction">Refund</button>';
         }
     } else {
         html += '<div class="ckoLocked">&#x1f512;</div>';

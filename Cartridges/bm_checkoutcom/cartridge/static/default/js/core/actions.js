@@ -6,9 +6,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize the button events
     initButtons();
-
-    // Load the translation strings
-    var l = JSON.parse($('#translationStrings').val());
 }, false);
 
 function initButtons()
