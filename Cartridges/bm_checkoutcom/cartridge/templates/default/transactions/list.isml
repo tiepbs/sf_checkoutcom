@@ -13,21 +13,21 @@
 	<isinclude template="inc/Modules">
 	
 	<!-- Breadcrumbs -->
-	<isbreadcrumb name1="Checkout.com" url1="${URLUtils.url('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', 'checkoutcom_manager_item')}" name2="Manage transactions" url2="${URLUtils.url('CKOTransactions-ListTransactions')}">
+	<isbreadcrumb name1="${Resource.msg('cko.checkoutcom.label', 'cko', null)}" url1="${URLUtils.url('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', 'checkoutcom_manager_item')}" name2="${Resource.msg('cko.manage.transactions', 'cko', null)}" url2="${URLUtils.url('CKOTransactions-ListTransactions')}">
 	
 	<!-- Tab navigation table -->	
     <isinclude template="inc/tabs">
 	
 	<div class="alert alert-warning alert-dismissible ckoSuccessMessage" role="alert">
-		<span>The transaction was processed successfully.</span>
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span>${Resource.msg('cko.transaction.success', 'cko', null)}</span>
+		<button type="button" class="close" data-dismiss="alert" aria-label="${Resource.msg('cko.modal.close', 'cko', null)}">
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
 
 	<!-- Main content table -->	
 	<div class="transactions-table-controls">
-		Rows per page: 
+		${Resource.msg('cko.pager.rows', 'cko', null)}: 
 		<select class="transactions-table-pager" name="transactions-table-pager">
 			<option value="10">10</option>
 			<option value="50" selected>50</option>
@@ -36,7 +36,7 @@
 			<option value="200">200</option>
 			<option value="250">250</option>
 			<option value="300">300</option>
-			<option value="all">All</option>
+			<option value="all">${Resource.msg('cko.pager.all', 'cko', null)}</option>
 		</select>
 	</div>
 	<div id="transactions-table"></div>
