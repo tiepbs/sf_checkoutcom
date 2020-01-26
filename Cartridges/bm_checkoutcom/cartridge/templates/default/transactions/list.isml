@@ -46,6 +46,30 @@
 
 </isdecorate>
 
+<!-- Translation strings -->
+<isscript>
+	var translationSings = JSON.stringify({
+		transactionMissing: ${Resource.msg('cko.transaction.missing', 'cko', null)},
+		noResults: ${Resource.msg('cko.no.results', 'cko', null)},
+		rowId: ${Resource.msg('cko.row.id', 'cko', null)},
+		orderNo: ${Resource.msg('cko.row.id', 'cko', null)},
+		transactionId: ${Resource.msg('cko.row.id', 'cko', null)},
+		parentTransactionId: ${Resource.msg('cko.transaction.parentid', 'cko', null)},
+		paymentId: ${Resource.msg('cko.payment.id', 'cko', null)},
+		amount: ${Resource.msg('cko.transaction.amount', 'cko', null)},
+		currency: ${Resource.msg('cko.transaction.currency', 'cko', null)},
+		date: ${Resource.msg('cko.transaction.date', 'cko', null)},
+		type: ${Resource.msg('cko.transaction.type', 'cko', null)},
+		opened: ${Resource.msg('cko.transaction.opened', 'cko', null)},
+		processor: ${Resource.msg('cko.transaction.processor', 'cko', null)},
+		actions: ${Resource.msg('cko.transaction.actions', 'cko', null)},
+		capture: ${Resource.msg('cko.label.capture', 'cko', null)},
+		void: ${Resource.msg('cko.label.void', 'cko', null)},
+		refund: ${Resource.msg('cko.label.refund', 'cko', null)}
+	});
+</isscript>
+<input type="hidden" id="translationStrings" value="${translationSrings}">
+
 <!-- Transaction controller URL -->
 <input type="hidden" id="transactionsControllerUrl" value="${URLUtils.url('CKOTransactions-GetTransactionsData')}">
 

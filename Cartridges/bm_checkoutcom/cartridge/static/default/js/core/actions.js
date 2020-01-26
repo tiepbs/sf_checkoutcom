@@ -4,7 +4,11 @@
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
+    // Initialize the button events
     initButtons();
+
+    // Load the translation strings
+    var l = JSON.parse($('#translationStrings').val());
 }, false);
 
 function initButtons()
@@ -47,7 +51,7 @@ function openModal(elt, rowIndex)
     if (tidExists && isValidTid) {
         getTransactionData(members);
     } else {
-        alert('The transaction ID is missing or invalid.');
+        alert(l.transactionMissing);
     }
 }
 
