@@ -1,9 +1,5 @@
 'use strict';
 
-/**
- * Controller example for a product review form.
- */
-
 /* Script Modules */
 var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 var app = require(siteControllerName + '/cartridge/scripts/app');
