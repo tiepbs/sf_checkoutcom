@@ -582,8 +582,6 @@
                 <attribute attribute-id="ckoAutoCapture"/>
                 <attribute attribute-id="ckoAutoCaptureTime"/>
                 <attribute attribute-id="ckoMada"/>
-                <attribute attribute-id="ckoGooglePayEnabled"/>
-                <attribute attribute-id="ckoGooglePayMerchantId"/>
                 <attribute attribute-id="ckoStorefrontCore"/>
                 <attribute attribute-id="ckoStorefrontController"/>
                 <attribute attribute-id="ckoDebugEnabled"/>
