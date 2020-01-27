@@ -9,8 +9,6 @@ var server = require('server');
 server.extend(module.superModule);
 
 /* API Includes */
-var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
-var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var BasketMgr = require('dw/order/BasketMgr');
 
 /** Utility **/
@@ -66,4 +64,4 @@ function klarnaSession()
 /*
  * Module exports
  */
-exports.klarnaSession = guard.ensure(['https'], klarnaSession);
+module.exports = server.exports();

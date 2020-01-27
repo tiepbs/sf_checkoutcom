@@ -1,4 +1,5 @@
 'use strict';
+
 /* Server */
 var server = require('server');
 server.extend(module.superModule);
@@ -6,7 +7,6 @@ server.extend(module.superModule);
 /* API Includes */
 var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 var app = require(siteControllerName + '/cartridge/scripts/app');
-var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
@@ -185,8 +185,4 @@ function getApmFilter()
 /*
  * Module exports
  */
-exports.HandleReturn = guard.ensure(['https'], handleReturn);
-exports.HandleFail = guard.ensure(['https'], handleFail);
-exports.HandleWebhook = guard.ensure(['post', 'https'], handleWebhook);
-exports.GetCardsList = guard.ensure(['https'], getCardsList);
-exports.GetApmFilter = guard.ensure(['https'], getApmFilter);
+module.exports = server.exports();

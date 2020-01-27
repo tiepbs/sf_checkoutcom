@@ -7,8 +7,6 @@ server.extend(module.superModule);
 /* Script Modules */
 var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 var app = require(siteControllerName + '/cartridge/scripts/app');
-var guard = require(siteControllerName + '/cartridge/scripts/guard');
-var ISML = require('dw/template/ISML');
 var URLUtils = require('dw/web/URLUtils');
 var OrderMgr = require('dw/order/OrderMgr');
 
@@ -125,5 +123,4 @@ function handleMandate()
 /*
  * Module exports
  */
-exports.Mandate = guard.ensure(['get'], mandate);
-exports.HandleMandate = guard.ensure(['post'], handleMandate);
+module.exports = server.exports();
