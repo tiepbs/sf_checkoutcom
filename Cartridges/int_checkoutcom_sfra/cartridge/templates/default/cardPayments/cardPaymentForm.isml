@@ -1,16 +1,5 @@
 
 <div id="card_payment_box">	
-	<isif condition="${pdict.CurrentCustomer.authenticated}">
-		<div id="ckoCardSelector" class="form-row" style="display:none;">
-			<label class="label">${Resource.msg('billing.selectcreditcard','checkout',null)}</label>
-			<div class="field-wrapper">
-				<select name="ckoCreditCardList" id="ckoCreditCardList" class="input-select" onchange="getCardData(this, '<isprint value="${URLUtils.https('CKOMain-GetCardsList')}" />')">
-					<option value="" selected="selected">${Resource.msg('billing.creditcardlistselect','checkout',null)}</option>
-				</select>
-			</div>
-		</div>
-	</isif>
-
 	<!-- Card icons -->
 	<fieldset>
 	<div>

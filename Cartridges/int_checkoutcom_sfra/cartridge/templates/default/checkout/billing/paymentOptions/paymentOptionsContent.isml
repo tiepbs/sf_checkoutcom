@@ -5,8 +5,14 @@
     <isif condition="${paymentOption.ID === 'CREDIT_CARD'}">
         <isinclude template="checkout/billing/paymentOptions/creditCardContent"/>
     </isif>
+    <!--
     <isif condition="${paymentOption.ID === 'Adyen'}">
         <isinclude template="checkout/billing/paymentOptions/alternativePaymentMethodsContent"/>
     </isif>
+    -->
 </isloop>
+
+
+<isinclude template="ckoPayments"/>
+
 
