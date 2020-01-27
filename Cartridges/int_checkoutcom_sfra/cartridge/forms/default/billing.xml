@@ -12,7 +12,7 @@
 
     <!--<include formid="creditCardFields" name="creditCard"/> -->
 
-    <include formid="cardPaymentForm" name="cardPayment"/>
+    <include formid="cardPayment" name="cardPaymentForm"/>
 
     <field formid="subscribe" type="boolean" checked="false" default-value="false" mandatory="false" />
 
