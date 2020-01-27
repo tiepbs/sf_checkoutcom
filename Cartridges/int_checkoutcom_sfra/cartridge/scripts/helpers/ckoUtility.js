@@ -17,7 +17,7 @@ var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 /*
 * Utility functions for my cartridge integration.
 */
-var ckoUtility = {  
+var ckoHelper = {  
     /*
      * get the required value for each mode
      */
@@ -996,4 +996,4 @@ var ckoUtility = {
 /*
 * Module exports
 */
-module.exports = ckoUtility;
+module.exports = ckoHelper;
