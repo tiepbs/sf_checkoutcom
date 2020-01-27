@@ -1,9 +1,0 @@
-<!-- Benefit pay APM Option -->
-<h4>
-	<img alt="" id="benefitpay_thumb" class="image imageright" type="image" value="Edit" src="${URLUtils.staticURL('/images/apm-icons/benefitPay.jpeg')}" width="10%"/>
-	${Resource.msg('cko.benefit.name','cko',null)} 
-	<input id="benefit_apm_radio_btn" type="radio" name="apm_payment_types" value="benefit">
-</h4>
-
-
-<hr/>
