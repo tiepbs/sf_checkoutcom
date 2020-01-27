@@ -1,8 +1,8 @@
 'use strict';
 
-/**
- * Controller example for a product review form.
- */
+/* Server */
+var server = require('server');
+server.extend(module.superModule);
 
 /* Script Modules */
 var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
