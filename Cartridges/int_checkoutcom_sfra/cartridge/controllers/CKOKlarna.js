@@ -17,8 +17,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 /**
  * Initiate the Kalrna session.
  */
-function klarnaSession()
-{
+server.get('KlarnaSession', function (req, res, next) {
     // Prepare the basket
     var basket = BasketMgr.getCurrentBasket();
     if (basket) {
@@ -54,12 +53,14 @@ function klarnaSession()
 
         // Write the session
         if (gSession) {
-            response.getWriter().println(JSON.stringify(gSession));
+            res.getWriter().println(JSON.stringify(gSession));
         }
     } else {
-        response.getWriter().println('Basket Not Found');
+        res.getWriter().println('Basket Not Found');
     }
-}
+
+    next();
+});
 
 /*
  * Module exports

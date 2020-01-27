@@ -7,7 +7,6 @@ server.extend(module.superModule);
 /* API Includes */
 var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 var app = require(siteControllerName + '/cartridge/scripts/app');
-var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
 
@@ -23,8 +22,7 @@ var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig'
 /**
  * Handles responses from the Checkout.com payment gateway.
  */
-function handleReturn()
-{
+server.post('HandleReturn', function (req, res, next) {
     // Prepare some variables
     var gResponse = false;
     var mode = ckoHelper.getValue('ckoMode');
@@ -36,19 +34,18 @@ function handleReturn()
         var order = OrderMgr.getOrder(orderId);
         if (order) {
             // Check the payment token if exists
-            var sessionId = request.httpParameterMap.get('cko-session-id').stringValue;
+            var sessionId = req.httpParameterMap.get('cko-session-id').stringValue;
             
             // If there is a payment session id available, verify
             if (sessionId) {
                 // Perform the request to the payment gateway
-                gVerify = ckoHelper.gatewayClientRequest(
+                var gVerify = ckoHelper.gatewayClientRequest(
                     'cko.verify.charges.' + mode + '.service',
                     {'paymentToken': sessionId}
                 );
                 
                 // If there is a valid response
                 if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
-                    var verify = false;
                     if (ckoHelper.redirectPaymentSuccess(gVerify)) {
                         // Show order confirmation page
                         app.getController('COSummary').ShowConfirmation(order);
@@ -57,7 +54,7 @@ function handleReturn()
                         ckoHelper.checkAndRestoreBasket(order);
 
                         // Send back to the error page
-                        ISML.renderTemplate('custom/common/response/failed.isml');
+                        res.render('custom/common/response/failed');
                     }
                 } else {
                     ckoHelper.handleFail(gVerify);
@@ -80,16 +77,16 @@ function handleReturn()
             ckoHelper.handleFail(null);
         }
     } else {
-        response.getWriter().println('error!');
-        //CKOHelper.handleFail(null);
+        res.getWriter().println('error!');
     }
-}
+
+    next();
+});
 
 /**
  * Handles a failed payment from the Checkout.com payment gateway.
  */
-function handleFail()
-{
+server.post('HandleFail', function (req, res, next) {
     // Load the order
     var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
@@ -97,18 +94,19 @@ function handleFail()
     ckoHelper.checkAndRestoreBasket(order);
 
     // Send back to the error page
-    ISML.renderTemplate('custom/common/response/failed.isml');
-}
+    res.render('custom/common/response/failed');
+
+    next();
+});
 
 /**
  * Handles webhook responses from the Checkout.com payment gateway.
  */
-function handleWebhook()
-{
+server.post('HandleWebhook', function (req, res, next) {
     var isValidResponse = ckoHelper.isValidResponse();
     if (isValidResponse) {
         // Get the response as JSON object
-        var hook = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
+        var hook = JSON.parse(req.httpParameterMap.getRequestBodyAsString());
 
         // Check the webhook event
         if (hook !== null && hook.hasOwnProperty('type')) {
@@ -123,13 +121,15 @@ function handleWebhook()
             eventsHelper[func](hook);
         }
     }
-}
+
+    next();
+});
 
 /**
  * Initializes the credit card list by determining the saved customer payment method.
  */
-function getCardsList()
-{
+server.get('GetCardsList', function (req, res, next) {
+    // Prepare the variables
     var applicablePaymentCards;
     var data = [];
 
@@ -151,16 +151,16 @@ function getCardsList()
         }
         
         // Send the output for rendering
-        ISML.renderTemplate('custom/ajax/output.isml', {data: JSON.stringify(data)});
+        res.render('custom/ajax/output', {data: JSON.stringify(data)});
     } else {
         app.getModel('Customer').logout();
-        app.getView().render('csrf/csrffailed');
+        res.render('csrf/csrffailed');
     }
-}
 
+    next();
+});
 
-function getApmFilter()
-{
+server.get('GetApmFilter', function (req, res, next) {
     // Prepare some variables
     var basket = BasketMgr.getCurrentBasket();
     var currencyCode = basket.getCurrencyCode();
@@ -179,8 +179,9 @@ function getApmFilter()
     }
     
     // Write the response
-    response.getWriter().println(JSON.stringify(responseObject));
-}
+    res.getWriter().println(JSON.stringify(responseObject));
+    next();
+});
 
 /*
  * Module exports

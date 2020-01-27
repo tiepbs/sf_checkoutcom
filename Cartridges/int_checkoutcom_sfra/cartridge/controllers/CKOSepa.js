@@ -16,8 +16,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 
 // Initiate the mandate session
-function mandate()
-{
+server.get('Mandate', function (req, res, next) {
     // Prepare the varirables
     var url = session.privacy.redirectUrl;
     var orderId = ckoHelper.getOrderId();
@@ -25,7 +24,7 @@ function mandate()
     
     // Process the URL
     if (url) {
-        app.getView({
+        res.render('sepaForm/ajax/output', {
             // Prepare the view parameters
             creditAmount: order.totalGrossPrice.value.toFixed(2),
             formatedAmount: ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
@@ -44,36 +43,28 @@ function mandate()
             creditorCity: ckoHelper.getValue('ckoBusinessCity'),
             creditorCountry: ckoHelper.getValue('ckoBusinessCountry'),
             ContinueURL: URLUtils.https('CKOSepa-HandleMandate')
-        }).render('sepaForm');
+        });
     } else {
         // Print out a message
-        response.getWriter().println('Error!');
+        res.getWriter().println('Error!');
     }
-}
 
-function handleMandate()
-{
+    next();
+});
+
+server.get('HandleMandate', function (req, res, next) {
     // Set session redirect url to null
     session.privacy.redirectUrl = null;
     var orderId = ckoHelper.getOrderId();
     
-    app.getForm('sepaForm').handleAction({
-        cancel: function () {
-            // Clear form
-            app.getForm('sepaForm').clear();
-            
-            if (orderId) {
-                // Load the order
-                var order = OrderMgr.getOrder(orderId);
-                ckoHelper.checkAndRestoreBasket(order);
-            }
-            
-            app.getController('COBilling').Start();
-        },
-        submit: function () {
-            var sepa = app.getForm('sepaForm');
-            var mandate = sepa.get('mandate').value();
-            
+    // Get the form
+    var sepaForm = server.forms.getForm('sepaForm');
+
+    // Cancel validation
+    if (sepaForm.valid) {
+        var sepa = app.getForm('sepaForm');
+        var mandate = sepa.get('mandate').value();
+        this.on('route:BeforeComplete', function () {
             // Mandate is true
             if (mandate) {
                 // Clear form
@@ -109,16 +100,17 @@ function handleMandate()
                         app.getController('COBilling').Start();
                     }
                 } else {
-                    //app.getController('COBilling').Start();
-                    // print out a message
-                    response.getWriter().println('Error!');
+                    res.getWriter().println('Error!');
                 }
             } else {
-                app.getView().render('sepaForm');
+                res.render('sepaForm');
+                next();
             }
-        }
-    });
-}
+        });
+    }
+
+    next();
+});
 
 /*
  * Module exports
