@@ -17,9 +17,10 @@ var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 /*
 * Utility functions for my cartridge integration.
 */
-var ckoHelper = {  
+var ckoHelper = { 
+		
     /*
-     * get the required value for each mode
+     * Get the required value for each mode
      */
     getAppModeValue: function (sandboxValue, liveValue) {
         var appMode = this.getValue('ckoMode');
@@ -31,21 +32,21 @@ var ckoHelper = {
     },
     
     /*
-     * get user language
+     * Get user language
      */
     getLanguage: function () {        
         return request.locale.replace('_', '-');
     },
     
     /*
-     * get Site Name
+     * Get Site Name
      */
     getSiteName: function () {        
         return dw.system.Site.getCurrent().name;
     },
     
     /*
-     * get site Hostname
+     * Get site Hostname
      */
     getSiteHostName: function () {        
         return dw.system.Site.getCurrent().httpHostName;
@@ -62,7 +63,7 @@ var ckoHelper = {
     },
     
     /*
-     * get value from custom preferences
+     * Get value from custom preferences
      */
     getValue: function (field) {
         return dw.system.Site.getCurrent().getCustomPreferenceValue(field);
@@ -91,7 +92,7 @@ var ckoHelper = {
     },
     
     /*
-     * return order id
+     * Return order id
      */
     getOrderId: function () {
         var orderId = (this.getValue('cko3ds')) ? request.httpParameterMap.get('reference').stringValue : request.httpParameterMap.get('reference').stringValue;
@@ -103,14 +104,14 @@ var ckoHelper = {
     },
     
     /*
-     * cartridge metadata.
+     * Cartridge metadata.
      */
     getCartridgeMeta: function () {
         return this.getValue("ckoUserAgent") + ' ' + this.getValue("ckoVersion");
     },
     
     /*
-     * get Account API Keys
+     * Get Account API Keys
      */
     getAccountKeys: function () {
         var keys = {};
@@ -284,7 +285,7 @@ var ckoHelper = {
     },
 
     /*
-     * get Order Quantities
+     * Get Order Quantities
      */
     getCurrency : function () {
         var orderId = this.getOrderId();
@@ -296,7 +297,7 @@ var ckoHelper = {
     },
 
     /*
-     * Stripe spaces form number
+     * Removes white spaces form card number
      */
     getFormattedNumber: function (number) {
         var num = number;
@@ -337,7 +338,7 @@ var ckoHelper = {
     handleFail: function (gatewayResponse) {
         if (gatewayResponse) {
             // Logging
-            this.doLog('checkout.com cartridge failed response', JSON.stringify(gatewayResponse));
+            this.doLog(this._('cko.cartridge.failed', 'cko'), JSON.stringify(gatewayResponse));
         }
         
         // Load the error template
@@ -420,13 +421,13 @@ var ckoHelper = {
     },
     
     /*
-     * return customer object
+     * Return customer object
      */
     getCustomer: function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         
-        // customer object
+        // Customer object
         var customer = {
             email               : order.customerEmail,
             name                : order.customerName
@@ -436,7 +437,7 @@ var ckoHelper = {
     },
     
     /*
-     * get Basket Quantities
+     * Get Basket Quantities
      */
     getQuantity : function (args) {
         // load the card and order information
@@ -447,8 +448,8 @@ var ckoHelper = {
     },
     
     /*
-     * get Billing Descriptor Object
-     * from custom preferences
+     * Get Billing Descriptor Object
+     * From custom preferences
      */
     getBillingDescriptorObject : function () {
         
@@ -461,10 +462,10 @@ var ckoHelper = {
     },
     
     /*
-     * get Products Information
+     * Get Products Information
      */
     getProductInformation : function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         var it = order.productLineItems.iterator();
         var products = [];
@@ -481,7 +482,7 @@ var ckoHelper = {
                 "description"   : pli.productName
             }
             
-            // push to products array
+            // Push to products array
             products.push(product);
         }
         
@@ -497,10 +498,10 @@ var ckoHelper = {
     },
     
     /*
-     * return tax object
+     * Return tax object
      */
     getTaxObject : function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         
         // Prepare the tax data
@@ -520,10 +521,10 @@ var ckoHelper = {
     },
         
     /*
-     * return shipping object
+     * Return shipping object
      */
     getShippingValue : function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
         // Get shipping address object
@@ -559,10 +560,10 @@ var ckoHelper = {
     },
 
     /*
-     * get Product Names
+     * Get Product Names
      */
     getProductNames : function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
         // Prepare the iterator
@@ -579,7 +580,7 @@ var ckoHelper = {
     },
 
     /*
-     * get Product price array
+     * Get Product price array
      */
     getProductPrices : function (args) {
         // Load the card and order information
@@ -599,10 +600,10 @@ var ckoHelper = {
     },
     
     /*
-     * get Product IDs
+     * Get Product IDs
      */
     getProductIds : function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         var it = order.productLineItems.iterator();
         var productIds = [];
@@ -615,10 +616,10 @@ var ckoHelper = {
     },
     
     /*
-     * get Each Product Quantity
+     * Get Each Product Quantity
      */
     getProductQuantity : function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         
         // Prepare the iterator
@@ -635,10 +636,10 @@ var ckoHelper = {
     },
         
     /*
-     * get Each Product Quantity
+     * Get Each Product Quantity
      */
     getProductQuantities : function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         
         // Prepare the iterator
@@ -655,10 +656,10 @@ var ckoHelper = {
     },
 
     /*
-     * get Host IP
+     * Get Host IP
      */
     getHost: function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         var host = order.getRemoteHost()
         
@@ -666,7 +667,7 @@ var ckoHelper = {
     },
 
     /*
-     * return order amount
+     * Return order amount
      */
     getAmount: function (order) {
         var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getCurrency());
@@ -674,16 +675,16 @@ var ckoHelper = {
     },
     
     /*
-     * return phone object
+     * Return phone object
      */
     getPhoneObject: function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
         
-        // creating phone object
+        // Creating phone object
         var phone = {
             country_code        : null,
             number              : billingAddress.getPhone()
@@ -696,7 +697,7 @@ var ckoHelper = {
      * Return Customer FullName
      */
     getCustomerName: function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
         // Get billing address information
@@ -710,7 +711,7 @@ var ckoHelper = {
      * Return Customer FirstName
      */
     getCustomerFirstName: function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
         // Get billing address information
@@ -724,7 +725,7 @@ var ckoHelper = {
      * Return Customer LastName
      */
     getCustomerLastName: function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
         // Get billing address information
@@ -735,7 +736,7 @@ var ckoHelper = {
     },
         
     /*
-     * return capture time
+     * Return capture time
      */
     getCaptureTime: function () {
         var captureOn = this.getValue('ckoAutoCaptureTime');
@@ -793,12 +794,12 @@ var ckoHelper = {
      * Build the Billing object
      */
     getBillingObject: function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
-        // creating billing address object
+        // Creating billing address object
         var billingDetails = {
             address_line1       : billingAddress.getAddress1(),
             address_line2       : billingAddress.getAddress2(),
@@ -812,10 +813,10 @@ var ckoHelper = {
     },
     
     /*
-     * get Billing Country
+     * Get Billing Country
      */
     getBillingCountry: function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
         // Get billing address information
@@ -829,13 +830,13 @@ var ckoHelper = {
      * Build the Shipping object
      */
     getShippingObject: function (args) {
-        // load the card and order information
+        // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
         // Get shipping address object
         var shippingAddress = order.getDefaultShipment().getShippingAddress();
         
-        // creating address object
+        // Creating address object
         var shippingDetails = {
             address_line1       : shippingAddress.getAddress1(),
             address_line2       : shippingAddress.getAddress2(),
@@ -845,7 +846,7 @@ var ckoHelper = {
             country             : shippingAddress.getCountryCode().value
         };
         
-        // shipping object
+        // Shipping object
         var shipping = {
             address             : shippingDetails,
             phone               : this.getPhoneObject(args)

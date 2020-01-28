@@ -55,11 +55,11 @@ function klarnaSession()
             response.getWriter().println(JSON.stringify(gSession));
         }
     } else {
-        response.getWriter().println('Basket Not Found');
+        response.getWriter().println(ckoHelper._('cko.klarna.notFound', 'cko'));
     }
 }
 
 /*
  * Module exports
  */
-exports.klarnaSession = guard.ensure(['https'], klarnaSession);
+exports.KlarnaSession = guard.ensure(['get','https'], klarnaSession);

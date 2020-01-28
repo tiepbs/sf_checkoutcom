@@ -45,7 +45,7 @@ function mandate()
         }).render('sepaForm');
     } else {
         // Print out a message
-        response.getWriter().println('Error!');
+        response.getWriter().println(ckoHelper._('cko.sepa.error', 'cko'));
     }
 }
 
@@ -72,7 +72,7 @@ function handleMandate()
             var sepa = app.getForm('sepaForm');
             var mandate = sepa.get('mandate').value();
             
-            // Mandate is true
+            // If mandate is true
             if (mandate) {
                 // Clear form
                 app.getForm('sepaForm').clear();
@@ -107,9 +107,11 @@ function handleMandate()
                         app.getController('COBilling').Start();
                     }
                 } else {
-                    //app.getController('COBilling').Start();
-                    // print out a message
-                    response.getWriter().println('Error!');
+                    // Restore the cart
+                    ckoHelper.checkAndRestoreBasket(order);
+
+                    // Send back to the error page
+                    ISML.renderTemplate('custom/common/response/failed.isml');
                 }
             } else {
                 app.getView().render('sepaForm');
@@ -121,5 +123,5 @@ function handleMandate()
 /*
  * Module exports
  */
-exports.Mandate = guard.ensure(['get'], mandate);
-exports.HandleMandate = guard.ensure(['post'], handleMandate);
+exports.Mandate = guard.ensure(['get', 'https'], mandate);
+exports.HandleMandate = guard.ensure(['post', 'https'], handleMandate);

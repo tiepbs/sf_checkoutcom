@@ -57,7 +57,12 @@ function handleReturn()
                         ISML.renderTemplate('custom/common/response/failed.isml');
                     }
                 } else {
-                    ckoHelper.handleFail(gVerify);
+                    //ckoHelper.handleFail(gVerify);
+                    // Restore the cart
+                    ckoHelper.checkAndRestoreBasket(order);
+
+                    // Send back to the error page
+                    ISML.renderTemplate('custom/common/response/failed.isml');
                 }
             }
 
@@ -70,15 +75,16 @@ function handleReturn()
                 if (ckoHelper.paymentIsValid(gResponse)) {
                     app.getController('COSummary').ShowConfirmation(order);
                 } else {
+                	
                     ckoHelper.handleFail(gResponse);
                 }
             }
+            
         } else {
             ckoHelper.handleFail(null);
         }
     } else {
-        response.getWriter().println('error!');
-        //CKOHelper.handleFail(null);
+        CKOHelper.handleFail(null);
     }
 }
 
@@ -182,8 +188,8 @@ function getApmFilter()
 /*
  * Module exports
  */
-exports.HandleReturn = guard.ensure(['https'], handleReturn);
-exports.HandleFail = guard.ensure(['https'], handleFail);
+exports.HandleReturn = guard.ensure(['get','https'], handleReturn);
+exports.HandleFail = guard.ensure(['get','https'], handleFail);
 exports.HandleWebhook = guard.ensure(['post', 'https'], handleWebhook);
-exports.GetCardsList = guard.ensure(['https'], getCardsList);
-exports.GetApmFilter = guard.ensure(['https'], getApmFilter);
+exports.GetCardsList = guard.ensure(['post','https'], getCardsList);
+exports.GetApmFilter = guard.ensure(['get','https'], getApmFilter);
