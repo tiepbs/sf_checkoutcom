@@ -180,7 +180,7 @@
                 <display-name xml:lang="x-default">Storefront Core Folder</display-name>
                 <description xml:lang="x-default">SiteGenesis Core Folder Name</description>
                 <type>string</type>
-                <mandatory-flag>true</mandatory-flag>
+                <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
                 <default-value>sitegenesis_storefront_core</default-value>
@@ -189,7 +189,7 @@
                 <display-name xml:lang="x-default">Storefront Controller Folder</display-name>
                 <description xml:lang="x-default">SiteGenesis Controllers Folder Name</description>
                 <type>string</type>
-                <mandatory-flag>true</mandatory-flag>
+                <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
                 <default-value>sitegenesis_storefront_controllers</default-value>
