@@ -403,8 +403,9 @@ function AlternativePaymentsFilter()
                 var responseObject = JSON.parse(this.responseText);
                 var filterObject = responseObject.filterObject;
                 var apmsFilterObject = responseObject.ckoApmFilterConfig;
+                
                 for (var apms in apmsFilterObject) {                    
-                    if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmObjects.currencies.includes(filterObject.currency)) {
+                    if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmsFilterObject[apms].currencies.includes(filterObject.currency)) {
                         $('#'+ apms).show();
                     }
                 }
