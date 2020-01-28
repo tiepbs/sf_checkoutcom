@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setBox();
     
     // Set schema image
-    setSchema('#dwfrm_cardPaymentForm_number');
+    setSchema('#creditCardNumber');
 
     // Add expiration years
     setExpirationYears();
@@ -18,12 +18,12 @@ document.addEventListener('DOMContentLoaded', function () {
 // Sets schema box
 var setBox = function () {
     // Card number input styling
-    $('#dwfrm_cardPaymentForm_number').css("padding", '0');
-    $('#dwfrm_cardPaymentForm_number').css("padding-left", '40px');
+    $('#creditCardNumber').css("padding", '0');
+    $('#creditCardNumber').css("padding-left", '40px');
     
     // Get object
     var box = document.getElementById('dw_cardTypeDone');
-    var input = document.getElementById('dwfrm_cardPaymentForm_number');
+    var input = document.getElementById('creditCardNumber');
     if (input) {
         $(input.parentNode).prepend(box);
     }
@@ -85,7 +85,7 @@ var setSchema = function (inputId) {
 
 // Sets mada image in box
 var setMada = function () {
-    var input = document.getElementById('dwfrm_cardPaymentForm_number');
+    var input = document.getElementById('creditCardNumber');
     input.addEventListener('keyup', function () {
         var value = this.value;
         if (value.length > 6) {

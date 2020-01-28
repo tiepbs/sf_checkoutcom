@@ -5,7 +5,13 @@
  */
 document.addEventListener('DOMContentLoaded', function () {
     
+    checkPaymentButtonState();
+
 }, false);
+
+function checkPaymentButtonState() {
+    $('#ckoSubmitPayment').show();
+}
 
 /**
  * Retrieves the card number from the form.

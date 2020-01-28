@@ -10,7 +10,7 @@ var PaymentTransaction = require('dw/order/PaymentTransaction');
 var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 
 /* Shopper cart */
-var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
+var Cart = require('~/cartridge/models/cart');
 
 /* App */
 var app = require(SiteControllerName + '/cartridge/scripts/app');
@@ -27,19 +27,7 @@ function Handle(args)
 {
     var cart = Cart.get(args.Basket);
     var paymentMethod = args.PaymentMethodID;
-    
-    // Get card payment form
-    var paymentForm = app.getForm('cardPaymentForm');
-    
-    // Prepare card data object
-    var cardData = {
-        owner       : paymentForm.get('owner').value(),
-        number      : ckoHelper.getFormattedNumber(paymentForm.get('number').value()),
-        month       : paymentForm.get('expiration.month').value(),
-        year        : paymentForm.get('expiration.year').value(),
-        cvn         : paymentForm.get('cvn').value(),
-        cardType    : paymentForm.get('type').value()
-    };
+    var cardData = args.cardData;
     
     // Proceed with transaction
     Transaction.wrap(function () {

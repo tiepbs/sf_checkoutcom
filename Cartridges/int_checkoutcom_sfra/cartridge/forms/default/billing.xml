@@ -10,6 +10,8 @@
 
     <field formid="paymentMethod" type="string" mandatory="true" />
 
+    <include formid="creditCardFields" name="creditCard"/>
+
     <include formid="cardPayment" name="cardPaymentForm"/>
 
     <field formid="subscribe" type="boolean" checked="false" default-value="false" mandatory="false" />
