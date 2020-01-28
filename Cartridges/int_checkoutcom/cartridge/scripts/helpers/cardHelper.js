@@ -125,7 +125,8 @@ var cardHelper = {
             '3ds'                   : this.get3Ds(),
             'risk'                  : {enabled: true},
             'payment_ip'            : ckoHelper.getHost(args),
-            'metadata'              : ckoHelper.getMetadataObject(cardData, args)
+            'metadata'              : ckoHelper.getMetadataObject(cardData, args),
+            'udf5'					: ckoHelper.getMetadataString(cardData, args)
         };
         
         return chargeData;

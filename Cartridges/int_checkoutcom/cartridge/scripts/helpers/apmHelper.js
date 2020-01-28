@@ -122,7 +122,8 @@ var apmHelper = {
                 "reference"             : args.OrderNo,
                 "payment_ip"            : ckoHelper.getHost(args),
                 "metadata"              : ckoHelper.getMetadataObject(payObject, args),
-                "billing_descriptor"    : ckoHelper.getBillingDescriptorObject()
+                "billing_descriptor"    : ckoHelper.getBillingDescriptorObject(),
+                "udf5"					: ckoHelper.getMetadataString(payObject, args)
             };
             
             // Perform the request to the payment gateway

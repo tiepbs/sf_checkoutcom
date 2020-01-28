@@ -556,7 +556,7 @@ function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billin
 {   
     // Build Klarna authorization button   
     var AuthorizeBtn = "<button type='button' style='width: 100%; margin-top: 30px;' onclick='klarnaAuthorize(`" + sessionId
-    + "`, `" + klarnaContainer + "`, `" + paymentMethod + "`, ` " + JSON.stringify(billingAddress) + " ` , ` " + JSON.stringify(requestObject) + " `)'>Authorize</button>";
+    + "`, `" + klarnaContainer + "`, `" + paymentMethod + "`, ` " + JSON.stringify(billingAddress) + " ` , ` " + JSON.stringify(requestObject) + " `)'>Klarna</button>";
     var klarna = $(klarnaContainer);
     
     // Append klarna authorization button

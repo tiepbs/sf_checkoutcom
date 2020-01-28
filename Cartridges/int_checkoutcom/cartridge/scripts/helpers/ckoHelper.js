@@ -790,6 +790,30 @@ var ckoHelper = {
         return meta;
     },
     
+    
+    /*
+     * Build metadata object
+     */
+    getMetadataString: function (data, args) {
+        // Prepare the base metadata
+        var meta = 'integration_data' + this.getCartridgeMeta() . 'platform_data' + this.getValue('ckoPlatformData')
+
+        // Add the data info if needed
+        if (data.hasOwnProperty('type')) {
+            meta += 'udf1' + data.type;
+        }
+
+        // Get the payment processor
+        var paymentInstrument = args.PaymentInstrument;
+        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+
+        // Add the payment processor to the metadata
+        meta += 'payment_processor' + paymentProcessor.getID();
+    
+        return meta;
+    },
+    
+    
     /*
      * Build the Billing object
      */
