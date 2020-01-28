@@ -1,102 +1,50 @@
 'use strict';
 
+/* Server */
+var server = require('server');
+server.extend(module.superModule);
+
 /* API Includes */
-var PaymentMgr = require('dw/order/PaymentMgr');
-var Transaction = require('dw/system/Transaction');
-var ISML = require('dw/template/ISML');
-var PaymentTransaction = require('dw/order/PaymentTransaction');
+var OrderMgr = require('dw/order/OrderMgr');
+var BasketMgr = require('dw/order/BasketMgr');
+var HookMgr = require('dw/system/HookMgr');
 
-/* Shopper cart */
-var Cart = require('~/cartridge/models/cart');
-
-/* Utility */
-var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
+/** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /**
- * Verifies a credit card against a valid card number and expiration date and possibly invalidates invalid form fields.
- * If the verification was successful a credit card payment instrument is created.
+ * Handles responses from the Checkout.com payment gateway.
  */
-function Handle(args)
-{
-    var cart = Cart.get(args.Basket);
-    var paymentMethod = args.PaymentMethodID;
-    var cardData = args.cardData;
-    
-    // Proceed with transaction
-    Transaction.wrap(function () {
-        cart.removeExistingPaymentInstruments(paymentMethod);
-        var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-        paymentInstrument.creditCardHolder = cardData.owner;
-        paymentInstrument.creditCardNumber = cardData.number;
-        paymentInstrument.creditCardExpirationMonth = cardData.month;
-        paymentInstrument.creditCardExpirationYear = cardData.year;
-        paymentInstrument.creditCardType = cardData.cardType;
-    });
-    
-    return {success: true};
-}
+server.replace('SubmitPayment', server.middleware.https, function (req, res, next) {
+	// Prepare the Handle Hook Arguments
+	var args = {};
+	args.Basket = BasketMgr.getCurrentBasket();
+	args.PaymentMethodID = 'CHECKOUTCOM_CARD';
+	
+	// Prepare the card data
+	/*
+	args.cardData = {
+        number      : ckoHelper.getFormattedNumber(req.form.dwfrm_billing_creditCardFields_cardNumber),
+        month       : req.form.dwfrm_billing_creditCardFields_expirationMonth,
+        year        : req.form.dwfrm_billing_creditCardFields_expirationYear,
+        cvn         : req.form.dwfrm_billing_creditCardFields_securityCode,
+        cardType    : req.form.dwfrm_billing_creditCardFields_cardType	
+	};
+	
+	*/
+   
+    var handleResult = HookMgr.callHook(
+        'app.payment.processor.CHECKOUTCOM_CARD',
+        'Handle',
+        args
+    );
+   
+    var logger = require('dw/system/Logger').getLogger('ckodebug');
+	logger.debug('cccccc {0}', JSON.stringify(handleResult));
 
-/**
- * Authorises a payment using a credit card. The payment is authorised by using the BASIC_CREDIT processor
- * only and setting the order no as the transaction ID. Customisations may use other processors and custom
- * logic to authorise credit card payment.
- */
-function Authorize(args)
-{
-    // Preparing payment parameters
-    var paymentInstrument = args.PaymentInstrument;
-    var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
-    
-    // Add order number to the session global object
-    session.privacy.ckoOrderId = args.OrderNo;
-    
-    // Get card payment form
-    var paymentForm = app.getForm('cardPaymentForm');
-    
-    // Build card data object
-    var cardData = {
-        'name'          : paymentInstrument.creditCardHolder,
-        'number'        : ckoHelper.getFormattedNumber(paymentForm.get('number').value()),
-        'expiryMonth'   : paymentInstrument.creditCardExpirationMonth,
-        'expiryYear'    : paymentInstrument.creditCardExpirationYear,
-        'cvv'           : paymentForm.get('cvn').value(),
-        'type'          : paymentInstrument.creditCardType,
-    };
-    
-    // Make the charge request
-    var chargeResponse = cardHelper.handleCardRequest(cardData, args);
-    
-    // Handle card charge request result
-    if (chargeResponse) {
-        if (ckoHelper.getValue('cko3ds')) {
-            // 3ds redirection
-            ISML.renderTemplate('redirects/3DSecure.isml', {
-                redirectUrl: session.privacy.redirectUrl
-            });
-            
-            return {authorized: true, redirected: true};
-        } else {
-            // Create the authorization transaction
-            Transaction.wrap(function () {
-                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-            });
-            
-            return {authorized: true};
-        }
-    } else {
-        return {error: true};
-    }
-}
+});
 
 /*
  * Module exports
  */
-exports.Handle = Handle;
-exports.Authorize = Authorize;
+module.exports = server.exports();
