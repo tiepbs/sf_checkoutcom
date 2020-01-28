@@ -6,14 +6,8 @@ var Transaction = require('dw/system/Transaction');
 var ISML = require('dw/template/ISML');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
 
-/* Site controller */
-var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
-
 /* Shopper cart */
 var Cart = require('~/cartridge/models/cart');
-
-/* App */
-var app = require(SiteControllerName + '/cartridge/scripts/app');
 
 /* Utility */
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
