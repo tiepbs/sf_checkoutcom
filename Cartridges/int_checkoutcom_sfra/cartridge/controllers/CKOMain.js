@@ -25,7 +25,7 @@ var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig'
 server.post('HandleReturn', function (req, res, next) {
     // Prepare some variables
     var gResponse = false;
-    var mode = ckoHelper.getValue('ckoMode');
+    var mode = ckoHelper.getValue('ckoMode').value;
     var orderId = ckoHelper.getOrderId();
     
     // If there is a track id

@@ -780,11 +780,11 @@ var ckoHelper = {
         }
 
         // Get the payment processor
-        var paymentInstrument = args.PaymentInstrument;
-        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+        //var paymentInstrument = args.PaymentInstrument;
+        //var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 
         // Add the payment processor to the metadata
-        meta.payment_processor = paymentProcessor.getID();
+        meta.payment_processor = args.ProcesssorID;
     
         return meta;
     },

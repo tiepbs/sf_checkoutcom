@@ -29,7 +29,7 @@ var googlePayHelper = {
 
         // Perform the request to the payment gateway
         var tokenResponse = ckoHelper.gatewayClientRequest(
-            "cko.network.token." + ckoHelper.getValue('ckoMode') + ".service",
+            "cko.network.token." + ckoHelper.getValue('ckoMode').value + ".service",
             requestData
         );
 
@@ -51,7 +51,7 @@ var googlePayHelper = {
 
             // Perform the request to the payment gateway
             var gatewayResponse = ckoHelper.gatewayClientRequest(
-                "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
+                "cko.card.charge." + ckoHelper.getValue('ckoMode').value + ".service",
                 chargeData
             );
 

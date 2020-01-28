@@ -25,7 +25,7 @@ var cardHelper = {
         if (this.preAuthorizeCard(gatewayRequest)) {
             // Perform the request to the payment gateway
             var gatewayResponse = ckoHelper.gatewayClientRequest(
-                "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
+                "cko.card.charge." + ckoHelper.getValue('ckoMode').value + ".service",
                 gatewayRequest
             );
         
@@ -96,7 +96,7 @@ var cardHelper = {
         
         // Send the request
         var authResponse = ckoHelper.gatewayClientRequest(
-            'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
+            'cko.card.charge.' + ckoHelper.getValue('ckoMode').value + '.service',
             authData
         );
         
@@ -128,6 +128,10 @@ var cardHelper = {
             'metadata'              : ckoHelper.getMetadataObject(cardData, args)
         };
         
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('chargeData {0}', JSON.stringify(chargeData));
+    
+
         return chargeData;
     },
     
@@ -141,7 +145,6 @@ var cardHelper = {
             number              : cardData.number,
             expiry_month        : cardData.expiryMonth,
             expiry_year         : cardData.expiryYear,
-            name                : cardData.name,
             cvv                 : cardData.cvv,
             billing_address     : this.getBillingObject(args),
             phone               : ckoHelper.getPhoneObject(args)
