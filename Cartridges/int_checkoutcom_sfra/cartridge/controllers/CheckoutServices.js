@@ -11,6 +11,7 @@ var PaymentMgr = require('dw/order/PaymentMgr');
 var Transaction = require('dw/system/Transaction');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Money = require('dw/value/Money');
+var URLUtils = require('dw/web/URLUtils');
 
 /** Utility **/
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
@@ -70,7 +71,16 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
         paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
         paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
         paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+        
+        
+        res.redirect(URLUtils.url('Order-Confirm', 'ID', order.orderNo, 'token', order.orderToken).toString());
+        //res.redirect(URLUtils.url('Checkout-Begin', 'stage', 'payment', 'paymentError', Resource.msg('error.payment.not.valid', 'checkout', null)));
+
+
+        return next();
+        
     });
+    
 });
 
 /*
