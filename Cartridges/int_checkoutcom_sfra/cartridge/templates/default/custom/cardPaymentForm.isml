@@ -59,10 +59,6 @@ AAAAAAAAA
 		<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.mada}" id="mada" />
 	</isif>
 	
-	<script src="${URLUtils.staticURL('/js/checkoutcom.js')}"></script>
-	<isif condition="${pdict.CurrentCustomer.authenticated}">
-		<input type="hidden" id="ckoCardListUrl" value="${URLUtils.https('CKOMain-GetCardsList')}" />
-	</isif>
 	
 	<!-- APM filter URL -->
 	<input type="hidden" id="ckoApmFilterUrl" value="${URLUtils.https('CKOMain-GetApmFilter')}" />
@@ -70,4 +66,5 @@ AAAAAAAAA
 
 <!-- Imort card formatting scripts -->
 <script src="${URLUtils.staticURL('/js/cleave.js')}"></script>
+<script src="${URLUtils.staticURL('/js/checkoutcom.js')}"></script>
 <script src="${URLUtils.staticURL('js/cardPayment.js')}"></script>
