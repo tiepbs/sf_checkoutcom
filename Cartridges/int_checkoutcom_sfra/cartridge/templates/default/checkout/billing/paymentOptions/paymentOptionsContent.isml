@@ -1,3 +1,4 @@
-<isinclude template="custom/cardPaymentForm"/>
+<isinclude template="custom/card"/>
 
+<isinclude template="custom/apm"/>
 

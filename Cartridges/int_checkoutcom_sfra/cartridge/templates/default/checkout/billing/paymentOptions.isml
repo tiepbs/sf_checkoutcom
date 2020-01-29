@@ -20,9 +20,9 @@
            value="paymentMethod">
 
     <isset name="creditFields" value="${pdict.forms.billingForm.creditCardFields}" scope="page"/>
-<div class="credit-card-selection-new" >
-    <div class="tab-content">
-        <isinclude template="checkout/billing/paymentOptions/paymentOptionsContent" />
+    <div class="credit-card-selection-new" >
+        <div class="tab-content">
+            <isinclude template="checkout/billing/paymentOptions/paymentOptionsContent" />
+        </div>
     </div>
-</div>
 </fieldset>
