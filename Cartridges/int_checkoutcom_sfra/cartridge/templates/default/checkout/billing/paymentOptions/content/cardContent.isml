@@ -4,7 +4,7 @@
 </isscript>
 
 <!-- applicable credit cards -->
-<div class="tab-pane" id="cko-card-tab-content" role="tabpanel">
+<div class="tab-pane" id="cko-card-content" role="tabpanel">
     <fieldset class="payment-form-fields">
         <!-- payment method is credit card -->
         <input type="hidden" class="form-control"
@@ -35,7 +35,3 @@
         </fieldset>
     </fieldset>
 </div>
-
-<button id="ckoSubmitPayment" class="btn btn-primary btn-block submit-payment ${pdict.paidWithPayPal ? 'checkout-hidden' : ''}" type="submit" name="submit" value="submit-payment">
-	${Resource.msg('button.next.place.order', 'checkout', null)}
-</button>

@@ -1,6 +1,6 @@
 <!-- APMs -->
 
-<div class="tab-pane" id="cko-apm-tab-content" role="tabpanel">
+<div class="tab-pane" id="cko-apm-content" role="tabpanel">
     <fieldset class="payment-form-fields">
 		<div id="apmsBox">
 			<!-- This to include the ideal pay apm form -->
