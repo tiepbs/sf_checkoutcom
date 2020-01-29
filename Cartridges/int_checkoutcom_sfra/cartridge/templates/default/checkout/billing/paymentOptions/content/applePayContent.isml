@@ -1,1 +1,5 @@
-APPLE PAY
+<div class="tab-pane" id="cko-apple-pay-tab-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+    APPLE PAY
+    </fieldset>
+</div>

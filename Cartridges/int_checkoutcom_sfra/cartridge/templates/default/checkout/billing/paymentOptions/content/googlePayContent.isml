@@ -1,1 +1,5 @@
-GOOGLE PAY
+<div class="tab-pane" id="cko-google-pay-tab-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+    GOOGLE PAY
+    </fieldset>
+</div>
