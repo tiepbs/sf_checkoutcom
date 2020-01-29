@@ -1,10 +1,15 @@
 <isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="paymentOption" status="loopSate">
-    <isif condition="${paymentOption.ID === 'CREDIT_CARD'}">
-        <isinclude template="checkout/billing/paymentOptions/creditCardTab"/>
-        <isslot id="available-payment-methods" description="Available Payment Methods" context="global"/>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_CARD'}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/cardTab"/>
     </isif>
-    <isif condition="${paymentOption.ID === 'Adyen'}">
-        <isinclude template="checkout/billing/paymentOptions/alternativePaymentMethodTab"/>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APM'}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apmTab"/>
+    </isif>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY'}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/applePayTab"/>
+    </isif>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY'}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/googlePayTab"/>
     </isif>
 </isloop>
 

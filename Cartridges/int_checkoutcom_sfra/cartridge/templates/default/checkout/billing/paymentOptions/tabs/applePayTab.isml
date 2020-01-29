@@ -1,0 +1,10 @@
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link credit-card-tab active" data-toggle="tab" href="#cko-apple-pay-tab-content" role="tab">
+        <img class="credit-card-option"
+                src="${URLUtils.staticURL('/images/card-schema.png')}"
+                height="32"
+                alt="${paymentOption.name}"
+                title="${paymentOption.name}"
+        >
+    </a>
+</li>

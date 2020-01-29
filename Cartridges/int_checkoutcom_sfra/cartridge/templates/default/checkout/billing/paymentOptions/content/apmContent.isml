@@ -5,7 +5,7 @@
 	<!-- This to include the ideal pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoIdealEnabled'))}">
 		<div id="ideal" style="display: none;">
-			<isinclude template="custom/apm/ideal.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/ideal.isml"/>
 		</div>
 	</isif>	
 		
@@ -13,7 +13,7 @@
 	<!-- This to include the boleto pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBoletoEnabled'))}">
 		<div id="boleto" style="display: none;">	
-			<isinclude template="custom/apm/boleto.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/boleto.isml"/>
 		</div>
 	</isif>
 	
@@ -21,7 +21,7 @@
 	<!-- This to include the bancontact pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBancontactEnabled'))}">
 		<div id="bancontact" style="display: none;">	
-			<isinclude template="custom/apm/bancontact.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/bancontact.isml"/>
 		</div>
 	</isif>
 	
@@ -29,7 +29,7 @@
 	<!-- This to include the benefit pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBenefitEnabled'))}">
 		<div id="benefit" style="display: none;">	
-			<isinclude template="custom/apm/benefit.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/benefit.isml"/>
 		</div>
 	</isif>
 	
@@ -37,7 +37,7 @@
 	<!-- This to include the giro pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGiroEnabled'))}">
 		<div id="giro" style="display: none;">	
-			<isinclude template="custom/apm/giro.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/giro.isml"/>
 		</div>
 	</isif>
 	
@@ -45,7 +45,7 @@
 	<!-- This to include the eps pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEpsEnabled'))}">
 		<div id="eps" style="display: none;">	
-			<isinclude template="custom/apm/eps.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/eps.isml"/>
 		</div>
 	</isif>
 	
@@ -53,7 +53,7 @@
 	<!-- This to include the sofort pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSofortEnabled'))}">
 		<div id="sofort" style="display: none;">		
-			<isinclude template="custom/apm/sofort.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/sofort.isml"/>
 		</div>
 	</isif>
 	
@@ -61,7 +61,7 @@
 	<!-- This to include the knet pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoKnetEnabled'))}">
 		<div id="knet" style="display: none;">
-			<isinclude template="custom/apm/knet.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/knet.isml"/>
 		</div>
 	</isif>
 	
@@ -69,7 +69,7 @@
 	<!-- This to include the qpay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoQpayEnabled'))}">
 		<div id="qpay" style="display: none;">	
-			<isinclude template="custom/apm/qpay.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/qpay.isml"/>
 		</div>
 	</isif>
 	
@@ -77,7 +77,7 @@
 	<!-- This to include the fawry apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoFawryEnabled'))}">
 		<div id="fawry" style="display: none;">	
-			<isinclude template="custom/apm/fawry.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/fawry.isml"/>
 		</div>
 	</isif>
 	
@@ -85,7 +85,7 @@
 	<!-- This to include the sepa apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSepaEnabled'))}">
 		<div id="sepa" style="display: none;">	
-			<isinclude template="custom/apm/sepa.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/sepa.isml"/>
 		</div>
 	</isif>
 	
@@ -93,7 +93,7 @@
 	<!-- This to include the multibanco apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMultibancoEnabled'))}">
 		<div id="multibanco" style="display: none;">	
-			<isinclude template="custom/apm/multibanco.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/multibanco.isml"/>
 		</div>
 	</isif>
 	
@@ -101,7 +101,7 @@
 	<!-- This to include the poli apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoPoliEnabled'))}">
 		<div id="poli" style="display: none;">	
-			<isinclude template="custom/apm/poli.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/poli.isml"/>
 		</div>
 	</isif>
 	
@@ -109,14 +109,14 @@
 	<!-- This to include the p24 apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoP24Enabled'))}">
 		<div id="p24" style="display: none;">
-			<isinclude template="custom/apm/p24.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/p24.isml"/>
 		</div>
 	</isif>
 	
 	<!-- This to include the Oxxo apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoOxxoEnabled'))}">
 		<div id="oxxo" style="display: none;">	
-			<isinclude template="custom/apm/oxxo.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/oxxo.isml"/>
 		</div>
 	</isif>
 	
@@ -124,7 +124,7 @@
 	<!-- This to include the klarna apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoKlarnaEnabled'))}">
 		<div id="klarna" style="display: none;">	
-			<isinclude template="custom/apm/klarna.isml"/>	
+			<isinclude template="checkout/billing/paymentOptions/content/apm/klarna.isml"/>	
 		</div>
 	</isif>
 	
@@ -132,7 +132,7 @@
 	<!-- This to include the Paypal apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoPaypalEnabled'))}">
 		<div id="paypal">	
-			<isinclude template="custom/apm/paypal.isml"/>
+			<isinclude template="checkout/billing/paymentOptions/content/apm/paypal.isml"/>
 		</div>
 	</isif>
 	

@@ -1,4 +1,15 @@
-<isinclude template="custom/card"/>
 
-<isinclude template="custom/apm"/>
-
+<isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="paymentOption" status="loopSate">
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_CARD'}">
+        <isinclude template="checkout/billing/paymentOptions/content/cardContent"/>
+    </isif>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APM'}">
+        <isinclude template="checkout/billing/paymentOptions/content/apmContent"/>
+    </isif>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY'}">
+        <isinclude template="checkout/billing/paymentOptions/content/applePayContent"/>
+    </isif>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY'}">
+        <isinclude template="checkout/billing/paymentOptions/content/googlePayContent"/>
+    </isif>
+</isloop>
