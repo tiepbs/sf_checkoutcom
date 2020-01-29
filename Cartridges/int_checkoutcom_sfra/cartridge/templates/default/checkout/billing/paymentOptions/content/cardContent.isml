@@ -1,8 +1,3 @@
-<isscript>
-    var assets = require('*/cartridge/scripts/assets.js');
-    assets.addJs('/js/checkoutcom.js');
-</isscript>
-
 <!-- applicable credit cards -->
 <div class="tab-pane" id="cko-card-content" role="tabpanel">
     <fieldset class="payment-form-fields">
