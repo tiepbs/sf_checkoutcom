@@ -4,7 +4,7 @@
         <!-- payment method is credit card -->
         <input type="hidden" class="form-control"
                 name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-                value="${pdict.selectedPayment != 'PAYPAL' ? 'CREDIT_CARD' : 'PAYPAL'}"
+                value="CHECKOUTCOM_CARD"
         >
 
         <!-- register/authenticated user -->
