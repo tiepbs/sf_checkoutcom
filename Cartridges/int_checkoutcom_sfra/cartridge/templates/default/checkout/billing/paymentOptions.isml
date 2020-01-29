@@ -9,7 +9,6 @@
      data-payment-method-id=""
      data-is-new-payment="${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? false : true}"
 >
-
     <ul class="nav nav-tabs nav-fill payment-options" id="paymentOptions" role="tablist">
         <isinclude template="checkout/billing/paymentOptions/paymentOptionsTabs"/>
     </ul>
