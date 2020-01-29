@@ -71,8 +71,9 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
         paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
         paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
         
-        
+        // Check the response
         if (ckoHelper.paymentSuccess(chargeResponse)) {
+        	// Redirect to the confirmation page
             res.redirect(
                 URLUtils.url(
                     'Order-Confirm',
@@ -84,9 +85,22 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
             );
         }
         else {
+            // Fail the order
+            Transaction.wrap(function () {
+                OrderMgr.failOrder(order);
+            });
+            
+            // Restore the cart
+            ckoHelper.checkAndRestoreBasket(order);
+
+            // Redirect to the checkout process
             res.redirect(
                 URLUtils.url(
-                    'Checkout-Begin'
+                    'Checkout-Begin',
+                    'stage',
+                    'payment',
+                    'paymentError',
+                    Resource.msg('error.payment.not.valid', 'checkout', null)
                 )
             );
         }
