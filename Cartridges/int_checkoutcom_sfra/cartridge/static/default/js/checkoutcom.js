@@ -18,9 +18,13 @@ function paymentButtonsState() {
 }
 
 function paymentTabsState() {
-	var allTabs = $('.payment-options a.nav-link');
+	// Show the first active
+	$('.card-tab').trigger('click');
+
+	// Handle the click navigation
+	var allTabs = $('.ckoPaymentOptions .payment-options a.nav-link');
 	allTabs.click(function () {
-		$('.tab-pane').hide();
+		$('.ckoPaymentOptions .tab-pane').hide();
 		$($(this).attr('href')).show();
 	});
 }

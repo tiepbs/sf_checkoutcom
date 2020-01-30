@@ -21,7 +21,7 @@
 
     <isset name="creditFields" value="${pdict.forms.billingForm.creditCardFields}" scope="page"/>
     <div class="credit-card-selection-new" >
-        <div class="tab-content">
+        <div class="tab-content ckoPaymentOptions">
             <isinclude template="checkout/billing/paymentOptions/paymentOptionsContent" />
         </div>
     </div>
