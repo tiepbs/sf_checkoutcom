@@ -5,7 +5,9 @@
 				value="${paymentOption.ID}"
         >
         <fieldset class="">
-        GOOGLE PAY
+			<div>
+            GOOGLE PAY
+            </div>
         </fieldset>
     </fieldset>
 </div>
