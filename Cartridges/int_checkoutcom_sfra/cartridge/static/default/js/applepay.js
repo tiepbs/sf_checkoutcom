@@ -168,7 +168,7 @@ function launchApplePay()
 
                         if (success) {
                             // Redirect to success page
-                            jQuery('[id="dwfrm_applePayForm_data"]').val(JSON.stringify(payload));
+                            jQuery('[id="ckoApplePayData"]').val(JSON.stringify(payload));
                         }
                     }
                 ).catch(
