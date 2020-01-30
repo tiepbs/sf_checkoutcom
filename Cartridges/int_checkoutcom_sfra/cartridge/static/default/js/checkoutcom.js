@@ -6,11 +6,23 @@
 document.addEventListener('DOMContentLoaded', function() {
 	// Handle payment buttons state
 	paymentButtonsState();
+
+	// Handle payment tabs state
+	paymentTabsState();
+
 }, false);
 
 function paymentButtonsState() {
     $('button.submit-payment').hide();
     $('#ckoSubmitPayment').show();
+}
+
+function paymentTabsState() {
+	var allTabs = $('.payment-options a.nav-link');
+	allTabs.click(function () {
+		$('.tab-pane').hide();
+		$($(this).attr('href')).show();
+	});
 }
 
 /**
