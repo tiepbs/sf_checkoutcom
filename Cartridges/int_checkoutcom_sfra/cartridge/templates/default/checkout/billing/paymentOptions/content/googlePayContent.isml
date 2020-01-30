@@ -1,5 +1,11 @@
 <div class="tab-pane" id="cko-google-pay-content" role="tabpanel">
     <fieldset class="payment-form-fields">
-    GOOGLE PAY
+        <input type="hidden" class="form-control"
+                name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+                value="CHECKOUTCOM_GOOGLE_PAY"
+        >
+        <fieldset class="">
+        GOOGLE PAY
+        </fieldset>
     </fieldset>
 </div>
