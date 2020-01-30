@@ -16,8 +16,8 @@
 
 <fieldset>
     <input type="hidden" class="form-control" id="selectedPaymentOption"
-           name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-           value="paymentMethod">
+        name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+    >
 
     <isset name="creditFields" value="${pdict.forms.billingForm.creditCardFields}" scope="page"/>
     <div class="credit-card-selection-new" >

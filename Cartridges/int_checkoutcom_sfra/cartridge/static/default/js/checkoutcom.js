@@ -18,6 +18,13 @@ function paymentButtonsState() {
 	
 	// Show the custom form button
 	$('#ckoSubmitPayment').show();
+	
+	// Disable card validation if option not active
+	$('#dwfrm_billing').submit(function() {
+		if ($('#selectedPaymentOption').val() != 'CHECKOUTCOM_CARD') {
+			e.preventDefault();
+		}
+	});
 }
 
 function paymentTabsState() {
@@ -29,6 +36,9 @@ function paymentTabsState() {
 	allTabs.click(function () {
 		$('.ckoPaymentOptions .tab-pane').hide();
 		$($(this).attr('href')).show();
+		$('#selectedPaymentOption').val(
+			$(this).closest('li').data('method-id')
+		);
 	});
 	
 	// Show the first active
