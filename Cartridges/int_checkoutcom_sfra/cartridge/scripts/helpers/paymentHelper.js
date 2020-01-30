@@ -101,6 +101,12 @@ var paymentHelper = {
 
             return next();
         });
+    },
+    checkoutcomGooglePayRequest: function (paymentMethodId, req, res, next) {
+    },
+    checkoutcomApplePayRequest: function (paymentMethodId, req, res, next) {
+    },
+    checkoutcomApmRequest: function (paymentMethodId, req, res, next) {
     }
 }
 
