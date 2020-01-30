@@ -4,25 +4,26 @@
 var server = require('server');
 server.extend(module.superModule);
 
-/* API Includes */
-var OrderMgr = require('dw/order/OrderMgr');
-var BasketMgr = require('dw/order/BasketMgr');
-var Transaction = require('dw/system/Transaction');
-var PaymentTransaction = require('dw/order/PaymentTransaction');
-var URLUtils = require('dw/web/URLUtils');
-var Resource = require('dw/web/Resource');
-
 /** Utility **/
-var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
-var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
+var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
 
 /**
- * Handles responses from the Checkout.com payment gateway.
+ * Handles requests to the Checkout.com payment gateway.
  */
 server.replace('SubmitPayment', server.middleware.https, function (req, res, next) {
     // Set the payment method ID
-    var paymentMethodID = 'CHECKOUTCOM_CARD';
+    var paymentMethodID = req.form.dwfrm_billing_paymentMethod;
     
+    // Get a camel case function name from event type
+    var func = '';
+    var parts = paymentMethodID.split('_');
+    for (var i = 0; i < parts.length; i++) {
+        func += (i == 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+    }
+
+    // Process the request
+    paymentHelper[func](paymentMethodID);
+
     // Transaction wrapper
     Transaction.wrap(function () {
         // Get the current basket
