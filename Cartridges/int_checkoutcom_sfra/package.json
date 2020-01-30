@@ -1,0 +1,12 @@
+{
+	"hooks": "./cartridge/scripts/hooks.json",
+    "init": [
+        "./cartridge/scripts/init/verifyChargesInit.js",
+        "./cartridge/scripts/init/cardChargeInit.js",  
+        "./cartridge/scripts/init/cardSourcesInit.js",
+        "./cartridge/scripts/init/klarnaSessionInit.js",
+        "./cartridge/scripts/init/paymentActionsInit.js",
+        "./cartridge/scripts/init/networkTokenInit.js"
+
+    ]   	
+}
