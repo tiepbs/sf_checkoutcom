@@ -6,6 +6,5 @@
         "./cartridge/scripts/init/klarnaSessionInit.js",
         "./cartridge/scripts/init/paymentActionsInit.js",
         "./cartridge/scripts/init/networkTokenInit.js"
-
     ]   	
 }
