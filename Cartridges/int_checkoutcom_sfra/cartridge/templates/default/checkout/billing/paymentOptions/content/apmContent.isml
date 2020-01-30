@@ -4,7 +4,7 @@
     <fieldset class="payment-form-fields">
 		<input type="hidden" class="form-control"
 				name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-				value="CHECKOUTCOM_APM"
+				value="${paymentOption.ID}"
 		>
 		<fieldset class="">
 			<div id="apmsBox">
