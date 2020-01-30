@@ -12,17 +12,17 @@ var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
  */
 server.replace('SubmitPayment', server.middleware.https, function (req, res, next) {
     // Set the payment method ID
-    var paymentMethodID = req.form.dwfrm_billing_paymentMethod;
+    var paymentMethodId = req.form.dwfrm_billing_paymentMethod;
     
     // Get a camel case function name from event type
     var func = '';
-    var parts = paymentMethodID.split('_');
+    var parts = paymentMethodId.split('_');
     for (var i = 0; i < parts.length; i++) {
         func += (i == 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
     }
 
     // Process the request
-    paymentHelper[func](paymentMethodID);
+    paymentHelper[func](paymentMethodId);
 
     // Transaction wrapper
     Transaction.wrap(function () {
@@ -45,13 +45,13 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
         session.privacy.ckoOrderId = order.orderNo;
 
         // Create a new payment instrument
-        var paymentInstrument = currentBasket.createPaymentInstrument(paymentMethodID, currentBasket.totalGrossPrice);
+        var paymentInstrument = currentBasket.createPaymentInstrument(paymentMethodId, currentBasket.totalGrossPrice);
         //var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();    
 
 	    // Make the charge request
 	    var args = {
 	        OrderNo: order.orderNo,
-	        ProcesssorID: paymentMethodID
+	        ProcesssorID: paymentMethodId
 	    };
 
 	    // Handle the charge request

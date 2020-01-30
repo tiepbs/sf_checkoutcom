@@ -18,7 +18,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 * Utility functions for my cartridge integration.
 */
 var paymentHelper = {  
-    checkoutcomCardRequest: function (paymentMethodID) {
+    checkoutcomCardRequest: function (paymentMethodId) {
 
     }
 }
