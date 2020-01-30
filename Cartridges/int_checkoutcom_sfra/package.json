@@ -1,5 +1,4 @@
 {
-	"hooks": "./cartridge/scripts/hooks.json",
     "init": [
         "./cartridge/scripts/init/verifyChargesInit.js",
         "./cartridge/scripts/init/cardChargeInit.js",  
