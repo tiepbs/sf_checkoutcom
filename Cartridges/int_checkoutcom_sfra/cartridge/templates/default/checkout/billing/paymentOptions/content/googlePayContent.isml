@@ -24,7 +24,7 @@
             <input type="hidden" id="ckoGooglePayCurrency" value="${session.getCurrency().getCurrencyCode()}">
             <input type="hidden" id="ckoGooglePayAmount" value="${orderAmount}">
             <input type="hidden" id="ckoGatewayMerchantId" value="${gatewayMerchantId}">
-            <input type="hidden" id="googlePayData"/>
+            <input type="hidden" id="ckoGooglePayData"/>
         </fieldset>
     </fieldset>
 </div>
