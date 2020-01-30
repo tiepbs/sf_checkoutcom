@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <form xmlns="http://www.demandware.com/xml/form/2008-04-19">
-    <field formid="paymentMethod" type="string" mandatory="true"/>
+    <field formid="paymentMethod" type="string" mandatory="false"/>
 
     <field formid="cardType" label="profile.cardtype" type="string" mandatory="false" binding="cardType"
            max-length="16" missing-error="error.message.required"/>
@@ -45,10 +45,4 @@
     <field formid="saveCard" label="label.save.card" binding="saveCard" type="boolean" mandatory="false"
            checked="false"/>
 
-
-    <field formid="browserInfo" label="browserInfo" type="string" mandatory="false"
-           binding="browserInfo"/>
-
-    <!--  field  for  credit  card  recurring  payments  /  tokenization  -->
-    <field formid="selectedCardID" mandatory="false" type="string"/>
 </form>

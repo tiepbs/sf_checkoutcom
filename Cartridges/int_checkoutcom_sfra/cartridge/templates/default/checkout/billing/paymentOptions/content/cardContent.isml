@@ -1,13 +1,12 @@
-<!-- applicable credit cards -->
 <div class="tab-pane" id="cko-card-content" role="tabpanel">
     <fieldset class="payment-form-fields">
-        <!-- payment method is credit card -->
+        <!-- Payment method is credit card -->
         <input type="hidden" class="form-control"
                 name="${pdict.forms.billingForm.paymentMethod.htmlName}"
 				value="${paymentOption.ID}"
         >
 
-        <!-- register/authenticated user -->
+        <!-- Registered/authenticated user -->
         <isif condition="${pdict.customer.registeredUser}">
             <div class="user-payment-instruments container ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? '' : 'checkout-hidden'}">
                 <!-- Stored user payments -->
