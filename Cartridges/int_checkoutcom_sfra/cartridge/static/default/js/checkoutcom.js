@@ -4,14 +4,25 @@
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function() {
+	// Handle payment buttons state
+	paymentButtonsState();
 
-	checkPaymentButtonState();
+	// Handle payment tabs state
+	paymentTabsState();
 
 }, false);
 
-function checkPaymentButtonState() {
+function paymentButtonsState() {
     $('button.submit-payment').hide();
     $('#ckoSubmitPayment').show();
+}
+
+function paymentTabsState() {
+	var allTabs = $('.payment-options a.nav-link');
+	allTabs.click(function () {
+		$('.credit-card-form').hide();
+		$($(this).attr('href')).show();
+	});
 }
 
 /**
