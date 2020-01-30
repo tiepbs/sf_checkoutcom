@@ -13,8 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 function paymentButtonsState() {
-    $('button.submit-payment').hide();
-    $('#ckoSubmitPayment').show();
+	// Hide the global form button
+	$('button.submit-payment').hide();
+	
+	// Show the custom form button
+	$('#ckoSubmitPayment').show();
 }
 
 function paymentTabsState() {
