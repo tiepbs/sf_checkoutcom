@@ -18,15 +18,18 @@ function paymentButtonsState() {
 }
 
 function paymentTabsState() {
-	// Show the first active
-	$('.card-tab').trigger('click');
+	// Remove all active classes
+	$('.ckoPaymentOptions .tab-pane').hide();
 
 	// Handle the click navigation
-	var allTabs = $('.ckoPaymentOptions .payment-options a.nav-link');
+	var allTabs = $('.payment-options a.nav-link');
 	allTabs.click(function () {
 		$('.ckoPaymentOptions .tab-pane').hide();
 		$($(this).attr('href')).show();
 	});
+	
+	// Show the first active
+	$('.card-tab').trigger('click');
 }
 
 /**
