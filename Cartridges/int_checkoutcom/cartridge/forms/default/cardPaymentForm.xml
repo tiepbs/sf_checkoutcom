@@ -4,7 +4,7 @@
     <field formid="payment_method" type="string" mandatory="false" max-length="40" default-value="card" binding="payment_method" />
 	
 	<!-- Field for Payment Option -->
-    <field formid="cardPayment" type="boolean" label="PAY WITH CARD" mandatory="false" binding="cardPayment" />
+    <!-- <field formid="cardPayment" type="boolean" label="PAY WITH CARD" mandatory="false" binding="cardPayment" /> -->
 	 
 	<group formid="expiration"> 
 		<!-- Field for credit card expiration month -->

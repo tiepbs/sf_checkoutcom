@@ -17,7 +17,7 @@ var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 /*
 * Utility functions for my cartridge integration.
 */
-var ckoUtility = {  
+var ckoHelper = {  
     /*
      * get the required value for each mode
      */
@@ -780,11 +780,11 @@ var ckoUtility = {
         }
 
         // Get the payment processor
-        var paymentInstrument = args.PaymentInstrument;
-        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+        //var paymentInstrument = args.PaymentInstrument;
+        //var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 
         // Add the payment processor to the metadata
-        meta.payment_processor = paymentProcessor.getID();
+        meta.payment_processor = args.ProcesssorID;
     
         return meta;
     },
@@ -996,4 +996,4 @@ var ckoUtility = {
 /*
 * Module exports
 */
-module.exports = ckoUtility;
+module.exports = ckoHelper;

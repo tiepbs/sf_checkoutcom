@@ -1,0 +1,9 @@
+<!-- Multibanco pay APM Option -->
+<H4>
+	<img alt="poliPay" id="poliPay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/poli.png')}" width="10%"/>
+	${Resource.msg('cko.poli.name','cko',null)} 
+	<input id="poliPay_apm_radio_btn" type="radio" name="apm_payment_types" value="poli">
+</H4>
+
+
+<hr/>

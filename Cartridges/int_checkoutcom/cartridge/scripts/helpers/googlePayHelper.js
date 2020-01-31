@@ -6,7 +6,7 @@ var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 
 /** Utility **/
-var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /*
 * Utility functions for my cartridge integration.
@@ -28,8 +28,8 @@ var googlePayHelper = {
         };
 
         // Perform the request to the payment gateway
-        var tokenResponse = ckoUtility.gatewayClientRequest(
-            "cko.network.token." + ckoUtility.getValue('ckoMode') + ".service",
+        var tokenResponse = ckoHelper.gatewayClientRequest(
+            "cko.network.token." + ckoHelper.getValue('ckoMode') + ".service",
             requestData
         );
 
@@ -37,26 +37,26 @@ var googlePayHelper = {
         if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
             var chargeData = {
                 "source"                : this.getSourceObject(tokenResponse),
-                "amount"                : ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency()),
-                "currency"              : ckoUtility.getCurrency(),
+                "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
+                "currency"              : ckoHelper.getCurrency(),
                 "reference"             : args.OrderNo,
-                "capture"               : ckoUtility.getValue('ckoAutoCapture'),
-                "capture_on"            : ckoUtility.getCaptureTime(),
-                "customer"              : ckoUtility.getCustomer(args),
-                "billing_descriptor"    : ckoUtility.getBillingDescriptorObject(),
-                "shipping"              : ckoUtility.getShippingObject(args),
-                "payment_ip"            : ckoUtility.getHost(args),
-                "metadata"              : ckoUtility.getMetadataObject([], args)
+                "capture"               : ckoHelper.getValue('ckoAutoCapture'),
+                "capture_on"            : ckoHelper.getCaptureTime(),
+                "customer"              : ckoHelper.getCustomer(args),
+                "billing_descriptor"    : ckoHelper.getBillingDescriptorObject(),
+                "shipping"              : ckoHelper.getShippingObject(args),
+                "payment_ip"            : ckoHelper.getHost(args),
+                "metadata"              : ckoHelper.getMetadataObject([], args)
             };
 
             // Perform the request to the payment gateway
-            var gatewayResponse = ckoUtility.gatewayClientRequest(
-                "cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service",
+            var gatewayResponse = ckoHelper.gatewayClientRequest(
+                "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
                 chargeData
             );
 
             // Validate the response
-            if (ckoUtility.paymentSuccess(gatewayResponse)) {
+            if (ckoHelper.paymentSuccess(gatewayResponse)) {
                 return gatewayResponse;
             }
 
@@ -68,7 +68,7 @@ var googlePayHelper = {
             });
             
             // Restore the cart
-            ckoUtility.checkAndRestoreBasket(order);
+            ckoHelper.checkAndRestoreBasket(order);
             
             return false;
         }
@@ -79,10 +79,10 @@ var googlePayHelper = {
      */
     handleResponse: function (gatewayResponse) {
         // Logging
-        ckoUtility.doLog('response', gatewayResponse);
+        ckoHelper.doLog('response', gatewayResponse);
         
         // Update customer data
-        ckoUtility.updateCustomerData(gatewayResponse);
+        ckoHelper.updateCustomerData(gatewayResponse);
     },
     
     /*

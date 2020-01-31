@@ -5,7 +5,7 @@ var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 
 /** Utility **/
-var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /*
 * Utility functions for my cartridge integration.
@@ -24,13 +24,13 @@ var cardHelper = {
         // Pre authorize the card
         if (this.preAuthorizeCard(gatewayRequest)) {
             // Perform the request to the payment gateway
-            var gatewayResponse = ckoUtility.gatewayClientRequest(
-                "cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service",
+            var gatewayResponse = ckoHelper.gatewayClientRequest(
+                "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
                 gatewayRequest
             );
         
             // Logging
-            ckoUtility.doLog('response', gatewayResponse);
+            ckoHelper.doLog('response', gatewayResponse);
 
             // If the charge is valid, process the response
             if (gatewayResponse) {                
@@ -61,10 +61,10 @@ var cardHelper = {
         session.privacy.redirectUrl = null;
         
         // Logging
-        ckoUtility.doLog('response', gatewayResponse);
+        ckoHelper.doLog('response', gatewayResponse);
         
         // Update customer data
-        ckoUtility.updateCustomerData(gatewayResponse);
+        ckoHelper.updateCustomerData(gatewayResponse);
         
         // Get the gateway links
         var gatewayLinks = gatewayResponse._links;
@@ -74,7 +74,7 @@ var cardHelper = {
             session.privacy.redirectUrl = gatewayLinks.redirect.href;
             return true;
         } else {
-            return ckoUtility.paymentSuccess(gatewayResponse);
+            return ckoHelper.paymentSuccess(gatewayResponse);
         }
 
         return false;
@@ -95,13 +95,13 @@ var cardHelper = {
         delete authData['capture_on'];
         
         // Send the request
-        var authResponse = ckoUtility.gatewayClientRequest(
-            'cko.card.charge.' + ckoUtility.getValue('ckoMode') + '.service',
+        var authResponse = ckoHelper.gatewayClientRequest(
+            'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
             authData
         );
         
         // Return the response
-        return ckoUtility.paymentSuccess(authResponse);
+        return ckoHelper.paymentSuccess(authResponse);
     },
     
     /*
@@ -114,18 +114,19 @@ var cardHelper = {
         // Prepare the charge data
         var chargeData = {
             'source'                : this.getSourceObject(cardData, args),
-            'amount'                : ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency()),
-            'currency'              : ckoUtility.getCurrency(),
+            'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
+            'currency'              : ckoHelper.getCurrency(),
             'reference'             : args.OrderNo,
-            'capture'               : ckoUtility.getValue('ckoAutoCapture'),
-            'capture_on'            : ckoUtility.getCaptureTime(),
-            'customer'              : ckoUtility.getCustomer(args),
-            'billing_descriptor'    : ckoUtility.getBillingDescriptorObject(),
+            'capture'               : ckoHelper.getValue('ckoAutoCapture'),
+            'capture_on'            : ckoHelper.getCaptureTime(),
+            'customer'              : ckoHelper.getCustomer(args),
+            'billing_descriptor'    : ckoHelper.getBillingDescriptorObject(),
             'shipping'              : this.getShippingObject(args),
             '3ds'                   : this.get3Ds(),
             'risk'                  : {enabled: true},
-            'payment_ip'            : ckoUtility.getHost(args),
-            'metadata'              : ckoUtility.getMetadataObject(cardData, args)
+            'payment_ip'            : ckoHelper.getHost(args),
+            'metadata'              : ckoHelper.getMetadataObject(cardData, args),
+            'udf5'					: ckoHelper.getMetadataString(cardData, args)
         };
         
         return chargeData;
@@ -144,7 +145,7 @@ var cardHelper = {
             name                : cardData.name,
             cvv                 : cardData.cvv,
             billing_address     : this.getBillingObject(args),
-            phone               : ckoUtility.getPhoneObject(args)
+            phone               : ckoHelper.getPhoneObject(args)
         }
         
         return source;
@@ -155,8 +156,8 @@ var cardHelper = {
      */
     get3Ds: function () {
         return {
-            'enabled' : ckoUtility.getValue('cko3ds'),
-            'attempt_n3d' : ckoUtility.getValue('ckoN3ds')
+            'enabled' : ckoHelper.getValue('cko3ds'),
+            'attempt_n3d' : ckoHelper.getValue('ckoN3ds')
         }
     },
     
@@ -206,7 +207,7 @@ var cardHelper = {
         // Build the shipping object
         var shipping = {
             address             : shippingDetails,
-            phone               : ckoUtility.getPhoneObject(args)
+            phone               : ckoHelper.getPhoneObject(args)
         };
         
         return shipping;

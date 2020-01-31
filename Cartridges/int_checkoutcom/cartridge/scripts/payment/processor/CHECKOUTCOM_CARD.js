@@ -17,7 +17,7 @@ var app = require(SiteControllerName + '/cartridge/scripts/app');
 
 /* Utility */
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
-var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /**
  * Verifies a credit card against a valid card number and expiration date and possibly invalidates invalid form fields.
@@ -34,7 +34,7 @@ function Handle(args)
     // Prepare card data object
     var cardData = {
         owner       : paymentForm.get('owner').value(),
-        number      : ckoUtility.getFormattedNumber(paymentForm.get('number').value()),
+        number      : ckoHelper.getFormattedNumber(paymentForm.get('number').value()),
         month       : paymentForm.get('expiration.month').value(),
         year        : paymentForm.get('expiration.year').value(),
         cvn         : paymentForm.get('cvn').value(),
@@ -75,7 +75,7 @@ function Authorize(args)
     // Build card data object
     var cardData = {
         'name'          : paymentInstrument.creditCardHolder,
-        'number'        : ckoUtility.getFormattedNumber(paymentForm.get('number').value()),
+        'number'        : ckoHelper.getFormattedNumber(paymentForm.get('number').value()),
         'expiryMonth'   : paymentInstrument.creditCardExpirationMonth,
         'expiryYear'    : paymentInstrument.creditCardExpirationYear,
         'cvv'           : paymentForm.get('cvn').value(),
@@ -87,7 +87,7 @@ function Authorize(args)
     
     // Handle card charge request result
     if (chargeResponse) {
-        if (ckoUtility.getValue('cko3ds')) {
+        if (ckoHelper.getValue('cko3ds')) {
             // 3ds redirection
             ISML.renderTemplate('redirects/3DSecure.isml', {
                 redirectUrl: session.privacy.redirectUrl

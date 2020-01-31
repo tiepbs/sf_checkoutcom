@@ -1,9 +1,5 @@
 'use strict';
 
-/**
- * Controller example for a product review form.
- */
-
 /* Script Modules */
 var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 var app = require(siteControllerName + '/cartridge/scripts/app');
@@ -14,7 +10,7 @@ var OrderMgr = require('dw/order/OrderMgr');
 
 
 /** Utility **/
-var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 
 // Initiate the mandate session
@@ -22,7 +18,7 @@ function mandate()
 {
     // Prepare the varirables
     var url = session.privacy.redirectUrl;
-    var orderId = ckoUtility.getOrderId();
+    var orderId = ckoHelper.getOrderId();
     var order = OrderMgr.getOrder(orderId);
     
     // Process the URL
@@ -30,7 +26,7 @@ function mandate()
         app.getView({
             // Prepare the view parameters
             creditAmount: order.totalGrossPrice.value.toFixed(2),
-            formatedAmount: ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency()),
+            formatedAmount: ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
             debtor: order.defaultShipment.shippingAddress.firstName + " " + order.defaultShipment.shippingAddress.lastName,
             debtorAddress1: order.billingAddress.address1,
             debtorAddress2: order.billingAddress.address2,
@@ -40,16 +36,16 @@ function mandate()
             debtorCountryCode: order.billingAddress.countryCode,
             
             // Prepare the creditor information
-            creditor: ckoUtility.getValue('ckoBusinessName'),
-            creditorAddress1: ckoUtility.getValue('ckoBusinessAddressLine1'),
-            creditorAddress2: ckoUtility.getValue('ckoBusinessAddressLine2'),
-            creditorCity: ckoUtility.getValue('ckoBusinessCity'),
-            creditorCountry: ckoUtility.getValue('ckoBusinessCountry'),
+            creditor: ckoHelper.getValue('ckoBusinessName'),
+            creditorAddress1: ckoHelper.getValue('ckoBusinessAddressLine1'),
+            creditorAddress2: ckoHelper.getValue('ckoBusinessAddressLine2'),
+            creditorCity: ckoHelper.getValue('ckoBusinessCity'),
+            creditorCountry: ckoHelper.getValue('ckoBusinessCountry'),
             ContinueURL: URLUtils.https('CKOSepa-HandleMandate')
         }).render('sepaForm');
     } else {
         // Print out a message
-        response.getWriter().println('Error!');
+        response.getWriter().println(ckoHelper._('cko.sepa.error', 'cko'));
     }
 }
 
@@ -57,7 +53,7 @@ function handleMandate()
 {
     // Set session redirect url to null
     session.privacy.redirectUrl = null;
-    var orderId = ckoUtility.getOrderId();
+    var orderId = ckoHelper.getOrderId();
     
     app.getForm('sepaForm').handleAction({
         cancel: function () {
@@ -67,7 +63,7 @@ function handleMandate()
             if (orderId) {
                 // Load the order
                 var order = OrderMgr.getOrder(orderId);
-                ckoUtility.checkAndRestoreBasket(order);
+                ckoHelper.checkAndRestoreBasket(order);
             }
             
             app.getController('COBilling').Start();
@@ -76,7 +72,7 @@ function handleMandate()
             var sepa = app.getForm('sepaForm');
             var mandate = sepa.get('mandate').value();
             
-            // Mandate is true
+            // If mandate is true
             if (mandate) {
                 // Clear form
                 app.getForm('sepaForm').clear();
@@ -94,8 +90,8 @@ function handleMandate()
                                 "type": "id",
                                 "id": responseObjectId
                             },
-                            "amount": ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoUtility.getCurrency()),
-                            "currency": ckoUtility.getCurrency(),
+                            "amount": ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
+                            "currency": ckoHelper.getCurrency(),
                             "reference": orderId
                         };
                         
@@ -111,9 +107,11 @@ function handleMandate()
                         app.getController('COBilling').Start();
                     }
                 } else {
-                    //app.getController('COBilling').Start();
-                    // print out a message
-                    response.getWriter().println('Error!');
+                    // Restore the cart
+                    ckoHelper.checkAndRestoreBasket(order);
+
+                    // Send back to the error page
+                    ISML.renderTemplate('custom/common/response/failed.isml');
                 }
             } else {
                 app.getView().render('sepaForm');
@@ -125,5 +123,5 @@ function handleMandate()
 /*
  * Module exports
  */
-exports.Mandate = guard.ensure(['get'], mandate);
-exports.HandleMandate = guard.ensure(['post'], handleMandate);
+exports.Mandate = guard.ensure(['get', 'https'], mandate);
+exports.HandleMandate = guard.ensure(['post', 'https'], handleMandate);

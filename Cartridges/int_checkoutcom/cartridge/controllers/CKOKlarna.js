@@ -10,7 +10,7 @@ var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var BasketMgr = require('dw/order/BasketMgr');
 
 /** Utility **/
-var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /**
  * Initiate the Kalrna session.
@@ -21,13 +21,13 @@ function klarnaSession()
     var basket = BasketMgr.getCurrentBasket();
     if (basket) {
         // Prepare the variables
-        var countryCode = ckoUtility.getBasketCountyCode(basket);
+        var countryCode = ckoHelper.getBasketCountyCode(basket);
         var currency = basket.getCurrencyCode();
-        var locale = ckoUtility.getLanguage();
-        var total = ckoUtility.getFormattedPrice(basket.getTotalGrossPrice().value, currency);
-        var tax =  ckoUtility.getFormattedPrice(basket.getTotalTax().value, currency);
-        var products = ckoUtility.getBasketObject(basket);
-        var billing = ckoUtility.getBasketAddress(basket);
+        var locale = ckoHelper.getLanguage();
+        var total = ckoHelper.getFormattedPrice(basket.getTotalGrossPrice().value, currency);
+        var tax =  ckoHelper.getFormattedPrice(basket.getTotalTax().value, currency);
+        var products = ckoHelper.getBasketObject(basket);
+        var billing = ckoHelper.getBasketAddress(basket);
         
         // Prepare the request object
         var requestObject = {
@@ -41,25 +41,25 @@ function klarnaSession()
         }
         
         // Perform the request to the payment gateway
-        var gSession = ckoUtility.gatewayClientRequest(
-            'cko.klarna.session.' + ckoUtility.getValue('ckoMode') + '.service',
+        var gSession = ckoHelper.gatewayClientRequest(
+            'cko.klarna.session.' + ckoHelper.getValue('ckoMode') + '.service',
             requestObject
         );
         
         // Store variables in session
         gSession.requestObject = requestObject;
-        gSession.addressInfo = ckoUtility.getBasketAddress(basket);
+        gSession.addressInfo = ckoHelper.getBasketAddress(basket);
 
         // Write the session
         if (gSession) {
             response.getWriter().println(JSON.stringify(gSession));
         }
     } else {
-        response.getWriter().println('Basket Not Found');
+        response.getWriter().println(ckoHelper._('cko.klarna.notFound', 'cko'));
     }
 }
 
 /*
  * Module exports
  */
-exports.klarnaSession = guard.ensure(['https'], klarnaSession);
+exports.KlarnaSession = guard.ensure(['get','https'], klarnaSession);
