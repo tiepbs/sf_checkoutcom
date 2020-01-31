@@ -20,7 +20,7 @@ function paymentButtonsState() {
 	$('#ckoSubmitPayment').show();
 	
 	// Disable card validation if option not active
-	$('#dwfrm_billing').submit(function() {
+	$('#dwfrm_billing').submit(function(e) {
 		if ($('#selectedPaymentOption').val() != 'CHECKOUTCOM_CARD') {
 			e.preventDefault();
 		}

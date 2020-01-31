@@ -103,6 +103,21 @@ var paymentHelper = {
         });
     },
     checkoutcomGooglePayRequest: function (paymentMethodId, req, res, next) {
+        // Transaction wrapper
+        Transaction.wrap(function () {
+            // Get the current basket
+            var currentBasket = BasketMgr.getCurrentBasket();
+
+            // Create the order
+            var order = OrderMgr.createOrder(currentBasket);
+
+            // Prepare the data
+            var logger = require('dw/system/Logger').getLogger('ckodebug');
+            logger.debug('googlePayData {0}', JSON.stringify(req.form));
+        
+
+            return next();
+        });
     },
     checkoutcomApplePayRequest: function (paymentMethodId, req, res, next) {
     },
