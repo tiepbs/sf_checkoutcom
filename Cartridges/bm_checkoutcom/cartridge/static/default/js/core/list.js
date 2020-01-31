@@ -4,9 +4,19 @@
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
+    // Load the translation strings
+    loadTranslations();
+
+    // Build the navigation tabs
     buildTabs();
+
+    // Get the transactions
     getTransactions(initTable);
 }, false);
+
+function loadTranslations() {
+    window.ckolang = JSON.parse(jQuery('[id="translationStrings"]').val());
+}
 
 function buildTabs()
 {
@@ -58,18 +68,56 @@ function initTable(tableData)
         responsiveLayout:true,
         selectable: 'highlight',
         headerFilterPlaceholder: '>',
-        placeholder: 'No results found for this request.',
+        placeholder: window.ckolang.noResults,
         layout: 'fitColumns',
         data: JSON.parse(tableData),
         layout: 'fitColumns',
         pagination: 'local',
         paginationSize: 50,
         columns: getTableColumns(),
+        langs: getTableStrings(),
         tableBuilt: function () {
             // Set the pagination controls
             setPagination(this);
         }
     });
+}
+
+function getTableStrings() {
+    var tableLocale = getTableLocale();
+    return {
+        tableLocale: { 
+            'columns': {
+                'id': window.ckolang.rowId,
+                'order_no': window.ckolang.orderNo,
+                'transaction_id': window.ckolang.transactionId,
+                'parent_transaction_id': window.ckolang.parentTransactionId,
+                'payment_id': window.ckolang.paymentId,
+                'amount': window.ckolang.amount,
+                'currency': window.ckolang.currency,
+                'date': window.ckolang.date,
+                'type': window.ckolang.type,
+                'opened': window.ckolang.opened,
+                'processor': window.ckolang.processor,
+                'actions': window.ckolang.actions
+            },
+            'pagination': {
+                'first': window.ckolang.first,
+                'first_title': window.ckolang.firstTitle,
+                'last': window.ckolang.last,
+                'last_title': window.ckolang.lastTitle,
+                'prev': window.ckolang.prev,
+                'prev_title': window.ckolang.prevTitle,
+                'next': window.ckolang.next,
+                'next_title': window.ckolang.nextTitle,
+            }
+        }
+    };
+}
+
+function getTableLocale() {
+    var currentLocale = jQuery('[id="currentLocale"]').val();
+    return currentLocale + '-' + currentLocale;
 }
 
 function reloadTable(tableData)
@@ -109,9 +157,9 @@ function getTableColumns()
     return [
         {title: 'Id', field: 'id', visible: false},
         {title: 'Order No', field: 'order_no', width: 120, formatter: 'html', headerFilter: 'input'},
-        {title: 'Transaction Id', field:'transaction_id', headerFilter: 'input'},
-        {title: 'Parent transaction Id', field:'parent_transaction_id', headerFilter: 'input'},
-        {title: 'Payment Id', field: 'payment_id', headerFilter: 'input'},
+        {title: 'Transaction id', field: 'transaction_id', headerFilter: 'input'},
+        {title: 'Parent tranaction id', field: 'parent_transaction_id', headerFilter: 'input'},
+        {title: 'Payment id', field: 'payment_id', headerFilter: 'input'},
         {
             title: 'Amount',
             field: 'amount',
@@ -121,14 +169,14 @@ function getTableColumns()
                 var rowData = cell.getRow().getData();
                 return cell.getValue() + ' ' + rowData.currency;
             }
-    },
+        },
         {title: 'Currency', field: 'currency', visible: false},
         {title: 'Date', field: 'creation_date', width: 140, headerFilter: 'input'},
         {title: 'Type', field: 'type', width: 110, headerFilter: 'input'},
-        {title: 'Opened', field: 'opened', width: 110, formatter: 'tickCross', visible: false},
+        {title: 'State', field: 'opened', width: 110, formatter: 'tickCross', visible: false},
         {title: 'Processor', field: 'processor', width: 190, headerFilter: 'input'},
         {
-            title:'Actions',
+            title: 'Actions',
             field: 'actions',
             headerSort: false,
             align: 'center',
@@ -136,7 +184,7 @@ function getTableColumns()
             formatter: function (cell, formatterParams, onRendered) {
                 return getButtonsHtml(cell);
             }
-    }
+        }
     ];
 }
 

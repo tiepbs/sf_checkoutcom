@@ -4,6 +4,7 @@
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
+    // Initialize the button events
     initButtons();
 }, false);
 
@@ -18,7 +19,6 @@ function initButtons()
 
     // Define the transaction buttons click events
     document.addEventListener('click', function (e) {
-          
         // Prevent double click
         if (typeof e.target.className === 'string' && e.target.className.indexOf('ckoAction') !== -1) {
             // Ignore double cliks
@@ -48,7 +48,7 @@ function openModal(elt, rowIndex)
     if (tidExists && isValidTid) {
         getTransactionData(members);
     } else {
-        alert('The transaction ID is missing or invalid.');
+        alert(l.transactionMissing);
     }
 }
 

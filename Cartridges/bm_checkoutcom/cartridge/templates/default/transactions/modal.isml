@@ -7,19 +7,19 @@
 	<div class="modal-content">
 		<span class="close">&times;</span>
 		<div>
-			<h1>Capture transaction</h1>
+			<h1>${Resource.msg('cko.transaction.capture', 'cko', null)}</h1>
 			<hr>
 			<div class="alert alert-danger alert-dismissible ckoErrorMessage" role="alert">
-				<div class="msg">The transaction could not be processed.</div>
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<div class="msg">${Resource.msg('cko.transaction.fail', 'cko', null)}</div>
+				<button type="button" class="close" data-dismiss="alert" aria-label="${Resource.msg('cko.modal.close', 'cko', null)}">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div>
-				<p><span class="label">Order No:</span><span id="capture_order_no"></span></p>
-				<p><span class="label">Transaction ID:</span><span id="capture_transaction_id"></span></p>
-				<p><span class="label">Payment ID:</span><span id="capture_payment_id"></span></p>
-				<p><span class="label">Full amount:</span><span id="capture_full_amount"></span></p>
+				<p><span class="label">${Resource.msg('cko.order.number', 'cko', null)}:</span><span id="capture_order_no"></span></p>
+				<p><span class="label">${Resource.msg('cko.transaction.id', 'cko', null)}:</span><span id="capture_transaction_id"></span></p>
+				<p><span class="label">${Resource.msg('cko.payment.id', 'cko', null)}:</span><span id="capture_payment_id"></span></p>
+				<p><span class="label">${Resource.msg('cko.full.amount', 'cko', null)}:</span><span id="capture_full_amount"></span></p>
 			</div>
 			<div class="input-row">
 				<p>
@@ -28,7 +28,9 @@
 				</p>
 			</div>
 			<div>
-				<button class="btn btn-primary submit" type="button">Submit</button>
+				<button class="btn btn-primary submit" type="button">
+					${Resource.msg('cko.form.submit', 'cko', null)}
+				</button>
 			</div>
 		</div>
 	</div>
@@ -39,19 +41,19 @@
 	<div class="modal-content">
 		<span class="close">&times;</span>
 		<div>
-			<h1>Void transaction</h1>
+			<h1>${Resource.msg('cko.transaction.void', 'cko', null)}</h1>
 			<hr>
 			<div class="alert alert-danger alert-dismissible ckoErrorMessage" role="alert">
-				<div class="msg">The transaction could not be processed.</div>
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<div class="msg">${Resource.msg('cko.transaction.fail', 'cko', null)}</div>
+				<button type="button" class="close" data-dismiss="alert" aria-label="${Resource.msg('cko.modal.close', 'cko', null)}">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div>
-				<p><span class="label">Order No:</span><span id="void_order_no"></span></p>
-				<p><span class="label">Transaction ID:</span><span id="void_transaction_id"></span></p>
-				<p><span class="label">Payment ID:</span><span id="void_payment_id"></span></p>
-				<p><span class="label">Full amount:</span><span id="void_full_amount"></span></p>
+				<p><span class="label">${Resource.msg('cko.order.number', 'cko', null)}:</span><span id="void_order_no"></span></p>
+				<p><span class="label">${Resource.msg('cko.transaction.id', 'cko', null)}:</span><span id="void_transaction_id"></span></p>
+				<p><span class="label">${Resource.msg('cko.payment.id', 'cko', null)}:</span><span id="void_payment_id"></span></p>
+				<p><span class="label">${Resource.msg('cko.full.amount', 'cko', null)}:</span><span id="void_full_amount"></span></p>
 			</div>
 			<div class="input-row">
 				<p>
@@ -60,7 +62,9 @@
 				</p>
 			</div>
 			<div>
-				<button class="btn btn-primary submit" type="button">Submit</button>
+				<button class="btn btn-primary submit" type="button">
+					${Resource.msg('cko.form.submit', 'cko', null)}
+				</button>
 			</div>
 		</div>
 	</div>
@@ -71,19 +75,19 @@
 	<div class="modal-content">
 		<span class="close">&times;</span>
 		<div>
-			<h1>Refund transaction</h1>
+			<h1>${Resource.msg('cko.transaction.refund', 'cko', null)}</h1>
 			<hr>
 			<div class="alert alert-danger alert-dismissible ckoErrorMessage" role="alert">
-				<div class="msg">The transaction could not be processed.</div>
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<div class="msg">${Resource.msg('cko.transaction.fail', 'cko', null)}</div>
+				<button type="button" class="close" data-dismiss="alert" aria-label="${Resource.msg('cko.modal.close', 'cko', null)}">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div>
-				<p><span class="label">Order No:</span><span id="refund_order_no"></span></p>
-				<p><span class="label">Transaction ID:</span><span id="refund_transaction_id"></span></p>
-				<p><span class="label">Payment ID:</span><span id="refund_payment_id"></span></p>
-				<p><span class="label">Full amount:</span><span id="refund_full_amount"></span></p>
+				<p><span class="label">${Resource.msg('cko.order.number', 'cko', null)}:</span><span id="refund_order_no"></span></p>
+				<p><span class="label">${Resource.msg('cko.transaction.id', 'cko', null)}:</span><span id="refund_transaction_id"></span></p>
+				<p><span class="label">${Resource.msg('cko.payment.id', 'cko', null)}:</span><span id="refund_payment_id"></span></p>
+				<p><span class="label">${Resource.msg('cko.full.amount', 'cko', null)}:</span><span id="refund_full_amount"></span></p>
 			</div>
 			<div class="input-row">
 				<p>
@@ -92,7 +96,9 @@
 				</p>
 			</div>
 			<div>
-				<button class="btn btn-primary submit" type="button">Submit</button>
+				<button class="btn btn-primary submit" type="button">
+					${Resource.msg('cko.form.submit', 'cko', null)}
+				</button>
 			</div>
 		</div>
 	</div>
