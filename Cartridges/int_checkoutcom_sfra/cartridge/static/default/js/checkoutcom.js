@@ -80,20 +80,3 @@ function getCardData(elt, dataUrl) {
 		xhr.send();
 	}
 }
-
-/**
- * Sets the card form fields from user card data.
- */
-function setFields(data) {
-	var $creditCard = $('[data-method="CHECKOUTCOM_CARD"]');
-	$creditCard.find('input[name$="_cardPaymentForm_owner"]').val(
-			data.cardHolder).trigger('change');
-	$creditCard.find('input[name$="_cardPaymentForm_number"]').val(
-			data.cardNumber).trigger('change');
-	// enable card data formating
-	setSchema('#dwfrm_cardPaymentForm_number');
-	$creditCard.find('[name$="_month"]').val(data.expiryMonth)
-			.trigger('change');
-	$creditCard.find('[name$="_year"]').val(data.expiryYear).trigger('change');
-	$creditCard.find('input[name$="_cvn"]').val('').trigger('change');
-}
