@@ -8,7 +8,7 @@ var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
 
 /* Utility */
-var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /*
 * Utility functions for my cartridge integration.
@@ -70,10 +70,10 @@ var apmHelper = {
         session.privacy.redirectUrl = null;
         
         // Logging
-        ckoUtility.doLog('response', gatewayResponse);
+        ckoHelper.doLog('response', gatewayResponse);
         
         // Update customer data
-        ckoUtility.updateCustomerData(gatewayResponse);
+        ckoHelper.updateCustomerData(gatewayResponse);
         
         // Get the response links
         var gatewayLinks = gatewayResponse._links;
@@ -92,7 +92,7 @@ var apmHelper = {
             session.privacy.redirectUrl = gatewayLinks.redirect.href
             return true;
         } else {
-            ckoUtility.paymentSuccess(gatewayResponse);
+            ckoHelper.paymentSuccess(gatewayResponse);
         }  
     },
     
@@ -113,28 +113,29 @@ var apmHelper = {
         if (payObject.type == "sepa") {
             // Prepare the charge data
             var chargeData = {
-                "customer"              : ckoUtility.getCustomer(args),
-                "amount"                : ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), payObject.currency),
+                "customer"              : ckoHelper.getCustomer(args),
+                "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), payObject.currency),
                 "type"                  : payObject.type,
                 "currency"              : payObject.currency,
-                "billing_address"       : ckoUtility.getBillingObject(args),
+                "billing_address"       : ckoHelper.getBillingObject(args),
                 "source_data"           : payObject.source_data,
                 "reference"             : args.OrderNo,
-                "payment_ip"            : ckoUtility.getHost(args),
-                "metadata"              : ckoUtility.getMetadataObject(payObject, args),
-                "billing_descriptor"    : ckoUtility.getBillingDescriptorObject()
+                "payment_ip"            : ckoHelper.getHost(args),
+                "metadata"              : ckoHelper.getMetadataObject(payObject, args),
+                "billing_descriptor"    : ckoHelper.getBillingDescriptorObject(),
+                "udf5"					: ckoHelper.getMetadataString(payObject, args)
             };
             
             // Perform the request to the payment gateway
-            gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.sources." + ckoUtility.getValue('ckoMode') + ".service", chargeData);
+            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.sources." + ckoHelper.getValue('ckoMode') + ".service", chargeData);
         } else {
             // Perform the request to the payment gateway
-            gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", gatewayRequest);
+            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
         }
 
 
         // Logging
-        ckoUtility.doLog('response', gatewayResponse);
+        ckoHelper.doLog('response', gatewayResponse);
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
@@ -162,34 +163,34 @@ var apmHelper = {
         var order = OrderMgr.getOrder(args.OrderNo);
         
         // Load the currency and amount
-        var currency = ckoUtility.getCurrency(payObject.currency);
-        var amount = ckoUtility.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), currency);
+        var currency = ckoHelper.getCurrency(payObject.currency);
+        var amount = ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), currency);
         
         // Object APM is SEPA
         if (payObject.type == 'klarna') {
             // Prepare chargeData object
             chargeData = {
-                "customer"              : ckoUtility.getCustomer(args),
+                "customer"              : ckoHelper.getCustomer(args),
                 "amount"                : amount,
                 "currency"              : currency,
                 "capture"               : false,
                 "source"                : payObject.source,
                 "reference"             : args.OrderNo,
-                "payment_ip"            : ckoUtility.getHost(args),
-                "metadata"              : ckoUtility.getMetadataObject(payObject, args),
-                "billing_descriptor"    : ckoUtility.getBillingDescriptorObject()
+                "payment_ip"            : ckoHelper.getHost(args),
+                "metadata"              : ckoHelper.getMetadataObject(payObject, args),
+                "billing_descriptor"    : ckoHelper.getBillingDescriptorObject()
             };
         } else {
             // Prepare chargeData object
             chargeData = {
-                "customer"              : ckoUtility.getCustomer(args),
+                "customer"              : ckoHelper.getCustomer(args),
                 "amount"                : amount,
                 "currency"              : currency,
                 "source"                : payObject.source,
                 "reference"             : args.OrderNo,
-                "payment_ip"            : ckoUtility.getHost(args),
-                "metadata"              : ckoUtility.getMetadataObject(payObject, args),
-                "billing_descriptor"    : ckoUtility.getBillingDescriptorObject()
+                "payment_ip"            : ckoHelper.getHost(args),
+                "metadata"              : ckoHelper.getMetadataObject(payObject, args),
+                "billing_descriptor"    : ckoHelper.getBillingDescriptorObject()
             };
         }
         
@@ -204,7 +205,7 @@ var apmHelper = {
         var gatewayResponse = false;
         
         // Perform the request to the payment gateway
-        gatewayResponse = ckoUtility.gatewayClientRequest("cko.card.charge." + ckoUtility.getValue('ckoMode') + ".service", payObject);
+        gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", payObject);
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
@@ -216,7 +217,7 @@ var apmHelper = {
             });
             
             // Restore the cart
-            ckoUtility.checkAndRestoreBasket(order);
+            ckoHelper.checkAndRestoreBasket(order);
             
             return false;
         }

@@ -7,7 +7,7 @@ var PaymentTransaction = require('dw/order/PaymentTransaction');
 var PaymentMgr = require('dw/order/PaymentMgr');
 
 /* Checkout.com Helper functions */
-var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /**
  * Gateway event functions for the Checkout.com cartridge integration.
@@ -22,16 +22,16 @@ var eventsHelper = {
         if (order) {
             // Prepare the webhook info
             var details = '';
-            details += ckoUtility._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
-            details += ckoUtility._('cko.transaction.id', 'cko') + ': ' + hook.data.action_id + '\n';
-            details += ckoUtility._('cko.transaction.paymentId', 'cko') + ': ' + hook.data.id + '\n';
-            details += ckoUtility._('cko.transaction.eventId', 'cko') + ': ' + hook.id + '\n';
-            details += ckoUtility._('cko.response.code', 'cko') + ': ' + hook.data.response_code + '\n';
+            details += ckoHelper._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
+            details += ckoHelper._('cko.transaction.id', 'cko') + ': ' + hook.data.action_id + '\n';
+            details += ckoHelper._('cko.transaction.paymentId', 'cko') + ': ' + hook.data.id + '\n';
+            details += ckoHelper._('cko.transaction.eventId', 'cko') + ': ' + hook.id + '\n';
+            details += ckoHelper._('cko.response.code', 'cko') + ': ' + hook.data.response_code + '\n';
 
             // Process the transaction
             Transaction.wrap(function () {
                 // Add the details to the order
-                order.addNote(ckoUtility._('cko.webhook.info', 'cko'), details);
+                order.addNote(ckoHelper._('cko.webhook.info', 'cko'), details);
     
                 // Update the payment status
                 if (paymentStatus) {
@@ -62,7 +62,7 @@ var eventsHelper = {
         // Create the captured transaction
         Transaction.wrap(function () {
             // Update the parent transaction state
-            var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Authorization');
+            var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Authorization');
             parentTransaction.custom.ckoTransactionOpened = false;
 
             // Create the transaction
@@ -122,7 +122,7 @@ var eventsHelper = {
         // Create the refunded transaction
         Transaction.wrap(function () {
             // Update the parent transaction state
-            var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Capture');
+            var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Capture');
             parentTransaction.custom.ckoTransactionOpened = false;
             
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
@@ -153,7 +153,7 @@ var eventsHelper = {
         // Create the voided transaction
         Transaction.wrap(function () {
             // Update the parent transaction state
-            var parentTransaction = ckoUtility.getParentTransaction(hook.data.id, 'Authorization');
+            var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Authorization');
             parentTransaction.custom.ckoTransactionOpened = false;
             
             // Create the transaction

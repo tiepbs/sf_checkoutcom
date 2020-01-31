@@ -12,7 +12,7 @@ var BasketMgr = require('dw/order/BasketMgr');
 var eventsHelper = require('~/cartridge/scripts/helpers/eventsHelper');
 
 /** Utility **/
-var ckoUtility = require('~/cartridge/scripts/helpers/ckoUtility');
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /** Apm Filter Configuration file **/
 var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig');
@@ -24,8 +24,8 @@ function handleReturn()
 {
     // Prepare some variables
     var gResponse = false;
-    var mode = ckoUtility.getValue('ckoMode');
-    var orderId = ckoUtility.getOrderId();
+    var mode = ckoHelper.getValue('ckoMode');
+    var orderId = ckoHelper.getOrderId();
     
     // If there is a track id
     if (orderId) {
@@ -38,7 +38,7 @@ function handleReturn()
             // If there is a payment session id available, verify
             if (sessionId) {
                 // Perform the request to the payment gateway
-                gVerify = ckoUtility.gatewayClientRequest(
+                gVerify = ckoHelper.gatewayClientRequest(
                     'cko.verify.charges.' + mode + '.service',
                     {'paymentToken': sessionId}
                 );
@@ -46,18 +46,23 @@ function handleReturn()
                 // If there is a valid response
                 if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
                     var verify = false;
-                    if (ckoUtility.redirectPaymentSuccess(gVerify)) {
+                    if (ckoHelper.redirectPaymentSuccess(gVerify)) {
                         // Show order confirmation page
                         app.getController('COSummary').ShowConfirmation(order);
                     } else {
                         // Restore the cart
-                        ckoUtility.checkAndRestoreBasket(order);
+                        ckoHelper.checkAndRestoreBasket(order);
 
                         // Send back to the error page
                         ISML.renderTemplate('custom/common/response/failed.isml');
                     }
                 } else {
-                    ckoUtility.handleFail(gVerify);
+                    //ckoHelper.handleFail(gVerify);
+                    // Restore the cart
+                    ckoHelper.checkAndRestoreBasket(order);
+
+                    // Send back to the error page
+                    ISML.renderTemplate('custom/common/response/failed.isml');
                 }
             }
 
@@ -67,18 +72,19 @@ function handleReturn()
                 gResponse = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
 
                 // Process the response data
-                if (ckoUtility.paymentIsValid(gResponse)) {
+                if (ckoHelper.paymentIsValid(gResponse)) {
                     app.getController('COSummary').ShowConfirmation(order);
                 } else {
-                    ckoUtility.handleFail(gResponse);
+                	
+                    ckoHelper.handleFail(gResponse);
                 }
             }
+            
         } else {
-            ckoUtility.handleFail(null);
+            ckoHelper.handleFail(null);
         }
     } else {
-        response.getWriter().println('error!');
-        //CKOHelper.handleFail(null);
+        CKOHelper.handleFail(null);
     }
 }
 
@@ -91,7 +97,7 @@ function handleFail()
     var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
     // Restore the cart
-    ckoUtility.checkAndRestoreBasket(order);
+    ckoHelper.checkAndRestoreBasket(order);
 
     // Send back to the error page
     ISML.renderTemplate('custom/common/response/failed.isml');
@@ -102,7 +108,7 @@ function handleFail()
  */
 function handleWebhook()
 {
-    var isValidResponse = ckoUtility.isValidResponse();
+    var isValidResponse = ckoHelper.isValidResponse();
     if (isValidResponse) {
         // Get the response as JSON object
         var hook = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
@@ -182,8 +188,8 @@ function getApmFilter()
 /*
  * Module exports
  */
-exports.HandleReturn = guard.ensure(['https'], handleReturn);
-exports.HandleFail = guard.ensure(['https'], handleFail);
+exports.HandleReturn = guard.ensure(['get','https'], handleReturn);
+exports.HandleFail = guard.ensure(['get','https'], handleFail);
 exports.HandleWebhook = guard.ensure(['post', 'https'], handleWebhook);
-exports.GetCardsList = guard.ensure(['https'], getCardsList);
-exports.GetApmFilter = guard.ensure(['https'], getApmFilter);
+exports.GetCardsList = guard.ensure(['post','https'], getCardsList);
+exports.GetApmFilter = guard.ensure(['get','https'], getApmFilter);
