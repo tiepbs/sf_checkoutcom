@@ -6,7 +6,7 @@
 				name="${pdict.forms.billingForm.paymentMethod.htmlName}"
 				value="${paymentOption.ID}"
 		>
-		<fieldset class="">
+		<fieldset>
 			<div id="apmsBox">
 				<!-- This to include the ideal pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoIdealEnabled'))}">

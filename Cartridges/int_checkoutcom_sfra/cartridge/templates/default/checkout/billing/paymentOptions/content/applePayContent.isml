@@ -15,7 +15,7 @@
                 name="${pdict.forms.billingForm.paymentMethod.htmlName}"
 				value="${paymentOption.ID}"
         >
-        <fieldset class="">
+        <fieldset>
             <button id="ckoApplePayButton" type="button" class="apple-pay-button ${buttonStyle}"></button>
             <div class="ckoApplePayUnavailable">Apple Pay is available but not currently active.</div>
             <div class="ckoApplePayIncompatible">Apple Pay is not available for this browser.</div>
