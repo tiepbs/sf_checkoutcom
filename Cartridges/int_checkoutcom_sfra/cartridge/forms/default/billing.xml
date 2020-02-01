@@ -6,5 +6,6 @@
     <include formid="contactInfoFields" name="contactInfo"/>
     <field formid="paymentMethod" type="string" mandatory="true" />
     <include formid="creditCardFields" name="cardPaymentForm"/>
+    <include formid="creditCardFields" name="googlePayForm"/>
     <field formid="subscribe" type="boolean" checked="false" default-value="false" mandatory="false" />
 </form>

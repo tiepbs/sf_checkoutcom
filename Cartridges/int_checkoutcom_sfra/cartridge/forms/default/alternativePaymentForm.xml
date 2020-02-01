@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <form xmlns="http://www.demandware.com/xml/form/2008-04-19">
-
+    <field formid="paymentMethod" type="string" mandatory="false"/>
 	<!-- Checkout.com payment options -->
  	
 	<!-- Field for alternative payment chosen -->
