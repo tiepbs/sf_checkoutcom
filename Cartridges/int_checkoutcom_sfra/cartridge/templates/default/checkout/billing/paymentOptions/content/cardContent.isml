@@ -22,7 +22,8 @@
         <div class="col-6">
             <div class="form-group required ${creditFields.expirationMonth.htmlName}">
                 <label class="form-control-label" for="expirationMonth">${Resource.msg('field.credit.card.expiration.month','creditCard',null)}</label>
-                <select class="form-control expirationMonth custom-select" id="expirationMonth">
+                <select class="form-control expirationMonth custom-select" id="expirationMonth"
+                <isprint value=${creditFields.expirationMonth.attributes} encoding="off"/>>
                     <option value="">${Resource.msg('cko.month.select','cko',null)}</option>
                     <option value="01">${Resource.msg('cko.month.january','cko',null)}</option>
                     <option value="02">${Resource.msg('cko.month.february','cko',null)}</option>
@@ -43,8 +44,9 @@
         <div class="col-6">
             <div class="form-group required ${creditFields.expirationYear.htmlName}">
                 <label class="form-control-label" for="expirationYear">${Resource.msg('field.credit.card.expiration.year','creditCard',null)}</label>
-                <select class="form-control expirationYear custom-select" id="expirationYear">
-                    <option value="">${Resource.msg('cko.month.select','cko',null)}</option>
+                <select class="form-control expirationYear custom-select" id="expirationYear"
+                <isprint value=${creditFields.expirationYear.attributes} encoding="off"/>>
+                    <option value="">${Resource.msg('cko.year.select','cko',null)}</option>
                 </select>
                 <div class="invalid-feedback"></div>
             </div>
