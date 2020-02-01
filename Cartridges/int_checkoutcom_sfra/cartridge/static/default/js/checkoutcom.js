@@ -27,13 +27,6 @@ function initButtons() {
 	
 	// Show the custom form button
 	$('#ckoSubmitPayment').show();
-	
-	// Disable card validation if option not active
-	$('#dwfrm_billing').submit(function(e) {
-		if ($('#selectedPaymentOption').val() != 'CHECKOUTCOM_CARD') {
-			e.preventDefault();
-		}
-	});
 }
 
 function initTabs() {
@@ -42,12 +35,25 @@ function initTabs() {
 
 	// Handle the click navigation
 	var allTabs = $('.payment-options a.nav-link');
-	allTabs.click(function () {
+	allTabs.off('click').on('click', function () {
+		// Hide all tabs contents
 		$('.ckoPaymentOptions .tab-pane').hide();
+
+		// Show the clicked tab content
 		$($(this).attr('href')).show();
+
+		// Set the selected option id
 		$('#selectedPaymentOption').val(
 			$(this).closest('li').data('method-id')
 		);
+
+		// Handle the card form fields
+		if ($(this).attr('href') != '#cko-card-content') {
+			//$('#cko-card-content input, #cko-card-content select').removeClass('form-control');
+		}
+		else {
+			//$('#cko-card-content input, #cko-card-content select').removeClass('form-control');
+		}
 	});
 	
 	// Show the first active

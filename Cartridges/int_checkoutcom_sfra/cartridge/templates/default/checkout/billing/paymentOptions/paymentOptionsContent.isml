@@ -1,8 +1,3 @@
-<isscript>
-    var assets = require('*/cartridge/scripts/assets.js');
-    assets.addJs('/js/checkoutcom.js');
-</isscript>
-
 <isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="paymentOption" status="loopSate">
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_CARD' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
         <isinclude template="checkout/billing/paymentOptions/content/cardContent"/>
@@ -17,7 +12,3 @@
         <isinclude template="checkout/billing/paymentOptions/content/googlePayContent"/>
     </isif>
 </isloop>
-
-<button id="ckoSubmitPayment" class="btn btn-primary btn-block submit-payment ${pdict.paidWithPayPal ? 'checkout-hidden' : ''}" type="submit" name="submit" value="submit-payment">
-	${Resource.msg('button.next.place.order', 'checkout', null)}
-</button>
