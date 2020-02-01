@@ -76,7 +76,7 @@
             <div class="save-credit-card custom-control custom-checkbox ">
                 <input type="checkbox" class="custom-control-input" id="saveCreditCard" name="${creditFields.saveCard.htmlName}" value="true" checked>
                 <label class="custom-control-label" for="saveCreditCard">
-                    ${creditFields.saveCard.label}
+                    ${Resource.msg('cko.card.save','cko',null)} 
                 </label>
             </div>
         </isif>
