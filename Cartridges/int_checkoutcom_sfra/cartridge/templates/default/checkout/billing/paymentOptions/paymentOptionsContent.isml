@@ -1,14 +1,14 @@
 <isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="paymentOption" status="loopSate">
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_CARD' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
-        <isinclude template="checkout/billing/paymentOptions/content/cardContent"/>
+        <isinclude template="checkout/billing/paymentOptions/content/cardForm"/>
     </isif>
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APM' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
-        <isinclude template="checkout/billing/paymentOptions/content/apmContent"/>
+        <isinclude template="checkout/billing/paymentOptions/content/apmForm"/>
     </isif>
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayEnabled')}">
-        <isinclude template="checkout/billing/paymentOptions/content/applePayContent"/>
+        <isinclude template="checkout/billing/paymentOptions/content/applePayForm"/>
     </isif>
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnabled')}">
-        <isinclude template="checkout/billing/paymentOptions/content/googlePayContent"/>
+        <isinclude template="checkout/billing/paymentOptions/content/googlePayForm"/>
     </isif>
 </isloop>
