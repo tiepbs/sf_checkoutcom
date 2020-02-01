@@ -46,14 +46,6 @@ function initTabs() {
 		$('#selectedPaymentOption').val(
 			$(this).closest('li').data('method-id')
 		);
-
-		// Handle the card form fields
-		if ($(this).attr('href') != '#cko-card-content') {
-			//$('#cko-card-content input, #cko-card-content select').removeClass('form-control');
-		}
-		else {
-			//$('#cko-card-content input, #cko-card-content select').removeClass('form-control');
-		}
 	});
 	
 	// Show the first active
