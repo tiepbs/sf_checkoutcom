@@ -146,7 +146,7 @@ function launchGooglePay()
             };
 
             // Store the payload
-            jQuery('[id="dwfrm_googlePayForm_data"]').val(JSON.stringify(payload));
+            jQuery('[id="ckoGooglePayData"]').val(JSON.stringify(payload));
         }
     });
 }

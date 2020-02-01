@@ -17,6 +17,9 @@
                 name="${pdict.forms.billingForm.paymentMethod.htmlName}"
 				value="${paymentOption.ID}"
         >
+        
+        <isset name="googlePayFields" value="${pdict.forms.billingForm.googlePayForm}" scope="page"/>
+
         <fieldset>
             <button id="ckoGooglePayButton" type="button" class="cko-google-pay-button ${buttonStyle}"></button>
             <input type="hidden" id="ckoGooglePayEnvironment" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnvironment').value)}">
@@ -24,7 +27,7 @@
             <input type="hidden" id="ckoGooglePayCurrency" value="${session.getCurrency().getCurrencyCode()}">
             <input type="hidden" id="ckoGooglePayAmount" value="${orderAmount}">
             <input type="hidden" id="ckoGatewayMerchantId" value="${gatewayMerchantId}">
-            <input type="hidden" id="ckoGooglePayData"/>
+            <input type="hidden" id="ckoGooglePayData" <isprint value=${googlePayFields.ckoGooglePayData.attributes} encoding="off"/> >
         </fieldset>
     </fieldset>
 </div>
