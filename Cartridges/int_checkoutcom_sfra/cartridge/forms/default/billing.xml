@@ -8,8 +8,6 @@
 
     <include formid="contactInfoFields" name="contactInfo"/>
 
-    <include formid="cardPayment" name="cardPaymentForm"/>
-
     <field formid="subscribe" type="boolean" checked="false" default-value="false" mandatory="false" />
 
 </form>

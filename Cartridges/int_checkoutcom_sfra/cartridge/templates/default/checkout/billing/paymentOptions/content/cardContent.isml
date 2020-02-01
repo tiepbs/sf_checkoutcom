@@ -1,33 +1,85 @@
 <div class="tab-pane" id="cko-card-content" role="tabpanel">
-    <fieldset class="payment-form-fields">
-        <!-- Payment method is credit card -->
-        <input type="hidden" class="form-control"
-                name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-				value="${paymentOption.ID}"
-        >
-
-        <!-- Registered/authenticated user -->
-        <isif condition="${pdict.customer.registeredUser}">
-            <div class="user-payment-instruments container ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? '' : 'checkout-hidden'}">
-                <!-- Stored user payments -->
-                <div class="stored-payments">
-                    <isinclude template="checkout/billing/storedPaymentInstruments" />
-                </div>
-
-                <!-- Add new credit card button -->
-                <div class="row">
-                    <button class="btn btn-block add-payment btn-outline-primary" type="button">${Resource.msg('button.add.payment', 'checkout', null)}</button>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group required ${creditFields.cardNumber.htmlName}">
+                <label class="form-control-label" for="cardNumber">${Resource.msg('field.credit.card.number','creditCard',null)}</label>
+                <div class="card-number-wrapper">
+                    <input type="text" class="form-control cardNumber" id="cardNumber"
+                        value="${pdict.order.billing.payment.selectedPaymentInstruments
+                            && pdict.order.billing.payment.selectedPaymentInstruments.length > 0
+                            ? pdict.order.billing.payment.selectedPaymentInstruments[0].maskedCreditCardNumber||''
+                            : ''}"
+                        <isprint value=${creditFields.cardNumber.attributes} encoding="off"/>
+                        autocomplete="cc-number"
+                    >
+                    <div class="invalid-feedback"></div>
                 </div>
             </div>
-        </isif>
+        </div>
+    </div>
 
-        <fieldset class="credit-card-form ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? 'checkout-hidden' : ''}">
-            <isinclude template="checkout/billing/paymentOptions/content/creditCardForm" />
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group required ${creditFields.expirationMonth.htmlName}">
+                <label class="form-control-label" for="expirationMonth">${Resource.msg('field.credit.card.expiration.month','creditCard',null)}</label>
+                <select class="form-control expirationMonth custom-select" id="expirationMonth">
+                    <option value="">${Resource.msg('cko.month.select','cko',null)}</option>
+                    <option value="01">${Resource.msg('cko.month.january','cko',null)}</option>
+                    <option value="02">${Resource.msg('cko.month.february','cko',null)}</option>
+                    <option value="03">${Resource.msg('cko.month.march','cko',null)}</option>
+                    <option value="04">${Resource.msg('cko.month.april','cko',null)}</option>
+                    <option value="05">${Resource.msg('cko.month.may','cko',null)}</option>
+                    <option value="06">${Resource.msg('cko.month.june','cko',null)}</option>
+                    <option value="07">${Resource.msg('cko.month.july','cko',null)}</option>
+                    <option value="08">${Resource.msg('cko.month.august','cko',null)}</option>
+                    <option value="09">${Resource.msg('cko.month.september','cko',null)}</option>
+                    <option value="10">${Resource.msg('cko.month.october','cko',null)}</option>
+                    <option value="11">${Resource.msg('cko.month.november','cko',null)}</option>
+                    <option value="12">${Resource.msg('cko.month.december','cko',null)}</option>
+                </select>
+                <div class="invalid-feedback"></div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group required ${creditFields.expirationYear.htmlName}">
+                <label class="form-control-label" for="expirationYear">${Resource.msg('field.credit.card.expiration.year','creditCard',null)}</label>
+                <select class="form-control expirationYear custom-select" id="expirationYear">
+                    <option value="">${Resource.msg('cko.month.select','cko',null)}</option>
+                </select>
+                <div class="invalid-feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group required ${creditFields.securityCode.htmlName}">
+                <label class="form-control-label" for="securityCode">${Resource.msg('field.credit.card.security.code','creditCard',null)}</label>
+                <span class="info-icon">
+                    <span class="icon">i</span>
+                    <div class="tooltip">
+                        ${Resource.msg('tooltip.security.code','creditCard',null)}
+                    </div>
+                </span>
+
+                <input type="text" class="form-control securityCode" id="securityCode"
+                    <isprint value=${creditFields.securityCode.attributes} encoding="off"/> >
+                <div class="invalid-feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
             <isif condition="${pdict.customer.registeredUser}">
-                <button class="btn btn-block cancel-new-payment btn-outline-primary ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? '' : 'checkout-hidden'}" type="button">
-                    ${Resource.msg('button.back.to.stored.payments', 'checkout', null)}
-                </button>
+                <div class="save-credit-card custom-control custom-checkbox ">
+                    <input type="checkbox" class="custom-control-input" id="saveCreditCard" name="${creditFields.saveCard.htmlName}" value="true" checked>
+                    <label class="custom-control-label" for="saveCreditCard">
+                        ${Resource.msg('cko.card.save','cko',null)} 
+                    </label>
+                </div>
             </isif>
-        </fieldset>
-    </fieldset>
+        </div>
+    </div>
 </div>
+<script src="${URLUtils.staticURL('/js/cardPayment.js')}"></script>
