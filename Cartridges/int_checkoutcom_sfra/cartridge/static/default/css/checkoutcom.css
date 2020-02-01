@@ -1,3 +1,7 @@
 #ckoSubmitPayment {
     margin-top: 20px;
 }
+
+#cko-card-content .tooltip {
+    display: none;
+}

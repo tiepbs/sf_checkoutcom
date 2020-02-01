@@ -1,8 +1,6 @@
-<isscript>
-    var assets = require('*/cartridge/scripts/assets.js');
-    assets.addJs('/js/checkoutcom.js');
-    assets.addCss('/css/checkoutcom.css');
-</isscript>
+<style>
+	@import url("${URLUtils.staticURL('/css/checkoutcom.css')}");
+</style>
 
 <iscontent type="text/html" encoding="off"/>
 <div class="form-nav billing-nav payment-information"
@@ -26,6 +24,8 @@
         </div>
     </div>
 </fieldset>
+
+<script src="${URLUtils.staticURL('/js/checkoutcom.js')}"></script>
 
 <button id="ckoSubmitPayment" class="btn btn-primary btn-block submit-payment ${pdict.paidWithPayPal ? 'checkout-hidden' : ''}" type="submit" name="submit" value="submit-payment">
 	${Resource.msg('button.next.place.order', 'checkout', null)}
