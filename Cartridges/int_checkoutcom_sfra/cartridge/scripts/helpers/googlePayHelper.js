@@ -30,9 +30,7 @@ var googlePayHelper = {
             "cko.network.token." + ckoHelper.getValue('ckoMode').value + ".service",
             JSON.stringify(requestData)
         );
-        
-    	logger.debug('tokenResponse {0}', JSON.stringify(tokenResponse));
-    	
+            	
         // If the request is valid, process the response
         if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
             var chargeData = {
