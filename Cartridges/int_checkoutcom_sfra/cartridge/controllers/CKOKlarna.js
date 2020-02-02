@@ -61,7 +61,7 @@ server.get('KlarnaSession', function (req, res, next) {
             new Error(
                 Resource.msg(
                     'cko.payment.invalid',
-                    'checkout',
+                    'cko',
                     null
                 )
             )

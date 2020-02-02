@@ -49,7 +49,7 @@ server.get('Mandate', function (req, res, next) {
             new Error(
                 Resource.msg(
                     'cko.payment.invalid',
-                    'checkout',
+                    'cko',
                     null
                 )
             )
@@ -111,7 +111,7 @@ server.get('HandleMandate', function (req, res, next) {
                         new Error(
                             Resource.msg(
                                 'cko.payment.invalid',
-                                'checkout',
+                                'cko',
                                 null
                             )
                         )
