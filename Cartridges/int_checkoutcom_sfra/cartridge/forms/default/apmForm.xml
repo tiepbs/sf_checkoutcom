@@ -2,9 +2,9 @@
 <form xmlns="http://www.demandware.com/xml/form/2008-04-19">
     <field formid="paymentMethod" type="string" mandatory="false"/>
 	<!-- Checkout.com payment options -->
- 	
+
 	<!-- Field for alternative payment chosen -->
-    <field formid="alternative_payments" type="string" mandatory="false" binding="alternative_payments" />
+    <field formid="ckoSelectedApm" type="string" mandatory="false" binding="ckoSelectedApm" />
     
     <!-- Field for Shop url -->
     <field formid="store_url" type="string" mandatory="false" binding="store_url" />

@@ -116,9 +116,9 @@ var ckoHelper = {
         var keys = {};
         var str = this.getValue('ckoMode') == 'live' ? 'Live' : 'Sandbox';
 
-        keys.publicKey = this.getValue('cko' + str + 'PublicKey');
-        keys.secretKey = this.getValue('cko' +  str + 'SecretKey');
-        keys.privateSharedKey = this.getValue('cko' +  str + 'PrivateSharedKey');
+        keys.publicKey = this.getValue('cko' + str + 'PublicKey').value;
+        keys.secretKey = this.getValue('cko' +  str + 'SecretKey').value;
+        keys.privateSharedKey = this.getValue('cko' +  str + 'PrivateSharedKey').value;
 
         return keys;
     },
@@ -784,7 +784,7 @@ var ckoHelper = {
         //var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 
         // Add the payment processor to the metadata
-        meta.payment_processor = args.ProcesssorID;
+        meta.payment_processor = args.ProcesssorId;
     
         return meta;
     },

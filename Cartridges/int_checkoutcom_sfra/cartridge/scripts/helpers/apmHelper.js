@@ -65,7 +65,7 @@ var apmHelper = {
     /*
      * Handle APM charge Response from CKO API
      */
-    handleAPMChargeResponse: function (gatewayResponse) {
+    handleApmChargeResponse: function (gatewayResponse) {
         // clean the session
         session.privacy.redirectUrl = null;
         
@@ -132,13 +132,12 @@ var apmHelper = {
             gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode').value + ".service", gatewayRequest);
         }
 
-
         // Logging
         ckoHelper.doLog('response', gatewayResponse);
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
-            if (this.handleAPMChargeResponse(gatewayResponse)) {
+            if (this.handleApmChargeResponse(gatewayResponse)) {
                 return gatewayResponse;
             } else {
                 return false;
@@ -208,7 +207,7 @@ var apmHelper = {
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
-            this.handleAPMChargeResponse(gatewayResponse, order);
+            this.handleApmChargeResponse(gatewayResponse, order);
         } else {
             // Update the transaction
             Transaction.wrap(function () {

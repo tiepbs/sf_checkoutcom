@@ -6,6 +6,9 @@
 				name="${pdict.forms.billingForm.paymentMethod.htmlName}"
 				value="${paymentOption.ID}"
 		>
+
+        <isset name="ckoSelectedApm" value="${pdict.forms.apmForm.ckoSelectedApm}" scope="page"/>
+
 		<fieldset>
 			<div id="apmsBox">
 				<!-- This to include the ideal pay apm form -->
@@ -131,9 +134,6 @@
 	</fieldset>
 </div>
 	
-<!-- field for alternative payment chosen -->
-<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.alternative_payments}" />
-
 <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
 
 <script src="${URLUtils.staticURL('/js/cleave.js')}"></script>

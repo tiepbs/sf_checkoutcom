@@ -27,7 +27,7 @@
             <input type="hidden" id="ckoGooglePayCurrency" value="${session.getCurrency().getCurrencyCode()}">
             <input type="hidden" id="ckoGooglePayAmount" value="${orderAmount}">
             <input type="hidden" id="ckoGatewayMerchantId" value="${gatewayMerchantId}">
-            <input type="hidden" id="ckoGooglePayData" <isprint value=${googlePayFields.ckoGooglePayData.attributes} encoding="off"/> >
+            <input type="hidden" id="ckoGooglePayData" name="ckoGooglePayData" value="">
         </fieldset>
     </fieldset>
 </div>
