@@ -15,6 +15,7 @@ var eventsHelper = require('~/cartridge/scripts/helpers/eventsHelper');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
+var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
 
 /** Apm Filter Configuration file **/
 var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig');
@@ -48,16 +49,17 @@ server.get('HandleReturn', function (req, res, next) {
                 if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
                     if (ckoHelper.redirectPaymentSuccess(gVerify)) {
                         // Show order confirmation page
-                        app.getController('COSummary').ShowConfirmation(order);
+                        paymentHelper.getConfirmationPage(res, order);
+
                     } else {
                         // Restore the cart
                         ckoHelper.checkAndRestoreBasket(order);
 
                         // Send back to the error page
-                        res.render('custom/common/response/failed');
+                        paymentHelper.getFailurePage(res);
                     }
                 } else {
-                    ckoHelper.handleFail(gVerify);
+                    paymentHelper.getFailurePage(res);
                 }
             }
 
@@ -68,16 +70,16 @@ server.get('HandleReturn', function (req, res, next) {
 
                 // Process the response data
                 if (ckoHelper.paymentIsValid(gResponse)) {
-                    app.getController('COSummary').ShowConfirmation(order);
+                    paymentHelper.getConfirmationPage(res, order);
                 } else {
-                    ckoHelper.handleFail(gResponse);
+                    paymentHelper.getFailurePage(res);
                 }
             }
         } else {
-            ckoHelper.handleFail(null);
+            paymentHelper.getFailurePage(res);
         }
     } else {
-        res.getWriter().println('error!');
+        paymentHelper.getFailurePage(res);
     }
 
     next();
@@ -94,7 +96,7 @@ server.get('HandleFail', function (req, res, next) {
     ckoHelper.checkAndRestoreBasket(order);
 
     // Send back to the error page
-    res.render('custom/common/response/failed');
+    paymentHelper.getFailurePage(res);
 
     next();
 });
@@ -144,7 +146,7 @@ server.get('GetApmFilter', function (req, res, next) {
     }
     
     // Write the response
-    res.getWriter().println(JSON.stringify(responseObject));
+    res.json(responseObject);
     next();
 });
 

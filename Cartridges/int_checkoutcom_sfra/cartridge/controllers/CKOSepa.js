@@ -9,7 +9,7 @@ var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('c
 var app = require(siteControllerName + '/cartridge/scripts/app');
 var URLUtils = require('dw/web/URLUtils');
 var OrderMgr = require('dw/order/OrderMgr');
-
+var Resource = require('dw/web/Resource');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -45,8 +45,15 @@ server.get('Mandate', function (req, res, next) {
             ContinueURL: URLUtils.https('CKOSepa-HandleMandate')
         });
     } else {
-        // Print out a message
-        res.getWriter().println('Error!');
+        return next(
+            new Error(
+                Resource.msg(
+                    'cko.payment.invalid',
+                    'checkout',
+                    null
+                )
+            )
+        );
     }
 
     next();
@@ -100,7 +107,15 @@ server.get('HandleMandate', function (req, res, next) {
                         app.getController('COBilling').Start();
                     }
                 } else {
-                    res.getWriter().println('Error!');
+                    return next(
+                        new Error(
+                            Resource.msg(
+                                'cko.payment.invalid',
+                                'checkout',
+                                null
+                            )
+                        )
+                    );
                 }
             } else {
                 res.render('sepaForm');

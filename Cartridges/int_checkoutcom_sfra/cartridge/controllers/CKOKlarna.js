@@ -10,6 +10,7 @@ server.extend(module.superModule);
 
 /* API Includes */
 var BasketMgr = require('dw/order/BasketMgr');
+var Resource = require('dw/web/Resource');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -53,10 +54,18 @@ server.get('KlarnaSession', function (req, res, next) {
 
         // Write the session
         if (gSession) {
-            res.getWriter().println(JSON.stringify(gSession));
+            res.json(gSession);
         }
     } else {
-        res.getWriter().println('Basket Not Found');
+        return next(
+            new Error(
+                Resource.msg(
+                    'cko.payment.invalid',
+                    'checkout',
+                    null
+                )
+            )
+        );
     }
 
     next();

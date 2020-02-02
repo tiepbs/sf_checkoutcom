@@ -6,7 +6,6 @@ var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var Logger = require('dw/system/Logger');
 var BasketMgr = require('dw/order/BasketMgr');
-var PaymentMgr = require('dw/order/PaymentMgr');
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
@@ -339,9 +338,6 @@ var ckoHelper = {
             // Logging
             this.doLog('checkout.com cartridge failed response', JSON.stringify(gatewayResponse));
         }
-        
-        // Load the error template
-        //app.getController('COBilling').Start();
 
         // Send back to the error page
         ISML.renderTemplate('custom/common/response/failed.isml');
