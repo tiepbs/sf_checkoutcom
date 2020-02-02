@@ -12,9 +12,8 @@ var Resource = require('dw/web/Resource');
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
-
-/* APM Configuration */
-var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
+var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
+var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 
 /* APM Configuration */
 var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
@@ -197,7 +196,7 @@ var paymentHelper = {
             };
 
             // Handle the charge request
-            var chargeResponse = ApplePayHelper.handleRequest(args);
+            var chargeResponse = applePayHelper.handleRequest(args);
 
             // Create the authorization transaction
             paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
@@ -257,7 +256,7 @@ var paymentHelper = {
             session.privacy.ckoOrderId = order.orderNo;
 
             // Get apm type chosen
-            var func = req.form.ckoSelectedApm + 'PayAuthorization';
+            var func = req.form.apm_list + 'PayAuthorization';
 
             // Create a new payment instrument
             var paymentInstrument = currentBasket.createPaymentInstrument(paymentMethodId, currentBasket.totalGrossPrice);
