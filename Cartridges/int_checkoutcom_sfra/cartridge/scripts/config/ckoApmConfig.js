@@ -14,8 +14,7 @@ var ckoApmConfig = {
      * Ideal Pay Authorization
      */
     idealPayAuthorization: function (args) {
-        
-        // building ideal pay object
+        // Building ideal pay object
         var payObject = {
             'source'    : {
                 'type'          : 'ideal',
@@ -35,7 +34,6 @@ var ckoApmConfig = {
      * Boleto Pay Authorization
      */
     boletoPayAuthorization: function (args) {
-        
         // Building pay object
         var payObject = {
             'source'        : {
