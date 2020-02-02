@@ -242,8 +242,11 @@ var paymentHelper = {
     },
 
     checkoutcomApmRequest: function (paymentMethodId, req, res, next) {
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('this is my test {0}', JSON.stringify(req.form));
+
         // Transaction wrapper
-        Transaction.wrap(function () {
+        Transaction.wrap(function () {         
             // Get the current basket
             var currentBasket = BasketMgr.getCurrentBasket();
 

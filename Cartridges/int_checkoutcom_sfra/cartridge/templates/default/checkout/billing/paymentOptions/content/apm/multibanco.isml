@@ -2,7 +2,7 @@
 <H4>
 	<img alt="multibancoPay" id="multibancoPay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/multibanco.png')}" width="10%"/>
 	${Resource.msg('cko.multibanco.name','cko',null)}
-	<input id="multibancoPay_apm_radio_btn" type="radio" name="apm_payment_types" value="multibanco">
+	<input id="multibancoPay_apm_radio_btn" type="radio" name="apm_list" value="multibanco">
 </H4>
 
 

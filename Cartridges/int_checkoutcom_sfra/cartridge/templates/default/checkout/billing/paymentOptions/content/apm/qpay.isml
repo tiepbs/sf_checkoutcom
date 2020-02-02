@@ -2,7 +2,7 @@
 <H4>
 	<img alt="qpay" id="knet_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/qpay.png')}" width="10%"/>
 	${Resource.msg('cko.qpay.name','cko',null)} 
-	<input id="qpay_apm_radio_btn" type="radio" name="apm_payment_types" value="qpay">
+	<input id="qpay_apm_radio_btn" type="radio" name="apm_list" value="qpay">
 </H4>
 
 <div id="qpay_pay_box" style="display: none;">

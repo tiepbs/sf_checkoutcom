@@ -2,7 +2,7 @@
 <h4>
 	<img alt="" id="sepa_thumb" class="image imageright" type="image" value="Edit" src="${URLUtils.staticURL('/images/apm-icons/sepa.png')}" width="10%"/>
 	${Resource.msg('cko.sepa.name','cko',null)}
-	<input id="sepa_apm_radio_btn" type="radio" name="apm_payment_types" value="sepa">
+	<input id="sepa_apm_radio_btn" type="radio" name="apm_list" value="sepa">
 </h4>
 
 <div id="sepa_pay_box" style="display: none;">
