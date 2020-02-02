@@ -1,23 +1,15 @@
 'use strict'
 
-/* Site controller */
-var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
-
 /* API Includes */
 var OrderMgr = require('dw/order/OrderMgr');
-var app = require(SiteControllerName + '/cartridge/scripts/app');
 
 /* Business Name */
 var businessName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBusinessName');
-
-// Get apms form
-var paymentForm = app.getForm('alternativePaymentForm');
 
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 var ckoApmConfig = {
-    
     /*
      * Ideal Pay Authorization
      */
