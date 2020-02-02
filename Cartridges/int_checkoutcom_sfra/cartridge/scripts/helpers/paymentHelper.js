@@ -73,31 +73,21 @@ var paymentHelper = {
             
             // Check the response
             if (ckoHelper.paymentSuccess(chargeResponse)) {
-                // Redirect to the confirmation page
-                res.redirect(
-                    URLUtils.url(
-                        'Order-Confirm',
-                        'ID',
-                        order.orderNo,
-                        'token',
-                        order.orderToken
-                    ).toString()
-                );
+                // Handle the 3ds redirection
+                if (session.privacy.redirectUrl) {
+                    res.redirect(session.privacy.redirectUrl);
+                }
+                else {
+                    // Redirect to the confirmation page
+                    this.getConfirmationPage(res, order);
+                }
             }
             else {                
                 // Restore the cart
                 ckoHelper.checkAndRestoreBasket(order);
 
                 // Redirect to the checkout process
-                res.redirect(
-                    URLUtils.url(
-                        'Checkout-Begin',
-                        'stage',
-                        'payment',
-                        'paymentError',
-                        Resource.msg('error.payment.not.valid', 'checkout', null)
-                    )
-                );
+                this.getFailurePage(res);
             }
 
             return next();
@@ -142,30 +132,14 @@ var paymentHelper = {
             // Check the response
             if (chargeResponse) {
                 // Redirect to the confirmation page
-                res.redirect(
-                    URLUtils.url(
-                        'Order-Confirm',
-                        'ID',
-                        order.orderNo,
-                        'token',
-                        order.orderToken
-                    ).toString()
-                );
+                this.getConfirmationPage(res, order);
             }
             else {
                 // Restore the cart
                 ckoHelper.checkAndRestoreBasket(order);
 
                 // Redirect to the checkout process
-                res.redirect(
-                    URLUtils.url(
-                        'Checkout-Begin',
-                        'stage',
-                        'payment',
-                        'paymentError',
-                        Resource.msg('error.payment.not.valid', 'checkout', null)
-                    )
-                );
+                this.getFailurePage(res);
             }
 
             return next();
@@ -210,30 +184,14 @@ var paymentHelper = {
             // Check the response
             if (chargeResponse) {
                 // Redirect to the confirmation page
-                res.redirect(
-                    URLUtils.url(
-                        'Order-Confirm',
-                        'ID',
-                        order.orderNo,
-                        'token',
-                        order.orderToken
-                    ).toString()
-                );
+                this.getConfirmationPage(res, order);
             }
             else {
                 // Restore the cart
                 ckoHelper.checkAndRestoreBasket(order);
 
                 // Redirect to the checkout process
-                res.redirect(
-                    URLUtils.url(
-                        'Checkout-Begin',
-                        'stage',
-                        'payment',
-                        'paymentError',
-                        Resource.msg('error.payment.not.valid', 'checkout', null)
-                    )
-                );
+                this.getFailurePage(res);
             }
 
             return next();
@@ -241,9 +199,6 @@ var paymentHelper = {
     },
 
     checkoutcomApmRequest: function (paymentMethodId, req, res, next) {
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('this is my test {0}', JSON.stringify(req.form));
-
         // Transaction wrapper
         Transaction.wrap(function () {         
             // Get the current basket
@@ -293,19 +248,35 @@ var paymentHelper = {
                 ckoHelper.checkAndRestoreBasket(order);
 
                 // Redirect to the checkout process
-                res.redirect(
-                    URLUtils.url(
-                        'Checkout-Begin',
-                        'stage',
-                        'payment',
-                        'paymentError',
-                        Resource.msg('error.payment.not.valid', 'checkout', null)
-                    )
-                );
+                this.getFailurePage(res);
             }
 
             return next();
         });
+    },
+
+    getConfirmationPage: function (res, order) {
+        res.redirect(
+            URLUtils.url(
+                'Order-Confirm',
+                'ID',
+                order.orderNo,
+                'token',
+                order.orderToken
+            ).toString()
+        );
+    },
+
+    getFailurePage: function (res) {
+        res.redirect(
+            URLUtils.url(
+                'Checkout-Begin',
+                'stage',
+                'payment',
+                'paymentError',
+                Resource.msg('error.payment.not.valid', 'checkout', null)
+            )
+        );
     }
 }
 
