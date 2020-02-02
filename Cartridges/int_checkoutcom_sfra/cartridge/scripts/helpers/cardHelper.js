@@ -32,6 +32,10 @@ var cardHelper = {
             // Logging
             ckoHelper.doLog('response', gatewayResponse);
 
+            var logger = require('dw/system/Logger').getLogger('ckodebug');
+            logger.debug('gatewayRequest 1 {0}', JSON.stringify(gatewayResponse));
+            logger.debug('gatewayResponse 1 {0}', JSON.stringify(gatewayResponse));
+ 
             // If the charge is valid, process the response
             if (gatewayResponse) {                
                 // Handle the response
@@ -126,11 +130,7 @@ var cardHelper = {
             'risk'                  : {enabled: true},
             'payment_ip'            : ckoHelper.getHost(args),
             'metadata'              : ckoHelper.getMetadataObject(cardData, args)
-        };
-        
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('chargeData {0}', JSON.stringify(chargeData));
-    
+        };   
 
         return chargeData;
     },

@@ -23,6 +23,8 @@ var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
 */
 var paymentHelper = {  
     checkoutcomCardRequest: function (paymentMethodId, req, res, next) {
+        var self = this;
+
         // Transaction wrapper
         Transaction.wrap(function () {
             // Get the current basket
@@ -55,31 +57,31 @@ var paymentHelper = {
 
             // Handle the charge request
             var chargeResponse = cardHelper.handleCardRequest(cardData, args);
-
-            // Prepare the transaction
-            paymentInstrument.creditCardNumber = cardData.number;
-            paymentInstrument.creditCardExpirationMonth = cardData.expiryMonth;
-            paymentInstrument.creditCardExpirationYear = cardData.expiryYear;
-            paymentInstrument.creditCardType = cardData.cardType;
-
-            // Create the authorization transaction
-            paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-            //paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-            paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
             
             // Check the response
             if (ckoHelper.paymentSuccess(chargeResponse)) {
+                // Prepare the transaction
+                paymentInstrument.creditCardNumber = cardData.number;
+                paymentInstrument.creditCardExpirationMonth = cardData.expiryMonth;
+                paymentInstrument.creditCardExpirationYear = cardData.expiryYear;
+                paymentInstrument.creditCardType = cardData.cardType;
+
+                // Create the authorization transaction
+                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
+                //paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
+                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+
                 // Handle the 3ds redirection
                 if (session.privacy.redirectUrl) {
                     res.redirect(session.privacy.redirectUrl);
                 }
                 else {
                     // Redirect to the confirmation page
-                    this.getConfirmationPage(res, order);
+                    self.getConfirmationPage(res, order);
                 }
             }
             else {                
@@ -87,7 +89,7 @@ var paymentHelper = {
                 ckoHelper.checkAndRestoreBasket(order);
 
                 // Redirect to the checkout process
-                this.getFailurePage(res);
+                self.getFailurePage(res);
             }
 
             return next();
@@ -118,19 +120,19 @@ var paymentHelper = {
             };
 
             // Handle the charge request
-            var chargeResponse = googlePayHelper.handleRequest(args);
+            var chargeResponse = googlePayHelper.handleRequest(args);            
 
-            // Create the authorization transaction
-            paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-            //paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-            paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-            
             // Check the response
             if (chargeResponse) {
+                // Create the authorization transaction
+                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
+                //paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
+                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+
                 // Redirect to the confirmation page
                 this.getConfirmationPage(res, order);
             }
@@ -171,18 +173,18 @@ var paymentHelper = {
 
             // Handle the charge request
             var chargeResponse = applePayHelper.handleRequest(args);
-
-            // Create the authorization transaction
-            paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-            //paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-            paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
             
             // Check the response
             if (chargeResponse) {
+                // Create the authorization transaction
+                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
+                //paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
+                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+
                 // Redirect to the confirmation page
                 this.getConfirmationPage(res, order);
             }
