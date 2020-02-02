@@ -20,26 +20,11 @@ var apmHelper = {
      */
     apmAuthorization: function (payObject, args) {        
         // Perform the charge
-        var apmRequest = this.handleApmRequest(payObject, args);
+        var apmResponse = this.handleApmRequest(payObject, args);
         
-        // Handle apm result
-        if (apmRequest) {
-            if (session.privacy.redirectUrl) {                
-                // Set the redirection template
-                var templatePath;
-                if (payObject.type == "sepa") {
-                    templatePath = 'redirects/sepaMandate.isml';
-                } else {
-                    templatePath = 'redirects/apm.isml';
-                }
-
-                // Redirect
-                ISML.renderTemplate(templatePath, {
-                    redirectUrl: session.privacy.redirectUrl
-                });
-                
-                return true;
-            }
+        // Handle APM result
+        if (apmResponse) {
+            return apmResponse;
         } 
         
         return false;
@@ -49,7 +34,7 @@ var apmHelper = {
      * Handle APM charge Response from CKO API
      */
     handleApmChargeResponse: function (gatewayResponse) {
-        // clean the session
+        // Clean the session
         session.privacy.redirectUrl = null;
         
         // Logging

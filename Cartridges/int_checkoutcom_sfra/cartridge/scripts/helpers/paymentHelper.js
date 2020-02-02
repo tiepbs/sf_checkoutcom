@@ -273,28 +273,20 @@ var paymentHelper = {
 
             // Handle the charge request
             var chargeResponse = apmHelper.apmAuthorization(payObject, args);
-
-            // Create the authorization transaction
-            paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-            //paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-            paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
             
             // Check the response
             if (chargeResponse) {
+                // Create the authorization transaction
+                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
+                //paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
+                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+
                 // Redirect to the confirmation page
-                res.redirect(
-                    URLUtils.url(
-                        'Order-Confirm',
-                        'ID',
-                        order.orderNo,
-                        'token',
-                        order.orderToken
-                    ).toString()
-                );
+                res.redirect(session.privacy.redirectUrl);
             }
             else {
                 // Restore the cart
