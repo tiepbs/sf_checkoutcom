@@ -22,7 +22,7 @@ var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig'
 /**
  * Handles responses from the Checkout.com payment gateway.
  */
-server.post('HandleReturn', function (req, res, next) {
+server.get('HandleReturn', function (req, res, next) {
     // Prepare some variables
     var gResponse = false;
     var mode = ckoHelper.getValue('ckoMode').value;
@@ -86,7 +86,7 @@ server.post('HandleReturn', function (req, res, next) {
 /**
  * Handles a failed payment from the Checkout.com payment gateway.
  */
-server.post('HandleFail', function (req, res, next) {
+server.get('HandleFail', function (req, res, next) {
     // Load the order
     var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
@@ -120,41 +120,6 @@ server.post('HandleWebhook', function (req, res, next) {
             // Call the event
             eventsHelper[func](hook);
         }
-    }
-
-    next();
-});
-
-/**
- * Initializes the credit card list by determining the saved customer payment method.
- */
-server.get('GetCardsList', function (req, res, next) {
-    // Prepare the variables
-    var applicablePaymentCards;
-    var data = [];
-
-    // If user logged in
-    if (customer.authenticated) {
-        var profile = customer.getProfile();
-        if (profile) {
-            applicablePaymentCards = customer.profile.getWallet().getPaymentInstruments();
-            for (let i = 0; i < applicablePaymentCards.length; i++) {
-                data.push({
-                    cardId: applicablePaymentCards[i].getUUID(),
-                    cardNumber: applicablePaymentCards[i].getCreditCardNumber(),
-                    cardHolder: applicablePaymentCards[i].creditCardHolder,
-                    cardType: applicablePaymentCards[i].getCreditCardType(),
-                    expiryMonth: applicablePaymentCards[i].creditCardExpirationMonth,
-                    expiryYear: applicablePaymentCards[i].creditCardExpirationYear,
-                });
-            }
-        }
-        
-        // Send the output for rendering
-        res.render('custom/ajax/output', {data: JSON.stringify(data)});
-    } else {
-        app.getModel('Customer').logout();
-        res.render('csrf/csrffailed');
     }
 
     next();
