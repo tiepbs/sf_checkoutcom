@@ -17,7 +17,7 @@ var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 
 // Initiate the mandate session
 server.get('Mandate', function (req, res, next) {
-    // Prepare the varirables
+    // Prepare the variables
     var url = session.privacy.redirectUrl;
     var orderId = ckoHelper.getOrderId();
     var order = OrderMgr.getOrder(orderId);
