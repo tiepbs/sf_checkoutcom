@@ -1,13 +1,13 @@
 <script type="text/javascript" src="https://pay.google.com/gp/p/js/pay.js"></script>
 <isscript>
-    var helper = require('~/cartridge/scripts/helpers/ckoHelper');
     var assets = require('*/cartridge/scripts/assets.js');
     assets.addJs('/js/googlepay.js');
     assets.addCss('/css/googlepay.css');
 
     var buttonStyle = 'google-pay-button-' + dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayButton').value;
     var ckoMode = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode').value; 
-    var gatewayMerchantId = helper.getAccountKeys().publicKey;
+	var publicKey = 'cko' + ckoMode.charAt(0).toUpperCase() + ckoMode.slice(1) + 'PublicKey';
+	var gatewayMerchantId = dw.system.Site.getCurrent().getCustomPreferenceValue(publicKey);
     var orderAmount = pdict.order.totals.grandTotal.replace(/[^\d\.\,\s]+/g, '');
 </isscript>
 
