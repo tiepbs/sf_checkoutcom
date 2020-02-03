@@ -2,7 +2,7 @@
 <h4>
 	<img alt="${Resource.msg('cko.fawry.name','cko',null)}" id="giropay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/giropay.jpeg')}" width="10%"/>
 	${Resource.msg('cko.giro.name','cko',null)} 
-	<input id="giroPay_apm_radio_btn" type="radio" name="apm_type" value="giro">
+	<input id="giroPay_apm_radio_btn" type="radio" name="apm_list" value="giro">
 </h4>
 
 

@@ -2,7 +2,7 @@
 <h4>
 	<img alt="${Resource.msg('cko.klarna.name','cko',null)}" id="klarnapay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}" width="10%"/>
 	${Resource.msg('cko.klarna.name','cko',null)}
-	<input id="klarna_apm_radio_btn" type="radio" name="apm_type" value="klarna" onclick="callKlarnaController('${URLUtils.url('CKOKlarna-KlarnaSession')}')">
+	<input id="klarna_apm_radio_btn" type="radio" name="apm_list" value="klarna" onclick="callKlarnaController('${URLUtils.url('CKOKlarna-KlarnaSession')}')">
 </h4>
 
 <div id="klarnaPay_pay_box" class="hideApm klarnaForm">

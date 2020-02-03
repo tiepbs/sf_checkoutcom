@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
  */
 function alternativePayments()
 {
-    $('input[name="apm_type"]').change(function () {
+    $('input[name="apm_list"]').change(function () {
         switch (this.value) {
             case"ideal":
                 idealPayBox();
