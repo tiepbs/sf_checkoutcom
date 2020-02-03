@@ -21,66 +21,54 @@ var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig'
  * Handles responses from the Checkout.com payment gateway.
  */
 server.get('HandleReturn', server.middleware.https, function (req, res, next) {
-	var logger = require('dw/system/Logger').getLogger('ckodebug');
-	logger.debug('axona {0}', JSON.stringify(req));
-    next();
-
     // Prepare some variables
-    var gResponse = false;
     var mode = ckoHelper.getValue('ckoMode').value;
-    var orderId = ckoHelper.getOrderId();
-    
-    // If there is a track id
-    if (orderId) {
-        // Load the order
-        var order = OrderMgr.getOrder(orderId);
-        if (order) {
-            // Check the payment token if exists
-            var sessionId = req.httpParameterMap.get('cko-session-id').stringValue;
-            
-            // If there is a payment session id available, verify
-            if (sessionId) {
-                // Perform the request to the payment gateway
-                var gVerify = ckoHelper.gatewayClientRequest(
-                    'cko.verify.charges.' + mode + '.service',
-                    {'paymentToken': sessionId}
-                );
-                
-                // If there is a valid response
-                if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
-                    if (ckoHelper.redirectPaymentSuccess(gVerify)) {
-                        // Show order confirmation page
-                        paymentHelper.getConfirmationPage(res, order);
 
-                    } else {
-                        // Restore the cart
-                        ckoHelper.checkAndRestoreBasket(order);
+    // Check if a session id is available
+    if (req.querystring.hasOwnProperty('cko-session-id')) {
+        // Reset the session URL
+        session.privacy.redirectUrl = null;
 
-                        // Send back to the error page
-                        paymentHelper.getFailurePage(res);
-                    }
-                } else {
-                    paymentHelper.getFailurePage(res);
-                }
+        // Perform the request to the payment gateway
+        var gVerify = ckoHelper.gatewayClientRequest(
+            'cko.verify.charges.' + mode + '.service',
+            {
+                'paymentToken': req.querystring['cko-session-id']
             }
+        );
 
-            // Else it's a normal transaction
-            else {
-                // Get the response
-                gResponse = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
+        // If there is a valid response
+        if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
+            if (ckoHelper.redirectPaymentSuccess(gVerify)) {
+                // Load the order
+                var order = OrderMgr.getOrder(gVerify.reference);
 
-                // Process the response data
-                if (ckoHelper.paymentIsValid(gResponse)) {
-                    paymentHelper.getConfirmationPage(res, order);
-                } else {
-                    paymentHelper.getFailurePage(res);
-                }
+                // Show order confirmation page
+                paymentHelper.getConfirmationPage(res, order);
+            } else {
+                // Restore the cart
+                ckoHelper.checkAndRestoreBasket(order);
+
+                // Send back to the error page
+                paymentHelper.getFailurePage(res);
             }
         } else {
             paymentHelper.getFailurePage(res);
         }
-    } else {
-        paymentHelper.getFailurePage(res);
+    }
+    else {
+        // Process the response data
+        var gResponse = JSON.parse(req.querystring);
+        if (ckoHelper.paymentIsValid(gResponse)) {
+            // Load the order
+            var order = OrderMgr.getOrder(gVerify.reference);
+
+            // Redirect to the confirmation page
+            paymentHelper.getConfirmationPage(res, order);
+        } else {
+            // Redirect to the failure page
+            paymentHelper.getFailurePage(res);
+        }
     }
 
     next();
