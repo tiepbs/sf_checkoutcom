@@ -21,7 +21,7 @@ var ckoHelper = {
      * get the required value for each mode
      */
     getAppModeValue: function (sandboxValue, liveValue) {
-        var appMode = this.getValue('ckoMode');
+        var appMode = this.getValue('ckoMode').value;
         if (appMode == 'sandbox') {
             return sandboxValue;
         } else {
@@ -113,7 +113,7 @@ var ckoHelper = {
      */
     getAccountKeys: function () {
         var keys = {};
-        var str = this.getValue('ckoMode') == 'live' ? 'Live' : 'Sandbox';
+        var str = this.getValue('ckoMode').value == 'live' ? 'Live' : 'Sandbox';
 
         keys.publicKey = this.getValue('cko' + str + 'PublicKey').value;
         keys.secretKey = this.getValue('cko' +  str + 'SecretKey').value;
@@ -204,7 +204,7 @@ var ckoHelper = {
      */
     getParentTransaction: function (paymentId, transactionType) {
         // Prepare the payload
-        var mode = this.getValue('ckoMode');
+        var mode = this.getValue('ckoMode').value;
         var ckoChargeData = {
             chargeId: paymentId
         }
