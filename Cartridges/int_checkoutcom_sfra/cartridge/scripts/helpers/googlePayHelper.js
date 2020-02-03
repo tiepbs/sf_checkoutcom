@@ -1,6 +1,5 @@
 "use strict"
 
-
 /* API Includes */
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
@@ -16,23 +15,22 @@ var googlePayHelper = {
      * Handle full charge Request to CKO API
      */
     handleRequest: function (args) {
-        // load the order information
+        // Load the order information
         var order = OrderMgr.getOrder(args.OrderNo);
-        var paymentInstrument = args.PaymentInstrument;
-        var ckoGooglePayData =  paymentInstrument.paymentTransaction.custom.ckoGooglePayData;
-
+        var ckoGooglePayData = args.ckoGooglePayData;
+    	
         // Prepare the parameters
         var requestData = {
             "type": "googlepay",
             "token_data": JSON.parse(ckoGooglePayData)
         };
-
+        
         // Perform the request to the payment gateway
         var tokenResponse = ckoHelper.gatewayClientRequest(
             "cko.network.token." + ckoHelper.getValue('ckoMode').value + ".service",
-            requestData
+            JSON.stringify(requestData)
         );
-
+            	
         // If the request is valid, process the response
         if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
             var chargeData = {

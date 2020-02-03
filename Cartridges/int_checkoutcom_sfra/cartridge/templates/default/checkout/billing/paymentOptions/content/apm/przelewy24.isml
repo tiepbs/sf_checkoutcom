@@ -2,7 +2,7 @@
 <H4>
 	<img alt="p24Pay" id="p24Pay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/p24.png')}" width="10%"/>
 	${Resource.msg('cko.p24.name','cko',null)}
-	<input id="p24Pay_apm_radio_btn" type="radio" name="apm_payment_types" value="p24">
+	<input id="p24Pay_apm_radio_btn" type="radio" name="apm_list" value="p24">
 </H4>
 
 

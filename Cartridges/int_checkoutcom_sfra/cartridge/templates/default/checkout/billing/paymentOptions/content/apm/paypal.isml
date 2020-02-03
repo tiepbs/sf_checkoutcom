@@ -2,7 +2,7 @@
 <H4>
 	<img alt="paypalPay" id="paypalPay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/paypal.jpeg')}" width="10%"/>
 	${Resource.msg('cko.paypal.name','cko',null)}
-	<input id="paypalPay_apm_radio_btn" type="radio" name="apm_payment_types" value="paypal">
+	<input id="paypalPay_apm_radio_btn" type="radio" name="apm_list" value="paypal">
 </H4>
 
 
