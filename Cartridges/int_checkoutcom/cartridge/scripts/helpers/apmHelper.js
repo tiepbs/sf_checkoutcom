@@ -45,7 +45,7 @@ var apmHelper = {
                 if (payObject.type == "sepa") {
                     templatePath = 'redirects/sepaMandate.isml';
                 } else {
-                    templatePath = 'redirects/APM.isml';
+                    templatePath = 'redirects/apm.isml';
                 }
 
                 // Redirect
@@ -65,7 +65,7 @@ var apmHelper = {
     /*
      * Handle APM charge Response from CKO API
      */
-    handleAPMChargeResponse: function (gatewayResponse) {
+    handleApmChargeResponse: function (gatewayResponse) {
         // clean the session
         session.privacy.redirectUrl = null;
         
@@ -139,7 +139,7 @@ var apmHelper = {
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
-            if (this.handleAPMChargeResponse(gatewayResponse)) {
+            if (this.handleApmChargeResponse(gatewayResponse)) {
                 return gatewayResponse;
             } else {
                 return false;
@@ -209,7 +209,7 @@ var apmHelper = {
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
-            this.handleAPMChargeResponse(gatewayResponse, order);
+            this.handleApmChargeResponse(gatewayResponse, order);
         } else {
             // Update the transaction
             Transaction.wrap(function () {
