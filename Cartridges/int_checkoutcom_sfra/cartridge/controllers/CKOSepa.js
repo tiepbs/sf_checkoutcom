@@ -2,22 +2,20 @@
 
 /* Server */
 var server = require('server');
-server.extend(module.superModule);
 
 /* Script Modules */
-var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
-var app = require(siteControllerName + '/cartridge/scripts/app');
 var URLUtils = require('dw/web/URLUtils');
 var OrderMgr = require('dw/order/OrderMgr');
-
+var Resource = require('dw/web/Resource');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
+var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
 
 // Initiate the mandate session
-server.get('Mandate', function (req, res, next) {
-    // Prepare the varirables
+server.get('Mandate', server.middleware.https, function (req, res, next) {
+    // Prepare the variables
     var url = session.privacy.redirectUrl;
     var orderId = ckoHelper.getOrderId();
     var order = OrderMgr.getOrder(orderId);
@@ -45,14 +43,21 @@ server.get('Mandate', function (req, res, next) {
             ContinueURL: URLUtils.https('CKOSepa-HandleMandate')
         });
     } else {
-        // Print out a message
-        res.getWriter().println('Error!');
+        return next(
+            new Error(
+                Resource.msg(
+                    'cko.payment.invalid',
+                    'cko',
+                    null
+                )
+            )
+        );
     }
 
     next();
 });
 
-server.get('HandleMandate', function (req, res, next) {
+server.get('HandleMandate', server.middleware.https, function (req, res, next) {
     // Set session redirect url to null
     session.privacy.redirectUrl = null;
     var orderId = ckoHelper.getOrderId();
@@ -95,12 +100,20 @@ server.get('HandleMandate', function (req, res, next) {
                         apmHelper.handleSepaRequest(payObject, order);
                         
                         // Show the confirmation screen
-                        app.getController('COSummary').ShowConfirmation(order);
+                        paymentHelper.getConfirmationPage(res, order);
                     } else {
-                        app.getController('COBilling').Start();
+                        paymentHelper.getFailurePage(res);
                     }
                 } else {
-                    res.getWriter().println('Error!');
+                    return next(
+                        new Error(
+                            Resource.msg(
+                                'cko.payment.invalid',
+                                'cko',
+                                null
+                            )
+                        )
+                    );
                 }
             } else {
                 res.render('sepaForm');

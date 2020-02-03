@@ -6,7 +6,10 @@
 				name="${pdict.forms.billingForm.paymentMethod.htmlName}"
 				value="${paymentOption.ID}"
 		>
-		<fieldset class="">
+
+        <isset name="ckoSelectedApm" value="${pdict.forms.apmForm.ckoSelectedApm}" scope="page"/>
+
+		<fieldset>
 			<div id="apmsBox">
 				<!-- This to include the ideal pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoIdealEnabled'))}">
@@ -32,14 +35,14 @@
 				<!-- This to include the benefit pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBenefitEnabled'))}">
 					<div id="benefit" style="display: none;">	
-						<isinclude template="checkout/billing/paymentOptions/content/apm/benefit.isml"/>
+						<isinclude template="checkout/billing/paymentOptions/content/apm/benefitPay.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the giro pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGiroEnabled'))}">
 					<div id="giro" style="display: none;">	
-						<isinclude template="checkout/billing/paymentOptions/content/apm/giro.isml"/>
+						<isinclude template="checkout/billing/paymentOptions/content/apm/giropay.isml"/>
 					</div>
 				</isif>
 				
@@ -102,7 +105,7 @@
 				<!-- This to include the p24 apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoP24Enabled'))}">
 					<div id="p24" style="display: none;">
-						<isinclude template="checkout/billing/paymentOptions/content/apm/p24.isml"/>
+						<isinclude template="checkout/billing/paymentOptions/content/apm/przelewy24.isml"/>
 					</div>
 				</isif>
 				
@@ -131,11 +134,8 @@
 	</fieldset>
 </div>
 	
-<!-- field for alternative payment chosen -->
-<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.alternative_payments}" />
-
 <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
 
 <script src="${URLUtils.staticURL('/js/cleave.js')}"></script>
 
-<script src="${URLUtils.staticURL('js/alternativePayments.js')}"></script>
+<script src="${URLUtils.staticURL('js/apm.js')}"></script>

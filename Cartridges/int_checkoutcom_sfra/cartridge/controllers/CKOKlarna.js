@@ -6,10 +6,10 @@
 
 /* Server */
 var server = require('server');
-server.extend(module.superModule);
 
 /* API Includes */
 var BasketMgr = require('dw/order/BasketMgr');
+var Resource = require('dw/web/Resource');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -17,7 +17,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 /**
  * Initiate the Kalrna session.
  */
-server.get('KlarnaSession', function (req, res, next) {
+server.get('KlarnaSession', server.middleware.https, function (req, res, next) {
     // Prepare the basket
     var basket = BasketMgr.getCurrentBasket();
     if (basket) {
@@ -53,10 +53,18 @@ server.get('KlarnaSession', function (req, res, next) {
 
         // Write the session
         if (gSession) {
-            res.getWriter().println(JSON.stringify(gSession));
+            res.json(gSession);
         }
     } else {
-        res.getWriter().println('Basket Not Found');
+        return next(
+            new Error(
+                Resource.msg(
+                    'cko.payment.invalid',
+                    'cko',
+                    null
+                )
+            )
+        );
     }
 
     next();

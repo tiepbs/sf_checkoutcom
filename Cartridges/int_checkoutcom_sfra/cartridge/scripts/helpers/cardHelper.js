@@ -33,13 +33,8 @@ var cardHelper = {
             ckoHelper.doLog('response', gatewayResponse);
 
             // If the charge is valid, process the response
-            if (gatewayResponse) {                
-                // Handle the response
-                if (this.handleFullChargeResponse(gatewayResponse)) {
-                    return gatewayResponse;
-                }
-
-                return false;
+            if (gatewayResponse && this.handleFullChargeResponse(gatewayResponse)) {                
+                return gatewayResponse;
             } else {
                 // Fail the order
                 Transaction.wrap(function () {
@@ -73,11 +68,9 @@ var cardHelper = {
         if (gatewayLinks.hasOwnProperty('redirect')) {
             session.privacy.redirectUrl = gatewayLinks.redirect.href;
             return true;
-        } else {
-            return ckoHelper.paymentSuccess(gatewayResponse);
-        }
-
-        return false;
+        } 
+        
+        return ckoHelper.paymentSuccess(gatewayResponse);
     },
     
     /*
@@ -126,11 +119,7 @@ var cardHelper = {
             'risk'                  : {enabled: true},
             'payment_ip'            : ckoHelper.getHost(args),
             'metadata'              : ckoHelper.getMetadataObject(cardData, args)
-        };
-        
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('chargeData {0}', JSON.stringify(chargeData));
-    
+        };   
 
         return chargeData;
     },

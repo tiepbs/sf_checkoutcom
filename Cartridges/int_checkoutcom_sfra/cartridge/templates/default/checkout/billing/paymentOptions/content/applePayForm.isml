@@ -15,7 +15,10 @@
                 name="${pdict.forms.billingForm.paymentMethod.htmlName}"
 				value="${paymentOption.ID}"
         >
-        <fieldset class="">
+
+        <isset name="applePayFields" value="${pdict.forms.billingForm.applePayForm}" scope="page"/>
+
+        <fieldset>
             <button id="ckoApplePayButton" type="button" class="apple-pay-button ${buttonStyle}"></button>
             <div class="ckoApplePayUnavailable">Apple Pay is available but not currently active.</div>
             <div class="ckoApplePayIncompatible">Apple Pay is not available for this browser.</div>
@@ -27,7 +30,7 @@
             <input type="hidden" id="ckoApplePaySiteName" value="${dw.system.Site.getCurrent().name}">
             <input type="hidden" id="ckoApplePaySiteCountry" value="${dw.catalog.Store.countryCode}">
             <input type="hidden" id="ckoApplePayValidationUrl" value="${URLUtils.https('Applepay-GetValidation')}">
-            <input type="hidden" id="ckoApplePayData" />
+            <input type="hidden" id="ckoApplePayData" <isprint value=${applePayFields.ckoApplePayData.attributes} encoding="off"/> >
         </fieldset>
     </fieldset>
 </div>
