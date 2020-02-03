@@ -2,7 +2,6 @@
 
 /* Server */
 var server = require('server');
-server.extend(module.superModule);
 
 /* Script Modules */
 var URLUtils = require('dw/web/URLUtils');
@@ -15,7 +14,7 @@ var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
 
 // Initiate the mandate session
-server.get('Mandate', function (req, res, next) {
+server.get('Mandate', server.middleware.https, function (req, res, next) {
     // Prepare the variables
     var url = session.privacy.redirectUrl;
     var orderId = ckoHelper.getOrderId();
@@ -58,7 +57,7 @@ server.get('Mandate', function (req, res, next) {
     next();
 });
 
-server.get('HandleMandate', function (req, res, next) {
+server.get('HandleMandate', server.middleware.https, function (req, res, next) {
     // Set session redirect url to null
     session.privacy.redirectUrl = null;
     var orderId = ckoHelper.getOrderId();

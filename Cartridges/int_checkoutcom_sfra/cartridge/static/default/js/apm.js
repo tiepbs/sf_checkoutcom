@@ -11,14 +11,14 @@ var apm_selected_box = false;
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
-    AlternativePayments();
-    AlternativePaymentsFilter();
+    alternativePayments();
+    alternativePaymentsFilter();
 }, false);
 
 /*
  * Alternative Payments
  */
-function AlternativePayments()
+function alternativePayments()
 {
     $('input[name="apm_list"]').change(function () {
         switch (this.value) {
@@ -392,7 +392,7 @@ function toggleApm(apms, apmBox)
 /*
  * Get the APMs filter
  */
-function AlternativePaymentsFilter()
+function alternativePaymentsFilter()
 {   
     var creditCard = $('#is-CHECKOUTCOM_APM');
     creditCard.on('click', function () {

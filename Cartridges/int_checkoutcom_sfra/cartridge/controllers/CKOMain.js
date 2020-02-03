@@ -2,7 +2,6 @@
 
 /* Server */
 var server = require('server');
-server.extend(module.superModule);
 
 /* API Includes */
 var OrderMgr = require('dw/order/OrderMgr');
@@ -21,7 +20,11 @@ var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig'
 /**
  * Handles responses from the Checkout.com payment gateway.
  */
-server.get('HandleReturn', function (req, res, next) {
+server.get('HandleReturn', server.middleware.https, function (req, res, next) {
+	var logger = require('dw/system/Logger').getLogger('ckodebug');
+	logger.debug('axona {0}', JSON.stringify(req));
+    next();
+
     // Prepare some variables
     var gResponse = false;
     var mode = ckoHelper.getValue('ckoMode').value;
@@ -86,7 +89,7 @@ server.get('HandleReturn', function (req, res, next) {
 /**
  * Handles a failed payment from the Checkout.com payment gateway.
  */
-server.get('HandleFail', function (req, res, next) {
+server.get('HandleFail', server.middleware.https, function (req, res, next) {
     // Load the order
     var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
@@ -102,7 +105,7 @@ server.get('HandleFail', function (req, res, next) {
 /**
  * Handles webhook responses from the Checkout.com payment gateway.
  */
-server.post('HandleWebhook', function (req, res, next) {
+server.post('HandleWebhook', server.middleware.https, function (req, res, next) {
     var isValidResponse = ckoHelper.isValidResponse();
     if (isValidResponse) {
         // Get the response as JSON object
@@ -125,7 +128,7 @@ server.post('HandleWebhook', function (req, res, next) {
     next();
 });
 
-server.get('GetApmFilter', function (req, res, next) {
+server.get('GetApmFilter', server.middleware.https, function (req, res, next) {
     // Prepare some variables
     var basket = BasketMgr.getCurrentBasket();
     var currencyCode = basket.getCurrencyCode();
