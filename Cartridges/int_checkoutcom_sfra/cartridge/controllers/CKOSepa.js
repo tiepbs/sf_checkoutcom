@@ -5,8 +5,6 @@ var server = require('server');
 server.extend(module.superModule);
 
 /* Script Modules */
-var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
-var app = require(siteControllerName + '/cartridge/scripts/app');
 var URLUtils = require('dw/web/URLUtils');
 var OrderMgr = require('dw/order/OrderMgr');
 var Resource = require('dw/web/Resource');
@@ -14,6 +12,7 @@ var Resource = require('dw/web/Resource');
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
+var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
 
 // Initiate the mandate session
 server.get('Mandate', function (req, res, next) {
@@ -102,9 +101,9 @@ server.get('HandleMandate', function (req, res, next) {
                         apmHelper.handleSepaRequest(payObject, order);
                         
                         // Show the confirmation screen
-                        app.getController('COSummary').ShowConfirmation(order);
+                        paymentHelper.getConfirmationPage(res, order);
                     } else {
-                        app.getController('COBilling').Start();
+                        paymentHelper.getFailurePage(res);
                     }
                 } else {
                     return next(

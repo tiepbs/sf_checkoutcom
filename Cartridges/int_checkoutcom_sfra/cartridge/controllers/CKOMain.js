@@ -5,8 +5,6 @@ var server = require('server');
 server.extend(module.superModule);
 
 /* API Includes */
-var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
-var app = require(siteControllerName + '/cartridge/scripts/app');
 var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
 
