@@ -35,14 +35,14 @@
 				<!-- This to include the benefit pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBenefitEnabled'))}">
 					<div id="benefit" style="display: none;">	
-						<isinclude template="checkout/billing/paymentOptions/content/apm/benefit.isml"/>
+						<isinclude template="checkout/billing/paymentOptions/content/apm/benefitPay.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the giro pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGiroEnabled'))}">
 					<div id="giro" style="display: none;">	
-						<isinclude template="checkout/billing/paymentOptions/content/apm/giro.isml"/>
+						<isinclude template="checkout/billing/paymentOptions/content/apm/giropay.isml"/>
 					</div>
 				</isif>
 				
@@ -105,7 +105,7 @@
 				<!-- This to include the p24 apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoP24Enabled'))}">
 					<div id="p24" style="display: none;">
-						<isinclude template="checkout/billing/paymentOptions/content/apm/p24.isml"/>
+						<isinclude template="checkout/billing/paymentOptions/content/apm/przelewy24.isml"/>
 					</div>
 				</isif>
 				

@@ -1,9 +1,7 @@
 <!-- Bancontact APM Option -->
 <h4>
-	<img alt="" id="bancontactpay_thumb" class="image imageright" type="image" value="Edit" src="${URLUtils.staticURL('/images/apm-icons/bancontactPay.png')}" width="10%"/>
-	${Resource.msg('cko.bancontact.name','cko',null)}
+	<img alt="${Resource.msg('cko.bancontact.name','cko',null)}" id="bancontactpay_thumb" class="image imageright" type="image" value="${Resource.msg('cko.button.edit','cko',null)}" src="${URLUtils.staticURL('/images/apm-icons/bancontactPay.png')}" width="10%"/>
+		${Resource.msg('cko.bancontact.name','cko',null)}
 	<input id="bancontact_apm_radio_btn" type="radio" name="apm_list" value="bancontact">
 </h4>
-
-
 <hr/>

@@ -1,9 +1,9 @@
-<!-- Fawry pay APM Option -->
-<H4>
-	<img alt="fawry" id="knet_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/fawry.jpeg')}" width="10%"/>
+<!-- Fawry APM Option -->
+<h4>
+	<img alt="${Resource.msg('cko.fawry.name','cko',null)}" id="knet_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/fawry.jpeg')}" width="10%"/>
 	${Resource.msg('cko.fawry.name','cko',null)}
 	<input id="fawry_apm_radio_btn" type="radio" name="apm_list" value="fawry">
-</H4>
+</h4>
 
 
 <hr/>
