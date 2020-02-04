@@ -394,26 +394,23 @@ function toggleApm(apms, apmBox)
  */
 function alternativePaymentsFilter()
 {   
-    var creditCard = $('#is-CHECKOUTCOM_APM');
-    creditCard.on('click', function () {
-        var controllerUrl = $('#ckoApmFilterUrl').val();
-        var xhttpFilter = new XMLHttpRequest();
-        xhttpFilter.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var responseObject = JSON.parse(this.responseText);
-                var filterObject = responseObject.filterObject;
-                var apmsFilterObject = responseObject.ckoApmFilterConfig;
-                for (var apms in apmsFilterObject) {                    
-                    if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmObjects.currencies.includes(filterObject.currency)) {
-                        $('#'+ apms).show();
-                    }
-                }
+    var controllerUrl = $('#ckoApmFilterUrl').val();
+    var xhttpFilter = new XMLHttpRequest();
+    xhttpFilter.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var responseObject = JSON.parse(this.responseText);
+            var filterObject = responseObject.filterObject;
+            var apmsFilterObject = responseObject.ckoApmFilterConfig;
+            for (var apms in apmsFilterObject) {                    
+                //if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmObjects.currencies.includes(filterObject.currency)) {
+                    $('#'+ apms).show();
+                //}
             }
-        };
-        
-        xhttpFilter.open('GET', controllerUrl, true);
-        xhttpFilter.send();
-    });
+        }
+    };
+    
+    xhttpFilter.open('GET', controllerUrl, true);
+    xhttpFilter.send();
 }
 
 /*

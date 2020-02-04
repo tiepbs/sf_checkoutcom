@@ -137,6 +137,8 @@
 	</fieldset>
 </div>
 	
+<input type="hidden" id="ckoApmFilterUrl" value="${URLUtils.https('CKOMain-GetApmFilter')}" />
+
 <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
 
 <script src="${URLUtils.staticURL('/js/cleave.js')}"></script>
