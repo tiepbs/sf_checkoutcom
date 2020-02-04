@@ -16,7 +16,7 @@
 				value="${paymentOption.ID}"
         >
 
-        <isset name="applePayFields" value="${pdict.forms.billingForm.applePayForm}" scope="page"/>
+        <isset name="applePayForm" value="${pdict.forms.billingForm.applePayForm}" scope="page"/>
 
         <fieldset>
             <button id="ckoApplePayButton" type="button" class="apple-pay-button ${buttonStyle}"></button>
@@ -30,7 +30,7 @@
             <input type="hidden" id="ckoApplePaySiteName" value="${dw.system.Site.getCurrent().name}">
             <input type="hidden" id="ckoApplePaySiteCountry" value="${dw.catalog.Store.countryCode}">
             <input type="hidden" id="ckoApplePayValidationUrl" value="${URLUtils.https('Applepay-GetValidation')}">
-            <input type="hidden" id="ckoApplePayData" <isprint value=${applePayFields.ckoApplePayData.attributes} encoding="off"/> >
+            <input type="hidden" id="ckoApplePayData" name="ckoApplePayData" value="">
         </fieldset>
     </fieldset>
 </div>

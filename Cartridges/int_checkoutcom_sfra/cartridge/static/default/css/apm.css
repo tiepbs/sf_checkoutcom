@@ -1,0 +1,18 @@
+.apm-list-item,
+#boleto_pay_box,
+#ideal_pay_box,
+#ideal_pay_box,
+#oxxo_pay_box,
+#qpay_pay_box,
+#sepa_pay_box,
+#klarnaPay_pay_box {
+    display: none;
+}
+
+#klarnaPay_pay_box {
+    min-width: 280px;
+    border: solid 1px #aaa;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+}

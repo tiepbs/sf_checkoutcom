@@ -18,7 +18,7 @@
 				value="${paymentOption.ID}"
         >
         
-        <isset name="googlePayFields" value="${pdict.forms.billingForm.googlePayForm}" scope="page"/>
+        <isset name="googlePayForm" value="${pdict.forms.billingForm.googlePayForm}" scope="page"/>
 
         <fieldset>
             <button id="ckoGooglePayButton" type="button" class="cko-google-pay-button ${buttonStyle}"></button>

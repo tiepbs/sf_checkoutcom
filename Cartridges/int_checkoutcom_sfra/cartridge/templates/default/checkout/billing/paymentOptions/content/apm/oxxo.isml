@@ -5,7 +5,7 @@
 	<input id="oxxo_apm_radio_btn" type="radio" name="apm_list" value="oxxo">
 </h4>
 
-<div id="oxxo_pay_box" style="display: none;">
+<div id="oxxo_pay_box">
 	<input id="oxxo_identification" type="text" />
 </div>
 

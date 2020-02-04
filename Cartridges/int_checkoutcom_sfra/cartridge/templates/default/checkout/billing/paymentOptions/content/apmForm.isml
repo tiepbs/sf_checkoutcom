@@ -1,4 +1,7 @@
 <!-- APMs -->
+<style>
+	@import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
 
 <div class="tab-pane" id="cko-apm-content" role="tabpanel">
     <fieldset class="payment-form-fields">
@@ -7,118 +10,118 @@
 				value="${paymentOption.ID}"
 		>
 
-        <isset name="ckoSelectedApm" value="${pdict.forms.apmForm.ckoSelectedApm}" scope="page"/>
+        <isset name="apmForm" value="${pdict.forms.billingForm.apmForm}" scope="page"/>
 
 		<fieldset>
 			<div id="apmsBox">
 				<!-- This to include the ideal pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoIdealEnabled'))}">
-					<div id="ideal" style="display: none;">
+					<div id="ideal" class="apm-list-item">
 						<isinclude template="checkout/billing/paymentOptions/content/apm/ideal.isml"/>
 					</div>
 				</isif>	
 					
 				<!-- This to include the boleto pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBoletoEnabled'))}">
-					<div id="boleto" style="display: none;">	
+					<div id="boleto" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/content/apm/boleto.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the bancontact pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBancontactEnabled'))}">
-					<div id="bancontact" style="display: none;">	
+					<div id="bancontact" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/content/apm/bancontact.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the benefit pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBenefitEnabled'))}">
-					<div id="benefit" style="display: none;">	
+					<div id="benefit" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/content/apm/benefitPay.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the giro pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGiroEnabled'))}">
-					<div id="giro" style="display: none;">	
+					<div id="giro" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/content/apm/giropay.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the eps pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEpsEnabled'))}">
-					<div id="eps" style="display: none;">	
+					<div id="eps" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/content/apm/eps.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the sofort pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSofortEnabled'))}">
-					<div id="sofort" style="display: none;">		
+					<div id="sofort" class="apm-list-item">		
 						<isinclude template="checkout/billing/paymentOptions/content/apm/sofort.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the knet pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoKnetEnabled'))}">
-					<div id="knet" style="display: none;">
+					<div id="knet" class="apm-list-item">
 						<isinclude template="checkout/billing/paymentOptions/content/apm/knet.isml"/>
 					</div>
 				</isif>
 
 				<!-- This to include the qpay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoQpayEnabled'))}">
-					<div id="qpay" style="display: none;">	
+					<div id="qpay" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/content/apm/qpay.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the fawry apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoFawryEnabled'))}">
-					<div id="fawry" style="display: none;">	
+					<div id="fawry" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/content/apm/fawry.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the sepa apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSepaEnabled'))}">
-					<div id="sepa" style="display: none;">	
+					<div id="sepa" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/content/apm/sepa.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the multibanco apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMultibancoEnabled'))}">
-					<div id="multibanco" style="display: none;">	
+					<div id="multibanco" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/content/apm/multibanco.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the poli apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoPoliEnabled'))}">
-					<div id="poli" style="display: none;">	
+					<div id="poli" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/content/apm/poli.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the p24 apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoP24Enabled'))}">
-					<div id="p24" style="display: none;">
+					<div id="p24" class="apm-list-item">
 						<isinclude template="checkout/billing/paymentOptions/content/apm/przelewy24.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the Oxxo apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoOxxoEnabled'))}">
-					<div id="oxxo" style="display: none;">	
+					<div id="oxxo" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/content/apm/oxxo.isml"/>
 					</div>
 				</isif>
 				
 				<!-- This to include the klarna apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoKlarnaEnabled'))}">
-					<div id="klarna" style="display: none;">	
+					<div id="klarna" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/content/apm/klarna.isml"/>	
 					</div>
 				</isif>

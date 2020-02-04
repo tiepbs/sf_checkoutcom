@@ -5,7 +5,7 @@
 	<input id="boleto_apm_radio_btn" type="radio" name="apm_list" value="boleto">
 </h4>
 
-<div id="boleto_pay_box" style="display: none;">
+<div id="boleto_pay_box">
 	<input id="boleto_birthDate" type="text"/>
 	<input id="boleto_cpfe" type="text" />
 </div>
