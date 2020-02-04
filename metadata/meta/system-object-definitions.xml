@@ -553,7 +553,7 @@
                 <attribute attribute-id="ckoPaypalEnabled"/>
             </attribute-group>
             <attribute-group group-id="Checkout.com Apple Pay">
-                <display-name xml:lang="x-default">Google Pay Settings</display-name>
+                <display-name xml:lang="x-default">Apple Pay Settings</display-name>
                 <attribute attribute-id="ckoApplePayEnabled"/>
                 <attribute attribute-id="ckoApplePayEnvironment"/>
                 <attribute attribute-id="ckoApplePayMerchantId"/>
