@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
  */
 function alternativePayments()
 {
-    $('input[name="apm_payment_types"]').change(function () {
+    $('input[name="apm_list"]').change(function () {
         switch (this.value) {
             case"ideal":
                 idealPayBox();
@@ -92,7 +92,7 @@ function idealPayBox()
     var idealBox = $('#ideal_pay_box');
     
     // Input fields
-    toggleAPMS(ideal, idealBox);
+    toggleApm(ideal, idealBox);
 }
 
 /*
@@ -107,7 +107,7 @@ function knetPayBox()
     var knetBox = $('#knet_pay_box');
     
     // Input fields
-    toggleAPMS(knet, knetBox);
+    toggleApm(knet, knetBox);
 }
 
 /*
@@ -122,7 +122,7 @@ function sepaPayBox()
     var sepaBox = $('#sepa_pay_box');
     
     // Input fields
-    toggleAPMS(sepa, sepaBox);
+    toggleApm(sepa, sepaBox);
 }
 
 /*
@@ -137,7 +137,7 @@ function klarnaPayBox()
     var klarnaBox = $('#klarna_pay_box');
     
     // Input fields
-    toggleAPMS(klarna, klarnaBox);
+    toggleApm(klarna, klarnaBox);
 }
 
 /*
@@ -152,7 +152,7 @@ function qPayBox()
     var qpayBox = $('#qpay_pay_box');
     
     // Input fields
-    toggleAPMS(qpay, qpayBox);
+    toggleApm(qpay, qpayBox);
 }
 
 /*
@@ -167,7 +167,7 @@ function fawryPayBox()
     var fawrypayBox = $('#fawry_pay_box');
     
     // Input fields
-    toggleAPMS(fawry, fawrypayBox);
+    toggleApm(fawry, fawrypayBox);
 }
 
 /*
@@ -182,7 +182,7 @@ function sofortPayBox()
     var sofortBox = $('#sofort_pay_box');
     
     // Input fields
-    toggleAPMS(sofort, sofortBox);
+    toggleApm(sofort, sofortBox);
 }
 
 /*
@@ -197,7 +197,7 @@ function epsPayBox()
     var epsBox = $('#epsPay_pay_box');
     
     // Input fields
-    toggleAPMS(eps, epsBox);
+    toggleApm(eps, epsBox);
 }
 
 /*
@@ -219,7 +219,7 @@ function boletoPayBox()
     });
     
     // Set input fields toggle
-    toggleAPMS(boleto, boletoBox);
+    toggleApm(boleto, boletoBox);
 }
 
 /*
@@ -234,7 +234,7 @@ function bancontactPayBox()
     var bancontactBox = $('#bancontact_pay_box');
     
     // Set input fields toggle
-    toggleAPMS(bancontact, bancontactBox);
+    toggleApm(bancontact, bancontactBox);
 }
 
 /*
@@ -249,7 +249,7 @@ function benefitPayBox()
     var benefitPayBox = $('#benefitPay_pay_box');
     
     // Set input fields toggle
-    toggleAPMS(benefitPay, benefitPayBox);
+    toggleApm(benefitPay, benefitPayBox);
 }
 
 /*
@@ -264,7 +264,7 @@ function giroPayBox()
     var giroPayBox = $('#giroPay_pay_box');
     
     // Set input fields toggle
-    toggleAPMS(giroPay, giroPayBox);
+    toggleApm(giroPay, giroPayBox);
 }
 
 /*
@@ -279,7 +279,7 @@ function multibancoPayBox()
     var giroPayBox = $('#multibancoPay_pay_box');
     
     // Set input fields toggle
-    toggleAPMS(multibancoPay, giroPayBox);
+    toggleApm(multibancoPay, giroPayBox);
 }
 
 /*
@@ -294,7 +294,7 @@ function poliPayBox()
     var poliPayBox = $('#poliPay_pay_box');
     
     // Set input fields toggle
-    toggleAPMS(poliPay, poliPayBox);
+    toggleApm(poliPay, poliPayBox);
 }
 
 /*
@@ -309,7 +309,7 @@ function p24PayBox()
     var p24PayBox = $('#p24Pay_pay_box');
     
     // Set input fields toggle
-    toggleAPMS(p24Pay, p24PayBox);
+    toggleApm(p24Pay, p24PayBox);
 }
 
 /*
@@ -324,7 +324,7 @@ function paypalPayBox()
     var paypalPayBox = $('#paypalPay_pay_box');
     
     // set input fields toggle
-    toggleAPMS(paypalPay, paypalPayBox);
+    toggleApm(paypalPay, paypalPayBox);
 }
 
 /*
@@ -339,7 +339,7 @@ function klarnaPayBox()
     var klarnaPayBox = $('#klarnaPay_pay_box');
     
     // Set input fields toggle
-    toggleAPMS(klarnaPay, klarnaPayBox);
+    toggleApm(klarnaPay, klarnaPayBox);
 }
 
 /*
@@ -354,13 +354,13 @@ function oxxoPayBox()
     var oxxoPayBox = $('#oxxo_pay_box');
     
     // Set input fields toggle
-    toggleAPMS(oxxoPay, oxxoPayBox);
+    toggleApm(oxxoPay, oxxoPayBox);
 }
 
 /*
  * Set APM Forms
  */
-function toggleAPMS(apms, apmBox)
+function toggleApm(apms, apmBox)
 {
     // If another APM is selected
     if (apm_selected) {
@@ -448,6 +448,7 @@ function AlternativePaymentsFilter()
     });
 }
 
+
 /*
  * Get the Klarna controller
  */
@@ -496,14 +497,14 @@ function callKlarnaController(controllerUrl)
                 
                 // Builds and show klarna payment options buttons
                 for (var i = 0; i < categories.length; i++) {
-                    var klarnaButton = "<div style='padding: 10px; border: solid 0.5px #eee; border-radius: 5px;'> " + categories[i].name
+                    var klarnaButton = "<div class='klarnaButton'> " + categories[i].name
                     + " <input type='radio' name='payment_method_categories' value='" + categories[i].identifier + "'id='"
                     + categories[i].identifier + "' onclick='loadKlarna(`"+ categories[i].identifier
                     + "`, `" + JSON.stringify(requestObject) +"`,  `" + JSON.stringify(addressInfo) + "` ,`" + sessionId + "` )'><img src='"
                     + categories[i].asset_urls.descriptive + "' alt='Klarna Image' id='" + categories[i].identifier
-                    + "_image' style='margin-top: 10px; float: right;'> <p id='" + categories[i].identifier
-                    + "_aproved' style='color: #84bd00; float: right; display: none;'><span style='font-size:20px;'>&#10003;</span> Approved By <span style='color: black;'>Klarna</span></p> <p style='color: #990000; float: right; display: none;' id='"
-                    + categories[i].identifier + "_rejected'><span style='font-size:20px;'>&#10007;</span>Rejected By <span style='color: black;'>Klarna</span></p><div>";
+                    + "_image' class='klarnaLogo'> <p id='" + categories[i].identifier
+                    + "_aproved' class='klarnaAproved'><span>&#10003;</span> Approved By <span class='klarnaBlack'>Klarna</span></p> <p class='klarnaFail' id='"
+                    + categories[i].identifier + "_rejected'><span>&#10007;</span>Rejected By <span class='klarnaBlack'>Klarna</span></p><div>";
                     klarnaBox.append(klarnaButton);
                 }
             }
