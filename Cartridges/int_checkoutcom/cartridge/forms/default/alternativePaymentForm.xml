@@ -13,8 +13,8 @@
     <field formid="ideal_bic" label="ideal.bic" type="string" mandatory="true" max-length="40" binding="ideal_bic"/>	
     
 	<!-- Field for Boleto pay -->
-    <field formid="boleto_birthDate" label="label.birthdate" type="string" mandatory="true" max-length="40" description="label.example" binding="boleto_birthDate"/>
-    <field formid="boleto_cpf" label="label.cpf" type="string" mandatory="true" max-length="40" binding="bolito_cpf"/>
+    <field formid="boleto_birthDate" label="boleto.birthdate" type="string" mandatory="true" max-length="40" description="label.example" binding="boleto_birthDate"/>
+    <field formid="boleto_cpf" label="boleto.cpf" type="string" mandatory="true" max-length="40" binding="bolito_cpf"/>
     
 	<!-- Field for Benefit pay -->
     <field formid="benefitPay_integration_type" type="string" mandatory="false" default-value="web" max-length="40" binding="benefitPay_integration_type"/>
