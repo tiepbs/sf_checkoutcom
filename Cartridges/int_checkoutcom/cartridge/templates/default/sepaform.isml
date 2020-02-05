@@ -39,11 +39,11 @@
 	
 	 	<div style="padding: 20px; text-align: left;">
 	        <p>
-	        	${Resource.msg('cko.sepa.infoOne','cko',null)} (A) <isprint value="${pdict.creditor}"> 
-	        	${Resource.msg('cko.sepa.infoTwo','cko',null)} (B) ${Resource.msg('cko.sepa.infoThree','cko',null)} <isprint value="${pdict.creditor}">.
+	        	${Resource.msg('cko.sepa.infoa','cko',null)} (A) <isprint value="${pdict.creditor}"> 
+	        	${Resource.msg('cko.sepa.infob','cko',null)} (B) ${Resource.msg('cko.sepa.infoc','cko',null)} <isprint value="${pdict.creditor}">.
 	        </p>
 	        <p>
-	        	${Resource.msg('cko.sepa.infoFour','cko',null)}
+	        	${Resource.msg('cko.sepa.infod','cko',null)}
 	        </p>
 	
 			<p>
@@ -55,7 +55,7 @@
 	    <div class="sepa-right" style="padding: 10px; text-align: center;">
 	    	<hr style="opacity: 0.3;">
 			<p style="opacity: 0.5">
-		       ${Resource.msg('cko.sepa.infoFive','cko',null)}
+		       ${Resource.msg('cko.sepa.infoe','cko',null)}
 			</p>
 	    </div>
 	</div>
