@@ -1,8 +1,8 @@
 <!-- Boleto APM Option -->
 <h4>
-	<img alt="{Resource.msg('cko.boleto.name','cko',null)}" id="boletopay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/boleto_bancario.png')}" width="10%"/>
-	${Resource.msg('cko.boleto.name','cko',null)}
 	<input id="boleto_apm_radio_btn" type="radio" name="apm_list" value="boleto">
+	<img alt="{Resource.msg('cko.boleto.name','cko',null)}" id="boletopay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/boleto_bancario.png')}" width="10%">
+	${Resource.msg('cko.boleto.name','cko',null)}
 </h4>
 
 <div id="boleto_pay_box" class="hideApm">
@@ -10,4 +10,4 @@
 	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.boleto_cpf}" id="boleto_cpfe" type="text" dynamicname="true" />
 </div>
 
-<hr/>
+<hr>

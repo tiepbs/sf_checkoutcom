@@ -12,7 +12,7 @@
 			</div>
 			
 			<div class="sepaCreditor" style="width: 50%; float: left;">
-				<h2>${Resource.msg('cko.sepa.creditor','cko',null)} <br/><isprint value="${pdict.creditor}"></h2>
+				<h2>${Resource.msg('cko.sepa.creditor','cko',null)} <br><isprint value="${pdict.creditor}"></h2>
 				
 				<p>
 					<isprint value="${pdict.creditorAddress1}"><br>
@@ -24,7 +24,7 @@
 			</div>
 			
 			<div class="sepaDebtor" style="width: 50%; float: right;">
-				<h2>${Resource.msg('cko.sepa.debtor','cko',null)} <br/><isprint value="${pdict.debtor}"></h2>
+				<h2>${Resource.msg('cko.sepa.debtor','cko',null)} <br><isprint value="${pdict.debtor}"></h2>
 				
 				<p>
 					<isprint value="${pdict.debtorAddress1}"><br>

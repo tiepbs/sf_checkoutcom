@@ -395,57 +395,51 @@ function toggleApm(apms, apmBox)
  */
 function AlternativePaymentsFilter()
 {   
-	
-	// Assign Apm Payment Form to ckoApmForm variable
-    var ckoApmForm = $('#is-CHECKOUTCOM_APM');
-    
-    // When ckoApmForm is clicked
-    ckoApmForm.on('click', function () {
     	
-    	// Retrieves the Apm Filter Url to controllerUrl variable
-        var controllerUrl = $('#ckoApmFilterUrl').val();
-        
-        // Creates a new xmlHttp Request object
-        var xhttpFilter = new XMLHttpRequest();
-        
-        // When request state changes
-        xhttpFilter.onreadystatechange = function () {
+	// Retrieves the Apm Filter Url to controllerUrl variable
+    var controllerUrl = $('#ckoApmFilterUrl').val();
+    
+    // Creates a new xmlHttp Request object
+    var xhttpFilter = new XMLHttpRequest();
+    
+    // When request state changes
+    xhttpFilter.onreadystatechange = function () {
+    	
+    	// If request was successful and return 200
+        if (this.readyState == 4 && this.status == 200) {
         	
-        	// If request was successful and return 200
-            if (this.readyState == 4 && this.status == 200) {
+        	// Assign the request response to responseObject variable
+            var responseObject = JSON.parse(this.responseText);
+            
+            /*
+             * Assign the current filter Object (Current Country-Code and 
+             * Currency-Code) from the response object to filterObject variable
+             */
+            var filterObject = responseObject.filterObject;
+            
+            // Assign the apms filter Object from the response object to apmfilterObject variable
+            var apmsFilterObject = responseObject.ckoApmFilterConfig;
+            
+            // Loops through the apmfilterObject
+            for (var apms in apmsFilterObject) {  
             	
-            	// Assign the request response to responseObject variable
-                var responseObject = JSON.parse(this.responseText);
-                
-                /*
-                 * Assign the current filter Object (Current Country-Code and 
-                 * Currency-Code) from the response object to filterObject variable
-                 */
-                var filterObject = responseObject.filterObject;
-                
-                // Assign the apms filter Object from the response object to apmfilterObject variable
-                var apmsFilterObject = responseObject.ckoApmFilterConfig;
-                
-                // Loops through the apmfilterObject
-                for (var apms in apmsFilterObject) {  
+            	/*
+            	 * If the current apm country-code and currency-code in 
+            	 * the list of apms match the current country-code and currency-code
+            	 */
+                if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmsFilterObject[apms].currencies.includes(filterObject.currency)) {
+                    
+                	// Show Apm in template
+                	$('#'+ apms).show();
                 	
-                	/*
-                	 * If the current apm country-code and currency-code in 
-                	 * the list of apms match the current country-code and currency-code
-                	 */
-                    if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmsFilterObject[apms].currencies.includes(filterObject.currency)) {
-                        
-                    	// Show Apm in template
-                    	$('#'+ apms).show();
-                    	
-                    }
                 }
             }
-        };
-        
-        xhttpFilter.open('GET', controllerUrl, true);
-        xhttpFilter.send();
-    });
+        }
+    };
+    
+    xhttpFilter.open('GET', controllerUrl, true);
+    xhttpFilter.send();
+    
 }
 
 

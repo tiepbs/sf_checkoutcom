@@ -1,9 +1,9 @@
 <!-- Multibanco pay APM Option -->
 <h4>
-	<img alt="${Resource.msg('cko.multibanco.name','cko',null)}" id="multibancoPay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/multibanco.png')}" width="10%"/>
-	${Resource.msg('cko.multibanco.name','cko',null)}
 	<input id="multibancoPay_apm_radio_btn" type="radio" name="apm_list" value="multibanco">
+	<img alt="${Resource.msg('cko.multibanco.name','cko',null)}" id="multibancoPay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/multibanco.png')}" width="10%">
+	${Resource.msg('cko.multibanco.name','cko',null)}
 </h4>
 
 
-<hr/>
+<hr>
