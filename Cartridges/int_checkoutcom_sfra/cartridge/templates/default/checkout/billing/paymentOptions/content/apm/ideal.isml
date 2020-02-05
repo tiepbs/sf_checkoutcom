@@ -6,6 +6,6 @@
 </h4>
 
 <div id="ideal_pay_box">
-	<input id="ideal_bic" type="text">
+	${Resource.msg('cko.ideal.bic','cko',null)} <input id="ideal_bic" type="text">
 </div>
 <hr>

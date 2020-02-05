@@ -6,6 +6,6 @@
 </h4>
 
 <div id="qpay_pay_box">
-	<input id="qpay_national_id" type="text" />
+	${Resource.msg('cko.qpay.nationalid','cko',null)} <input id="qpay_national_id" type="text" />
 </div>
 <hr>
