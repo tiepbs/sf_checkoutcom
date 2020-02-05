@@ -16,3 +16,12 @@
     margin-right: 10px;
     border-radius: 5px;
 }
+
+#klarna-payments-container {
+    min-width: 280px;
+    padding: 10px;
+}
+
+#apmsBox h4 img {
+    width: 10%;
+}
