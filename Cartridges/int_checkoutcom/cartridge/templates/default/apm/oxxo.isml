@@ -1,7 +1,7 @@
 <!-- Oxxo APM Option -->
 <h4>
 	<input id="oxxo_apm_radio_btn" type="radio" name="apm_list" value="oxxo">
-	<img alt="${Resource.msg('cko.oxxo.name','cko',null)}" id="oxxopay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/oxxo.png')}" width="10%">
+	<img alt="${Resource.msg('cko.oxxo.name','cko',null)}" id="oxxopay_thumb" src="${URLUtils.staticURL('/images/apm-icons/oxxo.png')}">
 	${Resource.msg('cko.oxxo.name','cko',null)}
 </h4>
 

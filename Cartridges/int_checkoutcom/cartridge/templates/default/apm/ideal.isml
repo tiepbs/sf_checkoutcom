@@ -1,7 +1,7 @@
 <!-- Ideal APM Option -->
 <h4>
 	<input id="ideal_apm_radio_btn" type="radio" name="apm_list" value="ideal">
-	<img alt="${Resource.msg('cko.ideal.name','cko',null)}" id="idealpay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/idealPay.png')}" width="10%">
+	<img alt="${Resource.msg('cko.ideal.name','cko',null)}" id="idealpay_thumb" src="${URLUtils.staticURL('/images/apm-icons/idealPay.png')}">
 	${Resource.msg('cko.ideal.name','cko',null)} 
 </h4>
 

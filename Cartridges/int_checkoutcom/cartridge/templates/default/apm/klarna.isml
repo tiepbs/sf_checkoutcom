@@ -1,7 +1,7 @@
 <!-- Klarna pay APM Option -->
 <h4>
 	<input id="klarna_apm_radio_btn" type="radio" name="apm_list" value="klarna" onclick="callKlarnaController('${URLUtils.url('CKOKlarna-KlarnaSession')}')">
-	<img alt="${Resource.msg('cko.klarna.name','cko',null)}" id="klarnapay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}" width="10%"/>
+	<img alt="${Resource.msg('cko.klarna.name','cko',null)}" id="klarnapay_thumb" src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}"/>
 	${Resource.msg('cko.klarna.name','cko',null)}
 </h4>
 
