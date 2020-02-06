@@ -539,9 +539,9 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, req
                 $('#' + paymentMethod + '_rejected').hide();
                 
                 // save value to hidden klarna form
-                $('#dwfrm_alternativePaymentForm_klarna__token').val(response.authorization_token);
-                $('#dwfrm_alternativePaymentForm_klarna__approved').val(response.approved);
-                $('#dwfrm_alternativePaymentForm_klarna__finalize__required').val(response.finalize_required);
+                $('#klarna_token').val(response.authorization_token);
+                $('#klarna_approved').val(response.approved);
+                $('#klarna_finalize_required').val(response.finalize_required);
             } else {
                 $(klarnaContainer).empty();
                 $('#' + paymentMethod + '_image').hide();
@@ -549,9 +549,9 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, req
                 $('#' + paymentMethod + '_aproved').hide();
                 
                 // save value to hidden klarna form
-                $('#dwfrm_alternativePaymentForm_klarna__token').val(response.authorization_token);
-                $('#dwfrm_alternativePaymentForm_klarna__approved').val(response.approved);
-                $('#dwfrm_alternativePaymentForm_klarna__finalize__required').val(response.finalize_required);
+                $('#klarna_token').val(response.authorization_token);
+                $('#klarna_approved').val(response.approved);
+                $('#klarna_finalize_required').val(response.finalize_required);
             }
         }
     );
