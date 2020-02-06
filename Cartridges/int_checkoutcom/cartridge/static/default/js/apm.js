@@ -13,7 +13,7 @@ var apm_selected_box = false;
  */
 document.addEventListener('DOMContentLoaded', function () {
     alternativePayments();
-    AlternativePaymentsFilter();
+    alternativePaymentsFilter();
 }, false);
 
 /*
@@ -372,9 +372,6 @@ function toggleApm(apms, apmBox)
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(apms.val());
         
-        // Set shop url value
-        var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
-        apmShopUrl.val(location.hostname);
     } else {
         // Apply a state
         apmBox.toggle();
@@ -384,16 +381,13 @@ function toggleApm(apms, apmBox)
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(apms.val());
         
-        // Set shop url value
-        var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
-        apmShopUrl.val(location.hostname);
     }
 }
 
 /*
  * Get the APMs filter
  */
-function AlternativePaymentsFilter()
+function alternativePaymentsFilter()
 {   
     	
 	// Retrieves the Apm Filter Url to controllerUrl variable
@@ -561,13 +555,13 @@ function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billin
 /*
  * Klarna Authorize
  */
-function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Object)
+function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, requestData)
 {
     // Converts request string to object
-    var requestObject = JSON.parse(Object);
+    var requestObject = JSON.parse(requestData);
     
     // Converts address string to object
-    var billingAddress = JSON.parse(Address);
+    var billingAddress = JSON.parse(address);
     
     // Retrieve Customer email from Billing Form
     var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val(); 
