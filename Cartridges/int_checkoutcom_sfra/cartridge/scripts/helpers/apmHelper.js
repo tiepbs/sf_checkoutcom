@@ -1,10 +1,7 @@
 "use strict"
 
 /* API Includes */
-var PaymentMgr = require('dw/order/PaymentMgr');
-var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
-var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
 
 /* Utility */
@@ -13,57 +10,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 /*
 * Utility functions for my cartridge integration.
 */
-var apmHelper = {
-    /*
-     * Creates Site Genesis Transaction Object
-     * @return object
-     */
-    apmAuthorization: function (payObject, args) {        
-        // Perform the charge
-        var apmResponse = this.handleApmRequest(payObject, args);
-        
-        // Handle APM result
-        if (apmResponse) {
-            return apmResponse;
-        } 
-        
-        return false;
-    },
-        
-    /*
-     * Handle APM charge Response from CKO API
-     */
-    handleApmChargeResponse: function (gatewayResponse) {
-        // Clean the session
-        session.privacy.redirectUrl = null;
-        
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
-        
-        // Update customer data
-        ckoHelper.updateCustomerData(gatewayResponse);
-        
-        // Get the response links
-        var gatewayLinks = gatewayResponse._links;
-
-        // Get the response type
-        var type = gatewayResponse.type;
-        
-        // Add redirect to sepa source reqeust
-        if (type == 'Sepa') {
-            session.privacy.redirectUrl = "${URLUtils.url('CKOSepa-Mandate')}";
-            session.privacy.sepaResponseId = gatewayResponse.id;
-        }
-        
-        // Add redirect URL to session if exists
-        if (gatewayLinks.hasOwnProperty('redirect')) {
-            session.privacy.redirectUrl = gatewayLinks.redirect.href
-            return true;
-        } else {
-            ckoHelper.paymentSuccess(gatewayResponse);
-        }  
-    },
-    
+var apmHelper = {            
     /*
      * Apm Request
      */
@@ -105,7 +52,7 @@ var apmHelper = {
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
-            if (this.handleApmChargeResponse(gatewayResponse)) {
+            if (this.handleApmResponse(gatewayResponse)) {
                 return gatewayResponse;
             } else {
                 return false;
@@ -118,6 +65,40 @@ var apmHelper = {
         }
     },
     
+    /*
+     * Handle APM charge Response from CKO API
+     */
+    handleApmResponse: function (gatewayResponse) {
+        // Clean the session
+        session.privacy.redirectUrl = null;
+        
+        // Logging
+        ckoHelper.doLog('response', gatewayResponse);
+        
+        // Update customer data
+        ckoHelper.updateCustomerData(gatewayResponse);
+        
+        // Get the response links
+        var gatewayLinks = gatewayResponse._links;
+
+        // Get the response type
+        var type = gatewayResponse.type;
+        
+        // Add redirect to sepa source reqeust
+        if (type == 'Sepa') {
+            session.privacy.redirectUrl = "${URLUtils.url('CKOSepa-Mandate')}";
+            session.privacy.sepaResponseId = gatewayResponse.id;
+        }
+        
+        // Add redirect URL to session if exists
+        if (gatewayLinks.hasOwnProperty('redirect')) {
+            session.privacy.redirectUrl = gatewayLinks.redirect.href
+            return true;
+        } else {
+            ckoHelper.paymentSuccess(gatewayResponse);
+        }  
+    },
+
     /*
      * Return the APM request data
      */
@@ -175,7 +156,7 @@ var apmHelper = {
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
-            this.handleApmChargeResponse(gatewayResponse, order);
+            this.handleApmResponse(gatewayResponse, order);
         } else {
             // Update the transaction
             Transaction.wrap(function () {

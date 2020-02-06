@@ -209,7 +209,7 @@ var paymentHelper = {
     checkoutcomApmRequest: function (paymentMethodId, req, res, next) {
         // Reference the object
         var self = this;
-        
+
         // Transaction wrapper
         Transaction.wrap(function () {         
             // Get the current basket
@@ -239,7 +239,7 @@ var paymentHelper = {
             var payObject = apmConfig[func](args);
 
             // Handle the charge request
-            var chargeResponse = apmHelper.apmAuthorization(payObject, args);
+            var chargeResponse = apmHelper.handleApmRequest(payObject, args);
             
             // Check the response
             if (chargeResponse) {
