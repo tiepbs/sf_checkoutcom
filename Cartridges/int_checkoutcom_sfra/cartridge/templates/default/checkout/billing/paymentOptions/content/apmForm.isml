@@ -9,9 +9,7 @@
 				name="${pdict.forms.billingForm.paymentMethod.htmlName}"
 				value="${paymentOption.ID}"
 		>
-
         <isset name="apmForm" value="${pdict.forms.billingForm.apmForm}" scope="page"/>
-
 		<fieldset>
 			<div id="apmsBox">
 				<!-- This to include the ideal pay apm form -->
@@ -138,9 +136,6 @@
 </div>
 	
 <input type="hidden" id="ckoApmFilterUrl" value="${URLUtils.https('CKOMain-GetApmFilter')}" />
-
 <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
-
 <script src="${URLUtils.staticURL('/js/cleave.js')}"></script>
-
-<script src="${URLUtils.staticURL('js/apm.js')}"></script>
+<script src="${URLUtils.staticURL('/js/apm.js')}"></script>
