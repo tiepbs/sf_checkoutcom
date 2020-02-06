@@ -22,59 +22,73 @@ function alternativePayments()
 {
     $('input[name="apm_list"]').change(function () {
         switch (this.value) {
-            case"ideal":
+            case "ideal":
                 idealPayBox();
             break;
-            case"boleto":
+
+            case "boleto":
                 boletoPayBox();
             break;
-            case"eps":
+
+            case "eps":
                 epsPayBox();
             break;
-            case"giro":
+
+            case "giro":
                 giroPayBox();
             break;
-            case"fawry":
+
+            case "fawry":
                 fawryPayBox();
             break;
-            case"knet":
+
+            case "knet":
                 knetPayBox();
             break;
-            case"qpay":
+
+            case "qpay":
                 qPayBox();
             break;
-            case"sepa":
+
+            case "sepa":
                 sepaPayBox();
             break;
-            case"bancontact":
+
+            case "bancontact":
                 bancontactPayBox();
             break;
-            case"sofort":
+
+            case "sofort":
                 sofortPayBox();
             break;
-            case"benefit":
+
+            case "benefit":
                 benefitPayBox();
             break;
-            case"multibanco":
+
+            case "multibanco":
                 multibancoPayBox();
             break;
-            case"poli":
+
+            case "poli":
                 poliPayBox();
             break;
-            case"p24":
+
+            case "p24":
                 p24PayBox();
             break;
-            case"klarna":
+
+            case "klarna":
                 klarnaPayBox();
             break;
-            case"paypal":
+
+            case "paypal":
                 paypalPayBox();
             break;
-            case"oxxo":
+
+            case "oxxo":
                 oxxoPayBox();
             break;
-            default:
-                console.log('Apm unknown');
         }
     });
 }
