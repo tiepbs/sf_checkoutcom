@@ -480,23 +480,23 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId)
 function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject)
 {   
     // Prepare paramters    
-    var AuthorizeBtn = "<button type='button' style='width: 100%; margin-top: 30px;' onclick='klarnaAuthorize(`" + sessionId
+    var authorizeBtn = "<button id='klarna_authorize_btn' type='button' onclick='klarnaAuthorize(`" + sessionId
     + "`, `" + klarnaContainer + "`, `" + paymentMethod + "`, ` " + JSON.stringify(billingAddress) + " ` , ` " + JSON.stringify(requestObject) + " `)'>Authorize</button>";
     var klarna = $(klarnaContainer);
     
     // Append the button
-    klarna.append(AuthorizeBtn);
+    klarna.append(authorizeBtn);
 }
 
 /*
  * Klarna Authorize
  */
-function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Object)
+function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, requestData)
 {
     // Prepare the parameters
-    var requestObject = JSON.parse(Object);
-    var billingAddress = JSON.parse(Address);
-    var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val();  //email
+    var requestObject = JSON.parse(requestData);
+    var billingAddress = JSON.parse(address);
+    var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val();
     billingAddress.email = emailAddress;
     
     // Authorize the Klarna charge
