@@ -24,7 +24,7 @@ var apmHelper = {
         
         // Creating billing address object
         var gatewayRequest = this.getApmRequest(payObject, args);
-        
+
         // Test SEPA
         if (payObject.type == "sepa") {
             // Prepare the charge data
