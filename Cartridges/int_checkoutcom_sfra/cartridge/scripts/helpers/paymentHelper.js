@@ -207,6 +207,9 @@ var paymentHelper = {
     },
 
     checkoutcomApmRequest: function (paymentMethodId, req, res, next) {
+        // Reference the object
+        var self = this;
+        
         // Transaction wrapper
         Transaction.wrap(function () {         
             // Get the current basket
@@ -229,7 +232,7 @@ var paymentHelper = {
             var args = {
                 OrderNo: order.orderNo,
                 ProcessorId: paymentMethodId,
-                form: req.form
+                Form: req.form
             };
 
             // Get the required apm pay config object
