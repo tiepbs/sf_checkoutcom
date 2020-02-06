@@ -370,10 +370,6 @@ function toggleApm(apms, apmBox)
         // Set alternative payment value
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(apms.val());
-        
-        // Set shop url value
-        var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
-        apmShopUrl.val(location.hostname);
     } else {
         // Apply a state
         apmBox.toggle();
@@ -382,10 +378,6 @@ function toggleApm(apms, apmBox)
         // Set alternative payment value
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(apms.val());
-        
-        // Set shop url value
-        var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
-        apmShopUrl.val(location.hostname);
     }
 }
 
