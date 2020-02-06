@@ -6,8 +6,8 @@
 </h4>
 
 <div id="boleto_pay_box">
-	${Resource.msg('cko.boleto.birthdate','cko',null)} <input id="boleto_birthDate" type="text">
-	${Resource.msg('cko.boleto.cpfe','cko',null)} <input id="boleto_cpfe" type="text">
+	${Resource.msg('cko.boleto.birthdate','cko',null)} <input id="boleto_birthDate" name="boleto_birthDate" type="text">
+	${Resource.msg('cko.boleto.cpfe','cko',null)} <input id="boleto_cpfe" name="boleto_cpfe" type="text">
 </div>
 
 <hr>

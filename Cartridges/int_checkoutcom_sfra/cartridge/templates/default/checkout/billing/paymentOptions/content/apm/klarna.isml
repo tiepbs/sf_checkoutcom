@@ -10,12 +10,12 @@
 	<div id="klarna-payments-container"></div>
 	
 	<!-- field for Klarna token -->
-	<input type="hidden" id="klarna_token">
+	<input type="hidden" id="klarna_token" name="klarna_token" value="">
 
 	<!-- field for Klarna approved -->
-	<input type="hidden" id="klarna_approved">
+	<input type="hidden" id="klarna_approved" name="klarna_approved" value="">
 
 	<!-- field for Klarna finalize required -->
-	<input type="hidden" id="klarna_finalize_required">
+	<input type="hidden" id="klarna_finalize_required" name="klarna_finalize_required" value="">
 </div>
 <hr>

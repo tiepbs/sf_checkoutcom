@@ -5,6 +5,6 @@
 	${Resource.msg('cko.oxxo.name','cko',null)}
 </h4>
 <div id="oxxo_pay_box">
-	<input id="oxxo_identification" type="text">
+	<input id="oxxo_identification" name="oxxo_identification" type="text">
 </div>
 <hr>
