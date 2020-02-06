@@ -211,7 +211,7 @@ function boletoPayBox()
     var boletoBox = $('#boleto_pay_box');
     
     // Date formating
-    var cleave = new Cleave('#dwfrm_alternativePaymentForm_boleto__birthDate', {
+    var cleave = new Cleave('#boleto_birthDate', {
         date: true,
         delimiter: '-',
         datePattern: ['Y', 'm', 'd']
