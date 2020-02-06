@@ -38,8 +38,8 @@ var ckoApmConfig = {
         var payObject = {
             'source'        : {
                 'type'  : 'boleto',
-                'birthDate' : paymentForm.get('boleto_birthDate').value(),
-                'cpf'       : paymentForm.get('boleto_cpf').value(),
+                'birthDate' : args.Form.boleto_birthDate,
+                'cpf'       : args.Form.boleto_cpf,
                 'customerName' : ckoHelper.getCustomerName(args)
             },
             'type'      : 'boleto',
@@ -170,7 +170,7 @@ var ckoApmConfig = {
                 'description'   : businessName,
                 'language'      : ckoHelper.getLanguage().substr(0, 2),
                 'quantity'      : ckoHelper.getProductQuantity(args),
-                'national_id'   : paymentForm.get('qpay_national_id').value()
+                'national_id'   : args.Form.qpay_national_id
             },
             'type'      : 'qpay',
             'purpose'   : businessName,
@@ -212,7 +212,7 @@ var ckoApmConfig = {
             'source_data'   : {
                 'first_name'            : ckoHelper.getCustomerFirstName(args),
                 'last_name'             : ckoHelper.getCustomerLastName(args),
-                'account_iban'          : paymentForm.get('sepa_iban').value() + paymentForm.get('sepa_bic').value(),
+                'account_iban'          : args.Form.sepa_iban + args.Forms.epa_bic,
                 'billing_descriptor'    : businessName,
                 'mandate_type'          : 'single'
             }
@@ -284,7 +284,7 @@ var ckoApmConfig = {
         var order = OrderMgr.getOrder(args.OrderNo);
         
         // Klarna Form Inputs
-        var klarna_approved = paymentForm.get('klarna_approved').value();
+        var klarna_approved = args.Form.klarna_approved;
         
         if (klarna_approved) {
             // Build the payment object
@@ -295,7 +295,7 @@ var ckoApmConfig = {
                 'capture'   : false,
                 'source'    : {
                     'type'                  : 'klarna',
-                    'authorization_token'   : paymentForm.get('klarna_token').value(),
+                    'authorization_token'   : args.Form.klarna_token,
                     'locale'                : ckoHelper.getLanguage(),
                     'purchase_country'      : ckoHelper.getBillingObject(args).country,
                     'tax_amount'            : ckoHelper.getFormattedPrice(order.totalTax.value, ckoHelper.getCurrency(args)),
@@ -340,7 +340,7 @@ var ckoApmConfig = {
                 'payer': {
                     'name': ckoHelper.getCustomerName(args),
                     'email': ckoHelper.getCustomer(args).email,
-                    'document': paymentForm.get('oxxo_identification').value()
+                    'document': args.Form.oxxo_identification
                 }
             },
             'type'          : 'oxxo',
