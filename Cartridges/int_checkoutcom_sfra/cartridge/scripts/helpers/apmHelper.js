@@ -3,6 +3,7 @@
 /* API Includes */
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
+var URLUtils = require('dw/web/URLUtils');
 
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -54,9 +55,9 @@ var apmHelper = {
         if (gatewayResponse) {
             if (this.handleApmResponse(gatewayResponse)) {
                 return gatewayResponse;
-            } else {
-                return false;
             }
+            
+            return false;
         } else {
             // Update the transaction
             Transaction.wrap(function () {
@@ -72,9 +73,6 @@ var apmHelper = {
         // Clean the session
         session.privacy.redirectUrl = null;
         
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
-        
         // Update customer data
         ckoHelper.updateCustomerData(gatewayResponse);
         
@@ -86,7 +84,7 @@ var apmHelper = {
         
         // Add redirect to sepa source reqeust
         if (type == 'Sepa') {
-            session.privacy.redirectUrl = "${URLUtils.url('CKOSepa-Mandate')}";
+            session.privacy.redirectUrl = URLUtils.url('CKOSepa-Mandate');
             session.privacy.sepaResponseId = gatewayResponse.id;
         }
         
@@ -94,9 +92,9 @@ var apmHelper = {
         if (gatewayLinks.hasOwnProperty('redirect')) {
             session.privacy.redirectUrl = gatewayLinks.redirect.href
             return true;
-        } else {
-            ckoHelper.paymentSuccess(gatewayResponse);
-        }  
+        }
+        
+        return ckoHelper.paymentSuccess(gatewayResponse);
     },
 
     /*
