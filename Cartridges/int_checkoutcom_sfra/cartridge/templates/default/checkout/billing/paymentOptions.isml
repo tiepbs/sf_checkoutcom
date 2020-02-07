@@ -25,6 +25,8 @@
     </div>
 </fieldset>
 
+<input type="hidden" id="ckoCustomerEmail" name="ckoCustomerEmail" value="${pdict.customer.profile.email}">
+
 <script src="${URLUtils.staticURL('/js/checkoutcom.js')}"></script>
 
 <button id="ckoSubmitPayment" formnovalidate="formnovalidate" class="btn btn-primary btn-block submit-payment ${pdict.paidWithPayPal ? 'checkout-hidden' : ''}" type="submit" name="submit" value="submit-payment">
