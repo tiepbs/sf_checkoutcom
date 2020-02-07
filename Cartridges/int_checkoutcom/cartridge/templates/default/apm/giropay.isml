@@ -1,0 +1,9 @@
+<!-- Giro pay APM Option -->
+<h4>
+	<input id="giroPay_apm_radio_btn" type="radio" name="apm_list" value="giro">
+	<img alt="${Resource.msg('cko.fawry.name','cko',null)}" id="giropay_thumb" src="${URLUtils.staticURL('/images/apm-icons/giropay.jpeg')}">
+	${Resource.msg('cko.giro.name','cko',null)} 
+</h4>
+
+
+<hr>

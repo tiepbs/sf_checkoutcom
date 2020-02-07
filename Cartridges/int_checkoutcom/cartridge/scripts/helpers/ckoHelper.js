@@ -309,15 +309,24 @@ var ckoHelper = {
      * Confirm is a payment is valid from API response code
      */
     paymentSuccess: function (gatewayResponse) {
-        return gatewayResponse.response_code == "10000" || gatewayResponse.response_code == '10100' || gatewayResponse.response_code == '10200';
+    	
+    	if (gatewayResponse.hasOwnProperty('response_code')) {
+    		
+    		return gatewayResponse.response_code == "10000" || gatewayResponse.response_code == '10100' || gatewayResponse.response_code == '10200';
+    		
+    	}else if(gatewayResponse.hasOwnProperty('actions')){
+    		
+    		return gatewayResponse.actions[0].response_code == "10000" || gatewayResponse.actions[0].response_code == '10100' || gatewayResponse.actions[0].response_code == '10200';
+    		
+    	}else if(gatewayResponse.hasOwnProperty('source')){
+    		
+    		return gatewayResponse.source.type == 'sofort';
+    		
+    	}
+    	
+    	return false;
     },
     
-    /*
-     * Confirm is a payment is valid from API redirect response code
-     */
-    redirectPaymentSuccess: function (gatewayResponse) {
-        return gatewayResponse.actions[0].response_code == "10000" || gatewayResponse.actions[0].response_code == '10100' || gatewayResponse.actions[0].response_code == '10200';
-    },
     
     /*
      * Write order information to session for the current shopper.
@@ -796,7 +805,7 @@ var ckoHelper = {
      */
     getMetadataString: function (data, args) {
         // Prepare the base metadata
-        var meta = 'integration_data' + this.getCartridgeMeta() . 'platform_data' + this.getValue('ckoPlatformData')
+        var meta = 'integration_data' + this.getCartridgeMeta() + 'platform_data' + this.getValue('ckoPlatformData')
 
         // Add the data info if needed
         if (data.hasOwnProperty('type')) {

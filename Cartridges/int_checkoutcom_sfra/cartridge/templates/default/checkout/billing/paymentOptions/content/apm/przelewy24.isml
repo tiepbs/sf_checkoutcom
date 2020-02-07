@@ -1,9 +1,7 @@
 <!-- Multibanco pay APM Option -->
-<H4>
-	<img alt="p24Pay" id="p24Pay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/p24.png')}" width="10%"/>
-	${Resource.msg('cko.p24.name','cko',null)}
+<h4>
 	<input id="p24Pay_apm_radio_btn" type="radio" name="apm_list" value="p24">
-</H4>
-
-
-<hr/>
+	<img alt="p24Pay" id="p24Pay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/p24.png')}"/>
+	${Resource.msg('cko.p24.name','cko',null)}
+</h4>
+<hr>

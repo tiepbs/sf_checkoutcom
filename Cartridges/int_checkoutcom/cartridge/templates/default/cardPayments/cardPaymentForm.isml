@@ -1,7 +1,10 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/card.css')}");
+</style>
 
 <div id="card_payment_box">	
 	<isif condition="${pdict.CurrentCustomer.authenticated}">
-		<div id="ckoCardSelector" class="form-row" style="display:none;">
+		<div id="ckoCardSelector" class="form-row" class="hideCard">
 			<label class="label">${Resource.msg('billing.selectcreditcard','checkout',null)}</label>
 			<div class="field-wrapper">
 				<select name="ckoCreditCardList" id="ckoCreditCardList" class="input-select" onchange="getCardData(this, '<isprint value="${URLUtils.https('CKOMain-GetCardsList')}" />')">
@@ -13,8 +16,8 @@
 
 	<!-- Card icons -->
 	<fieldset>
-	<div>
-		<img alt="" src="${URLUtils.staticURL('/images/card-schema.png')}" width="80%" style="margin-left: auto; margin-right: auto; display: block;">
+	<div id="card_schemes">
+		<img alt="${Resource.msg('card.schemes', 'checkout', null)}" src="${URLUtils.staticURL('/images/card-schema.png')}">
 	</div>
 	</fieldset>
 	
@@ -23,15 +26,15 @@
 	
 	<!-- Card number and icon -->
 	<div class="form-row">
-		<div id="dw_cardTypeDone" style='width: 30px; height: 30px; border: solid 1px none; position: absolute; z-index: 2; margin-top: 0.5em; margin-left: 0.4em;'> 
-			<img id="default_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/card.svg')}" width="65%"/>
-			<img id="visacard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/visa.svg')}" width="100%"/>
-			<img id="mastercard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/mastercard.svg')}" width="100%"/>
-			<img id="discovercard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/discover.svg')}" width="100%"/>
-			<img id="amexcard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/american_express.svg')}" width="100%"/>
-			<img id="jcbcard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/jcb.svg')}" width="100%"/>
-			<img id="dinersclub_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/diners_club.svg')}" width="100%">
-			<img id="madacard_thumb" style="display:none" class="image imageright" type="image" src="${URLUtils.staticURL('/images/card-icons/mada.svg')}" width="100%">
+		<div id="dw_cardTypeDone"> 
+			<img id="default_thumb" src="${URLUtils.staticURL('/images/card-icons/card.svg')}"/>
+			<img id="visacard_thumb" class="schemes_thumb" src="${URLUtils.staticURL('/images/card-icons/visa.svg')}"/>
+			<img id="mastercard_thumb" class="schemes_thumb" src="${URLUtils.staticURL('/images/card-icons/mastercard.svg')}">
+			<img id="discovercard_thumb" class="schemes_thumb" src="${URLUtils.staticURL('/images/card-icons/discover.svg')}">
+			<img id="amexcard_thumb" class="schemes_thumb" src="${URLUtils.staticURL('/images/card-icons/american_express.svg')}">
+			<img id="jcbcard_thumb" class="schemes_thumb" src="${URLUtils.staticURL('/images/card-icons/jcb.svg')}">
+			<img id="dinersclub_thumb" class="schemes_thumb" src="${URLUtils.staticURL('/images/card-icons/diners_club.svg')}">
+			<img id="madacard_thumb" class="schemes_thumb" src="${URLUtils.staticURL('/images/card-icons/mada.svg')}">
 		</div>
 		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.number}" id="creditCardNumber" type="input"/>
 	</div>

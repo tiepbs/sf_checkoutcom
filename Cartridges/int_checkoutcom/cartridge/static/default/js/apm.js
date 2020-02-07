@@ -1,14 +1,14 @@
+"use strict";
+
 //                                                  //
 //  Alternative Payment Form decorator object;      //
 //                                                  //
 
-"use strict";
 
 var apm_selected = false;
-var apm_selected_box = false;
 
 /**
- * jQuery Ajax helpers on DOM ready.
+ * JQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
     alternativePayments();
@@ -25,67 +25,51 @@ function alternativePayments()
             case "ideal":
                 idealPayBox();
             break;
-
             case "boleto":
                 boletoPayBox();
             break;
-
             case "eps":
                 epsPayBox();
             break;
-
             case "giro":
                 giroPayBox();
             break;
-
             case "fawry":
                 fawryPayBox();
             break;
-
             case "knet":
                 knetPayBox();
             break;
-
             case "qpay":
                 qPayBox();
             break;
-
             case "sepa":
                 sepaPayBox();
             break;
-
             case "bancontact":
                 bancontactPayBox();
             break;
-
             case "sofort":
                 sofortPayBox();
             break;
-
             case "benefit":
                 benefitPayBox();
             break;
-
             case "multibanco":
                 multibancoPayBox();
             break;
-
             case "poli":
                 poliPayBox();
             break;
-
             case "p24":
                 p24PayBox();
             break;
-
             case "klarna":
                 klarnaPayBox();
             break;
-
             case "paypal":
                 paypalPayBox();
             break;
-
             case "oxxo":
                 oxxoPayBox();
             break;
@@ -98,13 +82,13 @@ function alternativePayments()
  */
 function idealPayBox()
 {
-    // ideal pay radio button element
+    // Ideal pay radio button element
     var ideal = $('#ideal_apm_radio_btn');
     
-    // ideal pay input elements div
+    // Ideal pay input elements div
     var idealBox = $('#ideal_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(ideal, idealBox);
 }
 
@@ -113,13 +97,13 @@ function idealPayBox()
  */
 function knetPayBox()
 {
-    // knet pay radio button element
+    // Knet pay radio button element
     var knet = $('#knet_apm_radio_btn');
     
-    // knet pay input elements div
+    // Knet pay input elements div
     var knetBox = $('#knet_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(knet, knetBox);
 }
 
@@ -128,13 +112,13 @@ function knetPayBox()
  */
 function sepaPayBox()
 {
-    // sepa pay radio button element
+    // Sepa pay radio button element
     var sepa = $('#sepa_apm_radio_btn');
     
-    // sepa pay input elements div
+    // Sepa pay input elements div
     var sepaBox = $('#sepa_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(sepa, sepaBox);
 }
 
@@ -143,13 +127,13 @@ function sepaPayBox()
  */
 function klarnaPayBox()
 {
-    // klarna pay radio button element
+    // Klarna pay radio button element
     var klarna = $('#klarna_apm_radio_btn');
     
-    // klarna pay input elements div
+    // Klarna pay input elements div
     var klarnaBox = $('#klarna_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(klarna, klarnaBox);
 }
 
@@ -164,7 +148,7 @@ function qPayBox()
     // Qpay input elements div
     var qpayBox = $('#qpay_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(qpay, qpayBox);
 }
 
@@ -173,13 +157,13 @@ function qPayBox()
  */
 function fawryPayBox()
 {
-    // fawry pay radio button element
+    // Fawry pay radio button element
     var fawry = $('#fawry_apm_radio_btn');
 
-    // fawry pay input elements div
+    // Fawry pay input elements div
     var fawrypayBox = $('#fawry_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(fawry, fawrypayBox);
 }
 
@@ -188,13 +172,13 @@ function fawryPayBox()
  */
 function sofortPayBox()
 {
-    // sofort pay radio button element
+    // Sofort pay radio button element
     var sofort = $('#sofort_apm_radio_btn');
     
-    // sofort pay input elements div
+    // Sofort pay input elements div
     var sofortBox = $('#sofort_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(sofort, sofortBox);
 }
 
@@ -203,13 +187,13 @@ function sofortPayBox()
  */
 function epsPayBox()
 {
-    // eps pay radio button element
+    // Eps pay radio button element
     var eps = $('#epsPay_apm_radio_btn');
     
-    // eps pay input elements div
+    // Eps pay input elements div
     var epsBox = $('#epsPay_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(eps, epsBox);
 }
 
@@ -218,20 +202,20 @@ function epsPayBox()
  */
 function boletoPayBox()
 {
-    // boleto pay radio button element
+    // Boleto pay radio button element
     var boleto = $('#boleto_apm_radio_btn');
     
-    // boleto pay input elements div
+    // Boleto pay input elements div
     var boletoBox = $('#boleto_pay_box');
     
     // Date formating
-    var cleave = new Cleave('#boleto_birthDate', {
+    var cleave = new Cleave('#dwfrm_alternativePaymentForm_boleto__birthDate', {
         date: true,
         delimiter: '-',
         datePattern: ['Y', 'm', 'd']
     });
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(boleto, boletoBox);
 }
 
@@ -240,13 +224,13 @@ function boletoPayBox()
  */
 function bancontactPayBox()
 {
-    // bancontact pay radio button element
+    // Bancontact pay radio button element
     var bancontact = $('#bancontact_apm_radio_btn');
     
-    // bancontact pay input elements div
+    // Bancontact pay input elements div
     var bancontactBox = $('#bancontact_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(bancontact, bancontactBox);
 }
 
@@ -255,13 +239,13 @@ function bancontactPayBox()
  */
 function benefitPayBox()
 {
-    // benefit pay radio button element
+    // Benefit pay radio button element
     var benefitPay = $('#benefit_apm_radio_btn');
     
-    // benefit pay input elements div
+    // Benefit pay input elements div
     var benefitPayBox = $('#benefitPay_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(benefitPay, benefitPayBox);
 }
 
@@ -270,13 +254,13 @@ function benefitPayBox()
  */
 function giroPayBox()
 {
-    // giro pay radio button element
+    // Giro pay radio button element
     var giroPay = $('#giroPay_apm_radio_btn');
     
-    // giro pay input elements div
+    // Giro pay input elements div
     var giroPayBox = $('#giroPay_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(giroPay, giroPayBox);
 }
 
@@ -285,13 +269,13 @@ function giroPayBox()
  */
 function multibancoPayBox()
 {
-    // multibanco pay radio button element
+    // Multibanco pay radio button element
     var multibancoPay = $('#multibancoPay_apm_radio_btn');
     
-    // multibanco pay input elements div
+    // Multibanco pay input elements div
     var giroPayBox = $('#multibancoPay_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(multibancoPay, giroPayBox);
 }
 
@@ -300,28 +284,28 @@ function multibancoPayBox()
  */
 function poliPayBox()
 {
-    // multibanco pay radio button element
+    // Poli pay radio button element
     var poliPay = $('#poliPay_apm_radio_btn');
     
-    // multibanco pay input elements div
+    // Poli pay input elements div
     var poliPayBox = $('#poliPay_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(poliPay, poliPayBox);
 }
 
 /*
- * Poli Pay decorator
+ * P24 Pay decorator
  */
 function p24PayBox()
 {
-    // multibanco pay radio button element
+    // P24 pay radio button element
     var p24Pay = $('#p24Pay_apm_radio_btn');
     
-    // multibanco pay input elements div
+    // P24 pay input elements div
     var p24PayBox = $('#p24Pay_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(p24Pay, p24PayBox);
 }
 
@@ -330,10 +314,10 @@ function p24PayBox()
  */
 function paypalPayBox()
 {
-    // multibanco pay radio button element
+    // Paypal radio button element
     var paypalPay = $('#paypalPay_apm_radio_btn');
     
-    // multibanco pay input elements div
+    // Paypal input elements div
     var paypalPayBox = $('#paypalPay_pay_box');
     
     // set input fields toggle
@@ -341,14 +325,14 @@ function paypalPayBox()
 }
 
 /*
- * Poli Pay decorator
+ * Klarna Pay decorator
  */
 function klarnaPayBox()
 {
-    // Multibanco pay radio button element
+    // Klarna pay radio button element
     var klarnaPay = $('#klarna_apm_radio_btn');
     
-    // Multibanco pay input elements div
+    // Klarna pay input elements div
     var klarnaPayBox = $('#klarnaPay_pay_box');
     
     // Set input fields toggle
@@ -360,10 +344,10 @@ function klarnaPayBox()
  */
 function oxxoPayBox()
 {
-    // Multibanco pay radio button element
+    // Oxxo pay radio button element
     var oxxoPay = $('#oxxo_apm_radio_btn');
     
-    // Multibanco pay input elements div
+    // Oxxo pay input elements div
     var oxxoPayBox = $('#oxxo_pay_box');
     
     // Set input fields toggle
@@ -384,6 +368,7 @@ function toggleApm(apms, apmBox)
         // Set alternative payment value
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(apms.val());
+        
     } else {
         // Apply a state
         apmBox.toggle();
@@ -392,6 +377,7 @@ function toggleApm(apms, apmBox)
         // Set alternative payment value
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(apms.val());
+        
     }
 }
 
@@ -400,24 +386,53 @@ function toggleApm(apms, apmBox)
  */
 function alternativePaymentsFilter()
 {   
+    	
+	// Retrieves the Apm Filter Url to controllerUrl variable
     var controllerUrl = $('#ckoApmFilterUrl').val();
+    
+    // Creates a new xmlHttp Request object
     var xhttpFilter = new XMLHttpRequest();
+    
+    // When request state changes
     xhttpFilter.onreadystatechange = function () {
+    	
+    	// If request was successful and return 200
         if (this.readyState == 4 && this.status == 200) {
+        	
+        	// Assign the request response to responseObject variable
             var responseObject = JSON.parse(this.responseText);
+            
+            /*
+             * Assign the current filter Object (Current Country-Code and 
+             * Currency-Code) from the response object to filterObject variable
+             */
             var filterObject = responseObject.filterObject;
+            
+            // Assign the apms filter Object from the response object to apmfilterObject variable
             var apmsFilterObject = responseObject.ckoApmFilterConfig;
-            for (var apms in apmsFilterObject) {                    
-                //if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmObjects.currencies.includes(filterObject.currency)) {
-                    $('#'+ apms).show();
-                //}
+            
+            // Loops through the apmfilterObject
+            for (var apms in apmsFilterObject) {  
+            	
+            	/*
+            	 * If the current apm country-code and currency-code in 
+            	 * the list of apms match the current country-code and currency-code
+            	 */
+                if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmsFilterObject[apms].currencies.includes(filterObject.currency)) {
+                    
+                	// Show Apm in template
+                	$('#'+ apms).show();
+                	
+                }
             }
         }
     };
     
     xhttpFilter.open('GET', controllerUrl, true);
     xhttpFilter.send();
+    
 }
+
 
 /*
  * Get the Klarna controller
@@ -425,50 +440,78 @@ function alternativePaymentsFilter()
 function callKlarnaController(controllerUrl)
 {    
     if (controllerUrl) {
+    	
+    	// Creates a new xmlhttp request object
         var xhttp = new XMLHttpRequest();
+        
+        // When request state changes
         xhttp.onreadystatechange = function () {
+        	
+        	// If request was successful and return 200
             if (this.readyState == 4 && this.status == 200) {
+            	
+            	// Klarna session Id
                 var sessionId = JSON.parse(this.responseText).session_id;
+                
+                // Klarna session token
                 var token = JSON.parse(this.responseText).client_token;
+                
+                // Klarna available payments
                 var categories = JSON.parse(this.responseText).payment_method_categories;
+                
+                // Klarna transaction / order object
                 var requestObject = JSON.parse(this.responseText).requestObject;
+                
+                // Klarna customer address information 
                 var addressInfo = JSON.parse(this.responseText).addressInfo;
             
+                // Initialize klarna payment form
                 Klarna.Payments.init(
                 // Options
                     {
+                    	// Klarna Session token
                         client_token: token
                     }
                 );
             
-                // Prepare the Klarna box display
+                // Klarna payment options button
                 var klarnaBox = $('#klarna-buttons');
+                
+                // Empty klarna payment box in-other to eliminate duplicates
                 klarnaBox.empty();
+                
+                // Builds and show klarna payment options buttons
                 for (var i = 0; i < categories.length; i++) {
-                    var klarnaButton = "<div style='padding: 10px; border: solid 0.5px #eee; border-radius: 5px;'> " + categories[i].name
+                    var klarnaButton = "<div class='klarnaButton'> " + categories[i].name
                     + " <input type='radio' name='payment_method_categories' value='" + categories[i].identifier + "'id='"
                     + categories[i].identifier + "' onclick='loadKlarna(`"+ categories[i].identifier
                     + "`, `" + JSON.stringify(requestObject) +"`,  `" + JSON.stringify(addressInfo) + "` ,`" + sessionId + "` )'><img src='"
                     + categories[i].asset_urls.descriptive + "' alt='Klarna Image' id='" + categories[i].identifier
-                    + "_image' style='margin-top: 10px; float: right;'> <p id='" + categories[i].identifier
-                    + "_aproved' style='color: #84bd00; float: right; display: none;'><span style='font-size:20px;'>&#10003;</span> Approved By <span style='color: black;'>Klarna</span></p> <p style='color: #990000; float: right; display: none;' id='"
-                    + categories[i].identifier + "_rejected'><span style='font-size:20px;'>&#10007;</span>Rejected By <span style='color: black;'>Klarna</span></p><div>";
+                    + "_image' class='klarnaLogo'> <p id='" + categories[i].identifier
+                    + "_aproved' class='klarnaAproved'><span>&#10003;</span> Approved By <span class='klarnaBlack'>Klarna</span></p> <p class='klarnaFail' id='"
+                    + categories[i].identifier + "_rejected'><span>&#10007;</span>Rejected By <span class='klarnaBlack'>Klarna</span></p><div>";
                     klarnaBox.append(klarnaButton);
                 }
             }
         };
+        
+        // Creates a get request
         xhttp.open('GET', controllerUrl, true);
+        
+        // Makes the get request
         xhttp.send();
     }
 }
 
 /*
- * Load Klarna Widget
+ * Loads Klarna Payments Widget
  */
 function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId)
 {
-    // Prepare parameters
+    // Converts request string to object
     var requestObject = JSON.parse(requestObject);
+    
+    // Converts address string to object
     var addressInfo = JSON.parse(addressInfo);
     
     // Empty the Klarna container
@@ -480,7 +523,11 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId)
         payment_method_category     : paymentMethod,
         instance_id                 : sessionId
         }, function (res) {
+        	
+        	// Triggers Klarna Authorization
             klarnaAuthorizeButton(
+            		
+            	// Klarna container id
                 '#klarna-payments-container',
                 sessionId, paymentMethod, addressInfo, requestObject
             );
@@ -493,12 +540,12 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId)
  */
 function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject)
 {   
-    // Prepare paramters    
-    var authorizeBtn = "<button id='klarna_authorize_btn' type='button' onclick='klarnaAuthorize(`" + sessionId
-    + "`, `" + klarnaContainer + "`, `" + paymentMethod + "`, ` " + JSON.stringify(billingAddress) + " ` , ` " + JSON.stringify(requestObject) + " `)'>Authorize</button>";
+    // Build Klarna authorization button   
+    var authorizeBtn = "<button type='button' style='width: 100%; margin-top: 30px;' onclick='klarnaAuthorize(`" + sessionId
+    + "`, `" + klarnaContainer + "`, `" + paymentMethod + "`, ` " + JSON.stringify(billingAddress) + " ` , ` " + JSON.stringify(requestObject) + " `)'>Klarna</button>";
     var klarna = $(klarnaContainer);
     
-    // Append the button
+    // Append klarna authorization button
     klarna.append(authorizeBtn);
 }
 
@@ -507,10 +554,16 @@ function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billin
  */
 function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, requestData)
 {
-    // Prepare the parameters
+    // Converts request string to object
     var requestObject = JSON.parse(requestData);
+    
+    // Converts address string to object
     var billingAddress = JSON.parse(address);
-    var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val();
+    
+    // Retrieve Customer email from Billing Form
+    var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val(); 
+    
+    // Add Customer Email to billing Address object
     billingAddress.email = emailAddress;
     
     // Authorize the Klarna charge
@@ -531,27 +584,48 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, req
             order_lines               : requestObject.products
         },
         // Callback
-        function (response) {            
+        function (response) {  
+        	
+        	// Authorization is Successful
             if (response.approved) {
+            	
+            	// Empty Klarna Payment Options Button
                 $(klarnaContainer).empty();
+                
+                // Hides the Klarna Logo
                 $('#' + paymentMethod + '_image').hide();
+                
+                // Show Payment Success tick
                 $('#' + paymentMethod + '_aproved').show();
+                
+                // Hides Payment Not Successful star
                 $('#' + paymentMethod + '_rejected').hide();
                 
-                // save value to hidden klarna form
-                $('#klarna_token').val(response.authorization_token);
-                $('#klarna_approved').val(response.approved);
-                $('#klarna_finalize_required').val(response.finalize_required);
-            } else {
+                // Save value to hidden klarna form
+                $('#dwfrm_alternativePaymentForm_klarna__token').val(response.authorization_token);
+                $('#dwfrm_alternativePaymentForm_klarna__approved').val(response.approved);
+                $('#dwfrm_alternativePaymentForm_klarna__finalize__required').val(response.finalize_required);
+            
+            } 
+            // Authorization not Successful
+            else {
+            	
+            	// Empty Klarna Payment Options Button
                 $(klarnaContainer).empty();
+                
+                // Hides the Klarna Logo
                 $('#' + paymentMethod + '_image').hide();
+                
+                // Show Payment Not Successful star
                 $('#' + paymentMethod + '_rejected').show();
+                
+                // Hide Payment Success tick
                 $('#' + paymentMethod + '_aproved').hide();
                 
-                // save value to hidden klarna form
-                $('#klarna_token').val(response.authorization_token);
-                $('#klarna_approved').val(response.approved);
-                $('#klarna_finalize_required').val(response.finalize_required);
+                // Save value to hidden klarna form
+                $('#dwfrm_alternativePaymentForm_klarna__token').val(response.authorization_token);
+                $('#dwfrm_alternativePaymentForm_klarna__approved').val(response.approved);
+                $('#dwfrm_alternativePaymentForm_klarna__finalize__required').val(response.finalize_required);
             }
         }
     );

@@ -28,36 +28,48 @@ var apmHelper = {
         
         // Handle apm result
         if (apmRequest) {
-            if (session.privacy.redirectUrl) {
-                // Create the authorization transaction
-                Transaction.wrap(function () {
-                    paymentInstrument.paymentTransaction.transactionID = apmRequest.action_id;
-                    paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                    paymentInstrument.paymentTransaction.custom.ckoPaymentId = apmRequest.id;
-                    paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                    paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                    paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                    paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-                });
-                
-                // Set the redirection template
-                var templatePath;
-                if (payObject.type == "sepa") {
-                    templatePath = 'redirects/sepaMandate.isml';
-                } else {
-                    templatePath = 'redirects/APM.isml';
-                }
+        	
+            if (this.handleApmChargeResponse(apmRequest)) {
+            	
+                if (session.privacy.redirectUrl) {
+                    // Create the authorization transaction
+                    Transaction.wrap(function () {
+                        paymentInstrument.paymentTransaction.transactionID = apmRequest.action_id;
+                        paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+                        paymentInstrument.paymentTransaction.custom.ckoPaymentId = apmRequest.id;
+                        paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+                        paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+                        paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+                        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+                    });
+                    
+                    // Set the redirection template
+                    var templatePath;
+                    if (payObject.type == "sepa") {
+                        templatePath = 'redirects/sepaMandate.isml';
+                    } else {
+                        templatePath = 'redirects/apm.isml';
+                    }
 
-                // Redirect
-                ISML.renderTemplate(templatePath, {
-                    redirectUrl: session.privacy.redirectUrl
-                });
-                
-                return {authorized: true, redirected: true};
+                    // Redirect
+                    ISML.renderTemplate(templatePath, {
+                        redirectUrl: session.privacy.redirectUrl
+                    });
+                    
+                    return {authorized: true, redirected: true};
+                } else {
+                    return {authorized: true};
+                }
+            	
+            	
             } else {
-                return {authorized: true};
+            	
+                return false;
             }
+            
+            
         } else {
+        	
             return false
         }
     },
@@ -65,7 +77,7 @@ var apmHelper = {
     /*
      * Handle APM charge Response from CKO API
      */
-    handleAPMChargeResponse: function (gatewayResponse) {
+    handleApmChargeResponse: function (gatewayResponse) {
         // clean the session
         session.privacy.redirectUrl = null;
         
@@ -92,7 +104,7 @@ var apmHelper = {
             session.privacy.redirectUrl = gatewayLinks.redirect.href
             return true;
         } else {
-            ckoHelper.paymentSuccess(gatewayResponse);
+            return ckoHelper.paymentSuccess(gatewayResponse);
         }  
     },
     
@@ -139,11 +151,9 @@ var apmHelper = {
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
-            if (this.handleAPMChargeResponse(gatewayResponse)) {
-                return gatewayResponse;
-            } else {
-                return false;
-            }
+        	
+        	return gatewayResponse;
+        	
         } else {
             // Update the transaction
             Transaction.wrap(function () {
@@ -209,7 +219,7 @@ var apmHelper = {
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
-            this.handleAPMChargeResponse(gatewayResponse, order);
+            this.handleApmChargeResponse(gatewayResponse, order);
         } else {
             // Update the transaction
             Transaction.wrap(function () {

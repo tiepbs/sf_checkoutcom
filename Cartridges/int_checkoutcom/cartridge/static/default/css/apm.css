@@ -1,0 +1,52 @@
+
+#apmsBox h4 img {
+width: 10%;
+}
+
+.hideApm{
+	display:none;
+}
+
+.klarnaForm{
+	min-width: 280px; 
+	border: solid 1px #aaa; 
+	margin-left: 10px; 
+	margin-right: 10px; 
+	border-radius: 5px;
+}
+
+.klarnaContainer{
+	min-width: 280px; 
+	padding: 10px;
+}
+
+.klarnaButton{
+	padding: 10px; 
+	border: solid 0.5px #eee; 
+	border-radius: 5px;
+}
+
+.klarnaButton span{
+	font-size:20px;
+}
+
+.klarnaButton .klarnaBlack{
+	color: black;
+}
+
+.klarnaLogo{
+	margin-top: 10px; 
+	float: right;
+}
+
+.klarnaAproved{
+	color: #84bd00; 
+	float: right; 
+	display: none;
+}
+
+.klarnaFail{
+	color: #990000; 
+	float: right; 
+	display: none;
+}

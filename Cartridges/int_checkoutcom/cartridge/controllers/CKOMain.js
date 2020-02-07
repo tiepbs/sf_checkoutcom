@@ -46,7 +46,11 @@ function handleReturn()
                 // If there is a valid response
                 if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
                     var verify = false;
-                    if (ckoHelper.redirectPaymentSuccess(gVerify)) {
+                    
+                    // Logging
+                    ckoHelper.doLog('Apm response', gVerify);
+                    
+                    if (ckoHelper.paymentSuccess(gVerify)) {
                         // Show order confirmation page
                         app.getController('COSummary').ShowConfirmation(order);
                     } else {
