@@ -331,19 +331,6 @@ var ckoHelper = {
     },
     
     /*
-     * Handle a failed payment response
-     */
-    handleFail: function (gatewayResponse) {
-        if (gatewayResponse) {
-            // Logging
-            this.doLog('checkout.com cartridge failed response', JSON.stringify(gatewayResponse));
-        }
-
-        // Send back to the error page
-        ISML.renderTemplate('custom/common/response/failed.isml');
-    },
-    
-    /*
      * Rebuild basket contents after a failed payment.
      */
     checkAndRestoreBasket: function (order) {
@@ -780,7 +767,7 @@ var ckoHelper = {
         //var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 
         // Add the payment processor to the metadata
-        meta.payment_processor = args.ProcesssorId;
+        meta.payment_processor = args.ProcessorId;
     
         return meta;
     },

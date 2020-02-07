@@ -53,7 +53,7 @@ var paymentHelper = {
             // Make the charge request
             var args = {
                 OrderNo: order.orderNo,
-                ProcesssorId: paymentMethodId
+                ProcessorId: paymentMethodId
             };
 
             // Handle the charge request
@@ -118,7 +118,7 @@ var paymentHelper = {
             // Make the charge request
             var args = {
                 OrderNo: order.orderNo,
-                ProcesssorId: paymentMethodId,
+                ProcessorId: paymentMethodId,
                 ckoGooglePayData: req.form.ckoGooglePayData
             };
 
@@ -173,7 +173,7 @@ var paymentHelper = {
             // Make the charge request
             var args = {
                 OrderNo: order.orderNo,
-                ProcesssorId: paymentMethodId,
+                ProcessorId: paymentMethodId,
                 ckoApplePayData: req.form.ckoApplePayData
             };
 
@@ -207,6 +207,9 @@ var paymentHelper = {
     },
 
     checkoutcomApmRequest: function (paymentMethodId, req, res, next) {
+        // Reference the object
+        var self = this;
+
         // Transaction wrapper
         Transaction.wrap(function () {         
             // Get the current basket
@@ -228,15 +231,21 @@ var paymentHelper = {
             // Make the charge request
             var args = {
                 OrderNo: order.orderNo,
-                ProcesssorId: paymentMethodId,
+                ProcessorId: paymentMethodId,
+                Form: req.form
             };
 
             // Get the required apm pay config object
             var payObject = apmConfig[func](args);
 
             // Handle the charge request
-            var chargeResponse = apmHelper.apmAuthorization(payObject, args);
+            var chargeResponse = apmHelper.handleApmRequest(payObject, args);
             
+            // Handle the redirection
+            if (session.privacy.redirectUrl) {
+                res.redirect(session.privacy.redirectUrl);
+            }
+
             // Check the response
             if (chargeResponse) {
                 // Create the authorization transaction

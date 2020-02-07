@@ -22,59 +22,73 @@ function alternativePayments()
 {
     $('input[name="apm_list"]').change(function () {
         switch (this.value) {
-            case"ideal":
+            case "ideal":
                 idealPayBox();
             break;
-            case"boleto":
+
+            case "boleto":
                 boletoPayBox();
             break;
-            case"eps":
+
+            case "eps":
                 epsPayBox();
             break;
-            case"giro":
+
+            case "giro":
                 giroPayBox();
             break;
-            case"fawry":
+
+            case "fawry":
                 fawryPayBox();
             break;
-            case"knet":
+
+            case "knet":
                 knetPayBox();
             break;
-            case"qpay":
+
+            case "qpay":
                 qPayBox();
             break;
-            case"sepa":
+
+            case "sepa":
                 sepaPayBox();
             break;
-            case"bancontact":
+
+            case "bancontact":
                 bancontactPayBox();
             break;
-            case"sofort":
+
+            case "sofort":
                 sofortPayBox();
             break;
-            case"benefit":
+
+            case "benefit":
                 benefitPayBox();
             break;
-            case"multibanco":
+
+            case "multibanco":
                 multibancoPayBox();
             break;
-            case"poli":
+
+            case "poli":
                 poliPayBox();
             break;
-            case"p24":
+
+            case "p24":
                 p24PayBox();
             break;
-            case"klarna":
+
+            case "klarna":
                 klarnaPayBox();
             break;
-            case"paypal":
+
+            case "paypal":
                 paypalPayBox();
             break;
-            case"oxxo":
+
+            case "oxxo":
                 oxxoPayBox();
             break;
-            default:
-                console.log('Apm unknown');
         }
     });
 }
@@ -211,7 +225,7 @@ function boletoPayBox()
     var boletoBox = $('#boleto_pay_box');
     
     // Date formating
-    var cleave = new Cleave('#dwfrm_alternativePaymentForm_boleto__birthDate', {
+    var cleave = new Cleave('#boleto_birthDate', {
         date: true,
         delimiter: '-',
         datePattern: ['Y', 'm', 'd']
@@ -370,10 +384,6 @@ function toggleApm(apms, apmBox)
         // Set alternative payment value
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(apms.val());
-        
-        // Set shop url value
-        var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
-        apmShopUrl.val(location.hostname);
     } else {
         // Apply a state
         apmBox.toggle();
@@ -382,10 +392,6 @@ function toggleApm(apms, apmBox)
         // Set alternative payment value
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(apms.val());
-        
-        // Set shop url value
-        var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
-        apmShopUrl.val(location.hostname);
     }
 }
 
@@ -394,26 +400,23 @@ function toggleApm(apms, apmBox)
  */
 function alternativePaymentsFilter()
 {   
-    var creditCard = $('#is-CHECKOUTCOM_APM');
-    creditCard.on('click', function () {
-        var controllerUrl = $('#ckoApmFilterUrl').val();
-        var xhttpFilter = new XMLHttpRequest();
-        xhttpFilter.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var responseObject = JSON.parse(this.responseText);
-                var filterObject = responseObject.filterObject;
-                var apmsFilterObject = responseObject.ckoApmFilterConfig;
-                for (var apms in apmsFilterObject) {                    
-                    if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmObjects.currencies.includes(filterObject.currency)) {
-                        $('#'+ apms).show();
-                    }
-                }
+    var controllerUrl = $('#ckoApmFilterUrl').val();
+    var xhttpFilter = new XMLHttpRequest();
+    xhttpFilter.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var responseObject = JSON.parse(this.responseText);
+            var filterObject = responseObject.filterObject;
+            var apmsFilterObject = responseObject.ckoApmFilterConfig;
+            for (var apms in apmsFilterObject) {                    
+                //if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmObjects.currencies.includes(filterObject.currency)) {
+                    $('#'+ apms).show();
+                //}
             }
-        };
-        
-        xhttpFilter.open('GET', controllerUrl, true);
-        xhttpFilter.send();
-    });
+        }
+    };
+    
+    xhttpFilter.open('GET', controllerUrl, true);
+    xhttpFilter.send();
 }
 
 /*
@@ -491,23 +494,23 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId)
 function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject)
 {   
     // Prepare paramters    
-    var AuthorizeBtn = "<button type='button' style='width: 100%; margin-top: 30px;' onclick='klarnaAuthorize(`" + sessionId
+    var authorizeBtn = "<button id='klarna_authorize_btn' type='button' onclick='klarnaAuthorize(`" + sessionId
     + "`, `" + klarnaContainer + "`, `" + paymentMethod + "`, ` " + JSON.stringify(billingAddress) + " ` , ` " + JSON.stringify(requestObject) + " `)'>Authorize</button>";
     var klarna = $(klarnaContainer);
     
     // Append the button
-    klarna.append(AuthorizeBtn);
+    klarna.append(authorizeBtn);
 }
 
 /*
  * Klarna Authorize
  */
-function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Object)
+function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, requestData)
 {
     // Prepare the parameters
-    var requestObject = JSON.parse(Object);
-    var billingAddress = JSON.parse(Address);
-    var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val();  //email
+    var requestObject = JSON.parse(requestData);
+    var billingAddress = JSON.parse(address);
+    var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val();
     billingAddress.email = emailAddress;
     
     // Authorize the Klarna charge
@@ -536,9 +539,9 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Obj
                 $('#' + paymentMethod + '_rejected').hide();
                 
                 // save value to hidden klarna form
-                $('#dwfrm_alternativePaymentForm_klarna__token').val(response.authorization_token);
-                $('#dwfrm_alternativePaymentForm_klarna__approved').val(response.approved);
-                $('#dwfrm_alternativePaymentForm_klarna__finalize__required').val(response.finalize_required);
+                $('#klarna_token').val(response.authorization_token);
+                $('#klarna_approved').val(response.approved);
+                $('#klarna_finalize_required').val(response.finalize_required);
             } else {
                 $(klarnaContainer).empty();
                 $('#' + paymentMethod + '_image').hide();
@@ -546,9 +549,9 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Obj
                 $('#' + paymentMethod + '_aproved').hide();
                 
                 // save value to hidden klarna form
-                $('#dwfrm_alternativePaymentForm_klarna__token').val(response.authorization_token);
-                $('#dwfrm_alternativePaymentForm_klarna__approved').val(response.approved);
-                $('#dwfrm_alternativePaymentForm_klarna__finalize__required').val(response.finalize_required);
+                $('#klarna_token').val(response.authorization_token);
+                $('#klarna_approved').val(response.approved);
+                $('#klarna_finalize_required').val(response.finalize_required);
             }
         }
     );

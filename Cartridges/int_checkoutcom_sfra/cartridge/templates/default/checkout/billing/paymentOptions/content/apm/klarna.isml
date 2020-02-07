@@ -1,22 +1,21 @@
 <!-- Klarna pay APM Option -->
-<H4>
-	<img alt="${Resource.msg('cko.klarna.name','cko',null)}" id="klarnapay_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}" width="10%"/>
-	${Resource.msg('cko.klarna.name','cko',null)}
+<h4>
 	<input id="klarna_apm_radio_btn" type="radio" name="apm_list" value="klarna" onclick="callKlarnaController('${URLUtils.url('CKOKlarna-klarnaSession')}')">
-</H4>
+	<img alt="${Resource.msg('cko.klarna.name','cko',null)}" id="klarnapay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}"/>
+	${Resource.msg('cko.klarna.name','cko',null)}
+</h4>
 
-<div id="klarnaPay_pay_box" style="display: none; min-width: 280px; border: solid 1px #aaa; margin-left: 10px; margin-right: 10px; border-radius: 5px;">
+<div id="klarnaPay_pay_box">
 	<div id="klarna-buttons"></div>
-	<div id="klarna-payments-container" style="min-width: 280px; padding: 10px;"></div>
+	<div id="klarna-payments-container"></div>
 	
 	<!-- field for Klarna token -->
-	<input type="hidden" id="klarna_token" />
+	<input type="hidden" id="klarna_token" name="klarna_token" value="">
+
 	<!-- field for Klarna approved -->
-	<input type="hidden" id="klarna_approved" />
+	<input type="hidden" id="klarna_approved" name="klarna_approved" value="">
+
 	<!-- field for Klarna finalize required -->
-	<input type="hidden" id="klarna_finalize_required" />
-	
+	<input type="hidden" id="klarna_finalize_required" name="klarna_finalize_required" value="">
 </div>
-
-
-<hr/>
+<hr>
