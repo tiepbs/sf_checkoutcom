@@ -16,12 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Customer email
 	prepareCustomerEmail();
 		
-}, false);
+}, true);
 
 function prepareCustomerEmail() {
-	$('input#email').val(
-		$('#ckoCustomerEmail').val()
-	);
+	$('input#email').on('focus', function() {
+		if ($.trim($(this).val()) == '') {
+			$(this).val($('#ckoCustomerEmail').val());
+		}
+	});
 }
 
 function initTooltips() {
