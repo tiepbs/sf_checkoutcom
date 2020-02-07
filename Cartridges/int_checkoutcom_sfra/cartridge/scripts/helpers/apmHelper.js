@@ -86,6 +86,7 @@ var apmHelper = {
         if (type == 'Sepa') {
             session.privacy.redirectUrl = URLUtils.url('CKOSepa-Mandate');
             session.privacy.sepaResponseId = gatewayResponse.id;
+            return true;
         }
         
         // Add redirect URL to session if exists

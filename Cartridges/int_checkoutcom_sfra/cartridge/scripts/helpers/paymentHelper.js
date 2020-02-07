@@ -241,6 +241,11 @@ var paymentHelper = {
             // Handle the charge request
             var chargeResponse = apmHelper.handleApmRequest(payObject, args);
             
+            // Handle the redirection
+            if (session.privacy.redirectUrl) {
+                res.redirect(session.privacy.redirectUrl);
+            }
+
             // Check the response
             if (chargeResponse) {
                 // Create the authorization transaction
