@@ -1,4 +1,8 @@
 
+#apmsBox h4 img {
+width: 10%;
+}
+
 .hideApm{
 	display:none;
 }

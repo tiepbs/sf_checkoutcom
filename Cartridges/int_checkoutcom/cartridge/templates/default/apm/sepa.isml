@@ -1,8 +1,8 @@
 <!-- Sepa APM Option -->
 <h4>
-	<img alt="${Resource.msg('cko.sepa.name','cko',null)}" id="sepa_thumb" class="image imageright" type="image" src="${URLUtils.staticURL('/images/apm-icons/sepa.png')}" width="10%"/>
-	${Resource.msg('cko.sepa.name','cko',null)}
 	<input id="sepa_apm_radio_btn" type="radio" name="apm_list" value="sepa">
+	<img alt="${Resource.msg('cko.sepa.name','cko',null)}" id="sepa_thumb" src="${URLUtils.staticURL('/images/apm-icons/sepa.png')}">
+	${Resource.msg('cko.sepa.name','cko',null)}
 </h4>
 
 <div id="sepa_pay_box" class="hideApm">
@@ -10,4 +10,4 @@
 	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.sepa_bic}" id="sepa_bic" type="text" dynamicname="true" />
 </div>
 
-<hr/>
+<hr>

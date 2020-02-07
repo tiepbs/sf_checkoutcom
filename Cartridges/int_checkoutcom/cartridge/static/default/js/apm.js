@@ -6,14 +6,13 @@
 
 
 var apm_selected = false;
-var apm_selected_box = false;
 
 /**
  * JQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
     alternativePayments();
-    AlternativePaymentsFilter();
+    alternativePaymentsFilter();
 }, false);
 
 /*
@@ -23,59 +22,57 @@ function alternativePayments()
 {
     $('input[name="apm_list"]').change(function () {
         switch (this.value) {
-            case"ideal":
+            case "ideal":
                 idealPayBox();
             break;
-            case"boleto":
+            case "boleto":
                 boletoPayBox();
             break;
-            case"eps":
+            case "eps":
                 epsPayBox();
             break;
-            case"giro":
+            case "giro":
                 giroPayBox();
             break;
-            case"fawry":
+            case "fawry":
                 fawryPayBox();
             break;
-            case"knet":
+            case "knet":
                 knetPayBox();
             break;
-            case"qpay":
+            case "qpay":
                 qPayBox();
             break;
-            case"sepa":
+            case "sepa":
                 sepaPayBox();
             break;
-            case"bancontact":
+            case "bancontact":
                 bancontactPayBox();
             break;
-            case"sofort":
+            case "sofort":
                 sofortPayBox();
             break;
-            case"benefit":
+            case "benefit":
                 benefitPayBox();
             break;
-            case"multibanco":
+            case "multibanco":
                 multibancoPayBox();
             break;
-            case"poli":
+            case "poli":
                 poliPayBox();
             break;
-            case"p24":
+            case "p24":
                 p24PayBox();
             break;
-            case"klarna":
+            case "klarna":
                 klarnaPayBox();
             break;
-            case"paypal":
+            case "paypal":
                 paypalPayBox();
             break;
-            case"oxxo":
+            case "oxxo":
                 oxxoPayBox();
             break;
-            default:
-                console.log('Apm unknown');
         }
     });
 }
@@ -372,9 +369,6 @@ function toggleApm(apms, apmBox)
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(apms.val());
         
-        // Set shop url value
-        var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
-        apmShopUrl.val(location.hostname);
     } else {
         // Apply a state
         apmBox.toggle();
@@ -384,68 +378,59 @@ function toggleApm(apms, apmBox)
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(apms.val());
         
-        // Set shop url value
-        var apmShopUrl = $('#dwfrm_alternativePaymentForm_store__url');
-        apmShopUrl.val(location.hostname);
     }
 }
 
 /*
  * Get the APMs filter
  */
-function AlternativePaymentsFilter()
+function alternativePaymentsFilter()
 {   
-	
-	// Assign Apm Payment Form to ckoApmForm variable
-    var ckoApmForm = $('#is-CHECKOUTCOM_APM');
-    
-    // When ckoApmForm is clicked
-    ckoApmForm.on('click', function () {
     	
-    	// Retrieves the Apm Filter Url to controllerUrl variable
-        var controllerUrl = $('#ckoApmFilterUrl').val();
-        
-        // Creates a new xmlHttp Request object
-        var xhttpFilter = new XMLHttpRequest();
-        
-        // When request state changes
-        xhttpFilter.onreadystatechange = function () {
+	// Retrieves the Apm Filter Url to controllerUrl variable
+    var controllerUrl = $('#ckoApmFilterUrl').val();
+    
+    // Creates a new xmlHttp Request object
+    var xhttpFilter = new XMLHttpRequest();
+    
+    // When request state changes
+    xhttpFilter.onreadystatechange = function () {
+    	
+    	// If request was successful and return 200
+        if (this.readyState == 4 && this.status == 200) {
         	
-        	// If request was successful and return 200
-            if (this.readyState == 4 && this.status == 200) {
+        	// Assign the request response to responseObject variable
+            var responseObject = JSON.parse(this.responseText);
+            
+            /*
+             * Assign the current filter Object (Current Country-Code and 
+             * Currency-Code) from the response object to filterObject variable
+             */
+            var filterObject = responseObject.filterObject;
+            
+            // Assign the apms filter Object from the response object to apmfilterObject variable
+            var apmsFilterObject = responseObject.ckoApmFilterConfig;
+            
+            // Loops through the apmfilterObject
+            for (var apms in apmsFilterObject) {  
             	
-            	// Assign the request response to responseObject variable
-                var responseObject = JSON.parse(this.responseText);
-                
-                /*
-                 * Assign the current filter Object (Current Country-Code and 
-                 * Currency-Code) from the response object to filterObject variable
-                 */
-                var filterObject = responseObject.filterObject;
-                
-                // Assign the apms filter Object from the response object to apmfilterObject variable
-                var apmsFilterObject = responseObject.ckoApmFilterConfig;
-                
-                // Loops through the apmfilterObject
-                for (var apms in apmsFilterObject) {  
+            	/*
+            	 * If the current apm country-code and currency-code in 
+            	 * the list of apms match the current country-code and currency-code
+            	 */
+                if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmsFilterObject[apms].currencies.includes(filterObject.currency)) {
+                    
+                	// Show Apm in template
+                	$('#'+ apms).show();
                 	
-                	/*
-                	 * If the current apm country-code and currency-code in 
-                	 * the list of apms match the current country-code and currency-code
-                	 */
-                    if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmsFilterObject[apms].currencies.includes(filterObject.currency)) {
-                        
-                    	// Show Apm in template
-                    	$('#'+ apms).show();
-                    	
-                    }
                 }
             }
-        };
-        
-        xhttpFilter.open('GET', controllerUrl, true);
-        xhttpFilter.send();
-    });
+        }
+    };
+    
+    xhttpFilter.open('GET', controllerUrl, true);
+    xhttpFilter.send();
+    
 }
 
 
@@ -556,24 +541,24 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId)
 function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject)
 {   
     // Build Klarna authorization button   
-    var AuthorizeBtn = "<button type='button' style='width: 100%; margin-top: 30px;' onclick='klarnaAuthorize(`" + sessionId
+    var authorizeBtn = "<button type='button' style='width: 100%; margin-top: 30px;' onclick='klarnaAuthorize(`" + sessionId
     + "`, `" + klarnaContainer + "`, `" + paymentMethod + "`, ` " + JSON.stringify(billingAddress) + " ` , ` " + JSON.stringify(requestObject) + " `)'>Klarna</button>";
     var klarna = $(klarnaContainer);
     
     // Append klarna authorization button
-    klarna.append(AuthorizeBtn);
+    klarna.append(authorizeBtn);
 }
 
 /*
  * Klarna Authorize
  */
-function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, Address, Object)
+function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, requestData)
 {
     // Converts request string to object
-    var requestObject = JSON.parse(Object);
+    var requestObject = JSON.parse(requestData);
     
     // Converts address string to object
-    var billingAddress = JSON.parse(Address);
+    var billingAddress = JSON.parse(address);
     
     // Retrieve Customer email from Billing Form
     var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val(); 
