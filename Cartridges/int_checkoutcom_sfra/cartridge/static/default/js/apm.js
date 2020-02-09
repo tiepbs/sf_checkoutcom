@@ -53,6 +53,7 @@ function initApmFormValidation() {
 }
 
 function checkApmFields() {
+    var errors = 0;
     // Ideal form validation
     var idealField = $('#ideal_bic');
     if ($('#ideal_apm_radio_btn').is(':checked') && idealField.val() == '') {
@@ -60,7 +61,7 @@ function checkApmFields() {
             window.ckoLang.apmFieldInvalid
         );
         idealField.addClass('is-invalid');
-        return 1;
+        errors++;
     }
 
     // Boleto form validation
@@ -70,7 +71,7 @@ function checkApmFields() {
             window.ckoLang.apmFieldInvalid
         );
         boletoField1.addClass('is-invalid');
-        return 1;
+        errors++;
     }
 
     var boletoField2 = $('#boleto_cpfe');
@@ -79,7 +80,7 @@ function checkApmFields() {
             window.ckoLang.apmFieldInvalid
         );
         boletoField2.addClass('is-invalid');
-        return 1;
+        errors++;
     }
 
     // QPAY form validation
@@ -89,7 +90,7 @@ function checkApmFields() {
             window.ckoLang.apmFieldInvalid
         );
         qpayField.addClass('is-invalid');
-        return 1;
+        errors++;
     }
 
     // SEPA form validation
@@ -99,7 +100,7 @@ function checkApmFields() {
             window.ckoLang.apmFieldInvalid
         );
         sepaField1.addClass('is-invalid');
-        return 1;
+        errors++;
     }
 
     var sepaField2 = $('#sepa_bic');
@@ -108,10 +109,10 @@ function checkApmFields() {
             window.ckoLang.apmFieldInvalid
         );
         sepaField2.addClass('is-invalid');
-        return 1;
+        errors++;
     }
 
-    return 0;
+    return errors;
 }
 
 /*
