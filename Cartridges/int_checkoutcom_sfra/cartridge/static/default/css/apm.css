@@ -1,31 +1,43 @@
 /* APM list */
-.apm-list-item,
-#boleto_pay_box,
-#ideal_pay_box,
-#ideal_pay_box,
-#oxxo_pay_box,
-#qpay_pay_box,
-#sepa_pay_box,
-#klarnaPay_pay_box {
-    display: none;
+.cko-apm-accordion {
+    background-color: #ffffff;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    border-bottom: solid 1px #cccccc;
 }
 
-#apmsBox ul li {
-    list-style-type: none;
-    height: 30px;
-    line-height: 30px;
-    border-bottom: solid 1px #f1f1f1;
-}
-
-#apmsBox ul li h4  {
-    font-size: 1.4em;
-}
-
-#apmsBox ul li h4 img {
+.cko-apm-accordion img {
     display: inline-block;
     margin-left: 10px;
     margin-right: 10px;
     width: 7%;
+}
+
+.cko-apm-active, .cko-apm-accordion:hover {
+    background-color: #f1f1f1;
+}
+
+.cko-apm-panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.cko-apm-panel-opened {
+    border-bottom: solid 1px #f1f1f1;
+}
+
+.cko-apm-panel > div {
+	padding-top: 23px;
+	padding-bottom: 20px;
 }
 
 /* Klarna */

@@ -7,8 +7,8 @@ var apm_selected_box = false;
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
-    // Get the APM
-    getApm();
+    // Init the APM accordion
+    initApmAccordion();
 
     // Filter the APM
     filterApm();
@@ -21,18 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
 /*
  * Alternative Payments
  */
-function getApm()
-{
-    $('input[name="apm_list"]').change(function () {
-        // Build the APM function name
-        var apmFn = this.value + 'PayBox';
-
-        // Run the APM call
-        window[apmFn]();
-    });
-}
-
 function initApmFormValidation() {
+    // Click event
     $('#ckoSubmitPayment').on('click touch', function (e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APM') {
             // Reset the error messages
@@ -51,6 +41,13 @@ function initApmFormValidation() {
             }
         }
     }); 
+
+    // Boleto birth date formatter
+    var cleave = new Cleave('#boleto_birthDate', {
+        date: true,
+        delimiter: '-',
+        datePattern: ['Y', 'm', 'd']
+    });
 }
 
 function checkApmFields() {
@@ -117,305 +114,43 @@ function checkApmFields() {
 }
 
 /*
- * Ideal Pay decorator
- */
-function idealPayBox()
-{
-    // Ideal pay radio button element
-    var ideal = $('#ideal_apm_radio_btn');
-    
-    // Ideal pay input elements div
-    var idealBox = $('#ideal_pay_box');
-    
-    // Input fields
-    toggleApm(ideal, idealBox);
-}
-
-/*
- * Knet Pay decorator
- */
-function knetPayBox()
-{
-    // Knet pay radio button element
-    var knet = $('#knet_apm_radio_btn');
-    
-    // Knet pay input elements div
-    var knetBox = $('#knet_pay_box');
-    
-    // Input fields
-    toggleApm(knet, knetBox);
-}
-
-/*
- * Sepa Pay decorator
- */
-function sepaPayBox()
-{
-    // Sepa pay radio button element
-    var sepa = $('#sepa_apm_radio_btn');
-    
-    // Sepa pay input elements div
-    var sepaBox = $('#sepa_pay_box');
-    
-    // Input fields
-    toggleApm(sepa, sepaBox);
-}
-
-/*
- * Klarna Pay decorator
- */
-function klarnaPayBox()
-{
-    // Klarna pay radio button element
-    var klarna = $('#klarna_apm_radio_btn');
-    
-    // Klarna pay input elements div
-    var klarnaBox = $('#klarna_pay_box');
-    
-    // Input fields
-    toggleApm(klarna, klarnaBox);
-}
-
-/*
- * QPay decorator
- */
-function qPayBox()
-{
-    // Qpay radio button element
-    var qpay = $('#qpay_apm_radio_btn');
-
-    // Qpay input elements div
-    var qpayBox = $('#qpay_pay_box');
-    
-    // Input fields
-    toggleApm(qpay, qpayBox);
-}
-
-/*
- * Fawry decorator
- */
-function fawryPayBox()
-{
-    // Fawry pay radio button element
-    var fawry = $('#fawry_apm_radio_btn');
-
-    // Fawry pay input elements div
-    var fawrypayBox = $('#fawry_pay_box');
-    
-    // Input fields
-    toggleApm(fawry, fawrypayBox);
-}
-
-/*
- * Sofort Pay decorator
- */
-function sofortPayBox()
-{
-    // Sofort pay radio button element
-    var sofort = $('#sofort_apm_radio_btn');
-    
-    // Sofort pay input elements div
-    var sofortBox = $('#sofort_pay_box');
-    
-    // Input fields
-    toggleApm(sofort, sofortBox);
-}
-
-/*
- * EPS Pay decorator
- */
-function epsPayBox()
-{
-    // EPS pay radio button element
-    var eps = $('#epsPay_apm_radio_btn');
-    
-    // EPS pay input elements div
-    var epsBox = $('#epsPay_pay_box');
-    
-    // Input fields
-    toggleApm(eps, epsBox);
-}
-
-/*
- * Boleto Pay decorator
- */
-function boletoPayBox()
-{
-    // Boleto pay radio button element
-    var boleto = $('#boleto_apm_radio_btn');
-    
-    // Boleto pay input elements div
-    var boletoBox = $('#boleto_pay_box');
-    
-    // Date formating
-    var cleave = new Cleave('#boleto_birthDate', {
-        date: true,
-        delimiter: '-',
-        datePattern: ['Y', 'm', 'd']
-    });
-    
-    // set input fields toggle
-    toggleApm(boleto, boletoBox);
-}
-
-/*
- * Bancontact Pay decorator
- */
-function bancontactPayBox()
-{
-    // Bancontact pay radio button element
-    var bancontact = $('#bancontact_apm_radio_btn');
-    
-    // Bancontact pay input elements div
-    var bancontactBox = $('#bancontact_pay_box');
-    
-    // Set input fields toggle
-    toggleApm(bancontact, bancontactBox);
-}
-
-/*
- * Benefit Pay decorator
- */
-function benefitPayBox()
-{
-    // Benefit pay radio button element
-    var benefitPay = $('#benefit_apm_radio_btn');
-    
-    // Benefit pay input elements div
-    var benefitPayBox = $('#benefitPay_pay_box');
-    
-    // Set input fields toggle
-    toggleApm(benefitPay, benefitPayBox);
-}
-
-/*
- * Giro Pay decorator
- */
-function giroPayBox()
-{
-    // Giro pay radio button element
-    var giroPay = $('#giroPay_apm_radio_btn');
-    
-    // Giro pay input elements div
-    var giroPayBox = $('#giroPay_pay_box');
-    
-    // Set input fields toggle
-    toggleApm(giroPay, giroPayBox);
-}
-
-/*
- * Multibanco Pay decorator
- */
-function multibancoPayBox()
-{
-    // Multibanco pay radio button element
-    var multibancoPay = $('#multibancoPay_apm_radio_btn');
-    
-    // Multibanco pay input elements div
-    var giroPayBox = $('#multibancoPay_pay_box');
-    
-    // Set input fields toggle
-    toggleApm(multibancoPay, giroPayBox);
-}
-
-/*
- * Poli Pay decorator
- */
-function poliPayBox()
-{
-    // Multibanco pay radio button element
-    var poliPay = $('#poliPay_apm_radio_btn');
-    
-    // Multibanco pay input elements div
-    var poliPayBox = $('#poliPay_pay_box');
-    
-    // Set input fields toggle
-    toggleApm(poliPay, poliPayBox);
-}
-
-/*
- * Poli Pay decorator
- */
-function p24PayBox()
-{
-    // Multibanco pay radio button element
-    var p24Pay = $('#p24Pay_apm_radio_btn');
-    
-    // Multibanco pay input elements div
-    var p24PayBox = $('#p24Pay_pay_box');
-    
-    // Set input fields toggle
-    toggleApm(p24Pay, p24PayBox);
-}
-
-/*
- * Paypal Pay decorator
- */
-function paypalPayBox()
-{
-    // Multibanco pay radio button element
-    var paypalPay = $('#paypalPay_apm_radio_btn');
-    
-    // Multibanco pay input elements div
-    var paypalPayBox = $('#paypalPay_pay_box');
-    
-    // Set input fields toggle
-    toggleApm(paypalPay, paypalPayBox);
-}
-
-/*
- * Poli Pay decorator
- */
-function klarnaPayBox()
-{
-    // Klarna pay radio button element
-    var klarnaPay = $('#klarna_apm_radio_btn');
-    
-    // Klarna pay input elements div
-    var klarnaPayBox = $('#klarnaPay_pay_box');
-    
-    // Set input fields toggle
-    toggleApm(klarnaPay, klarnaPayBox);
-}
-
-/*
- * Oxxo Pay decorator
- */
-function oxxoPayBox()
-{
-    // Oxxo pay radio button element
-    var oxxoPay = $('#oxxo_apm_radio_btn');
-    
-    // Oxxo pay input elements div
-    var oxxoPayBox = $('#oxxo_pay_box');
-    
-    // Set input fields toggle
-    toggleApm(oxxoPay, oxxoPayBox);
-}
-
-/*
  * Set APM Forms
  */
-function toggleApm(apms, apmBox)
+function initApmAccordion()
 {
-    // If another APM is selected
-    if (apm_selected) {
-        apm_selected.toggle();
-        apmBox.toggle();
-        apm_selected = apmBox;
-        
-        // Set alternative payment value
-        var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
-        apmSelect.val(apms.val());
-    } else {
-        // Apply a state
-        apmBox.toggle();
-        apm_selected = apmBox;
-        
-        // Set alternative payment value
-        var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
-        apmSelect.val(apms.val());
-    }
+    // List item radio click action
+    $('.cko-apm-accordion input[type="radio"]').on('click touch', function(e) {
+        e.stopPropagation();
+        $(this).parents('.cko-apm-accordion').trigger('click');
+    });
+
+    // List item click action
+    $('.cko-apm-accordion').on('click touch', function(e) {
+        // Prevent the form submission
+        e.preventDefault();
+
+        // Activate the input
+        $(this).children('input[type="radio"]').prop('checked', true);
+
+        // Remove all active classes
+        $('.cko-apm-accordion').removeClass('cko-apm-active');
+
+        // Close all items
+        $('.cko-apm-panel').css('maxHeight', '0px');
+        $('.cko-apm-panel').removeClass('cko-apm-panel-opened');
+
+        // Set the active element
+        $(this).addClass('cko-apm-active');
+
+        // Open the sibling panel
+        var panel = $(this).next();
+        panel.addClass('cko-apm-panel-opened');
+        if (panel.css('maxHeight') != '0px') {
+            panel.css('maxHeight', '0px');
+        } else {
+            panel.css('maxHeight', panel.prop('scrollHeight') + 'px');
+        } 
+    });
 }
 
 /*
