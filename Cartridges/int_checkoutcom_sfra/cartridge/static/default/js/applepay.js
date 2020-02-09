@@ -6,13 +6,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Launch Apple Pay
     launchApplePay();
-
-    // Add the Apple Pay form validation
-    initApplePayFormValidation();
 }, false);
 
-function initApplePayFormValidation() {
-    $('#ckoSubmitPayment').on('click touch', function(e) {
+function initCheckoutcomApplePayValidation() {
+    $('#ckoSubmitPayment').off('click touch').on('click touch', function(e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APPLE_PAY') {
             // Reset the error messages
             $('.invalid-field-message').empty();

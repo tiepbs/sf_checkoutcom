@@ -67,9 +67,27 @@ function initTabs() {
 			$('#selectedPaymentOption').val(
 				$(this).closest('li').data('method-id')
 			);
+
+			// Initialize form validation
+			initFormValidation();
 		}
 	);
 
 	// Show the first active
 	$('.card-tab').trigger('click');
+}
+
+function initFormValidation() {
+	// Selected option container
+	var selectedOption = '';
+
+	// Format the selected payment method name
+	var parts = $('#selectedPaymentOption').val().toLowerCase().split('_');
+	for (var i = 0; i < parts.length; i++) {
+		selectedOption += parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+	}
+
+	// Build and call the validation function name
+	var func = 'init' + selectedOption + 'Validation';
+	window[func]();
 }

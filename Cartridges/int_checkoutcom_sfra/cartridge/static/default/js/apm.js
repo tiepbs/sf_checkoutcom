@@ -12,18 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Filter the APM
     filterApm();
-
-    // Add APM form validation
-    initApmFormValidation();
-
 }, false);
 
 /*
  * Alternative Payments
  */
-function initApmFormValidation() {
+function initCheckoutcomApmValidation() {
     // Click event
-    $('#ckoSubmitPayment').on('click touch', function (e) {
+    $('#ckoSubmitPayment').off('click touch').on('click touch', function (e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APM') {
             // Reset the error messages
             $('.invalid-field-message').empty();

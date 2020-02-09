@@ -6,14 +6,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Launch Google Pay
     launchGooglePay();
-
-    // Add the Google Pay form validation
-    initGooglePayFormValidation();
-
 }, false);
 
-function initGooglePayFormValidation() {
-    $('#ckoSubmitPayment').on('click touch', function(e) {
+function initCheckoutcomGooglePayValidation() {
+    $('#ckoSubmitPayment').off('click touch').on('click touch', function(e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_GOOGLE_PAY') {
             // Reset the error messages
             $('.invalid-field-message').empty();

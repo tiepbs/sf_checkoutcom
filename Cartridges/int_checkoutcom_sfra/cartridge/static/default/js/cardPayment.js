@@ -4,9 +4,6 @@
 document.addEventListener('DOMContentLoaded', function () { 
     // Add expiration years
     setExpirationYears();
-    
-    // Add the card form validation
-    initCardFormValidation();
 });
 
 // Sets the expiration years in the form
@@ -26,8 +23,8 @@ function setExpirationYears() {
     }
 }
 
-function initCardFormValidation() {
-    $('#ckoSubmitPayment').on('click touch', function (e) {
+function initCheckoutcomCardValidation() {
+    $('#ckoSubmitPayment').off('click touch').on('click touch', function (e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD') {
             // Reset the error messages
             $('.invalid-field-message').empty();
@@ -48,9 +45,11 @@ function initCardFormValidation() {
             ckoFormErrors[3] = checkCardCvv();
 
             // Invalidate the button click if errors found
-            if ($.inArray(1, ckoFormErrors)) {
+            if ($.inArray(1, ckoFormErrors) !== -1) {
                 e.preventDefault();
             }
+
+            console.log(ckoFormErrors);
         }
     });
 }
