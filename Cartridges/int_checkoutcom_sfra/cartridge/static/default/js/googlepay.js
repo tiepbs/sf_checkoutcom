@@ -3,13 +3,47 @@
 /**
  * jQuery Ajax helpers on DOM ready.
  */
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
+    // Launch Google Pay
     launchGooglePay();
+
+    // Add the Google Pay form validation
+    initGooglePayFormValidation();
+
 }, false);
+
+function initGooglePayFormValidation() {
+    $('#ckoSubmitPayment').on('click', function(e) {
+        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_GOOGLE_PAY') {
+            // Prepare the errors array
+            var ckoFormErrors = [];
+
+            // Card number validation
+            ckoFormErrors[0] = checkGooglePayData();
+
+            // Invalidate the button click if errors found
+            if ($.inArray(1, ckoFormErrors)) {
+                e.preventDefault();
+            }
+        }
+    });
+}
+
+function checkGooglePayData() {
+    if ($('#ckoGooglePayData').val() == '') {
+        $('#cko-google-pay-content .invalid-field').text(
+            window.ckoLang.googlePayDataInvalid
+        );
+
+        return 1;
+    }
+
+    return 0;
+}
 
 function launchGooglePay()
 {
-    jQuery('.cko-google-pay-button').click(function () {
+    jQuery('.cko-google-pay-button').click(function() {
         // Prepare the payment parameters
         var allowedPaymentMethods = ['CARD', 'TOKENIZED_CARD'];
         var allowedCardNetworks = ['VISA', 'MASTERCARD', 'AMEX', 'JCB', 'DISCOVER'];

@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add expiration years
     setExpirationYears();
     
-    // Add the card for validation
-    initFormValidation();
+    // Add the card form validation
+    initCardFormValidation();
 });
 
 // Sets the expiration years in the form
@@ -26,7 +26,7 @@ function setExpirationYears() {
     }
 }
 
-function initFormValidation() {
+function initCardFormValidation() {
     $('#ckoSubmitPayment').on('click', function (e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD') {
             // Reset the error messages

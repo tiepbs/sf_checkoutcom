@@ -43,7 +43,7 @@ function initTooltips() {
 function initButtons() {
 	// Hide the global form button
 	$('button.submit-payment').hide();
-
+	
 	// Show the custom form button
 	$('#ckoSubmitPayment').show();
 }
