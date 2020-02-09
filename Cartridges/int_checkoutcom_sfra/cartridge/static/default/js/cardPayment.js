@@ -58,7 +58,9 @@ function checkCardNumber() {
 
     // Check value length
     if (getFormattedNumber(targetField.val()).length < 16) {
-        $('.dwfrm_billing_creditCardFields_cardNumber .invalid-field').text('The card number is invalid');
+        $('.dwfrm_billing_creditCardFields_cardNumber .invalid-field').text(
+            window.ckoLang.cardNumberInvalid
+        );
         targetField.addClass('is-invalid');
         ckoFormErrors++;
     }
@@ -71,13 +73,19 @@ function checkCardExpiration() {
 
     // Check expiration month
     if (targetField1.val() == '') {
-        $('.dwfrm_billing_creditCardFields_expirationMonth .invalid-field').text('Please select an expiration month');
+        $('.dwfrm_billing_creditCardFields_expirationMonth .invalid-field').text(
+            window.ckoLang.cardExpirationMonthInvalid
+        );
+        targetField.addClass('is-invalid');
         ckoFormErrors++;
     }
 
     // Check expiration year
     if (targetField2.val() == '') {
-        $('.dwfrm_billing_creditCardFields_expirationYear .invalid-field').text('Please select an expiration year');
+        $('.dwfrm_billing_creditCardFields_expirationYear .invalid-field').text(
+            window.ckoLang.cardExpirationYearInvalid
+        );
+        targetField.addClass('is-invalid');
         ckoFormErrors++;
     }
 }
@@ -88,7 +96,10 @@ function checkCardCvv() {
 
     // Check CVV length
     if (targetField.val().length < 3 || targetField.val().length > 4) {
-        $('.dwfrm_billing_creditCardFields_securityCode .invalid-field').text('The security code is invalid');
+        $('.dwfrm_billing_creditCardFields_securityCode .invalid-field').text(
+            window.ckoLang.cardSecurityCodeInvalid
+        );
+        targetField.addClass('is-invalid');
         ckoFormErrors++;
     }
 }

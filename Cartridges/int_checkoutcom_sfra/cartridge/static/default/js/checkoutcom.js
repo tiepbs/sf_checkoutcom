@@ -4,6 +4,9 @@
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function() {
+	// Load the language strings
+	loadTranslations();
+
 	// Handle payment buttons state
 	initButtons();
 
@@ -17,6 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	prepareCustomerEmail();
 		
 }, true);
+
+function loadTranslations() {
+    window.ckoLang = JSON.parse($('#translationStrings').val());
+}
 
 function prepareCustomerEmail() {
 	$('input#email').on('focus', function() {
