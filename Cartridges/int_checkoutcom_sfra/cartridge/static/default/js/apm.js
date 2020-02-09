@@ -1,7 +1,3 @@
-//                                                  //
-//  Alternative Payment Form decorator object;      //
-//                                                  //
-
 "use strict";
 
 var apm_selected = false;
@@ -25,7 +21,7 @@ function alternativePayments()
         var apmFn = this.value + 'PayBox';
 
         // Run the APM call
-        apmFn();
+        window[apmFn]();
     });
 }
 
