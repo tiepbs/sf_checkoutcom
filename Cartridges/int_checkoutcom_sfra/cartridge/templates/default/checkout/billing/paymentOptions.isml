@@ -44,7 +44,7 @@
 </isscript>
 
 <!-- Translation strings -->
-<input type="hidden" id="translationStrings" value="${translationStrings}">
+<input type="hidden" id="translationStrings" value='${translationStrings}'>
 
 <!-- JS script include -->
 <script src="${URLUtils.staticURL('/js/checkoutcom.js')}"></script>

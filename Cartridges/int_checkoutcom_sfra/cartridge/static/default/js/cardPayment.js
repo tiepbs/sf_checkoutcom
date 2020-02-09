@@ -1,13 +1,13 @@
 'use strict'
 
-// Set the card validation errors counter
-var ckoFormErrors = 0;
-
 // Set events on page loaded
 document.addEventListener('DOMContentLoaded', function () { 
     // Add expiration years
     setExpirationYears();
 
+    // Set the card validation errors counter
+    var ckoFormErrors = 0;
+    
     // Add the card for validation
     initFormValidation();
 });

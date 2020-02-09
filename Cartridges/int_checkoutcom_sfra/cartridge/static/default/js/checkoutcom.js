@@ -22,7 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
 }, true);
 
 function loadTranslations() {
-    window.ckoLang = JSON.parse($('#translationStrings').val());
+	var translationStrings = $('#translationStrings').val();
+    window.ckoLang = JSON.parse(translationStrings);
 }
 
 function prepareCustomerEmail() {
