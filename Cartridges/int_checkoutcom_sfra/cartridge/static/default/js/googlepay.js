@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 function initGooglePayFormValidation() {
-    $('#ckoSubmitPayment').on('click', function(e) {
+    $('#ckoSubmitPayment').on('click touch', function(e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_GOOGLE_PAY') {
             // Prepare the errors array
             var ckoFormErrors = [];
@@ -69,7 +69,7 @@ function launchGooglePay()
         paymentsClient.loadPaymentData(paymentDataRequest)
         .then(
             function (paymentData) {
-                // handle the response
+                // Handle the response
                 processPayment(paymentData);
             }
         )

@@ -35,7 +35,7 @@ function prepareCustomerEmail() {
 }
 
 function initTooltips() {
-	$('#cko-card-content .icon').off('click').on('click', function() {
+	$('#cko-card-content .icon').on('click touch', function() {
 		$('#cko-card-content .tooltip').toggle();
 	});
 }
@@ -54,19 +54,21 @@ function initTabs() {
 
 	// Handle the click navigation
 	var allTabs = $('.payment-options a.nav-link');
-	allTabs.off('click').on(
-			'click',
-			function() {
-				// Hide all tabs contents
-				$('.ckoPaymentOptions .tab-pane').hide();
+	allTabs.on(
+		'click touch',
+		function() {
+			// Hide all tabs contents
+			$('.ckoPaymentOptions .tab-pane').hide();
 
-				// Show the clicked tab content
-				$($(this).attr('href')).show();
+			// Show the clicked tab content
+			$($(this).attr('href')).show();
 
-				// Set the selected option id
-				$('#selectedPaymentOption').val(
-					$(this).closest('li').data('method-id'));
-				});
+			// Set the selected option id
+			$('#selectedPaymentOption').val(
+				$(this).closest('li').data('method-id')
+			);
+		}
+	);
 
 	// Show the first active
 	$('.card-tab').trigger('click');

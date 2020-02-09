@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
 }, false);
 
 function initApplePayFormValidation() {
-    $('#ckoSubmitPayment').on('click', function(e) {
+    $('#ckoSubmitPayment').on('click touch', function(e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APPLE_PAY') {
             // Prepare the errors array
             var ckoFormErrors = [];

@@ -27,7 +27,7 @@ function setExpirationYears() {
 }
 
 function initCardFormValidation() {
-    $('#ckoSubmitPayment').on('click', function (e) {
+    $('#ckoSubmitPayment').on('click touch', function (e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD') {
             // Reset the error messages
             $('.invalid-field').empty();
