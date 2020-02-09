@@ -10,5 +10,3 @@
 	${Resource.msg('cko.boleto.cpfe','cko',null)} <input id="boleto_cpfe" name="boleto_cpfe" type="text">
 	<div class="invalid-field-message"></div>
 </div>
-
-<hr>

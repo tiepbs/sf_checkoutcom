@@ -4,4 +4,3 @@
 	<img alt="${Resource.msg('cko.giro.name','cko',null)}" id="giropay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/giropay.jpg')}">
 	${Resource.msg('cko.giropay.name','cko',null)}
 </h4>
-<hr>

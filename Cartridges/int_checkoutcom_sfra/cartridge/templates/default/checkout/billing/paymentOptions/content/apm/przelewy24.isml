@@ -4,4 +4,3 @@
 	<img alt="p24Pay" id="p24Pay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/p24.png')}"/>
 	${Resource.msg('cko.p24.name','cko',null)}
 </h4>
-<hr>

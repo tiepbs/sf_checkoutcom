@@ -9,4 +9,3 @@
 	${Resource.msg('cko.qpay.nationalid','cko',null)} <input id="qpay_national_id" name="qpay_national_id" type="text">
 	<div class="invalid-field-message"></div>
 </div>
-<hr>

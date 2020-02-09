@@ -4,4 +4,3 @@
 	<img alt="${Resource.msg('cko.multibanco.name','cko',null)}" id="multibancoPay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/multibanco.png')}"/>
 	${Resource.msg('cko.multibanco.name','cko',null)}
 </h4>
-<hr>

@@ -1,3 +1,4 @@
+/* APM list */
 .apm-list-item,
 #boleto_pay_box,
 #ideal_pay_box,
@@ -9,6 +10,25 @@
     display: none;
 }
 
+#apmsBox ul li {
+    list-style-type: none;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: solid 1px #f1f1f1;
+}
+
+#apmsBox ul li h4  {
+    font-size: 1.4em;
+}
+
+#apmsBox ul li h4 img {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 7%;
+}
+
+/* Klarna */
 #klarnaPay_pay_box {
     min-width: 280px;
     border: solid 1px #aaa;
@@ -47,8 +67,4 @@
 .klarna-button span {
     font-size: 20px;
     color: black;
-}
-
-#apmsBox h4 img {
-    width: 10%;
 }

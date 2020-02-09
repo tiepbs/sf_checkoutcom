@@ -4,4 +4,3 @@
 	<img alt="${Resource.msg('cko.benefit.name','cko',null)}" id="benefitpay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/benefitPay.jpg')}">
 	${Resource.msg('cko.benefit.name','cko',null)} 
 </h4>
-<hr>

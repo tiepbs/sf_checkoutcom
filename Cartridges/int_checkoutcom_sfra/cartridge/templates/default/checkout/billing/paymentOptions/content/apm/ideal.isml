@@ -9,4 +9,3 @@
 	${Resource.msg('cko.ideal.bic','cko',null)} <input id="ideal_bic" name="ideal_bic" type="text">
 	<div class="invalid-field-message"></div>
 </div>
-<hr>

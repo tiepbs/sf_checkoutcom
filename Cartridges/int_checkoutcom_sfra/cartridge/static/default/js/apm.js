@@ -37,6 +37,7 @@ function initApmFormValidation() {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APM') {
             // Reset the error messages
             $('.invalid-field-message').empty();
+            $('#cko-apm-content input').removeClass('is-invalid');
             
             // Prepare the errors array
             var ckoFormErrors = [];

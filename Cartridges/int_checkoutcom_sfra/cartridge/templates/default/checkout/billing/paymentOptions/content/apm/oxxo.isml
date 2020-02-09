@@ -8,4 +8,3 @@
 	<input id="oxxo_identification" name="oxxo_identification" type="text">
 	<div class="invalid-field-message"></div>
 </div>
-<hr>

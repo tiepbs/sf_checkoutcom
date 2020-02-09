@@ -18,4 +18,3 @@
 	<!-- field for Klarna finalize required -->
 	<input type="hidden" id="klarna_finalize_required" name="klarna_finalize_required" value="">
 </div>
-<hr>

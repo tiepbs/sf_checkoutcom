@@ -4,4 +4,3 @@
 	<img alt="${Resource.msg('cko.fawry.name','cko',null)}" id="knet_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/fawry.jpg')}">
 	${Resource.msg('cko.fawry.name','cko',null)}
 </h4>
-<hr>

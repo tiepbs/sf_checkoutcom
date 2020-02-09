@@ -10,4 +10,3 @@
 	${Resource.msg('cko.sepa.bic','cko',null)} <input id="sepa_bic" name="sepa_bic" type="text">
 	<div class="invalid-field-message"></div>
 </div>
-<hr>
