@@ -1,7 +1,7 @@
 <!-- PAYPAL pay APM Option -->
 <h4>
 	<input id="paypalPay_apm_radio_btn" type="radio" name="apm_list" value="paypal">
-	<img alt="paypalPay" id="paypalPay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/paypal.jpeg')}"/>
+	<img alt="paypalPay" id="paypalPay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/paypal.jpg')}"/>
 	${Resource.msg('cko.paypal.name','cko',null)}
 </h4>
 <hr>
