@@ -5,3 +5,8 @@
 #cko-card-content .tooltip {
     display: none;
 }
+
+.invalid-field {
+    color: red;
+    font-size: 0.8em;
+}

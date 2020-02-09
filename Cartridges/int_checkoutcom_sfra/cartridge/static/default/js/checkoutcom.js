@@ -57,8 +57,8 @@ function initTabs() {
 
 				// Set the selected option id
 				$('#selectedPaymentOption').val(
-						$(this).closest('li').data('method-id'));
-			});
+					$(this).closest('li').data('method-id'));
+				});
 
 	// Show the first active
 	$('.card-tab').trigger('click');
