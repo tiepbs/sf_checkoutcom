@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
 }, false);
 
 function loadTranslations() {
-    window.ckolang = JSON.parse(jQuery('[id="translationStrings"]').val());
+    window.ckoLang = JSON.parse(jQuery('[id="translationStrings"]').val());
 }
 
 function buildTabs()
@@ -68,7 +68,7 @@ function initTable(tableData)
         responsiveLayout:true,
         selectable: 'highlight',
         headerFilterPlaceholder: '>',
-        placeholder: window.ckolang.noResults,
+        placeholder: window.ckoLang.noResults,
         layout: 'fitColumns',
         data: JSON.parse(tableData),
         layout: 'fitColumns',
@@ -88,28 +88,28 @@ function getTableStrings() {
     return {
         tableLocale: { 
             'columns': {
-                'id': window.ckolang.rowId,
-                'order_no': window.ckolang.orderNo,
-                'transaction_id': window.ckolang.transactionId,
-                'parent_transaction_id': window.ckolang.parentTransactionId,
-                'payment_id': window.ckolang.paymentId,
-                'amount': window.ckolang.amount,
-                'currency': window.ckolang.currency,
-                'date': window.ckolang.date,
-                'type': window.ckolang.type,
-                'opened': window.ckolang.opened,
-                'processor': window.ckolang.processor,
-                'actions': window.ckolang.actions
+                'id': window.ckoLang.rowId,
+                'order_no': window.ckoLang.orderNo,
+                'transaction_id': window.ckoLang.transactionId,
+                'parent_transaction_id': window.ckoLang.parentTransactionId,
+                'payment_id': window.ckoLang.paymentId,
+                'amount': window.ckoLang.amount,
+                'currency': window.ckoLang.currency,
+                'date': window.ckoLang.date,
+                'type': window.ckoLang.type,
+                'opened': window.ckoLang.opened,
+                'processor': window.ckoLang.processor,
+                'actions': window.ckoLang.actions
             },
             'pagination': {
-                'first': window.ckolang.first,
-                'first_title': window.ckolang.firstTitle,
-                'last': window.ckolang.last,
-                'last_title': window.ckolang.lastTitle,
-                'prev': window.ckolang.prev,
-                'prev_title': window.ckolang.prevTitle,
-                'next': window.ckolang.next,
-                'next_title': window.ckolang.nextTitle,
+                'first': window.ckoLang.first,
+                'first_title': window.ckoLang.firstTitle,
+                'last': window.ckoLang.last,
+                'last_title': window.ckoLang.lastTitle,
+                'prev': window.ckoLang.prev,
+                'prev_title': window.ckoLang.prevTitle,
+                'next': window.ckoLang.next,
+                'next_title': window.ckoLang.nextTitle,
             }
         }
     };
