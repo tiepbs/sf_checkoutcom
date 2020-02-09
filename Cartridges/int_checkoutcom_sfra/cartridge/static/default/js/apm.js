@@ -467,13 +467,13 @@ function callKlarnaController(controllerUrl)
                 var klarnaBox = $('#klarna-buttons');
                 klarnaBox.empty();
                 for (var i = 0; i < categories.length; i++) {
-                    var klarnaButton = "<div style='padding: 10px; border: solid 0.5px #eee; border-radius: 5px;'> " + categories[i].name
-                    + " <input type='radio' name='payment_method_categories' value='" + categories[i].identifier + "'id='"
+                    var klarnaButton = "<div class='klarna-button'> " + categories[i].name
+                    + " <input type='radio' name='payment_method_categories' value='" + categories[i].identifier + "' id='"
                     + categories[i].identifier + "' onclick='loadKlarna(`"+ categories[i].identifier
                     + "`, `" + JSON.stringify(requestObject) +"`,  `" + JSON.stringify(addressInfo) + "` ,`" + sessionId + "` )'><img src='"
-                    + categories[i].asset_urls.descriptive + "' alt='Klarna Image' id='" + categories[i].identifier
-                    + "_image' style='margin-top: 10px; float: right;'> <p id='" + categories[i].identifier
-                    + "_aproved' style='color: #84bd00; float: right; display: none;'><span style='font-size:20px;'>&#10003;</span> Approved By <span style='color: black;'>Klarna</span></p> <p style='color: #990000; float: right; display: none;' id='"
+                    + categories[i].asset_urls.descriptive + "' id='" + categories[i].identifier
+                    + "_image'><p id='" + categories[i].identifier
+                    + "_aproved'><span>&#10003;</span> Approved By <span>Klarna</span></p><p style='color: #990000; float: right; display: none;' id='"
                     + categories[i].identifier + "_rejected'><span style='font-size:20px;'>&#10007;</span>Rejected By <span style='color: black;'>Klarna</span></p><div>";
                     klarnaBox.append(klarnaButton);
                 }
