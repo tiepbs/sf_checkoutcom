@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
 function initApplePayFormValidation() {
     $('#ckoSubmitPayment').on('click touch', function(e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APPLE_PAY') {
+            // Reset the error messages
+            $('.invalid-field-message').empty();
+
             // Prepare the errors array
             var ckoFormErrors = [];
 
@@ -30,7 +33,7 @@ function initApplePayFormValidation() {
 
 function checkApplePayData() {
     if ($('#ckoApplePayData').val() == '') {
-        $('#cko-apple-pay-content .invalid-field').text(
+        $('#cko-apple-pay-content .invalid-field-message').text(
             window.ckoLang.applePayDataInvalid
         );
         

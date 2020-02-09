@@ -4,6 +4,4 @@
 	<img alt="poliPay" id="poliPay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/poli.png')}"/>
 	${Resource.msg('cko.poli.name','cko',null)} 
 </h4>
-
-
 <hr>

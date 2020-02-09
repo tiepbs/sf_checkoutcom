@@ -30,7 +30,7 @@ function initCardFormValidation() {
     $('#ckoSubmitPayment').on('click touch', function (e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD') {
             // Reset the error messages
-            $('.invalid-field').empty();
+            $('.invalid-field-message').empty();
             
             // Prepare the errors array
             var ckoFormErrors = [];
@@ -61,7 +61,7 @@ function checkCardNumber() {
 
     // Check value length
     if (getFormattedNumber(targetField.val()).length < 16) {
-        $('.dwfrm_billing_creditCardFields_cardNumber .invalid-field').text(
+        $('.dwfrm_billing_creditCardFields_cardNumber .invalid-field-message').text(
             window.ckoLang.cardNumberInvalid
         );
         targetField.addClass('is-invalid');
@@ -77,7 +77,7 @@ function checkCardExpirationMonth() {
 
     // Check expiration month
     if (targetField.val() == '') {
-        $('.dwfrm_billing_creditCardFields_expirationMonth .invalid-field').text(
+        $('.dwfrm_billing_creditCardFields_expirationMonth .invalid-field-message').text(
             window.ckoLang.cardExpirationMonthInvalid
         );
         targetField.addClass('is-invalid');
@@ -93,7 +93,7 @@ function checkCardExpirationYear() {
 
     // Check expiration year
     if (targetField.val() == '') {
-        $('.dwfrm_billing_creditCardFields_expirationYear .invalid-field').text(
+        $('.dwfrm_billing_creditCardFields_expirationYear .invalid-field-message').text(
             window.ckoLang.cardExpirationYearInvalid
         );
         targetField.addClass('is-invalid');
@@ -109,7 +109,7 @@ function checkCardCvv() {
 
     // Check CVV length
     if (targetField.val().length < 3 || targetField.val().length > 4) {
-        $('.dwfrm_billing_creditCardFields_securityCode .invalid-field').text(
+        $('.dwfrm_billing_creditCardFields_securityCode .invalid-field-message').text(
             window.ckoLang.cardSecurityCodeInvalid
         );
         targetField.addClass('is-invalid');

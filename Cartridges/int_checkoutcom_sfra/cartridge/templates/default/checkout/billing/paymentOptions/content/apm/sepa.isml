@@ -8,5 +8,6 @@
 <div id="sepa_pay_box" style="display: none;">
 	${Resource.msg('cko.sepa.iban','cko',null)} <input id="sepa_iban" name="sepa_iban" type="text">
 	${Resource.msg('cko.sepa.bic','cko',null)} <input id="sepa_bic" name="sepa_bic" type="text">
+	<div class="invalid-field-message"></div>
 </div>
 <hr>

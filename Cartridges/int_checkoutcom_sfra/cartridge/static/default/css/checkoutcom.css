@@ -6,8 +6,12 @@
     display: none;
 }
 
-.invalid-field {
+.invalid-field-message {
     color: red;
     font-size: 0.8em;
     margin-top: 5px;
+}
+
+.is-invalid {
+    border: solid 1px red;
 }

@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
 function initGooglePayFormValidation() {
     $('#ckoSubmitPayment').on('click touch', function(e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_GOOGLE_PAY') {
+            // Reset the error messages
+            $('.invalid-field-message').empty();
+
             // Prepare the errors array
             var ckoFormErrors = [];
 
@@ -31,7 +34,7 @@ function initGooglePayFormValidation() {
 
 function checkGooglePayData() {
     if ($('#ckoGooglePayData').val() == '') {
-        $('#cko-google-pay-content .invalid-field').text(
+        $('#cko-google-pay-content .invalid-field-message').text(
             window.ckoLang.googlePayDataInvalid
         );
 

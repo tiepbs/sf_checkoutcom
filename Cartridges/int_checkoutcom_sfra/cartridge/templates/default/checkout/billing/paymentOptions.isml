@@ -41,6 +41,7 @@
 		cardExpirationYearInvalid: dw.web.Resource.msg('cko.cardexpirationyear.invalid', 'cko', null),
 		cardSecurityCodeInvalid: dw.web.Resource.msg('cko.cardsecuritycode.invalid', 'cko', null),
 		googlePayDataInvalid: dw.web.Resource.msg('cko.googlepaydata.invalid', 'cko', null),
+		apmFieldInvalid: dw.web.Resource.msg('cko.apmfield.invalid', 'cko', null)
 	});
 </isscript>
 
