@@ -4,9 +4,6 @@
 document.addEventListener('DOMContentLoaded', function () { 
     // Add expiration years
     setExpirationYears();
-
-    // Set the card validation errors counter
-    var ckoFormErrors = 0;
     
     // Add the card for validation
     initFormValidation();
@@ -35,17 +32,23 @@ function initFormValidation() {
             // Reset the error messages
             $('.invalid-field').empty();
             
+            // Prepare the errors array
+            var ckoFormErrors = [];
+            
             // Card number validation
-            checkCardNumber();
+            ckoFormErrors[0] = checkCardNumber();
 
-            // Card expiration validation
-            checkCardExpiration();
+            // Card expiration month validation
+            ckoFormErrors[1] = checkCardExpirationMonth();
+
+            // Card expiration year validation
+            ckoFormErrors[2] = checkCardExpirationYear();
 
             // Security code validation
-            checkCardCvv();
+            ckoFormErrors[3] = checkCardCvv();
 
             // Invalidate the button click if errors found
-            if (ckoFormErrors > 0) {
+            if ($.inArray(1, ckoFormErrors)) {
                 e.preventDefault();
             }
         }
@@ -62,32 +65,42 @@ function checkCardNumber() {
             window.ckoLang.cardNumberInvalid
         );
         targetField.addClass('is-invalid');
-        ckoFormErrors++;
+        return 1;
     }
+
+    return 0;
 }
 
-function checkCardExpiration() {
-    // Set the target fields
-    var targetField1 = $('#expirationMonth');
-    var targetField2 = $('#expirationYear');
+function checkCardExpirationMonth() {
+    // Set the target field
+    var targetField = $('#expirationMonth');
 
     // Check expiration month
-    if (targetField1.val() == '') {
+    if (targetField.val() == '') {
         $('.dwfrm_billing_creditCardFields_expirationMonth .invalid-field').text(
             window.ckoLang.cardExpirationMonthInvalid
         );
         targetField.addClass('is-invalid');
-        ckoFormErrors++;
+        return 1;
     }
 
+    return 0;
+}
+
+function checkCardExpirationYear() {
+    // Set the target field
+    var targetField = $('#expirationYear');
+
     // Check expiration year
-    if (targetField2.val() == '') {
+    if (targetField.val() == '') {
         $('.dwfrm_billing_creditCardFields_expirationYear .invalid-field').text(
             window.ckoLang.cardExpirationYearInvalid
         );
         targetField.addClass('is-invalid');
-        ckoFormErrors++;
+        return 1;
     }
+
+    return 0;
 }
 
 function checkCardCvv() {
@@ -100,8 +113,10 @@ function checkCardCvv() {
             window.ckoLang.cardSecurityCodeInvalid
         );
         targetField.addClass('is-invalid');
-        ckoFormErrors++;
+        return 1;
     }
+
+    return 0;
 }
 
 function getFormattedNumber(num) {
