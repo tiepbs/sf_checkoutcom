@@ -21,75 +21,11 @@ document.addEventListener('DOMContentLoaded', function () {
 function alternativePayments()
 {
     $('input[name="apm_list"]').change(function () {
-        switch (this.value) {
-            case "ideal":
-                idealPayBox();
-            break;
+        // Build the APM function name
+        var apmFn = this.value + 'PayBox';
 
-            case "boleto":
-                boletoPayBox();
-            break;
-
-            case "eps":
-                epsPayBox();
-            break;
-
-            case "giro":
-                giroPayBox();
-            break;
-
-            case "fawry":
-                fawryPayBox();
-            break;
-
-            case "knet":
-                knetPayBox();
-            break;
-
-            case "qpay":
-                qPayBox();
-            break;
-
-            case "sepa":
-                sepaPayBox();
-            break;
-
-            case "bancontact":
-                bancontactPayBox();
-            break;
-
-            case "sofort":
-                sofortPayBox();
-            break;
-
-            case "benefit":
-                benefitPayBox();
-            break;
-
-            case "multibanco":
-                multibancoPayBox();
-            break;
-
-            case "poli":
-                poliPayBox();
-            break;
-
-            case "p24":
-                p24PayBox();
-            break;
-
-            case "klarna":
-                klarnaPayBox();
-            break;
-
-            case "paypal":
-                paypalPayBox();
-            break;
-
-            case "oxxo":
-                oxxoPayBox();
-            break;
-        }
+        // Run the APM call
+        apmFn();
     });
 }
 
@@ -98,13 +34,13 @@ function alternativePayments()
  */
 function idealPayBox()
 {
-    // ideal pay radio button element
+    // Ideal pay radio button element
     var ideal = $('#ideal_apm_radio_btn');
     
-    // ideal pay input elements div
+    // Ideal pay input elements div
     var idealBox = $('#ideal_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(ideal, idealBox);
 }
 
@@ -113,13 +49,13 @@ function idealPayBox()
  */
 function knetPayBox()
 {
-    // knet pay radio button element
+    // Knet pay radio button element
     var knet = $('#knet_apm_radio_btn');
     
-    // knet pay input elements div
+    // Knet pay input elements div
     var knetBox = $('#knet_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(knet, knetBox);
 }
 
@@ -128,13 +64,13 @@ function knetPayBox()
  */
 function sepaPayBox()
 {
-    // sepa pay radio button element
+    // Sepa pay radio button element
     var sepa = $('#sepa_apm_radio_btn');
     
-    // sepa pay input elements div
+    // Sepa pay input elements div
     var sepaBox = $('#sepa_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(sepa, sepaBox);
 }
 
@@ -143,13 +79,13 @@ function sepaPayBox()
  */
 function klarnaPayBox()
 {
-    // klarna pay radio button element
+    // Klarna pay radio button element
     var klarna = $('#klarna_apm_radio_btn');
     
-    // klarna pay input elements div
+    // Klarna pay input elements div
     var klarnaBox = $('#klarna_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(klarna, klarnaBox);
 }
 
@@ -164,7 +100,7 @@ function qPayBox()
     // Qpay input elements div
     var qpayBox = $('#qpay_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(qpay, qpayBox);
 }
 
@@ -173,13 +109,13 @@ function qPayBox()
  */
 function fawryPayBox()
 {
-    // fawry pay radio button element
+    // Fawry pay radio button element
     var fawry = $('#fawry_apm_radio_btn');
 
-    // fawry pay input elements div
+    // Fawry pay input elements div
     var fawrypayBox = $('#fawry_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(fawry, fawrypayBox);
 }
 
@@ -188,13 +124,13 @@ function fawryPayBox()
  */
 function sofortPayBox()
 {
-    // sofort pay radio button element
+    // Sofort pay radio button element
     var sofort = $('#sofort_apm_radio_btn');
     
-    // sofort pay input elements div
+    // Sofort pay input elements div
     var sofortBox = $('#sofort_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(sofort, sofortBox);
 }
 
@@ -203,13 +139,13 @@ function sofortPayBox()
  */
 function epsPayBox()
 {
-    // eps pay radio button element
+    // EPS pay radio button element
     var eps = $('#epsPay_apm_radio_btn');
     
-    // eps pay input elements div
+    // EPS pay input elements div
     var epsBox = $('#epsPay_pay_box');
     
-    // input fields
+    // Input fields
     toggleApm(eps, epsBox);
 }
 
@@ -218,10 +154,10 @@ function epsPayBox()
  */
 function boletoPayBox()
 {
-    // boleto pay radio button element
+    // Boleto pay radio button element
     var boleto = $('#boleto_apm_radio_btn');
     
-    // boleto pay input elements div
+    // Boleto pay input elements div
     var boletoBox = $('#boleto_pay_box');
     
     // Date formating
@@ -240,13 +176,13 @@ function boletoPayBox()
  */
 function bancontactPayBox()
 {
-    // bancontact pay radio button element
+    // Bancontact pay radio button element
     var bancontact = $('#bancontact_apm_radio_btn');
     
-    // bancontact pay input elements div
+    // Bancontact pay input elements div
     var bancontactBox = $('#bancontact_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(bancontact, bancontactBox);
 }
 
@@ -255,13 +191,13 @@ function bancontactPayBox()
  */
 function benefitPayBox()
 {
-    // benefit pay radio button element
+    // Benefit pay radio button element
     var benefitPay = $('#benefit_apm_radio_btn');
     
-    // benefit pay input elements div
+    // Benefit pay input elements div
     var benefitPayBox = $('#benefitPay_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(benefitPay, benefitPayBox);
 }
 
@@ -270,13 +206,13 @@ function benefitPayBox()
  */
 function giroPayBox()
 {
-    // giro pay radio button element
+    // Giro pay radio button element
     var giroPay = $('#giroPay_apm_radio_btn');
     
-    // giro pay input elements div
+    // Giro pay input elements div
     var giroPayBox = $('#giroPay_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(giroPay, giroPayBox);
 }
 
@@ -285,13 +221,13 @@ function giroPayBox()
  */
 function multibancoPayBox()
 {
-    // multibanco pay radio button element
+    // Multibanco pay radio button element
     var multibancoPay = $('#multibancoPay_apm_radio_btn');
     
-    // multibanco pay input elements div
+    // Multibanco pay input elements div
     var giroPayBox = $('#multibancoPay_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(multibancoPay, giroPayBox);
 }
 
@@ -300,13 +236,13 @@ function multibancoPayBox()
  */
 function poliPayBox()
 {
-    // multibanco pay radio button element
+    // Multibanco pay radio button element
     var poliPay = $('#poliPay_apm_radio_btn');
     
-    // multibanco pay input elements div
+    // Multibanco pay input elements div
     var poliPayBox = $('#poliPay_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(poliPay, poliPayBox);
 }
 
@@ -315,13 +251,13 @@ function poliPayBox()
  */
 function p24PayBox()
 {
-    // multibanco pay radio button element
+    // Multibanco pay radio button element
     var p24Pay = $('#p24Pay_apm_radio_btn');
     
-    // multibanco pay input elements div
+    // Multibanco pay input elements div
     var p24PayBox = $('#p24Pay_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(p24Pay, p24PayBox);
 }
 
@@ -330,13 +266,13 @@ function p24PayBox()
  */
 function paypalPayBox()
 {
-    // multibanco pay radio button element
+    // Multibanco pay radio button element
     var paypalPay = $('#paypalPay_apm_radio_btn');
     
-    // multibanco pay input elements div
+    // Multibanco pay input elements div
     var paypalPayBox = $('#paypalPay_pay_box');
     
-    // set input fields toggle
+    // Set input fields toggle
     toggleApm(paypalPay, paypalPayBox);
 }
 
@@ -345,10 +281,10 @@ function paypalPayBox()
  */
 function klarnaPayBox()
 {
-    // Multibanco pay radio button element
+    // Klarna pay radio button element
     var klarnaPay = $('#klarna_apm_radio_btn');
     
-    // Multibanco pay input elements div
+    // Klarna pay input elements div
     var klarnaPayBox = $('#klarnaPay_pay_box');
     
     // Set input fields toggle
@@ -360,10 +296,10 @@ function klarnaPayBox()
  */
 function oxxoPayBox()
 {
-    // Multibanco pay radio button element
+    // Oxxo pay radio button element
     var oxxoPay = $('#oxxo_apm_radio_btn');
     
-    // Multibanco pay input elements div
+    // Oxxo pay input elements div
     var oxxoPayBox = $('#oxxo_pay_box');
     
     // Set input fields toggle
