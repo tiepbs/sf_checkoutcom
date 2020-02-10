@@ -21,7 +21,7 @@ function initCheckoutcomApplePayValidation() {
             ckoFormErrors[0] = checkApplePayData();
 
             // Invalidate the button click if errors found
-            if ($.inArray(1, ckoFormErrors)) {
+            if ($.inArray(1, ckoFormErrors) !== -1) {
                 e.preventDefault();
             }
         }

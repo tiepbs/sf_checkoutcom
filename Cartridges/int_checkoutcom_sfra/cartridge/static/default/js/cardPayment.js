@@ -48,8 +48,6 @@ function initCheckoutcomCardValidation() {
             if ($.inArray(1, ckoFormErrors) !== -1) {
                 e.preventDefault();
             }
-
-            console.log(ckoFormErrors);
         }
     });
 }
