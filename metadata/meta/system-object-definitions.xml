@@ -371,6 +371,14 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>false</default-value>
             </attribute-definition>
+            <attribute-definition attribute-id="ckoOxxoEnabled">
+                <display-name xml:lang="x-default">Enable OXXO PAY </display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Oxxo Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
             <attribute-definition attribute-id="ckoSandboxPublicKey">
                 <display-name xml:lang="x-default">Public key</display-name>
                 <description xml:lang="x-default">Sandbox Public Key provided by Checkout.com</description>
@@ -551,6 +559,7 @@
                 <attribute attribute-id="ckoP24Enabled"/>
                 <attribute attribute-id="ckoKlarnaEnabled"/>
                 <attribute attribute-id="ckoPaypalEnabled"/>
+                <attribute attribute-id="ckoOxxoEnabled"/>
             </attribute-group>
             <attribute-group group-id="Checkout.com Apple Pay">
                 <display-name xml:lang="x-default">Apple Pay Settings</display-name>
