@@ -53,8 +53,8 @@ var ckoHelper = {
     /*
      * Check if the gateway response is valid.
      */
-    isValidResponse: function () {
-        var requestKey = request.httpHeaders.get("authorization");
+    isValidResponse: function (req) {
+        var requestKey = req.httpHeaders['authorization'];
         var privateSharedKey = this.getAccountKeys().privateSharedKey;
         
         return requestKey == privateSharedKey

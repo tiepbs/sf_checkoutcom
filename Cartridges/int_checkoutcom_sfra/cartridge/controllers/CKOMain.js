@@ -6,6 +6,7 @@ var server = require('server');
 /* API Includes */
 var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
+var Resource = require('dw/web/Resource');
 
 /* Checkout.com Event functions */
 var eventsHelper = require('~/cartridge/scripts/helpers/eventsHelper');
@@ -93,11 +94,10 @@ server.get('HandleFail', server.middleware.https, function (req, res, next) {
 /**
  * Handles webhook responses from the Checkout.com payment gateway.
  */
-server.post('HandleWebhook', server.middleware.https, function (req, res, next) {
-    var isValidResponse = ckoHelper.isValidResponse();
-    if (isValidResponse) {
+server.post('HandleWebhook', function (req, res, next) {
+    if (ckoHelper.isValidResponse(req)) {
         // Get the response as JSON object
-        var hook = JSON.parse(req.httpParameterMap.getRequestBodyAsString());
+        var hook = JSON.parse(req.body);
 
         // Check the webhook event
         if (hook !== null && hook.hasOwnProperty('type')) {
@@ -111,6 +111,25 @@ server.post('HandleWebhook', server.middleware.https, function (req, res, next) 
             // Call the event
             eventsHelper[func](hook);
         }
+
+        // Set a success response
+        res.json({
+            response: Resource.msg(
+                'cko.webhook.success',
+                'cko',
+                null
+            )
+        });
+    }
+    else {
+        // Set a failure response
+        res.json({
+            response: Resource.msg(
+                'cko.webhook.failure',
+                'cko',
+                null
+            )
+        });
     }
 
     next();
