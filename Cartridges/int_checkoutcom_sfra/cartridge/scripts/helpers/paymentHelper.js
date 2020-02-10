@@ -74,6 +74,7 @@ var paymentHelper = {
                 paymentInstrument.creditCardType = cardData.cardType;
 
                 // Create the authorization transaction
+                paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
                 paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
                 paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
                 paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
@@ -129,6 +130,7 @@ var paymentHelper = {
             // Check the response
             if (chargeResponse) {
                 // Create the authorization transaction
+                paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
                 paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
                 paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
                 paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
@@ -184,6 +186,7 @@ var paymentHelper = {
             // Check the response
             if (chargeResponse) {
                 // Create the authorization transaction
+                paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
                 paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
                 paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
                 paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
@@ -250,6 +253,7 @@ var paymentHelper = {
             // Check the response
             if (chargeResponse) {
                 // Create the authorization transaction
+                paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
                 paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
                 paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
                 paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
