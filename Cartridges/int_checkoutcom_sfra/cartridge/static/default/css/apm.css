@@ -1,14 +1,46 @@
-.apm-list-item,
-#boleto_pay_box,
-#ideal_pay_box,
-#ideal_pay_box,
-#oxxo_pay_box,
-#qpay_pay_box,
-#sepa_pay_box,
-#klarnaPay_pay_box {
-    display: none;
+/* APM list */
+.cko-apm-accordion {
+    background-color: #ffffff;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    border-bottom: solid 1px #cccccc;
 }
 
+.cko-apm-accordion img {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 7%;
+}
+
+.cko-apm-active, .cko-apm-accordion:hover {
+    background-color: #f1f1f1;
+}
+
+.cko-apm-panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.cko-apm-panel-opened {
+    border-bottom: solid 1px #f1f1f1;
+}
+
+.cko-apm-panel > div {
+	padding-top: 23px;
+	padding-bottom: 20px;
+}
+
+/* Klarna */
 #klarnaPay_pay_box {
     min-width: 280px;
     border: solid 1px #aaa;
@@ -27,6 +59,24 @@
     margin-top: 30px;
 }
 
-#apmsBox h4 img {
-    width: 10%;
+.klarna-button {
+    padding: 10px;
+    border: solid 0.5px #eee;
+    border-radius: 5px;
+}
+
+.klarna-button img {
+    margin-top: 10px;
+    float: right;
+}
+
+.klarna-button p {
+    color: #84bd00;
+    float: right;
+    display: none;
+}
+
+.klarna-button span {
+    font-size: 20px;
+    color: black;
 }

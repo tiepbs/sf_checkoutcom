@@ -1,3 +1,8 @@
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/cardPayment.js');
+</isscript>
+
 <div class="tab-pane" id="cko-card-content" role="tabpanel">
     <div class="row">
         <div class="col-12">
@@ -12,7 +17,7 @@
                         <isprint value=${creditFields.cardNumber.attributes} encoding="off"/>
                         autocomplete="cc-number"
                     >
-                    <div class="invalid-feedback"></div>
+                    <div class="invalid-field-message"></div>
                 </div>
             </div>
         </div>
@@ -38,7 +43,7 @@
                     <option value="11">${Resource.msg('cko.month.november','cko',null)}</option>
                     <option value="12">${Resource.msg('cko.month.december','cko',null)}</option>
                 </select>
-                <div class="invalid-feedback"></div>
+                <div class="invalid-field-message"></div>
             </div>
         </div>
         <div class="col-6">
@@ -48,7 +53,7 @@
                 <isprint value=${creditFields.expirationYear.attributes} encoding="off"/>>
                     <option value="">${Resource.msg('cko.year.select','cko',null)}</option>
                 </select>
-                <div class="invalid-feedback"></div>
+                <div class="invalid-field-message"></div>
             </div>
         </div>
     </div>
@@ -66,7 +71,7 @@
 
                 <input type="text" class="form-control securityCode" id="securityCode"
                     <isprint value=${creditFields.securityCode.attributes} encoding="off"/> >
-                <div class="invalid-feedback"></div>
+                <div class="invalid-field-message"></div>
             </div>
         </div>
     </div>

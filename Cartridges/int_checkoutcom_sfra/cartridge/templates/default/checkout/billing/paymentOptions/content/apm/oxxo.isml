@@ -1,10 +1,12 @@
 <!-- Oxxo APM Option -->
-<h4>
+<button class="cko-apm-accordion">
 	<input id="oxxo_apm_radio_btn" type="radio" name="apm_list" value="oxxo">
 	<img alt="${Resource.msg('cko.oxxo.name','cko',null)}" id="oxxopay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/oxxo.png')}">
 	${Resource.msg('cko.oxxo.name','cko',null)}
-</h4>
-<div id="oxxo_pay_box">
-	<input id="oxxo_identification" name="oxxo_identification" type="text">
+</button>
+<div class="cko-apm-panel">
+	<div id="oxxo_pay_box">
+		<input id="oxxo_identification" name="oxxo_identification" type="text">
+		<div class="invalid-field-message"></div>
+	</div>
 </div>
-<hr>
