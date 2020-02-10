@@ -5,7 +5,6 @@ var OrderMgr = require('dw/order/OrderMgr');
 var Transaction = require('dw/system/Transaction');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
 var PaymentMgr = require('dw/order/PaymentMgr');
-var Money = require('dw/value/Money');
 
 /* Checkout.com Helper functions */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -62,12 +61,6 @@ var eventsHelper = {
 
         // Create the captured transaction
         Transaction.wrap(function () {
-            // Prepare the transaction amount
-            var amount = new Money(
-                order.totalGrossPrice.value.toFixed(2),
-                order.getCurrencyCode()
-            );
-
             // Update the parent transaction state
             var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Authorization');
             parentTransaction.custom.ckoTransactionOpened = false;
