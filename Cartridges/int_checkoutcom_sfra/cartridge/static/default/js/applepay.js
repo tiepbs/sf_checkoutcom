@@ -4,8 +4,41 @@
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
+    // Launch Apple Pay
     launchApplePay();
 }, false);
+
+function initCheckoutcomApplePayValidation() {
+    $('#ckoSubmitPayment').off('click touch').on('click touch', function(e) {
+        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APPLE_PAY') {
+            // Reset the error messages
+            $('.invalid-field-message').empty();
+
+            // Prepare the errors array
+            var ckoFormErrors = [];
+
+            // Card number validation
+            ckoFormErrors[0] = checkApplePayData();
+
+            // Invalidate the button click if errors found
+            if ($.inArray(1, ckoFormErrors) !== -1) {
+                e.preventDefault();
+            }
+        }
+    });
+}
+
+function checkApplePayData() {
+    if ($('#ckoApplePayData').val() == '') {
+        $('#cko-apple-pay-content .invalid-field-message').text(
+            window.ckoLang.applePayDataInvalid
+        );
+        
+        return 1;
+    }
+
+    return 0;
+}
 
 function getLineItems()
 {

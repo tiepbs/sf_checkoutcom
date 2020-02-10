@@ -1,7 +1,6 @@
 <!-- Fawry APM Option -->
-<h4>
+<button class="cko-apm-accordion">
 	<input id="fawry_apm_radio_btn" type="radio" name="apm_list" value="fawry">
-	<img alt="${Resource.msg('cko.fawry.name','cko',null)}" id="knet_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/fawry.jpeg')}">
+	<img alt="${Resource.msg('cko.fawry.name','cko',null)}" id="knet_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/fawry.jpg')}">
 	${Resource.msg('cko.fawry.name','cko',null)}
-</h4>
-<hr>
+</button>

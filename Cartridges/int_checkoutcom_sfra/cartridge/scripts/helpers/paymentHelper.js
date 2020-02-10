@@ -221,7 +221,7 @@ var paymentHelper = {
             // Add order number to the session global object
             session.privacy.ckoOrderId = order.orderNo;
 
-            // Get apm type chosen
+            // Get the APM type chosen
             var func = req.form.apm_list + 'PayAuthorization';
 
             // Create a new payment instrument

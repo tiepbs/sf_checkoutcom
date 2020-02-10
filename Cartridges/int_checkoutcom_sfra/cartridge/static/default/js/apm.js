@@ -1,7 +1,3 @@
-//                                                  //
-//  Alternative Payment Form decorator object;      //
-//                                                  //
-
 "use strict";
 
 var apm_selected = false;
@@ -11,394 +7,152 @@ var apm_selected_box = false;
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
-    alternativePayments();
-    alternativePaymentsFilter();
+    // Init the APM accordion
+    initApmAccordion();
+
+    // Filter the APM
+    filterApm();
 }, false);
 
 /*
  * Alternative Payments
  */
-function alternativePayments()
-{
-    $('input[name="apm_list"]').change(function () {
-        switch (this.value) {
-            case "ideal":
-                idealPayBox();
-            break;
+function initCheckoutcomApmValidation() {
+    // Click event
+    $('#ckoSubmitPayment').off('click touch').on('click touch', function (e) {
+        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APM') {
+            // Reset the error messages
+            $('.invalid-field-message').empty();
+            $('#cko-apm-content input').removeClass('is-invalid');
+            
+            // Prepare the errors array
+            var ckoFormErrors = [];
+            
+            // Card number validation
+            ckoFormErrors[0] = checkApmFields();
 
-            case "boleto":
-                boletoPayBox();
-            break;
-
-            case "eps":
-                epsPayBox();
-            break;
-
-            case "giro":
-                giroPayBox();
-            break;
-
-            case "fawry":
-                fawryPayBox();
-            break;
-
-            case "knet":
-                knetPayBox();
-            break;
-
-            case "qpay":
-                qPayBox();
-            break;
-
-            case "sepa":
-                sepaPayBox();
-            break;
-
-            case "bancontact":
-                bancontactPayBox();
-            break;
-
-            case "sofort":
-                sofortPayBox();
-            break;
-
-            case "benefit":
-                benefitPayBox();
-            break;
-
-            case "multibanco":
-                multibancoPayBox();
-            break;
-
-            case "poli":
-                poliPayBox();
-            break;
-
-            case "p24":
-                p24PayBox();
-            break;
-
-            case "klarna":
-                klarnaPayBox();
-            break;
-
-            case "paypal":
-                paypalPayBox();
-            break;
-
-            case "oxxo":
-                oxxoPayBox();
-            break;
+            // Invalidate the button click if errors found
+            if ($.inArray(1, ckoFormErrors) !== -1) {
+                e.preventDefault();
+            }
         }
-    });
-}
+    }); 
 
-/*
- * Ideal Pay decorator
- */
-function idealPayBox()
-{
-    // ideal pay radio button element
-    var ideal = $('#ideal_apm_radio_btn');
-    
-    // ideal pay input elements div
-    var idealBox = $('#ideal_pay_box');
-    
-    // input fields
-    toggleApm(ideal, idealBox);
-}
-
-/*
- * Knet Pay decorator
- */
-function knetPayBox()
-{
-    // knet pay radio button element
-    var knet = $('#knet_apm_radio_btn');
-    
-    // knet pay input elements div
-    var knetBox = $('#knet_pay_box');
-    
-    // input fields
-    toggleApm(knet, knetBox);
-}
-
-/*
- * Sepa Pay decorator
- */
-function sepaPayBox()
-{
-    // sepa pay radio button element
-    var sepa = $('#sepa_apm_radio_btn');
-    
-    // sepa pay input elements div
-    var sepaBox = $('#sepa_pay_box');
-    
-    // input fields
-    toggleApm(sepa, sepaBox);
-}
-
-/*
- * Klarna Pay decorator
- */
-function klarnaPayBox()
-{
-    // klarna pay radio button element
-    var klarna = $('#klarna_apm_radio_btn');
-    
-    // klarna pay input elements div
-    var klarnaBox = $('#klarna_pay_box');
-    
-    // input fields
-    toggleApm(klarna, klarnaBox);
-}
-
-/*
- * QPay decorator
- */
-function qPayBox()
-{
-    // Qpay radio button element
-    var qpay = $('#qpay_apm_radio_btn');
-
-    // Qpay input elements div
-    var qpayBox = $('#qpay_pay_box');
-    
-    // input fields
-    toggleApm(qpay, qpayBox);
-}
-
-/*
- * Fawry decorator
- */
-function fawryPayBox()
-{
-    // fawry pay radio button element
-    var fawry = $('#fawry_apm_radio_btn');
-
-    // fawry pay input elements div
-    var fawrypayBox = $('#fawry_pay_box');
-    
-    // input fields
-    toggleApm(fawry, fawrypayBox);
-}
-
-/*
- * Sofort Pay decorator
- */
-function sofortPayBox()
-{
-    // sofort pay radio button element
-    var sofort = $('#sofort_apm_radio_btn');
-    
-    // sofort pay input elements div
-    var sofortBox = $('#sofort_pay_box');
-    
-    // input fields
-    toggleApm(sofort, sofortBox);
-}
-
-/*
- * EPS Pay decorator
- */
-function epsPayBox()
-{
-    // eps pay radio button element
-    var eps = $('#epsPay_apm_radio_btn');
-    
-    // eps pay input elements div
-    var epsBox = $('#epsPay_pay_box');
-    
-    // input fields
-    toggleApm(eps, epsBox);
-}
-
-/*
- * Boleto Pay decorator
- */
-function boletoPayBox()
-{
-    // boleto pay radio button element
-    var boleto = $('#boleto_apm_radio_btn');
-    
-    // boleto pay input elements div
-    var boletoBox = $('#boleto_pay_box');
-    
-    // Date formating
+    // Boleto birth date formatter
     var cleave = new Cleave('#boleto_birthDate', {
         date: true,
         delimiter: '-',
         datePattern: ['Y', 'm', 'd']
     });
-    
-    // set input fields toggle
-    toggleApm(boleto, boletoBox);
 }
 
-/*
- * Bancontact Pay decorator
- */
-function bancontactPayBox()
-{
-    // bancontact pay radio button element
-    var bancontact = $('#bancontact_apm_radio_btn');
-    
-    // bancontact pay input elements div
-    var bancontactBox = $('#bancontact_pay_box');
-    
-    // set input fields toggle
-    toggleApm(bancontact, bancontactBox);
-}
+function checkApmFields() {
+    var errors = 0;
+    // Ideal form validation
+    var idealField = $('#ideal_bic');
+    if ($('#ideal_apm_radio_btn').is(':checked') && idealField.val() == '') {
+        $('#ideal_pay_box .invalid-field-message').text(
+            window.ckoLang.apmFieldInvalid
+        );
+        idealField.addClass('is-invalid');
+        errors++;
+    }
 
-/*
- * Benefit Pay decorator
- */
-function benefitPayBox()
-{
-    // benefit pay radio button element
-    var benefitPay = $('#benefit_apm_radio_btn');
-    
-    // benefit pay input elements div
-    var benefitPayBox = $('#benefitPay_pay_box');
-    
-    // set input fields toggle
-    toggleApm(benefitPay, benefitPayBox);
-}
+    // Boleto form validation
+    var boletoField1 = $('#boleto_birthDate');
+    if ($('#boleto_apm_radio_btn').is(':checked') && boletoField1.val() == '') {
+        $('#boleto_pay_box .invalid-field-message').text(
+            window.ckoLang.apmFieldInvalid
+        );
+        boletoField1.addClass('is-invalid');
+        errors++;
+    }
 
-/*
- * Giro Pay decorator
- */
-function giroPayBox()
-{
-    // giro pay radio button element
-    var giroPay = $('#giroPay_apm_radio_btn');
-    
-    // giro pay input elements div
-    var giroPayBox = $('#giroPay_pay_box');
-    
-    // set input fields toggle
-    toggleApm(giroPay, giroPayBox);
-}
+    var boletoField2 = $('#boleto_cpfe');
+    if ($('#boleto_apm_radio_btn').is(':checked') && boletoField2.val() == '') {
+        $('#boleto_pay_box .invalid-field-message').text(
+            window.ckoLang.apmFieldInvalid
+        );
+        boletoField2.addClass('is-invalid');
+        errors++;
+    }
 
-/*
- * Multibanco Pay decorator
- */
-function multibancoPayBox()
-{
-    // multibanco pay radio button element
-    var multibancoPay = $('#multibancoPay_apm_radio_btn');
-    
-    // multibanco pay input elements div
-    var giroPayBox = $('#multibancoPay_pay_box');
-    
-    // set input fields toggle
-    toggleApm(multibancoPay, giroPayBox);
-}
+    // QPAY form validation
+    var qpayField = $('#qpay_national_id');
+    if ($('#qpay_apm_radio_btn').is(':checked') && qpayField.val() == '') {
+        $('#qpay_pay_box .invalid-field-message').text(
+            window.ckoLang.apmFieldInvalid
+        );
+        qpayField.addClass('is-invalid');
+        errors++;
+    }
 
-/*
- * Poli Pay decorator
- */
-function poliPayBox()
-{
-    // multibanco pay radio button element
-    var poliPay = $('#poliPay_apm_radio_btn');
-    
-    // multibanco pay input elements div
-    var poliPayBox = $('#poliPay_pay_box');
-    
-    // set input fields toggle
-    toggleApm(poliPay, poliPayBox);
-}
+    // SEPA form validation
+    var sepaField1 = $('#sepa_iban');
+    if ($('#sepa_apm_radio_btn').is(':checked') && sepaField1.val() == '') {
+        $('#sepa_pay_box .invalid-field-message').text(
+            window.ckoLang.apmFieldInvalid
+        );
+        sepaField1.addClass('is-invalid');
+        errors++;
+    }
 
-/*
- * Poli Pay decorator
- */
-function p24PayBox()
-{
-    // multibanco pay radio button element
-    var p24Pay = $('#p24Pay_apm_radio_btn');
-    
-    // multibanco pay input elements div
-    var p24PayBox = $('#p24Pay_pay_box');
-    
-    // set input fields toggle
-    toggleApm(p24Pay, p24PayBox);
-}
+    var sepaField2 = $('#sepa_bic');
+    if ($('#sepa_apm_radio_btn').is(':checked') && sepaField2.val() == '') {
+        $('#sepa_pay_box .invalid-field-message').text(
+            window.ckoLang.apmFieldInvalid
+        );
+        sepaField2.addClass('is-invalid');
+        errors++;
+    }
 
-/*
- * Paypal Pay decorator
- */
-function paypalPayBox()
-{
-    // multibanco pay radio button element
-    var paypalPay = $('#paypalPay_apm_radio_btn');
-    
-    // multibanco pay input elements div
-    var paypalPayBox = $('#paypalPay_pay_box');
-    
-    // set input fields toggle
-    toggleApm(paypalPay, paypalPayBox);
-}
-
-/*
- * Poli Pay decorator
- */
-function klarnaPayBox()
-{
-    // Multibanco pay radio button element
-    var klarnaPay = $('#klarna_apm_radio_btn');
-    
-    // Multibanco pay input elements div
-    var klarnaPayBox = $('#klarnaPay_pay_box');
-    
-    // Set input fields toggle
-    toggleApm(klarnaPay, klarnaPayBox);
-}
-
-/*
- * Oxxo Pay decorator
- */
-function oxxoPayBox()
-{
-    // Multibanco pay radio button element
-    var oxxoPay = $('#oxxo_apm_radio_btn');
-    
-    // Multibanco pay input elements div
-    var oxxoPayBox = $('#oxxo_pay_box');
-    
-    // Set input fields toggle
-    toggleApm(oxxoPay, oxxoPayBox);
+    return errors;
 }
 
 /*
  * Set APM Forms
  */
-function toggleApm(apms, apmBox)
+function initApmAccordion()
 {
-    // If another APM is selected
-    if (apm_selected) {
-        apm_selected.toggle();
-        apmBox.toggle();
-        apm_selected = apmBox;
-        
-        // Set alternative payment value
-        var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
-        apmSelect.val(apms.val());
-    } else {
-        // Apply a state
-        apmBox.toggle();
-        apm_selected = apmBox;
-        
-        // Set alternative payment value
-        var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
-        apmSelect.val(apms.val());
-    }
+    // List item radio click action
+    $('.cko-apm-accordion input[type="radio"]').on('click touch', function(e) {
+        e.stopPropagation();
+        $(this).parents('.cko-apm-accordion').trigger('click');
+    });
+
+    // List item click action
+    $('.cko-apm-accordion').on('click touch', function(e) {
+        // Prevent the form submission
+        e.preventDefault();
+
+        // Activate the input
+        $(this).children('input[type="radio"]').prop('checked', true);
+
+        // Remove all active classes
+        $('.cko-apm-accordion').removeClass('cko-apm-active');
+
+        // Close all items
+        $('.cko-apm-panel').css('maxHeight', '0px');
+        $('.cko-apm-panel').removeClass('cko-apm-panel-opened');
+
+        // Set the active element
+        $(this).addClass('cko-apm-active');
+
+        // Open the sibling panel
+        var panel = $(this).next();
+        panel.addClass('cko-apm-panel-opened');
+        if (panel.css('maxHeight') != '0px') {
+            panel.css('maxHeight', '0px');
+        } else {
+            panel.css('maxHeight', panel.prop('scrollHeight') + 'px');
+        } 
+    });
 }
 
 /*
  * Get the APMs filter
  */
-function alternativePaymentsFilter()
+function filterApm()
 {   
     var controllerUrl = $('#ckoApmFilterUrl').val();
     var xhttpFilter = new XMLHttpRequest();
@@ -445,13 +199,13 @@ function callKlarnaController(controllerUrl)
                 var klarnaBox = $('#klarna-buttons');
                 klarnaBox.empty();
                 for (var i = 0; i < categories.length; i++) {
-                    var klarnaButton = "<div style='padding: 10px; border: solid 0.5px #eee; border-radius: 5px;'> " + categories[i].name
-                    + " <input type='radio' name='payment_method_categories' value='" + categories[i].identifier + "'id='"
+                    var klarnaButton = "<div class='klarna-button'> " + categories[i].name
+                    + " <input type='radio' name='payment_method_categories' value='" + categories[i].identifier + "' id='"
                     + categories[i].identifier + "' onclick='loadKlarna(`"+ categories[i].identifier
                     + "`, `" + JSON.stringify(requestObject) +"`,  `" + JSON.stringify(addressInfo) + "` ,`" + sessionId + "` )'><img src='"
-                    + categories[i].asset_urls.descriptive + "' alt='Klarna Image' id='" + categories[i].identifier
-                    + "_image' style='margin-top: 10px; float: right;'> <p id='" + categories[i].identifier
-                    + "_aproved' style='color: #84bd00; float: right; display: none;'><span style='font-size:20px;'>&#10003;</span> Approved By <span style='color: black;'>Klarna</span></p> <p style='color: #990000; float: right; display: none;' id='"
+                    + categories[i].asset_urls.descriptive + "' id='" + categories[i].identifier
+                    + "_image'><p id='" + categories[i].identifier
+                    + "_aproved'><span>&#10003;</span> Approved By <span>Klarna</span></p><p style='color: #990000; float: right; display: none;' id='"
                     + categories[i].identifier + "_rejected'><span style='font-size:20px;'>&#10007;</span>Rejected By <span style='color: black;'>Klarna</span></p><div>";
                     klarnaBox.append(klarnaButton);
                 }

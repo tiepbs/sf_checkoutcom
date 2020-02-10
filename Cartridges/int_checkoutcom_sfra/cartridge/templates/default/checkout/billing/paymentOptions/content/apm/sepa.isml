@@ -1,12 +1,13 @@
 <!-- Sepa APM Option -->
-<h4>
+<button class="cko-apm-accordion">
 	<input id="sepa_apm_radio_btn" type="radio" name="apm_list" value="sepa">
 	<img alt="${Resource.msg('cko.sepa.name','cko',null)}" id="sepa_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/sepa.png')}"/>
 	${Resource.msg('cko.sepa.name','cko',null)}
-</h4>
-
-<div id="sepa_pay_box" style="display: none;">
-	${Resource.msg('cko.sepa.iban','cko',null)} <input id="sepa_iban" name="sepa_iban" type="text">
-	${Resource.msg('cko.sepa.bic','cko',null)} <input id="sepa_bic" name="sepa_bic" type="text">
+</button>
+<div class="cko-apm-panel">
+	<div id="sepa_pay_box">
+		${Resource.msg('cko.sepa.iban','cko',null)} <input id="sepa_iban" name="sepa_iban" type="text">
+		${Resource.msg('cko.sepa.bic','cko',null)} <input id="sepa_bic" name="sepa_bic" type="text">
+		<div class="invalid-field-message"></div>
+	</div>
 </div>
-<hr>
