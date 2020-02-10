@@ -7,6 +7,7 @@ var Transaction = require('dw/system/Transaction');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
 var URLUtils = require('dw/web/URLUtils');
 var Resource = require('dw/web/Resource');
+var PaymentMgr = require('dw/order/PaymentMgr');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -47,8 +48,8 @@ var paymentHelper = {
             session.privacy.ckoOrderId = order.orderNo;
 
             // Create a new payment instrument
-            var paymentInstrument = currentBasket.createPaymentInstrument(paymentMethodId, currentBasket.totalGrossPrice);
-            //var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();    
+            var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
+            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
 
             // Make the charge request
             var args = {
@@ -74,7 +75,7 @@ var paymentHelper = {
 
                 // Create the authorization transaction
                 paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                //paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
                 paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
                 paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
@@ -112,8 +113,8 @@ var paymentHelper = {
             session.privacy.ckoOrderId = order.orderNo;
 
             // Create a new payment instrument
-            var paymentInstrument = currentBasket.createPaymentInstrument(paymentMethodId, currentBasket.totalGrossPrice);
-            //var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();    
+            var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
+            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
 
             // Make the charge request
             var args = {
@@ -129,7 +130,7 @@ var paymentHelper = {
             if (chargeResponse) {
                 // Create the authorization transaction
                 paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                //paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
                 paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
                 paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
@@ -167,8 +168,8 @@ var paymentHelper = {
             session.privacy.ckoOrderId = order.orderNo;
 
             // Create a new payment instrument
-            var paymentInstrument = currentBasket.createPaymentInstrument(paymentMethodId, currentBasket.totalGrossPrice);
-            //var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();    
+            var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
+            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
 
             // Make the charge request
             var args = {
@@ -184,7 +185,7 @@ var paymentHelper = {
             if (chargeResponse) {
                 // Create the authorization transaction
                 paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                //paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
                 paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
                 paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
@@ -225,8 +226,8 @@ var paymentHelper = {
             var func = req.form.apm_list + 'PayAuthorization';
 
             // Create a new payment instrument
-            var paymentInstrument = currentBasket.createPaymentInstrument(paymentMethodId, currentBasket.totalGrossPrice);
-            //var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();    
+            var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
+            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
 
             // Make the charge request
             var args = {
@@ -250,7 +251,7 @@ var paymentHelper = {
             if (chargeResponse) {
                 // Create the authorization transaction
                 paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                //paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
                 paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
                 paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
