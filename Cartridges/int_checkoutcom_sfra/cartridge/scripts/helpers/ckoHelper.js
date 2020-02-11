@@ -9,6 +9,7 @@ var BasketMgr = require('dw/order/BasketMgr');
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
+var Money = require('dw/value/Money');
 
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
@@ -75,7 +76,7 @@ var ckoHelper = {
     },
     
     /*
-     * Write gateway information to the website's custom log files.
+     * Write gateway information to the website's custom log files
      */
     doLog: function (dataType, gatewayData) {
         if (this.getValue("ckoDebugEnabled") == true) {
@@ -283,15 +284,24 @@ var ckoHelper = {
     },
 
     /*
-     * Get Order Quantities
+     * Get order currency
      */
     getCurrency : function () {
         var orderId = this.getOrderId();
-        // load the card and order information
         var order = OrderMgr.getOrder(orderId);
         var currency = order.getCurrencyCode();
         
         return currency;
+    },
+
+    /*
+     * Get transaction amount
+     */
+    getOrderTransactionAmount : function (order) {
+        return new Money(
+            order.totalGrossPrice.value.toFixed(2),
+            order.getCurrencyCode()
+        );
     },
 
     /*

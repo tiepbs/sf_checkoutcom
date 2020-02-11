@@ -36,7 +36,8 @@
 <!-- Translation strings -->
 <isscript>
 	var translationStrings = JSON.stringify({
-		cardNumberInvalid: dw.web.Resource.msg('cko.cardnumber.invalid', 'cko', null),
+		cardOwnerInvalid: dw.web.Resource.msg('cko.cardowner.invalid', 'cko', null),
+    	cardNumberInvalid: dw.web.Resource.msg('cko.cardnumber.invalid', 'cko', null),
 		cardExpirationMonthInvalid: dw.web.Resource.msg('cko.cardexpirationmonth.invalid', 'cko', null),
 		cardExpirationYearInvalid: dw.web.Resource.msg('cko.cardexpirationyear.invalid', 'cko', null),
 		cardSecurityCodeInvalid: dw.web.Resource.msg('cko.cardsecuritycode.invalid', 'cko', null),
@@ -49,4 +50,5 @@
 <input type="hidden" id="translationStrings" value='${translationStrings}'>
 
 <!-- JS script include -->
+<script src="${URLUtils.staticURL('/js/cleave.js')}"></script>
 <script src="${URLUtils.staticURL('/js/checkoutcom.js')}"></script>
