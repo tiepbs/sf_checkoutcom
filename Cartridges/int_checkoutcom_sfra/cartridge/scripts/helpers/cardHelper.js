@@ -111,6 +111,9 @@ var cardHelper = {
      * Save a card in customer account
      */
     saveCardData: function (req, cardData, chargeResponse, paymentMethodId) {
+        // Begin the transaction
+        Transaction.begin();
+
         // Get the customer
         var customer = CustomerMgr.getCustomerByCustomerNumber(
             req.currentCustomer.profile.customerNo
@@ -126,11 +129,7 @@ var cardHelper = {
         var isDuplicateCard = false;
         for (var i = 0; i < paymentInstruments.length; i++) {
             var card = paymentInstruments[i];
-            if (card.creditCardExpirationMonth === cardData.expiryMonth
-                && card.creditCardExpirationYear === cardData.expiryYear
-                && card.creditCardType === cardData.cardType
-                && (card.getCreditCardNumber() === cardData.cardNumber)
-            ) {
+            if (this.customerCardExists(card, cardData)) {
                 isDuplicateCard = true;
                 break;
             }
@@ -146,6 +145,25 @@ var cardHelper = {
             storedPaymentInstrument.setCreditCardExpirationYear(parseInt(cardData.expiryYear));
             storedPaymentInstrument.setCreditCardToken(chargeResponse.source.id);
         }
+
+        // Commit the transaction
+        Transaction.commit();
+    },
+
+    /*
+     * Check if a customer card exists
+     */
+    customerCardExists: function (card, cardData) {
+        // Prepare the card data to compare
+        var cardMonth = "0" + card.creditCardExpirationMonth.toString().slice(-2);
+        var cardYear = card.creditCardExpirationYear.toString().replace(',', '');
+        var cardLast4 = card.getCreditCardNumberLastDigits().toString();
+
+        // Return the test
+        return cardMonth == cardData.expiryMonth
+        && cardYear == cardData.expiryYear
+        && card.creditCardType == cardData.cardType
+        && cardLast4 == cardData.cardNumber.substr(cardData.cardNumber.length - 4);
     },
 
     /*
