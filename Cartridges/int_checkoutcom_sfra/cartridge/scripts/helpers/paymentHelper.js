@@ -38,13 +38,13 @@ var paymentHelper = {
             // Prepare the card data
             var cardData = {
                 owner       : req.form.dwfrm_billing_creditCardFields_cardOwner,
-                number      : ckoHelper.getFormattedNumber(req.form.dwfrm_billing_creditCardFields_cardNumber),
+                cardNumber  : ckoHelper.getFormattedNumber(req.form.dwfrm_billing_creditCardFields_cardNumber),
                 expiryMonth : req.form.dwfrm_billing_creditCardFields_expirationMonth,
                 expiryYear  : req.form.dwfrm_billing_creditCardFields_expirationYear,
                 cvv         : req.form.dwfrm_billing_creditCardFields_securityCode,
-                cardType    : req.form.dwfrm_billing_creditCardFields_cardType
+                cardType    : req.form.cardType
             };
-
+            
             // Add order number to the session global object
             session.privacy.ckoOrderId = order.orderNo;
 
@@ -69,7 +69,7 @@ var paymentHelper = {
             // Check the response
             else if (ckoHelper.paymentSuccess(chargeResponse)) {
                 // Prepare the transaction
-                paymentInstrument.creditCardNumber = cardData.number;
+                paymentInstrument.creditCardNumber = cardData.cardNumber;
                 paymentInstrument.creditCardExpirationMonth = cardData.expiryMonth;
                 paymentInstrument.creditCardExpirationYear = cardData.expiryYear;
                 paymentInstrument.creditCardType = cardData.cardType;

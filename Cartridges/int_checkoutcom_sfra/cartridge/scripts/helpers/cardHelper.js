@@ -119,14 +119,33 @@ var cardHelper = {
         // Get the customer wallet
         var wallet = customer.getProfile().getWallet();
 
+        // Get the existing payment instruments
+        var paymentInstruments = wallet.getPaymentInstruments();
+
+        // Check for duplicates
+        var isDuplicateCard = false;
+        for (var i = 0; i < paymentInstruments.length; i++) {
+            var card = paymentInstruments[i];
+            if (card.creditCardExpirationMonth === cardData.expiryMonth
+                && card.creditCardExpirationYear === cardData.expiryYear
+                && card.creditCardType === cardData.cardType
+                && (card.getCreditCardNumber() === cardData.cardNumber)
+            ) {
+                isDuplicateCard = true;
+                break;
+            }
+        }       
+
         // Create a stored payment instrument
-        var storedPaymentInstrument = wallet.createPaymentInstrument(paymentMethodId);
-        storedPaymentInstrument.setCreditCardHolder(cardData.owner);
-        storedPaymentInstrument.setCreditCardNumber(cardData.number);
-        storedPaymentInstrument.setCreditCardType(chargeResponse.source.card_type);
-        storedPaymentInstrument.setCreditCardExpirationMonth(parseInt(cardData.expiryMonth));
-        storedPaymentInstrument.setCreditCardExpirationYear(parseInt(cardData.expiryYear));
-        storedPaymentInstrument.setCreditCardToken(chargeResponse.source.id);
+        if (!isDuplicateCard) {
+            var storedPaymentInstrument = wallet.createPaymentInstrument(paymentMethodId);
+            storedPaymentInstrument.setCreditCardHolder(cardData.owner);
+            storedPaymentInstrument.setCreditCardNumber(cardData.cardNumber);
+            storedPaymentInstrument.setCreditCardType(cardData.cardType);
+            storedPaymentInstrument.setCreditCardExpirationMonth(parseInt(cardData.expiryMonth));
+            storedPaymentInstrument.setCreditCardExpirationYear(parseInt(cardData.expiryYear));
+            storedPaymentInstrument.setCreditCardToken(chargeResponse.source.id);
+        }
     },
 
     /*
@@ -163,7 +182,7 @@ var cardHelper = {
         // Source object
         var source = {
             type                : 'card',
-            number              : cardData.number,
+            number              : cardData.cardNumber,
             expiry_month        : cardData.expiryMonth,
             expiry_year         : cardData.expiryYear,
             name                : cardData.owner,

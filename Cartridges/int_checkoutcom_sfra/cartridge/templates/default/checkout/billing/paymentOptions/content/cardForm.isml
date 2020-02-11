@@ -9,7 +9,7 @@
             <div class="form-group required ${creditFields.cardOwner.htmlName}">
                 <label class="form-control-label" for="cardOwner">${Resource.msg('cko.card.holder','cko',null)}</label>
                 <div class="card-owner-wrapper">
-                    <input type="text" class="form-control cardOwner" id="cardOwner" value="">
+                    <input type="text" class="form-control cardOwner" id="cardOwner" <isprint value=${creditFields.cardOwner.attributes} encoding="off"/>>
                     <div class="invalid-field-message"></div>
                 </div>
             </div>
@@ -102,5 +102,5 @@
     </div>
 </div>
 
-<input type="hidden" id="cardType" value="">
+<input type="hidden" id="cardType" name="cardType" value="" <isprint value=${creditFields.cardType.attributes} encoding="off"/>>
 <script src="${URLUtils.staticURL('/js/cardPayment.js')}"></script>
