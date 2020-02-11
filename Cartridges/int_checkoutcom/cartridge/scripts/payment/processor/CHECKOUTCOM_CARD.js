@@ -27,10 +27,10 @@ function Handle(args)
 {
     var cart = Cart.get(args.Basket);
     var paymentMethod = args.PaymentMethodID;
-    
+
     // Get card payment form
     var paymentForm = app.getForm('cardPaymentForm');
-    
+
     // Prepare card data object
     var cardData = {
         owner       : paymentForm.get('owner').value(),
@@ -40,14 +40,11 @@ function Handle(args)
         cvn         : paymentForm.get('cvn').value(),
         cardType    : paymentForm.get('type').value()
     };
-    
-    // Logging
-    ckoHelper.doLog('saveCard', paymentForm.get('saveCard').value());
-    
+
     // Save card feature
     if(paymentForm.get('saveCard').value()){
     	var i, creditCards, newCreditCard;
-    	
+
         creditCards = customer.profile.getWallet().getPaymentInstruments(paymentMethod);
 
         Transaction.wrap(function () {
@@ -69,7 +66,7 @@ function Handle(args)
             }
         });
     }
-    
+
     // Proceed with transaction
     Transaction.wrap(function () {
         cart.removeExistingPaymentInstruments(paymentMethod);
@@ -80,7 +77,7 @@ function Handle(args)
         paymentInstrument.creditCardExpirationYear = cardData.year;
         paymentInstrument.creditCardType = cardData.cardType;
     });
-    
+
     return {success: true};
 }
 
@@ -99,13 +96,13 @@ function Authorize(args)
     // Preparing payment parameters
     var paymentInstrument = args.PaymentInstrument;
     var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
-    
+
     // Add order number to the session global object
     session.privacy.ckoOrderId = args.OrderNo;
-    
+
     // Get card payment form
     var paymentForm = app.getForm('cardPaymentForm');
-    
+
     // Build card data object
     var cardData = {
         'name'          : paymentInstrument.creditCardHolder,
@@ -115,10 +112,10 @@ function Authorize(args)
         'cvv'           : paymentForm.get('cvn').value(),
         'type'          : paymentInstrument.creditCardType,
     };
-    
+
     // Make the charge request
     var chargeResponse = cardHelper.handleCardRequest(cardData, args);
-    
+
     // Handle card charge request result
     if (chargeResponse) {
         if (ckoHelper.getValue('cko3ds')) {
@@ -126,7 +123,7 @@ function Authorize(args)
             ISML.renderTemplate('redirects/3DSecure.isml', {
                 redirectUrl: session.privacy.redirectUrl
             });
-            
+
             return {authorized: true, redirected: true};
         } else {
             // Create the authorization transaction
@@ -139,7 +136,7 @@ function Authorize(args)
                 paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
                 paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
             });
-            
+
             return {authorized: true};
         }
     } else {
