@@ -3,6 +3,7 @@
 /* API Includes */
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
+var CustomerMgr = require('dw/customer/CustomerMgr');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -96,7 +97,57 @@ var cardHelper = {
         // Return the response
         return ckoHelper.paymentSuccess(authResponse);
     },
-    
+  
+    /*
+     * Check if a card needs saving in customer account
+     */
+    needsCardSaving: function (req) {
+        return req.currentCustomer.raw.authenticated
+        && req.currentCustomer.raw.registered
+        && JSON.parse(req.form.dwfrm_billing_creditCardFields_saveCard)
+    },
+
+    /*
+     * Save a card in customer account
+     */
+    saveCardData: function (req, cardData, chargeResponse, paymentMethodId) {
+        // Get the customer
+        var customer = CustomerMgr.getCustomerByCustomerNumber(
+            req.currentCustomer.profile.customerNo
+        );
+
+        // Get the customer wallet
+        var wallet = customer.getProfile().getWallet();
+
+        // Get the existing payment instruments
+        var paymentInstruments = wallet.getPaymentInstruments();
+
+        // Check for duplicates
+        var isDuplicateCard = false;
+        for (var i = 0; i < paymentInstruments.length; i++) {
+            var card = paymentInstruments[i];
+            if (card.creditCardExpirationMonth === cardData.expiryMonth
+                && card.creditCardExpirationYear === cardData.expiryYear
+                && card.creditCardType === cardData.cardType
+                && (card.getCreditCardNumber() === cardData.cardNumber)
+            ) {
+                isDuplicateCard = true;
+                break;
+            }
+        }       
+
+        // Create a stored payment instrument
+        if (!isDuplicateCard) {
+            var storedPaymentInstrument = wallet.createPaymentInstrument(paymentMethodId);
+            storedPaymentInstrument.setCreditCardHolder(cardData.owner);
+            storedPaymentInstrument.setCreditCardNumber(cardData.cardNumber);
+            storedPaymentInstrument.setCreditCardType(cardData.cardType);
+            storedPaymentInstrument.setCreditCardExpirationMonth(parseInt(cardData.expiryMonth));
+            storedPaymentInstrument.setCreditCardExpirationYear(parseInt(cardData.expiryYear));
+            storedPaymentInstrument.setCreditCardToken(chargeResponse.source.id);
+        }
+    },
+
     /*
      * Build the gateway request
      */
@@ -131,9 +182,10 @@ var cardHelper = {
         // Source object
         var source = {
             type                : 'card',
-            number              : cardData.number,
+            number              : cardData.cardNumber,
             expiry_month        : cardData.expiryMonth,
             expiry_year         : cardData.expiryYear,
+            name                : cardData.owner,
             cvv                 : cardData.cvv,
             billing_address     : this.getBillingObject(args),
             phone               : ckoHelper.getPhoneObject(args)

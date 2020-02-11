@@ -8,9 +8,6 @@
         <div class="stored-payments">
             <isinclude template="checkout/billing/storedPaymentInstruments" />
         </div>
-
-        <br><br>
-        
     </div>
 </isif>
 
