@@ -1,13 +1,13 @@
 <!-- Qpay pay APM Option -->
-<h4>
+<div class="cko-apm-accordion">
 	<input id="qpay_apm_radio_btn" type="radio" name="apm_list" value="qpay">
-	<img alt="${Resource.msg('cko.qpay.name','cko',null)}" id="knet_thumb" src="${URLUtils.staticURL('/images/apm-icons/qpay.png')}">
+	<img alt="${Resource.msg('cko.qpay.name','cko',null)}" id="qpay_thumb" src="${URLUtils.staticURL('/images/apm-icons/qpay.png')}">
 	${Resource.msg('cko.qpay.name','cko',null)} 
-</h4>
-
-<div id="qpay_pay_box" class="hideApm">
-	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.qpay_national_id}" id="qpay_national_id" type="text" />
 </div>
 
 
-<hr>
+<div class="cko-apm-panel">
+  <p>Lorem ipsum...</p>
+	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.qpay_national_id}" id="qpay_national_id" type="text" />
+</div>
+

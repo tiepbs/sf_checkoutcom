@@ -299,10 +299,8 @@ var ckoHelper = {
     /*
      * Removes white spaces form card number
      */
-    getFormattedNumber: function (number) {
-        var num = number;
-        var result = num.replace(/\s/g, "");
-        return result;
+    getFormattedNumber: function (cardNumber) {
+        return cardNumber.replace(/\s/g, "");
     },
     
     /*
