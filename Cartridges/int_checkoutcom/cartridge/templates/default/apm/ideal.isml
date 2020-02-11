@@ -6,6 +6,5 @@
 </div>
 
 <div class="cko-apm-panel">
-  <p>Lorem ipsum...</p>
 	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.ideal_bic}" id="ideal_bic" type="text" dynamicname="true" />
 </div>

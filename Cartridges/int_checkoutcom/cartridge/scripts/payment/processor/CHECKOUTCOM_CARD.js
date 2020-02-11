@@ -41,6 +41,35 @@ function Handle(args)
         cardType    : paymentForm.get('type').value()
     };
     
+    // Logging
+    ckoHelper.doLog('saveCard', paymentForm.get('saveCard').value());
+    
+    // Save card feature
+    if(paymentForm.get('saveCard').value()){
+    	var i, creditCards, newCreditCard;
+    	
+        creditCards = customer.profile.getWallet().getPaymentInstruments(paymentMethod);
+
+        Transaction.wrap(function () {
+            newCreditCard = customer.profile.getWallet().createPaymentInstrument(paymentMethod);
+
+            // copy the credit card details to the payment instrument
+            newCreditCard.setCreditCardHolder(cardData.owner);
+            newCreditCard.setCreditCardNumber(cardData.number);
+            newCreditCard.setCreditCardExpirationMonth(cardData.month);
+            newCreditCard.setCreditCardExpirationYear(cardData.year);
+            newCreditCard.setCreditCardType(cardData.cardType);
+
+            for (i = 0; i < creditCards.length; i++) {
+                var creditcard = creditCards[i];
+
+                if (creditcard.maskedCreditCardNumber === newCreditCard.maskedCreditCardNumber && creditcard.creditCardType === newCreditCard.creditCardType) {
+                	customer.profile.getWallet().removePaymentInstrument(creditcard);
+                }
+            }
+        });
+    }
+    
     // Proceed with transaction
     Transaction.wrap(function () {
         cart.removeExistingPaymentInstruments(paymentMethod);
@@ -54,6 +83,11 @@ function Handle(args)
     
     return {success: true};
 }
+
+
+
+
+
 
 /**
  * Authorises a payment using a credit card. The payment is authorised by using the BASIC_CREDIT processor
