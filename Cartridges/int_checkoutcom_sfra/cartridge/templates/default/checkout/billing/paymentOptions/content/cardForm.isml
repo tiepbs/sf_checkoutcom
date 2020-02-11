@@ -6,6 +6,18 @@
 <div class="tab-pane" id="cko-card-content" role="tabpanel">
     <div class="row">
         <div class="col-12">
+            <div class="form-group required ${creditFields.cardOwner.htmlName}">
+                <label class="form-control-label" for="cardOwner">${Resource.msg('cko.card.holder','cko',null)}</label>
+                <div class="card-owner-wrapper">
+                    <input type="text" class="form-control cardOwner" id="cardOwner" value="">
+                    <div class="invalid-field-message"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
             <div class="form-group required ${creditFields.cardNumber.htmlName}">
                 <label class="form-control-label" for="cardNumber">${Resource.msg('field.credit.card.number','creditCard',null)}</label>
                 <div class="card-number-wrapper">
@@ -89,4 +101,6 @@
         </div>
     </div>
 </div>
+
+<input type="hidden" id="cardType" value="">
 <script src="${URLUtils.staticURL('/js/cardPayment.js')}"></script>

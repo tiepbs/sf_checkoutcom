@@ -4,6 +4,9 @@
 document.addEventListener('DOMContentLoaded', function () { 
     // Add expiration years
     setExpirationYears();
+
+    // Init card type detection
+    initCardTypeDetection();
 });
 
 // Sets the expiration years in the form
@@ -23,6 +26,24 @@ function setExpirationYears() {
     }
 }
 
+function initCardTypeDetection() {
+    var cleaveCreditCard = new Cleave(
+    '#cardNumber', 
+    {
+        creditCard: true,
+        onCreditCardTypeChanged: function (cardType) {
+            if (cardType && cardType.length > 0) {
+                $('#cardType').val(
+                    cardType.charAt(0).toUpperCase() + cardType.slice(1)
+                );
+            }
+            else {
+                $('#cardType').val('Unknown');
+            }
+        }
+    });
+}
+
 function initCheckoutcomCardValidation() {
     $('#ckoSubmitPayment').off('click touch').on('click touch', function (e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD') {
@@ -31,18 +52,21 @@ function initCheckoutcomCardValidation() {
             
             // Prepare the errors array
             var ckoFormErrors = [];
-            
+
+            // Card owner validation
+            ckoFormErrors[0] = checkCardholder();
+
             // Card number validation
-            ckoFormErrors[0] = checkCardNumber();
+            ckoFormErrors[1] = checkCardNumber();
 
             // Card expiration month validation
-            ckoFormErrors[1] = checkCardExpirationMonth();
+            ckoFormErrors[2] = checkCardExpirationMonth();
 
             // Card expiration year validation
-            ckoFormErrors[2] = checkCardExpirationYear();
+            ckoFormErrors[3] = checkCardExpirationYear();
 
             // Security code validation
-            ckoFormErrors[3] = checkCardCvv();
+            ckoFormErrors[4] = checkCardCvv();
 
             // Invalidate the button click if errors found
             if ($.inArray(1, ckoFormErrors) !== -1) {
@@ -50,6 +74,22 @@ function initCheckoutcomCardValidation() {
             }
         }
     });
+}
+
+function checkCardholder() {
+    // Set the target field
+    var targetField = $('#cardOwner');
+
+    // Check value length
+    if (getFormattedNumber(targetField.val()).length < 1) {
+        $('.dwfrm_billing_creditCardFields_cardOwner .invalid-field-message').text(
+            window.ckoLang.cardOwnerInvalid
+        );
+        targetField.addClass('is-invalid');
+        return 1;
+    }
+
+    return 0;
 }
 
 function checkCardNumber() {

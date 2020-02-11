@@ -37,11 +37,12 @@ var paymentHelper = {
 
             // Prepare the card data
             var cardData = {
+                owner       : req.form.dwfrm_billing_creditCardFields_cardOwner,
                 number      : ckoHelper.getFormattedNumber(req.form.dwfrm_billing_creditCardFields_cardNumber),
                 expiryMonth : req.form.dwfrm_billing_creditCardFields_expirationMonth,
                 expiryYear  : req.form.dwfrm_billing_creditCardFields_expirationYear,
                 cvv         : req.form.dwfrm_billing_creditCardFields_securityCode,
-                cardType    : req.form.dwfrm_billing_creditCardFields_cardType	
+                cardType    : req.form.dwfrm_billing_creditCardFields_cardType
             };
 
             // Add order number to the session global object
@@ -72,6 +73,7 @@ var paymentHelper = {
                 paymentInstrument.creditCardExpirationMonth = cardData.expiryMonth;
                 paymentInstrument.creditCardExpirationYear = cardData.expiryYear;
                 paymentInstrument.creditCardType = cardData.cardType;
+                paymentInstrument.creditCardHolder = cardData.owner;
 
                 // Create the authorization transaction
                 paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
@@ -82,6 +84,16 @@ var paymentHelper = {
                 paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
                 paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
                 paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+
+                // Save the card
+                if (cardHelper.needsCardSaving(req)) {
+                    cardHelper.saveCardData(
+                        req,
+                        cardData,
+                        chargeResponse,
+                        paymentMethodId
+                    );
+                }
 
                 // Redirect to the confirmation page
                 self.getConfirmationPage(res, order);
