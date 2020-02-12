@@ -36,11 +36,11 @@ function mandate()
             debtorCountryCode: order.billingAddress.countryCode.toString().toLocaleUpperCase(),
             
             // Prepare the creditor information
-            creditor: ckoHelper.upperCasefirst(ckoHelper.getValue('ckoBusinessName')),
-            creditorAddress1: ckoHelper.upperCasefirst(ckoHelper.getValue('ckoBusinessAddressLine1')),
-            creditorAddress2: ckoHelper.upperCasefirst(ckoHelper.getValue('ckoBusinessAddressLine2')),
-            creditorCity: ckoHelper.upperCasefirst(ckoHelper.getValue('ckoBusinessCity')),
-            creditorCountry: ckoHelper.upperCasefirst(ckoHelper.getValue('ckoBusinessCountry')),
+            creditor: ckoHelper.upperCaseFirst(ckoHelper.getValue('ckoBusinessName')),
+            creditorAddress1: ckoHelper.upperCaseFirst(ckoHelper.getValue('ckoBusinessAddressLine1')),
+            creditorAddress2: ckoHelper.upperCaseFirst(ckoHelper.getValue('ckoBusinessAddressLine2')),
+            creditorCity: ckoHelper.upperCaseFirst(ckoHelper.getValue('ckoBusinessCity')),
+            creditorCountry: ckoHelper.upperCaseFirst(ckoHelper.getValue('ckoBusinessCountry')),
             ContinueURL: URLUtils.https('CKOSepa-HandleMandate')
         }).render('sepaForm');
     } else {

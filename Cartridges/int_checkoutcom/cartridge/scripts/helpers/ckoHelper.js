@@ -72,7 +72,7 @@ var ckoHelper = {
     /*
      * Change Fist Letter of a string to UpperCase
      */
-    upperCasefirst: function(data){
+    upperCaseFirst: function(data){
     	var upperChar = data.charAt(0).toUpperCase();
     	return data.replace(data.charAt(0), upperChar);
     	
