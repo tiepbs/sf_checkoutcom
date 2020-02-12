@@ -36,11 +36,11 @@ function mandate()
             debtorCountryCode: order.billingAddress.countryCode.toString().toLocaleUpperCase(),
             
             // Prepare the creditor information
-            creditor: ckoHelper.getValue('ckoBusinessName'),
-            creditorAddress1: ckoHelper.getValue('ckoBusinessAddressLine1'),
-            creditorAddress2: ckoHelper.getValue('ckoBusinessAddressLine2'),
-            creditorCity: ckoHelper.getValue('ckoBusinessCity'),
-            creditorCountry: ckoHelper.getValue('ckoBusinessCountry'),
+            creditor: ckoHelper.upperCasefirst(ckoHelper.getValue('ckoBusinessName')),
+            creditorAddress1: ckoHelper.upperCasefirst(ckoHelper.getValue('ckoBusinessAddressLine1')),
+            creditorAddress2: ckoHelper.upperCasefirst(ckoHelper.getValue('ckoBusinessAddressLine2')),
+            creditorCity: ckoHelper.upperCasefirst(ckoHelper.getValue('ckoBusinessCity')),
+            creditorCountry: ckoHelper.upperCasefirst(ckoHelper.getValue('ckoBusinessCountry')),
             ContinueURL: URLUtils.https('CKOSepa-HandleMandate')
         }).render('sepaForm');
     } else {
@@ -51,8 +51,7 @@ function mandate()
 
 function handleMandate()
 {
-    // Set session redirect url to null
-    session.privacy.redirectUrl = null;
+	
     var orderId = ckoHelper.getOrderId();
     
     app.getForm('sepaForm').handleAction({
@@ -70,12 +69,15 @@ function handleMandate()
         },
         submit: function () {
             var sepa = app.getForm('sepaForm');
-            var mandate = sepa.get('mandate').value();
+            var mandateValue = sepa.get('mandate').value();
             
             // If mandate is true
-            if (mandate) {
+            if (mandateValue) {
                 // Clear form
                 app.getForm('sepaForm').clear();
+                
+                // Set session redirect url to null
+                session.privacy.redirectUrl = null;
                 
                 // Get the response object from session
                 var responseObjectId = session.privacy.sepaResponseId;
@@ -114,7 +116,8 @@ function handleMandate()
                     ISML.renderTemplate('custom/common/response/failed.isml');
                 }
             } else {
-                app.getView().render('sepaForm');
+                //load the mandate form 
+            	mandate();
             }
         }
     });

@@ -70,6 +70,15 @@ var ckoHelper = {
     },
     
     /*
+     * Change Fist Letter of a string to UpperCase
+     */
+    upperCasefirst: function(data){
+    	var upperChar = data.charAt(0).toUpperCase();
+    	return data.replace(data.charAt(0), upperChar);
+    	
+    },
+    
+    /*
      * Handles string translation with language resource files.
      */
     _: function (strValue, strFile) {
