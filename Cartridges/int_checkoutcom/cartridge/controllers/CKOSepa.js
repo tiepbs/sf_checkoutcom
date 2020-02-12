@@ -27,13 +27,13 @@ function mandate()
             // Prepare the view parameters
             creditAmount: order.totalGrossPrice.value.toFixed(2),
             formatedAmount: ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
-            debtor: order.defaultShipment.shippingAddress.firstName + " " + order.defaultShipment.shippingAddress.lastName,
+            debtor: order.billingAddress.fullName,
             debtorAddress1: order.billingAddress.address1,
             debtorAddress2: order.billingAddress.address2,
             debtorCity: order.billingAddress.city,
             debtorPostCode: order.billingAddress.postalCode,
             debtorStateCode: order.billingAddress.stateCode,
-            debtorCountryCode: order.billingAddress.countryCode,
+            debtorCountryCode: order.billingAddress.countryCode.toString().toLocaleUpperCase(),
             
             // Prepare the creditor information
             creditor: ckoHelper.getValue('ckoBusinessName'),
