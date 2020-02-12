@@ -8,7 +8,7 @@
 
 	<!-- This to include the ideal pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoIdealEnabled'))}">
-		<div id="ideal" class="hideApm">
+		<div id="ideal" class="hideApm apmBox">
 			<isinclude template="apm/ideal.isml"/>
 		</div>
 	</isif>	
@@ -16,7 +16,7 @@
 	
 	<!-- This to include the boleto pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBoletoEnabled'))}">
-		<div id="boleto" class="hideApm">	
+		<div id="boleto" class="hideApm apmBox">	
 			<isinclude template="apm/boleto.isml"/>
 		</div>
 	</isif>
@@ -24,7 +24,7 @@
 	
 	<!-- This to include the bancontact pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBancontactEnabled'))}">
-		<div id="bancontact" class="hideApm">	
+		<div id="bancontact" class="hideApm apmBox">	
 			<isinclude template="apm/bancontact.isml"/>
 		</div>
 	</isif>
@@ -32,7 +32,7 @@
 	
 	<!-- This to include the benefit pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBenefitEnabled'))}">
-		<div id="benefit" class="hideApm">	
+		<div id="benefit" class="hideApm apmBox">	
 			<isinclude template="apm/benefitPay.isml"/>
 		</div>
 	</isif>
@@ -40,7 +40,7 @@
 	
 	<!-- This to include the giro pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGiroEnabled'))}">
-		<div id="giro" class="hideApm">	
+		<div id="giro" class="hideApm apmBox">	
 			<isinclude template="apm/giropay.isml"/>
 		</div>
 	</isif>
@@ -48,7 +48,7 @@
 	
 	<!-- This to include the eps pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEpsEnabled'))}">
-		<div id="eps" class="hideApm">	
+		<div id="eps" class="hideApm apmBox">	
 			<isinclude template="apm/eps.isml"/>
 		</div>
 	</isif>
@@ -56,7 +56,7 @@
 	
 	<!-- This to include the sofort pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSofortEnabled'))}">
-		<div id="sofort" class="hideApm">		
+		<div id="sofort" class="hideApm apmBox">		
 			<isinclude template="apm/sofort.isml"/>
 		</div>
 	</isif>
@@ -64,7 +64,7 @@
 	
 	<!-- This to include the knet pay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoKnetEnabled'))}">
-		<div id="knet" class="hideApm">
+		<div id="knet" class="hideApm apmBox">
 			<isinclude template="apm/knet.isml"/>
 		</div>
 	</isif>
@@ -72,7 +72,7 @@
 
 	<!-- This to include the qpay apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoQpayEnabled'))}">
-		<div id="qpay" class="hideApm">	
+		<div id="qpay" class="hideApm apmBox">	
 			<isinclude template="apm/qpay.isml"/>
 		</div>
 	</isif>
@@ -80,7 +80,7 @@
 	
 	<!-- This to include the fawry apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoFawryEnabled'))}">
-		<div id="fawry" class="hideApm">	
+		<div id="fawry" class="hideApm apmBox">	
 			<isinclude template="apm/fawry.isml"/>
 		</div>
 	</isif>
@@ -88,7 +88,7 @@
 	
 	<!-- This to include the sepa apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSepaEnabled'))}">
-		<div id="sepa" class="hideApm">	
+		<div id="sepa" class="hideApm apmBox">	
 			<isinclude template="apm/sepa.isml"/>
 		</div>
 	</isif>
@@ -96,7 +96,7 @@
 	
 	<!-- This to include the multibanco apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMultibancoEnabled'))}">
-		<div id="multibanco" class="hideApm">	
+		<div id="multibanco" class="hideApm apmBox">	
 			<isinclude template="apm/multibanco.isml"/>
 		</div>
 	</isif>
@@ -104,7 +104,7 @@
 	
 	<!-- This to include the poli apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoPoliEnabled'))}">
-		<div id="poli" class="hideApm">	
+		<div id="poli" class="hideApm apmBox">	
 			<isinclude template="apm/poli.isml"/>
 		</div>
 	</isif>
@@ -112,14 +112,14 @@
 	
 	<!-- This to include the p24 apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoP24Enabled'))}">
-		<div id="p24" class="hideApm">
+		<div id="p24" class="hideApm apmBox">
 			<isinclude template="apm/p24.isml"/>
 		</div>
 	</isif>
 	
 	<!-- This to include the Oxxo apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoOxxoEnabled'))}">
-		<div id="oxxo" class="hideApm">	
+		<div id="oxxo" class="hideApm apmBox">	
 			<isinclude template="apm/oxxo.isml"/>
 		</div>
 	</isif>
@@ -127,7 +127,7 @@
 	
 	<!-- This to include the klarna apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoKlarnaEnabled'))}">
-		<div id="klarna" class="hideApm">	
+		<div id="klarna" class="hideApm apmBox">	
 			<isinclude template="apm/klarna.isml"/>	
 		</div>
 	</isif>
@@ -135,7 +135,7 @@
 	
 	<!-- This to include the Paypal apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoPaypalEnabled'))}">
-		<div id="paypal">	
+		<div id="paypal" class="apmBox">	
 			<isinclude template="apm/payPal.isml"/>
 		</div>
 	</isif>
