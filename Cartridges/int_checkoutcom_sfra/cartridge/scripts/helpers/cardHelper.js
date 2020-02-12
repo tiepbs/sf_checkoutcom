@@ -16,7 +16,7 @@ var cardHelper = {
      * Handle full charge Request to CKO API
      */
     handleCardRequest: function (cardData, args) {
-        // Load the card and order information
+        // Load the order information
         var order = OrderMgr.getOrder(args.OrderNo);
         
         // Create billing address object
@@ -49,6 +49,38 @@ var cardHelper = {
         return false;
     },
     
+    /*
+     * Handle saved card request to CKO API
+     */
+    handleSavedCardRequest: function (sourceId, cvv, args) {
+        // Load the order information
+        var order = OrderMgr.getOrder(args.OrderNo);
+        
+        // Create billing address object
+        var gatewayRequest = this.getSavedCardRequest(sourceId, cvv, args);
+        
+        // Perform the request to the payment gateway
+        var gatewayResponse = ckoHelper.gatewayClientRequest(
+            "cko.card.charge." + ckoHelper.getValue('ckoMode').value + ".service",
+            gatewayRequest
+        );
+    
+        // Logging
+        ckoHelper.doLog('response', gatewayResponse);
+
+        // If the charge is valid, process the response
+        if (gatewayResponse && this.handleFullChargeResponse(gatewayResponse)) {                
+            return gatewayResponse;
+        } else {
+            // Fail the order
+            Transaction.wrap(function () {
+                OrderMgr.failOrder(order);
+            });
+        }       
+    
+        return false;
+    },
+
     /*
      * Handle full charge Response from CKO API
      */
@@ -167,6 +199,32 @@ var cardHelper = {
     },
 
     /*
+     * Get a customer saved card
+     */
+    getSavedCard: function (req, paymentMethodId) {
+        // Get the customer
+        var customer = CustomerMgr.getCustomerByCustomerNumber(
+            req.currentCustomer.profile.customerNo
+        );
+
+        // Get the customer wallet
+        var wallet = customer.getProfile().getWallet();
+
+        // Get the existing payment instruments
+        var paymentInstruments = wallet.getPaymentInstruments(paymentMethodId);
+
+        // Math the saved card
+        for (var i = 0; i < paymentInstruments.length; i++) {
+            var card = paymentInstruments[i];
+            if (card.getUUID() == req.form.selectedCardId) {
+                return card;
+            }
+        } 
+        
+        return null;
+    },
+
+    /*
      * Build the gateway request
      */
     getCardRequest: function (cardData, args) {
@@ -194,7 +252,37 @@ var cardHelper = {
     },
     
     /*
-     * Build Gateway Source Object
+     * Build a gateway saved card request
+     */
+    getSavedCardRequest: function (sourceId, cvv, args) {
+        // Load the card and order information
+        var order = OrderMgr.getOrder(args.OrderNo);
+    
+        // Prepare the charge data
+        var chargeData = {
+            'source': {
+                type: 'id',
+                id: sourceId,
+                cvv: cvv
+            },
+            'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
+            'currency'              : ckoHelper.getCurrency(),
+            'reference'             : args.OrderNo,
+            'capture'               : ckoHelper.getValue('ckoAutoCapture'),
+            'capture_on'            : ckoHelper.getCaptureTime(),
+            'billing_descriptor'    : ckoHelper.getBillingDescriptorObject(),
+            'shipping'              : this.getShippingObject(args),
+            '3ds'                   : this.get3Ds(),
+            'risk'                  : {enabled: true},
+            'payment_ip'            : ckoHelper.getHost(args),
+            'metadata'              : ckoHelper.getMetadataObject(cardData, args)
+        };   
+
+        return chargeData;
+    },
+
+    /*
+     * Build a gateway card source object
      */
     getSourceObject: function (cardData, args) {
         // Source object
@@ -211,7 +299,7 @@ var cardHelper = {
         
         return source;
     },
-    
+
     /*
      * Build 3ds object
      */
