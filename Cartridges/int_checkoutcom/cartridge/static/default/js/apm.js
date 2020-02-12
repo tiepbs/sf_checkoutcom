@@ -105,7 +105,7 @@ function alternativePaymentsFilter()
             	 * the list of apms match the current country-code and currency-code
             	 */
                 if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmsFilterObject[apms].currencies.includes(filterObject.currency)) {
-                    
+             
                 	// Show Apm in template
                 	$('#'+ apms).show();
                 	

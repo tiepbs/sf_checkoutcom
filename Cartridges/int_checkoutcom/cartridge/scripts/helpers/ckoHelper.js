@@ -327,8 +327,10 @@ var ckoHelper = {
     		
     	}else if(gatewayResponse.hasOwnProperty('source')){
     		
-    		return gatewayResponse.source.type == 'sofort';
+    		return gatewayResponse.source.type == 'sofort' || 'bancontact';
     		
+    	}else if(gatewayResponse.hasOwnProperty('reference')){
+    		return gatewayResponse.reference == this.getOrderId();
     	}
     	
     	return false;
