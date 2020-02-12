@@ -34,16 +34,6 @@ var paymentHelper = {
 
             // Create the order
             var order = OrderMgr.createOrder(currentBasket);
-
-            // Prepare the card data
-            var cardData = {
-                owner       : req.form.dwfrm_billing_creditCardFields_cardOwner,
-                cardNumber  : ckoHelper.getFormattedNumber(req.form.dwfrm_billing_creditCardFields_cardNumber),
-                expiryMonth : req.form.dwfrm_billing_creditCardFields_expirationMonth,
-                expiryYear  : req.form.dwfrm_billing_creditCardFields_expirationYear,
-                cvv         : req.form.dwfrm_billing_creditCardFields_securityCode,
-                cardType    : req.form.cardType
-            };
             
             // Add order number to the session global object
             session.privacy.ckoOrderId = order.orderNo;
@@ -52,28 +42,51 @@ var paymentHelper = {
             var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
 
-            // Make the charge request
+            // Prepare the arguments
             var args = {
                 OrderNo: order.orderNo,
                 ProcessorId: paymentMethodId
             };
 
             // Handle the charge request
-            var chargeResponse = cardHelper.handleCardRequest(cardData, args);
-            
-            // Handle the 3ds redirection
-            if (session.privacy.redirectUrl) {
-                res.redirect(session.privacy.redirectUrl);
+            var cardData = null;
+            if (cardHelper.isSavedCardRequest(req)) {
+                var savedCard = cardHelper.getSavedCard(req, paymentMethodId);
+                if (savedCard) {    
+                    // Send the charge request
+                    var chargeResponse = cardHelper.handleSavedCardRequest(
+                        savedCard.getCreditCardToken(),
+                        req.form.selectedCardCvv,
+                        args
+                    );
+                }
+            }
+            else {
+                // Prepare the card data
+                var cardData = {
+                    owner       : req.form.dwfrm_billing_creditCardFields_cardOwner,
+                    cardNumber  : ckoHelper.getFormattedNumber(req.form.dwfrm_billing_creditCardFields_cardNumber),
+                    expiryMonth : req.form.dwfrm_billing_creditCardFields_expirationMonth,
+                    expiryYear  : req.form.dwfrm_billing_creditCardFields_expirationYear,
+                    cvv         : req.form.dwfrm_billing_creditCardFields_securityCode,
+                    cardType    : req.form.cardType
+                };
+
+                // Send the charge request
+                var chargeResponse = cardHelper.handleCardRequest(cardData, args);
             }
 
             // Check the response
+            if (session.privacy.redirectUrl) {
+                // Handle the 3ds redirection
+                res.redirect(session.privacy.redirectUrl);
+            }
             else if (ckoHelper.paymentSuccess(chargeResponse)) {
                 // Prepare the transaction
-                paymentInstrument.creditCardNumber = cardData.cardNumber;
-                paymentInstrument.creditCardExpirationMonth = cardData.expiryMonth;
-                paymentInstrument.creditCardExpirationYear = cardData.expiryYear;
-                paymentInstrument.creditCardType = cardData.cardType;
-                paymentInstrument.creditCardHolder = cardData.owner;
+                paymentInstrument.creditCardExpirationMonth = chargeResponse.source.expiry_month;
+                paymentInstrument.creditCardExpirationYear = chargeResponse.source.expiry_year;
+                paymentInstrument.creditCardType = chargeResponse.source.scheme;
+                paymentInstrument.creditCardHolder = chargeResponse.source.name;
 
                 // Create the authorization transaction
                 paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
@@ -86,7 +99,7 @@ var paymentHelper = {
                 paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
 
                 // Save the card
-                if (cardHelper.needsCardSaving(req)) {
+                if (cardData && cardHelper.needsCardSaving(req)) {
                     cardHelper.saveCardData(
                         req,
                         cardData,

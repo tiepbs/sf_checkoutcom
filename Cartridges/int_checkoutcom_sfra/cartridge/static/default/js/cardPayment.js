@@ -5,8 +5,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add expiration years
     setExpirationYears();
 
-    // Init card type detection
+    // Initialise the card type detection
     initCardTypeDetection();
+
+    // Initialise the saved selection
+    initSavedCardSelection();
+
+    // Disable saved cards on card form focus
+    initCardFormFocus();
 });
 
 // Sets the expiration years in the form
@@ -44,15 +50,53 @@ function initCardTypeDetection() {
     });
 }
 
+function initSavedCardSelection() {
+    // Set the card Id event
+    $('#cko-card-content .saved-payment-instrument').off('click touch').on('click touch', function (e) {
+        // Remove previous errors displayed
+        $(this).find('input.saved-payment-security-code').removeClass('is-invalid');
+        $(this).find('input.saved-payment-security-code').next('.invalid-feedback').css('display', 'none');
+
+        // Set the selected card
+        $('input[name="selectedCardId"]').val(
+            $(this).data('uuid')
+        );
+    });
+
+    // Set the card cvv event
+    $('#cko-card-content .saved-payment-instrument').on('change', function (e) {
+        var self = $(this);
+        $('input[name="selectedCardCvv"]').val(
+            self.find('input.saved-payment-security-code').val()
+        );
+    });
+
+    // Trigger selection of the fist card
+    $('#cko-card-content .saved-payment-instrument').first().trigger('click');
+}
+
+function initCardFormFocus() {
+    $('#cko-card-form input, #cko-card-form select').on('focus', function (e) {
+        // Disable the selected saved cards
+        $('#cko-card-content .saved-payment-instrument').removeClass('selected-payment');
+
+        // Empty the selected saved card field
+        $('#selectedCardId').val('');
+    });
+}
+
 function initCheckoutcomCardValidation() {
     $('#ckoSubmitPayment').off('click touch').on('click touch', function (e) {
-        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD') {
-            // Reset the error messages
-            $('.invalid-field-message').empty();
-            
-            // Prepare the errors array
-            var ckoFormErrors = [];
+        // Reset the error messages
+        $('.invalid-field-message').empty();
+        $('.invalid-feedback').hide();
+        $('input.saved-payment-security-code').removeClass('is-invalid');
 
+        // Prepare the errors array
+        var ckoFormErrors = [];
+
+        // Perform the fields validation
+        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && $('#selectedCardId').val() == '') {            
             // Card owner validation
             ckoFormErrors[0] = checkCardholder();
 
@@ -67,11 +111,15 @@ function initCheckoutcomCardValidation() {
 
             // Security code validation
             ckoFormErrors[4] = checkCardCvv();
+        }
+        else if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && $('#selectedCardId').val() != '') {
+            // Saved card CVV validation
+            ckoFormErrors[0] = checkSavedCardCvv();
+        }
 
-            // Invalidate the button click if errors found
-            if ($.inArray(1, ckoFormErrors) !== -1) {
-                e.preventDefault();
-            }
+        // Invalidate the button click if errors found
+        if ($.inArray(1, ckoFormErrors) !== -1) {
+            e.preventDefault();
         }
     });
 }
@@ -152,6 +200,23 @@ function checkCardCvv() {
         targetField.addClass('is-invalid');
         return 1;
     }
+
+    return 0;
+}
+
+function checkSavedCardCvv() {
+    $('body').bind('DOMNodeInserted', function() {
+        // Set the target field
+        var targetField = $('#cko-card-content .selected-payment')
+        .find('input.saved-payment-security-code');
+
+        // Check CVV length
+        if (targetField.val().length < 3 || targetField.val().length > 4) {
+            targetField.addClass('is-invalid');
+            targetField.closest('.saved-payment-instrument').find('.invalid-feedback').css('display', 'block');
+            return 1;
+        }
+    });
 
     return 0;
 }
