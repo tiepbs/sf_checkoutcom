@@ -61,6 +61,7 @@
 	<!-- Card CVN -->
 	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${help}"/>
 	
+	<!-- Save Card -->
 	<isif condition="${pdict.CurrentCustomer.authenticated}">
 		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.saveCard}" type="checkbox"/>
 	</isif>

@@ -7,6 +7,5 @@
 
 
 <div class="cko-apm-panel">
-  <p>Lorem ipsum...</p>
 	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.oxxo_identification}" id="oxxo_identification" type="text" />
 </div>
