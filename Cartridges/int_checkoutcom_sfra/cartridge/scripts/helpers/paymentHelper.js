@@ -50,7 +50,7 @@ var paymentHelper = {
 
             // Handle the charge request
             var cardData = null;
-            if (req.form.selectedCardId.length > 0 && parseInt(req.form.selectedCardCvv) > 0) {
+            if (cardHelper.isSavedCardRequest(req)) {
                 var savedCard = cardHelper.getSavedCard(req, paymentMethodId);
                 if (savedCard) {    
                     // Send the charge request

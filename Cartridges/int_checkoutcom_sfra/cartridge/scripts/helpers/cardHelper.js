@@ -252,6 +252,16 @@ var cardHelper = {
     },
     
     /*
+     * Check if a payment is made with a saved card
+     */
+    isSavedCardRequest: function (req) {
+        return req.form.hasOwnProperty('selectedCardId')
+        && req.form.hasOwnProperty('selectedCardCvv')
+        && req.form.selectedCardId.length > 0 
+        && parseInt(req.form.selectedCardCvv) > 0
+    },
+
+    /*
      * Build a gateway saved card request
      */
     getSavedCardRequest: function (sourceId, cvv, args) {

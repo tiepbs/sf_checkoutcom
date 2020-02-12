@@ -61,6 +61,9 @@ function initSavedCardSelection() {
         $('input[name="selectedCardId"]').val(
             $(this).data('uuid')
         );
+
+        // Trigger selecttion of the fist card
+        $('#cko-card-content .saved-payment-instrument').first().trigger('click');
     });
 
     // Set the card cvv event
