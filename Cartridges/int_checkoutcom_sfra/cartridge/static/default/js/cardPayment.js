@@ -5,8 +5,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add expiration years
     setExpirationYears();
 
-    // Init card type detection
+    // Initialise the card type detection
     initCardTypeDetection();
+
+    // Initialise the saved selection
+    initSavedCardSelection();
+
+    // Disable saved cards on card form focus
+    initCardFormFocus();
 });
 
 // Sets the expiration years in the form
@@ -44,12 +50,31 @@ function initCardTypeDetection() {
     });
 }
 
+function initSavedCardSelection() {
+    $('#cko-card-content .saved-payment-instrument').off('click touch').on('click touch', function (e) {
+        $('input[name="selectedCardId"]').val(
+            $(this).data('uuid')
+        );
+    });
+}
+
+function initCardFormFocus() {
+    $('#cko-card-form input, #cko-card-form select').on('focus', function (e) {
+        // Disable the selected saved cards
+        $('#cko-card-content .saved-payment-instrument').removeClass('selected-payment');
+
+        // Empty the selected saved card field
+        $('#selectedCardId').val('');
+    });
+}
+
 function initCheckoutcomCardValidation() {
     $('#ckoSubmitPayment').off('click touch').on('click touch', function (e) {
-        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD') {
-            // Reset the error messages
-            $('.invalid-field-message').empty();
-            
+        // Reset the error messages
+        $('.invalid-field-message').empty();
+
+        // Perform the fields validation
+        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && $('#selectedCardId').val() == '') {            
             // Prepare the errors array
             var ckoFormErrors = [];
 

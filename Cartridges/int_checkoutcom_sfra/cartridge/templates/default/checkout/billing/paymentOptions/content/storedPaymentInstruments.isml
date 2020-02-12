@@ -1,5 +1,5 @@
 <isloop items="${pdict.customer.customerPaymentInstruments}" var="paymentInstrument" status="loopSate">
-    <div class="row saved-payment-instrument ${loopSate.first ? 'selected-payment' : ''}" data-uuid="${paymentInstrument.UUID}">
+    <div class="row saved-payment-instrument" data-uuid="${paymentInstrument.UUID}" data-cardtype="${paymentInstrument.creditCardType}">
         <div class="form-group required saved-security-code col-6 col-md-3">
             <img class="card-image ${loopSate.first ? 'checkout-hidden' : ''}"
                  src="${paymentInstrument.cardTypeImage.src}"
@@ -38,13 +38,4 @@
     </div>
 </isloop>
 
-<div class="row">
-    <div class="col-12">
-        <div class="form-group">
-            <div class="selectedCardID-wrapper">
-                <input type="hidden" class="form-control selectedCardID" id="selectedCardID"
-                    value="" name="dwfrm_billing_creditCardFields_selectedCardID" >
-            </div>
-        </div>
-    </div>
-</div>
+<input type="hidden" id="selectedCardId" name="selectedCardId" value="">

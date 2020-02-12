@@ -2,6 +2,8 @@
 <form xmlns="http://www.demandware.com/xml/form/2008-04-19">
     <field formid="paymentMethod" type="string" mandatory="false"/>
 
+    <field formid="selectedCardId" type="string" mandatory="false" binding="selectedCardId"/>
+
     <field formid="cardType" label="profile.cardtype" type="string" mandatory="false" binding="cardType"
            max-length="16" missing-error="error.message.required"/>
            

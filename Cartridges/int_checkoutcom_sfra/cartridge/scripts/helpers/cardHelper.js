@@ -123,7 +123,7 @@ var cardHelper = {
         var wallet = customer.getProfile().getWallet();
 
         // Get the existing payment instruments
-        var paymentInstruments = wallet.getPaymentInstruments();
+        var paymentInstruments = wallet.getPaymentInstruments(paymentMethodId);
 
         // Check for duplicates
         var isDuplicateCard = false;
