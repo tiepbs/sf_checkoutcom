@@ -35,9 +35,14 @@ function prepareCustomerEmail() {
 }
 
 function initTooltips() {
-	$('#cko-card-content .icon').on('click touch', function() {
-		$('#cko-card-content .tooltip').toggle();
-	});
+	$('#cko-card-content .icon').on({
+		mouseover: function() {
+			$(this).next('.tooltip').show();
+		},
+		mouseout: function() {
+			$(this).next('.tooltip').hide();
+		}
+	})
 }
 
 function initButtons() {

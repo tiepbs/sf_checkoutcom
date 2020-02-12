@@ -44,7 +44,7 @@ var googlePayHelper = {
                 "billing_descriptor"    : ckoHelper.getBillingDescriptorObject(),
                 "shipping"              : ckoHelper.getShippingObject(args),
                 "payment_ip"            : ckoHelper.getHost(args),
-                "metadata"              : ckoHelper.getMetadataObject([], args)
+                "metadata"              : ckoHelper.getMetadataObject({}, args)
             };
 
             // Perform the request to the payment gateway
