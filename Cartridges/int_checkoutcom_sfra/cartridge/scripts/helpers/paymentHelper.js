@@ -49,13 +49,14 @@ var paymentHelper = {
             };
 
             // Handle the charge request
-            if (req.form.selectedCardId.length > 0) {
+            var cardData = null;
+            if (req.form.selectedCardId.length > 0 && parseInt(req.form.selectedCardCvv) > 0) {
                 var savedCard = cardHelper.getSavedCard(req, paymentMethodId);
                 if (savedCard) {    
                     // Send the charge request
                     var chargeResponse = cardHelper.handleSavedCardRequest(
                         savedCard.getCreditCardToken(),
-                        cvv,
+                        req.form.selectedCardCvv,
                         args
                     );
                 }
@@ -82,11 +83,10 @@ var paymentHelper = {
             }
             else if (ckoHelper.paymentSuccess(chargeResponse)) {
                 // Prepare the transaction
-                paymentInstrument.creditCardNumber = cardData.cardNumber;
-                paymentInstrument.creditCardExpirationMonth = cardData.expiryMonth;
-                paymentInstrument.creditCardExpirationYear = cardData.expiryYear;
-                paymentInstrument.creditCardType = cardData.cardType;
-                paymentInstrument.creditCardHolder = cardData.owner;
+                paymentInstrument.creditCardExpirationMonth = chargeResponse.source.expiry_month;
+                paymentInstrument.creditCardExpirationYear = chargeResponse.source.expiry_year;
+                paymentInstrument.creditCardType = chargeResponse.source.scheme;
+                paymentInstrument.creditCardHolder = chargeResponse.source.name;
 
                 // Create the authorization transaction
                 paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
@@ -99,7 +99,7 @@ var paymentHelper = {
                 paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
 
                 // Save the card
-                if (cardHelper.needsCardSaving(req)) {
+                if (cardData && cardHelper.needsCardSaving(req)) {
                     cardHelper.saveCardData(
                         req,
                         cardData,
