@@ -4,8 +4,8 @@
     assets.addJs('/js/googlepay.js');
     assets.addCss('/css/googlepay.css');
 
-    var buttonStyle = 'google-pay-button-' + dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayButton').value;
-    var ckoMode = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode').value; 
+    var buttonStyle = 'google-pay-button-' + dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayButton');
+    var ckoMode = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode'); 
 	var publicKey = 'cko' + ckoMode.charAt(0).toUpperCase() + ckoMode.slice(1) + 'PublicKey';
 	var gatewayMerchantId = dw.system.Site.getCurrent().getCustomPreferenceValue(publicKey);
     var orderAmount = pdict.order.totals.grandTotal.replace(/[^\d\.\,\s]+/g, '');
@@ -23,7 +23,7 @@
         <fieldset>
             <button id="ckoGooglePayButton" type="button" class="cko-google-pay-button ${buttonStyle}"></button>
             <div class="invalid-field-message"></div>
-            <input type="hidden" id="ckoGooglePayEnvironment" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnvironment').value)}">
+            <input type="hidden" id="ckoGooglePayEnvironment" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnvironment'))}">
             <input type="hidden" id="ckoGooglePayMerchantId" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayMerchantId'))}">
             <input type="hidden" id="ckoGooglePayCurrency" value="${session.getCurrency().getCurrencyCode()}">
             <input type="hidden" id="ckoGooglePayAmount" value="${orderAmount}">

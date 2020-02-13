@@ -21,15 +21,15 @@ var cardHelper = {
         
         // Create billing address object
         var gatewayRequest = this.getCardRequest(cardData, args);
-        
+
         // Pre authorize the card
         if (this.preAuthorizeCard(gatewayRequest)) {
             // Perform the request to the payment gateway
             var gatewayResponse = ckoHelper.gatewayClientRequest(
-                "cko.card.charge." + ckoHelper.getValue('ckoMode').value + ".service",
+                "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
                 gatewayRequest
             );
-        
+
             // Logging
             ckoHelper.doLog('response', gatewayResponse);
 
@@ -61,7 +61,7 @@ var cardHelper = {
         
         // Perform the request to the payment gateway
         var gatewayResponse = ckoHelper.gatewayClientRequest(
-            "cko.card.charge." + ckoHelper.getValue('ckoMode').value + ".service",
+            "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
             gatewayRequest
         );
     
@@ -122,7 +122,7 @@ var cardHelper = {
         
         // Send the request
         var authResponse = ckoHelper.gatewayClientRequest(
-            'cko.card.charge.' + ckoHelper.getValue('ckoMode').value + '.service',
+            'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
             authData
         );
         
