@@ -91,7 +91,6 @@ var eventsHelper = {
         var cardUuid = JSON.parse(hook.data.metadata.card_uuid);
         var customerId = JSON.parse(hook.data.metadata.customer_id);
         var processorID = hook.data.metadata.payment_processor;
-
         if (cardUuid && customerId) {
             // Load the saved card
             var savedCard = cardHelper.getSavedCard(
