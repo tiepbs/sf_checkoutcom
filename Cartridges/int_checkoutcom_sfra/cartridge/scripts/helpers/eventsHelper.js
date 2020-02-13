@@ -69,7 +69,6 @@ var eventsHelper = {
             // Create the transaction
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
-            paymentInstrument.paymentTransaction.setAmount(amount);
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
@@ -86,9 +85,6 @@ var eventsHelper = {
     paymentApproved: function (hook) {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
-
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('hook {0}', JSON.stringify(hook));
 
         // Handle card saving
         var cardUuid = JSON.parse(hook.data.metadata.card_uuid);
