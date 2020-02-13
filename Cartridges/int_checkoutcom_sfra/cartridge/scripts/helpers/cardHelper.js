@@ -142,10 +142,7 @@ var cardHelper = {
     /*
      * Save a card in customer account
      */
-    saveCardData: function (req, cardData, chargeResponse, paymentMethodId) {
-        // Begin the transaction
-        Transaction.begin();
-
+    saveCardData: function (req, cardData, paymentMethodId) {
         // Get the customer
         var customer = CustomerMgr.getCustomerByCustomerNumber(
             req.currentCustomer.profile.customerNo
@@ -169,17 +166,20 @@ var cardHelper = {
 
         // Create a stored payment instrument
         if (!isDuplicateCard) {
+            Transaction.begin();
             var storedPaymentInstrument = wallet.createPaymentInstrument(paymentMethodId);
             storedPaymentInstrument.setCreditCardHolder(cardData.owner);
             storedPaymentInstrument.setCreditCardNumber(cardData.cardNumber);
             storedPaymentInstrument.setCreditCardType(cardData.cardType);
             storedPaymentInstrument.setCreditCardExpirationMonth(parseInt(cardData.expiryMonth));
             storedPaymentInstrument.setCreditCardExpirationYear(parseInt(cardData.expiryYear));
-            storedPaymentInstrument.setCreditCardToken(chargeResponse.source.id);
+            Transaction.commit();
+
+            // Return the card uuid
+            return storedPaymentInstrument.getUUID();
         }
 
-        // Commit the transaction
-        Transaction.commit();
+        return false;
     },
 
     /*
@@ -201,11 +201,9 @@ var cardHelper = {
     /*
      * Get a customer saved card
      */
-    getSavedCard: function (req, paymentMethodId) {
+    getSavedCard: function (cardUuid, customerId, paymentMethodId) {
         // Get the customer
-        var customer = CustomerMgr.getCustomerByCustomerNumber(
-            req.currentCustomer.profile.customerNo
-        );
+        var customer = CustomerMgr.getCustomerByCustomerNumber(customerId);
 
         // Get the customer wallet
         var wallet = customer.getProfile().getWallet();
@@ -216,7 +214,7 @@ var cardHelper = {
         // Math the saved card
         for (var i = 0; i < paymentInstruments.length; i++) {
             var card = paymentInstruments[i];
-            if (card.getUUID() == req.form.selectedCardId) {
+            if (card.getUUID() == cardUuid) {
                 return card;
             }
         } 

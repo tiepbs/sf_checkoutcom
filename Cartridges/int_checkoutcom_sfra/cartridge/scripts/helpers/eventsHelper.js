@@ -8,6 +8,7 @@ var PaymentMgr = require('dw/order/PaymentMgr');
 
 /* Checkout.com Helper functions */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
+var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 
 /**
  * Gateway event functions for the Checkout.com cartridge integration.
@@ -83,7 +84,27 @@ var eventsHelper = {
      * Payment authorized event.
      */
     paymentApproved: function (hook) {
+        // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
+
+        // Handle card saving
+        var cardUuid = JSON.parse(hook.data.metadata.card_uuid);
+        var customerId = JSON.parse(hook.data.metadata.customer_id);
+        var processorID = hook.data.metadata.payment_processor;
+
+        if (cardUuid && customerId) {
+            // Load the saved card
+            var savedCard = cardHelper.getSavedCard(
+                cardUuid,
+                customerId,
+                processorID
+            );
+
+            // Add the card source
+            Transaction.begin();
+            savedCard.setCreditCardToken(hook.data.source.id);
+            Transaction.commit();
+        }
     },
 
     /**
