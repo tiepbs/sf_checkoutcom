@@ -23,7 +23,7 @@ var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig'
  */
 server.get('HandleReturn', server.middleware.https, function (req, res, next) {
     // Prepare some variables
-    var mode = ckoHelper.getValue('ckoMode').value;
+    var mode = ckoHelper.getValue('ckoMode');
 
     // Check if a session id is available
     if (req.querystring.hasOwnProperty('cko-session-id')) {

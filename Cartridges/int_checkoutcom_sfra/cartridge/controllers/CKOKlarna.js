@@ -43,7 +43,7 @@ server.get('KlarnaSession', server.middleware.https, function (req, res, next) {
         
         // Perform the request to the payment gateway
         var gSession = ckoHelper.gatewayClientRequest(
-            'cko.klarna.session.' + ckoHelper.getValue('ckoMode').value + '.service',
+            'cko.klarna.session.' + ckoHelper.getValue('ckoMode') + '.service',
             requestObject
         );
         

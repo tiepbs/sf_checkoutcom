@@ -45,13 +45,19 @@ var paymentHelper = {
             // Prepare the arguments
             var args = {
                 OrderNo: order.orderNo,
-                ProcessorId: paymentMethodId
+                ProcessorId: paymentMethodId,
+                CardUuid: false,
+                CustomerId: false
             };
 
             // Handle the charge request
             var cardData = null;
             if (cardHelper.isSavedCardRequest(req)) {
-                var savedCard = cardHelper.getSavedCard(req, paymentMethodId);
+                var savedCard = cardHelper.getSavedCard(
+                    req.form.selectedCardId,
+                    req.currentCustomer.profile.customerNo,
+                    paymentMethodId
+                );
                 if (savedCard) {    
                     // Send the charge request
                     var chargeResponse = cardHelper.handleSavedCardRequest(
@@ -71,6 +77,20 @@ var paymentHelper = {
                     cvv         : req.form.dwfrm_billing_creditCardFields_securityCode,
                     cardType    : req.form.cardType
                 };
+
+                // Save the card
+                if (cardHelper.needsCardSaving(req)) {
+                    // Save the card
+                    var cardUuid = cardHelper.saveCardData(
+                        req,
+                        cardData,
+                        paymentMethodId
+                    );
+
+                    // Add the card uuid and customer id to the metadata
+                    args.CardUuid = cardUuid;
+                    args.CustomerId = req.currentCustomer.profile.customerNo
+                }
 
                 // Send the charge request
                 var chargeResponse = cardHelper.handleCardRequest(cardData, args);
@@ -97,16 +117,6 @@ var paymentHelper = {
                 paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
                 paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
                 paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-
-                // Save the card
-                if (cardData && cardHelper.needsCardSaving(req)) {
-                    cardHelper.saveCardData(
-                        req,
-                        cardData,
-                        chargeResponse,
-                        paymentMethodId
-                    );
-                }
 
                 // Redirect to the confirmation page
                 self.getConfirmationPage(res, order);
