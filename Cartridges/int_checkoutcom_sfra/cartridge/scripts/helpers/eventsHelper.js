@@ -8,6 +8,7 @@ var PaymentMgr = require('dw/order/PaymentMgr');
 
 /* Checkout.com Helper functions */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
+var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 
 /**
  * Gateway event functions for the Checkout.com cartridge integration.
@@ -68,7 +69,6 @@ var eventsHelper = {
             // Create the transaction
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
-            paymentInstrument.paymentTransaction.setAmount(amount);
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
@@ -83,7 +83,26 @@ var eventsHelper = {
      * Payment authorized event.
      */
     paymentApproved: function (hook) {
+        // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
+
+        // Handle card saving
+        var cardUuid = hook.data.metadata.card_uuid;
+        var customerId = hook.data.metadata.customer_id;
+        var processorId = hook.data.metadata.payment_processor;
+        if (cardUuid != 'false' && customerId) {
+            // Load the saved card
+            var savedCard = cardHelper.getSavedCard(
+                cardUuid,
+                customerId,
+                processorId
+            );
+
+            // Add the card source
+            Transaction.begin();
+            savedCard.setCreditCardToken(hook.data.source.id);
+            Transaction.commit();
+        }
     },
 
     /**

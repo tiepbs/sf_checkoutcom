@@ -22,7 +22,7 @@ var ckoHelper = {
      * Get the required value for each mode
      */
     getAppModeValue: function (sandboxValue, liveValue) {
-        var appMode = this.getValue('ckoMode').value;
+        var appMode = this.getValue('ckoMode');
         if (appMode == 'sandbox') {
             return sandboxValue;
         } else {
@@ -57,8 +57,8 @@ var ckoHelper = {
     isValidResponse: function (req) {
         var requestKey = req.httpHeaders['authorization'];
         var privateSharedKey = this.getAccountKeys().privateSharedKey;
-        
-        return requestKey == privateSharedKey
+
+        return requestKey == privateSharedKey;
     },
     
     /*
@@ -114,11 +114,11 @@ var ckoHelper = {
      */
     getAccountKeys: function () {
         var keys = {};
-        var str = this.getValue('ckoMode').value == 'live' ? 'Live' : 'Sandbox';
+        var str = this.getValue('ckoMode') == 'live' ? 'Live' : 'Sandbox';
 
-        keys.publicKey = this.getValue('cko' + str + 'PublicKey').value;
-        keys.secretKey = this.getValue('cko' +  str + 'SecretKey').value;
-        keys.privateSharedKey = this.getValue('cko' +  str + 'PrivateSharedKey').value;
+        keys.publicKey = this.getValue('cko' + str + 'PublicKey');
+        keys.secretKey = this.getValue('cko' +  str + 'SecretKey');
+        keys.privateSharedKey = this.getValue('cko' +  str + 'PrivateSharedKey');
 
         return keys;
     },
@@ -205,7 +205,7 @@ var ckoHelper = {
      */
     getParentTransaction: function (paymentId, transactionType) {
         // Prepare the payload
-        var mode = this.getValue('ckoMode').value;
+        var mode = this.getValue('ckoMode');
         var ckoChargeData = {
             chargeId: paymentId
         }
@@ -758,18 +758,16 @@ var ckoHelper = {
     getMetadataObject: function (data, args) {
         // Prepare the base metadata
         var meta = {
-            integration_data    : this.getCartridgeMeta(),
-            platform_data       : this.getValue('ckoPlatformData')
+            integration_data: this.getCartridgeMeta(),
+            platform_data: this.getValue('ckoPlatformData'),
+            card_uuid: args.CardUuid,
+            customer_id: args.CustomerId
         }
 
         // Add the data info if needed
         if (data.hasOwnProperty('type')) {
             meta.udf1 = data.type;
         }
-
-        // Get the payment processor
-        //var paymentInstrument = args.PaymentInstrument;
-        //var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 
         // Add the payment processor to the metadata
         meta.payment_processor = args.ProcessorId;

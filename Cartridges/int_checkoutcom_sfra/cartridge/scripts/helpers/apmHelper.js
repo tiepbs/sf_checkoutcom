@@ -42,10 +42,10 @@ var apmHelper = {
             };
             
             // Perform the request to the payment gateway
-            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.sources." + ckoHelper.getValue('ckoMode').value + ".service", chargeData);
+            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.sources." + ckoHelper.getValue('ckoMode') + ".service", chargeData);
         } else {
             // Perform the request to the payment gateway
-            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode').value + ".service", gatewayRequest);
+            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
         }
 
         // Logging
@@ -151,7 +151,7 @@ var apmHelper = {
         var gatewayResponse = false;
         
         // Perform the request to the payment gateway
-        gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode').value + ".service", payObject);
+        gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", payObject);
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
