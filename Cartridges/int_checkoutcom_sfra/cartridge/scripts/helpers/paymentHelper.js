@@ -101,9 +101,7 @@ var paymentHelper = {
                 // Handle the 3ds redirection
                 res.redirect(session.privacy.redirectUrl);
             }
-            
-            // Handle the response
-            if (ckoHelper.paymentSuccess(chargeResponse)) {
+            else if (ckoHelper.paymentSuccess(chargeResponse)) {
                 // Prepare the transaction
                 paymentInstrument.creditCardExpirationMonth = chargeResponse.source.expiry_month;
                 paymentInstrument.creditCardExpirationYear = chargeResponse.source.expiry_year;
