@@ -209,7 +209,7 @@ var cardHelper = {
         var wallet = customer.getProfile().getWallet();
 
         // Get the existing payment instruments
-        var paymentInstruments = wallet.getPaymentInstruments(paymentMethodId);
+        var paymentInstruments = wallet.getPaymentInstruments();
 
         // Math the saved card
         for (var i = 0; i < paymentInstruments.length; i++) {

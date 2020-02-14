@@ -86,10 +86,6 @@ var eventsHelper = {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 
-
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('hook {0}', JSON.stringify(hook));
-
         // Handle card saving
         var cardUuid = hook.data.metadata.card_uuid;
         var customerId = hook.data.metadata.customer_id;
