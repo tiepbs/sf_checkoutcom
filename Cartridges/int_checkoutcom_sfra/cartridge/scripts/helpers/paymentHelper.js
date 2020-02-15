@@ -13,6 +13,7 @@ var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
 var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
+var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper');
 
 /* APM Configuration */
 var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
@@ -97,7 +98,7 @@ var paymentHelper = {
             }
             else if (ckoHelper.paymentSuccess(chargeResponse)) {
                 // Create the base transaction
-                var paymentInstrument = ckoHelper.createAuthorization(
+                var paymentInstrument = transactionHelper.createAuthorization(
                     paymentMethodId,
                     chargeResponse,
                     order
@@ -154,7 +155,7 @@ var paymentHelper = {
             // Check the response
             if (chargeResponse) {
                 // Create the base transaction
-                var paymentInstrument = ckoHelper.createAuthorization(
+                var paymentInstrument = transactionHelper.createAuthorization(
                     paymentMethodId,
                     chargeResponse,
                     order
@@ -205,7 +206,7 @@ var paymentHelper = {
             // Check the response
             if (chargeResponse) {
                 // Create the base transaction
-                var paymentInstrument = ckoHelper.createAuthorization(
+                var paymentInstrument = transactionHelper.createAuthorization(
                     paymentMethodId,
                     chargeResponse,
                     order
@@ -267,7 +268,7 @@ var paymentHelper = {
             // Check the response
             if (chargeResponse) {
                 // Create the base transaction
-                var paymentInstrument = ckoHelper.createAuthorization(
+                var paymentInstrument = transactionHelper.createAuthorization(
                     paymentMethodId,
                     chargeResponse,
                     order

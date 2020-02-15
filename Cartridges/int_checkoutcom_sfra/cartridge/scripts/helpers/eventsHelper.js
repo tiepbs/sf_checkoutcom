@@ -54,29 +54,8 @@ var eventsHelper = {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);
 
-        // Load the order
-        var order = OrderMgr.getOrder(hook.data.reference);
-
-        // Get the payment processor id
-        var paymentProcessorId = hook.data.metadata.payment_processor;
-
         // Create the captured transaction
-        Transaction.wrap(function () {
-            // Update the parent transaction state
-            var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Authorization');
-            parentTransaction.custom.ckoTransactionOpened = false;
-
-            // Create the transaction
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
-            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
-            paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
-            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-            paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
-            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Capture';
-            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CAPTURE);
-        });
+        ckoHelper.createCapture(hook);
     },
 
     /**
@@ -133,28 +112,8 @@ var eventsHelper = {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', 'ORDER_STATUS_CANCELLED');
 
-        // Load the order
-        var order = OrderMgr.getOrder(hook.data.reference);
-
-        // Get the payment processor id
-        var paymentProcessorId = hook.data.metadata.payment_processor;
- 
         // Create the refunded transaction
-        Transaction.wrap(function () {
-            // Update the parent transaction state
-            var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Capture');
-            parentTransaction.custom.ckoTransactionOpened = false;
-            
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
-            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
-            paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
-            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-            paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
-            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = false;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Refund';
-            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CREDIT);
-        });
+        ckoHelper.createRefund(hook);
     },
 
     /**
@@ -164,29 +123,8 @@ var eventsHelper = {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_CANCELLED');
 
-        // Load the order
-        var order = OrderMgr.getOrder(hook.data.reference);
-
-        // Get the payment processor id
-        var paymentProcessorId = hook.data.metadata.payment_processor;
-               
-        // Create the voided transaction
-        Transaction.wrap(function () {
-            // Update the parent transaction state
-            var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Authorization');
-            parentTransaction.custom.ckoTransactionOpened = false;
-            
-            // Create the transaction
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
-            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
-            paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
-            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-            paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
-            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = false;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Void';
-            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH_REVERSAL);
-        });
+        // Create the refunded transaction
+        ckoHelper.createVoid(hook);
     },
 
     /**
