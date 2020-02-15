@@ -174,7 +174,7 @@ var ckoHelper = {
     /*
      * Currency Conversion Ratio
      */
-    getCKOFormatedValue: function (currency) {
+    getCkoFormatedValue: function (currency) {
         if (ckoCurrencyConfig.x1.currencies.match(currency)) {
             return ckoCurrencyConfig.x1.multiple;
         } else if (ckoCurrencyConfig.x1000.currencies.match(currency)) {
@@ -188,7 +188,7 @@ var ckoHelper = {
      * Format price for cko gateway
      */
     getFormattedPrice: function (price, currency) {
-        var ckoFormateBy = this.getCKOFormatedValue(currency);
+        var ckoFormateBy = this.getCkoFormatedValue(currency);
         var orderTotalFormated = price * ckoFormateBy;
         
         return orderTotalFormated.toFixed();
