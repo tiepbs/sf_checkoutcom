@@ -10,6 +10,8 @@ var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var Money = require('dw/value/Money');
+var PaymentMgr = require('dw/order/PaymentMgr');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
@@ -90,6 +92,24 @@ var ckoHelper = {
         }
     },
     
+    createAuthorization: function (paymentMethodId, gatewayResponse, order) {
+        // Create a new payment instrument
+        var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
+        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
+
+        // Create the authorization transaction
+        paymentInstrument.paymentTransaction.setAmount(this.getOrderTransactionAmount(order));
+        paymentInstrument.paymentTransaction.transactionID = gatewayResponse.action_id;
+        paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+        paymentInstrument.paymentTransaction.custom.ckoPaymentId = gatewayResponse.id;
+        paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+        paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+        paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+
+        return paymentInstrument;
+    },
+
     /*
      * Return order id
      */

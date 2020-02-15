@@ -4,10 +4,8 @@
 var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
 var Transaction = require('dw/system/Transaction');
-var PaymentTransaction = require('dw/order/PaymentTransaction');
 var URLUtils = require('dw/web/URLUtils');
 var Resource = require('dw/web/Resource');
-var PaymentMgr = require('dw/order/PaymentMgr');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -37,10 +35,6 @@ var paymentHelper = {
             
             // Add order number to the session global object
             session.privacy.ckoOrderId = order.orderNo;
-
-            // Create a new payment instrument
-            var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
-            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
 
             // Prepare the arguments
             var args = {
@@ -102,21 +96,18 @@ var paymentHelper = {
                 res.redirect(session.privacy.redirectUrl);
             }
             else if (ckoHelper.paymentSuccess(chargeResponse)) {
+                // Create the base transaction
+                var paymentInstrument = ckoHelper.createAuthorization(
+                    paymentMethodId,
+                    chargeResponse,
+                    order
+                );
+
                 // Prepare the transaction
                 paymentInstrument.creditCardExpirationMonth = chargeResponse.source.expiry_month;
                 paymentInstrument.creditCardExpirationYear = chargeResponse.source.expiry_year;
                 paymentInstrument.creditCardType = chargeResponse.source.scheme;
                 paymentInstrument.creditCardHolder = chargeResponse.source.name;
-
-                // Create the authorization transaction
-                paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
-                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
 
                 // Redirect to the confirmation page
                 self.getConfirmationPage(res, order);
@@ -148,10 +139,6 @@ var paymentHelper = {
             // Add order number to the session global object
             session.privacy.ckoOrderId = order.orderNo;
 
-            // Create a new payment instrument
-            var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
-            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
-
             // Make the charge request
             var args = {
                 OrderNo: order.orderNo,
@@ -164,15 +151,12 @@ var paymentHelper = {
 
             // Check the response
             if (chargeResponse) {
-                // Create the authorization transaction
-                paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
-                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+                // Create the base transaction
+                var paymentInstrument = ckoHelper.createAuthorization(
+                    paymentMethodId,
+                    chargeResponse,
+                    order
+                );
 
                 // Redirect to the confirmation page
                 self.getConfirmationPage(res, order);
@@ -204,10 +188,6 @@ var paymentHelper = {
             // Add order number to the session global object
             session.privacy.ckoOrderId = order.orderNo;
 
-            // Create a new payment instrument
-            var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
-            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
-
             // Make the charge request
             var args = {
                 OrderNo: order.orderNo,
@@ -220,15 +200,12 @@ var paymentHelper = {
             
             // Check the response
             if (chargeResponse) {
-                // Create the authorization transaction
-                paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
-                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+                // Create the base transaction
+                var paymentInstrument = ckoHelper.createAuthorization(
+                    paymentMethodId,
+                    chargeResponse,
+                    order
+                );
 
                 // Redirect to the confirmation page
                 self.getConfirmationPage(res, order);
@@ -263,10 +240,6 @@ var paymentHelper = {
             // Get the APM type chosen
             var func = req.form.apm_list + 'PayAuthorization';
 
-            // Create a new payment instrument
-            var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
-            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
-
             // Make the charge request
             var args = {
                 OrderNo: order.orderNo,
@@ -287,15 +260,12 @@ var paymentHelper = {
 
             // Check the response
             if (chargeResponse) {
-                // Create the authorization transaction
-                paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
-                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+                // Create the base transaction
+                var paymentInstrument = ckoHelper.createAuthorization(
+                    paymentMethodId,
+                    chargeResponse,
+                    order
+                );
 
                 // Redirect to the confirmation page
                 res.redirect(session.privacy.redirectUrl);
