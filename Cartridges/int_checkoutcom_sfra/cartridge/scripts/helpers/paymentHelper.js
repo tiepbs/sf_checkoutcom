@@ -143,7 +143,9 @@ var paymentHelper = {
             var args = {
                 OrderNo: order.orderNo,
                 ProcessorId: paymentMethodId,
-                ckoGooglePayData: req.form.ckoGooglePayData
+                ckoGooglePayData: req.form.ckoGooglePayData,
+                CardUuid: false,
+                CustomerId: false
             };
 
             // Handle the charge request
@@ -192,7 +194,9 @@ var paymentHelper = {
             var args = {
                 OrderNo: order.orderNo,
                 ProcessorId: paymentMethodId,
-                ckoApplePayData: req.form.ckoApplePayData
+                ckoApplePayData: req.form.ckoApplePayData,
+                CardUuid: false,
+                CustomerId: false
             };
 
             // Handle the charge request
@@ -244,7 +248,9 @@ var paymentHelper = {
             var args = {
                 OrderNo: order.orderNo,
                 ProcessorId: paymentMethodId,
-                Form: req.form
+                Form: req.form,
+                CardUuid: false,
+                CustomerId: false
             };
 
             // Get the required apm pay config object
