@@ -18,7 +18,6 @@
         >
 
         <isset name="applePayForm" value="${pdict.forms.billingForm.applePayForm}" scope="page"/>
-
         <fieldset>
             <button id="ckoApplePayButton" type="button" class="apple-pay-button ${buttonStyle}"></button>
             <div class="invalid-field-message"></div>
@@ -29,7 +28,7 @@
             <input type="hidden" id="ckoApplePayCurrency" value="${session.getCurrency().getCurrencyCode()}">
             <input type="hidden" id="ckoApplePayAmount" value="${orderAmount}">
             <input type="hidden" id="ckoApplePaySiteName" value="${dw.system.Site.getCurrent().name}">
-            <input type="hidden" id="ckoApplePaySiteCountry" value="${dw.catalog.Store.countryCode}">
+            <input type="hidden" id="ckoApplePaySiteCountry" value="${ckoHelper.getSiteCountryCode()}">
             <input type="hidden" id="ckoApplePayValidationUrl" value="${URLUtils.https('Applepay-GetValidation')}">
             <input type="hidden" id="ckoApplePayData" name="ckoApplePayData" value="">
         </fieldset>

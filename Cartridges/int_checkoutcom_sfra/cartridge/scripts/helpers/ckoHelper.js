@@ -10,6 +10,7 @@ var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var Money = require('dw/value/Money');
+var Site = require('dw/system/Site');
 
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
@@ -66,6 +67,13 @@ var ckoHelper = {
      */
     getValue: function (field) {
         return dw.system.Site.getCurrent().getCustomPreferenceValue(field);
+    },
+
+    /*
+     * Get site country code from locale
+     */
+    getSiteCountryCode: function () {
+        return Site.getCurrent().defaultLocale.split('_')[1];
     },
     
     /*
