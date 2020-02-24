@@ -7,7 +7,7 @@ var Transaction = require('dw/system/Transaction');
 /* Checkout.com Helper functions */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
-var transactionHelper = require('~/cartridge/scripts/helpers/cardHelper');
+var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper');
 
 /**
  * Gateway event functions for the Checkout.com cartridge integration.
