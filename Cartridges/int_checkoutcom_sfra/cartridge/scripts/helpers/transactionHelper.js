@@ -3,6 +3,7 @@
 /* API Includes */
 var PaymentMgr = require('dw/order/PaymentMgr');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
+var OrderMgr = require('dw/order/OrderMgr');
 
 /**
  * Transaction helper.
