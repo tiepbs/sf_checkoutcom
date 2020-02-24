@@ -3,12 +3,11 @@
 /* API Includes */
 var OrderMgr = require('dw/order/OrderMgr');
 var Transaction = require('dw/system/Transaction');
-var PaymentTransaction = require('dw/order/PaymentTransaction');
-var PaymentMgr = require('dw/order/PaymentMgr');
 
 /* Checkout.com Helper functions */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
+var transactionHelper = require('~/cartridge/scripts/helpers/cardHelper');
 
 /**
  * Gateway event functions for the Checkout.com cartridge integration.
@@ -55,7 +54,7 @@ var eventsHelper = {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);
 
         // Create the captured transaction
-        ckoHelper.createCapture(hook);
+        transactionHelper.createCapture(hook);
     },
 
     /**
@@ -113,7 +112,7 @@ var eventsHelper = {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', 'ORDER_STATUS_CANCELLED');
 
         // Create the refunded transaction
-        ckoHelper.createRefund(hook);
+        transactionHelper.createRefund(hook);
     },
 
     /**
@@ -124,7 +123,7 @@ var eventsHelper = {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_CANCELLED');
 
         // Create the refunded transaction
-        ckoHelper.createVoid(hook);
+        transactionHelper.createVoid(hook);
     },
 
     /**
