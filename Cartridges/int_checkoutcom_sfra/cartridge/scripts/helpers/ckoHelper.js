@@ -241,16 +241,6 @@ var ckoHelper = {
     },
 
     /*
-     * Get transaction amount
-     */
-    getOrderTransactionAmount : function (order) {
-        return new Money(
-            order.totalGrossPrice.value.toFixed(2),
-            order.getCurrencyCode()
-        );
-    },
-
-    /*
      * Strip spaces form number
      */
     getFormattedNumber: function (num) {

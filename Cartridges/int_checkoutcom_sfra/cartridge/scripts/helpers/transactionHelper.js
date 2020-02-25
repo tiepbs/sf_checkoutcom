@@ -97,6 +97,16 @@ var transactionHelper = {
     },
 
     /*
+     * Get order transaction amount
+     */
+    getOrderTransactionAmount : function (order) {
+        return new Money(
+            order.totalGrossPrice.value.toFixed(2),
+            order.getCurrencyCode()
+        );
+    },
+
+    /*
      * Create a capture transaction
      */
     createCapture: function (hook) {
