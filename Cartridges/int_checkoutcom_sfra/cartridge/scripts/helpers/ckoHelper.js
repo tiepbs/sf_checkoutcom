@@ -662,16 +662,24 @@ var ckoHelper = {
      * Return capture time
      */
     getCaptureTime: function () {
+        // Get the current date/time in milliseconds
+        var now = Date.now();
+
+        // Get the capture time configured
         var captureOn = this.getValue('ckoAutoCaptureTime');
-        if (captureOn > 0) {
-            var t = new Date();
-            var m = parseInt(t.getMinutes()) + parseInt(captureOn);
-            t.setMinutes(m);
-            
-            return t;
+
+        // Convert the capture time from minutes to millisecons
+        var captureOnMs = parseInt(captureOn) * 60000;
+
+        // Define a minimum capture time (30s)in ms
+        var minTime = 0.5 * 60000;
+
+        // Convert the capture time to ISO 8601 format
+        if (captureOnMs > 0) {
+            return new Date(captureOnMs).toISOString();
         }
         
-        return null;
+        return new Date(minTime).toISOString();
     },
     
     /*
