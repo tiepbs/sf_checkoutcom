@@ -78,13 +78,16 @@ var transactionHelper = {
      * Create an authorization transaction
      */
     createAuthorization: function (paymentMethodId, gatewayResponse, order) {
+        // Assign this to self
+        var self = this;
+        
         // Create a new payment instrument
         var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
         var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
 
         // Create the authorization transaction
         Transaction.wrap(function () {
-            paymentInstrument.paymentTransaction.setAmount(this.getOrderTransactionAmount(order));
+            paymentInstrument.paymentTransaction.setAmount(self.getOrderTransactionAmount(order));
             paymentInstrument.paymentTransaction.transactionID = gatewayResponse.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.custom.ckoPaymentId = gatewayResponse.id;
