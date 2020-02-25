@@ -9,7 +9,6 @@ var BasketMgr = require('dw/order/BasketMgr');
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
-var Money = require('dw/value/Money');
 var Site = require('dw/system/Site');
 
 /* Card Currency Config */

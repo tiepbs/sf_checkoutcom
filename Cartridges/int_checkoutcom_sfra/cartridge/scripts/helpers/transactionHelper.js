@@ -6,6 +6,7 @@ var PaymentTransaction = require('dw/order/PaymentTransaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var Transaction = require('dw/system/Transaction');
+var Money = require('dw/value/Money');
 
 /**
  * Transaction helper.
