@@ -72,7 +72,6 @@ var CKOHelper = {
                         id: i,
                         order_no: item.orderNo,
                         transaction_id: paymentTransaction.transactionID,
-                        parent_transaction_id: paymentTransaction.custom.ckoParentTransactionId,
                         payment_id: paymentTransaction.custom.ckoPaymentId,
                         opened: paymentTransaction.custom.ckoTransactionOpened,
                         amount: paymentTransaction.amount.value,

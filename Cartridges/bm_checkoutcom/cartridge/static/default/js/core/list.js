@@ -91,7 +91,6 @@ function getTableStrings() {
                 'id': window.ckoLang.rowId,
                 'order_no': window.ckoLang.orderNo,
                 'transaction_id': window.ckoLang.transactionId,
-                'parent_transaction_id': window.ckoLang.parentTransactionId,
                 'payment_id': window.ckoLang.paymentId,
                 'amount': window.ckoLang.amount,
                 'currency': window.ckoLang.currency,
@@ -158,7 +157,6 @@ function getTableColumns()
         {title: 'Id', field: 'id', visible: false},
         {title: 'Order No', field: 'order_no', width: 120, formatter: 'html', headerFilter: 'input'},
         {title: 'Transaction id', field: 'transaction_id', headerFilter: 'input'},
-        {title: 'Parent tranaction id', field: 'parent_transaction_id', headerFilter: 'input'},
         {title: 'Payment id', field: 'payment_id', headerFilter: 'input'},
         {
             title: 'Amount',
