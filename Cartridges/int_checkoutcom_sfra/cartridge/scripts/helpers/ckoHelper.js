@@ -135,7 +135,6 @@ var ckoHelper = {
      */
     gatewayClientRequest: function (serviceId, requestData, method) {
         var method = method || 'POST';
-        var responseData = false;
         var serv = ServiceRegistry.get(serviceId);
         
         // Prepare the request URL and data
