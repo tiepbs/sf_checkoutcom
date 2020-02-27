@@ -150,15 +150,16 @@ var transactionHelper = {
 
         // Get the payment processor id
         var paymentProcessorId = hook.data.metadata.payment_processor;
- 
-        // Create the refunded transaction
-        Transaction.begin();
+
         // Update the parent transaction state
         var parentTransaction = this.getParentTransaction(hook.data.id, 'Capture');
         parentTransaction.custom.ckoTransactionOpened = false;
         
         var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
         var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
+
+        // Create the refunded transaction
+        Transaction.begin();
         paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
         paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
         paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
@@ -179,8 +180,6 @@ var transactionHelper = {
         // Get the payment processor id
         var paymentProcessorId = hook.data.metadata.payment_processor;
                
-        // Create the voided transaction
-        Transaction.begin();
         // Update the parent transaction state
         var parentTransaction = this.getParentTransaction(hook.data.id, 'Authorization');
         parentTransaction.custom.ckoTransactionOpened = false;
@@ -188,6 +187,9 @@ var transactionHelper = {
         // Create the transaction
         var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
         var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
+
+        // Create the voided transaction
+        Transaction.begin();
         paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
         paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
         paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;

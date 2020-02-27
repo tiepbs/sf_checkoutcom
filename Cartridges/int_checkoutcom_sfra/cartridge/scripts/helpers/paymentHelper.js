@@ -97,19 +97,6 @@ var paymentHelper = {
                 res.redirect(session.privacy.redirectUrl);
             }
             else if (ckoHelper.paymentSuccess(chargeResponse)) {
-                // Create the base transaction
-                var paymentInstrument = transactionHelper.createAuthorization(
-                    paymentMethodId,
-                    chargeResponse,
-                    order
-                );
-
-                // Prepare the transaction
-                paymentInstrument.creditCardExpirationMonth = chargeResponse.source.expiry_month;
-                paymentInstrument.creditCardExpirationYear = chargeResponse.source.expiry_year;
-                paymentInstrument.creditCardType = chargeResponse.source.scheme;
-                paymentInstrument.creditCardHolder = chargeResponse.source.name;
-
                 // Redirect to the confirmation page
                 self.getConfirmationPage(res, order);
             }
@@ -154,13 +141,6 @@ var paymentHelper = {
 
             // Check the response
             if (chargeResponse) {
-                // Create the base transaction
-                var paymentInstrument = transactionHelper.createAuthorization(
-                    paymentMethodId,
-                    chargeResponse,
-                    order
-                );
-
                 // Redirect to the confirmation page
                 self.getConfirmationPage(res, order);
             }
@@ -205,13 +185,6 @@ var paymentHelper = {
             
             // Check the response
             if (chargeResponse) {
-                // Create the base transaction
-                var paymentInstrument = transactionHelper.createAuthorization(
-                    paymentMethodId,
-                    chargeResponse,
-                    order
-                );
-
                 // Redirect to the confirmation page
                 self.getConfirmationPage(res, order);
             }
@@ -267,13 +240,6 @@ var paymentHelper = {
 
             // Check the response
             if (chargeResponse) {
-                // Create the base transaction
-                var paymentInstrument = transactionHelper.createAuthorization(
-                    paymentMethodId,
-                    chargeResponse,
-                    order
-                );
-
                 // Redirect to the confirmation page
                 res.redirect(session.privacy.redirectUrl);
             }
