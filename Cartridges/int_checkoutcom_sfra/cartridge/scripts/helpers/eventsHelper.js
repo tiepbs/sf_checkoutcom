@@ -61,11 +61,6 @@ var eventsHelper = {
      * Payment authorized event.
      */
     paymentApproved: function (hook) {
-
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('aaaaaaaa {0}', JSON.stringify(hook));
-     
-
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 
