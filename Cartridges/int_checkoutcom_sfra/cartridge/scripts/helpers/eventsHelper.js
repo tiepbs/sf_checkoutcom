@@ -61,6 +61,11 @@ var eventsHelper = {
      * Payment authorized event.
      */
     paymentApproved: function (hook) {
+
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('aaaaaaaa {0}', JSON.stringify(hook));
+     
+
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 
@@ -79,10 +84,12 @@ var eventsHelper = {
                 processorId
             );
 
-            // Add the card source
-            Transaction.begin();
-            savedCard.setCreditCardToken(hook.data.source.id);
-            Transaction.commit();
+            if (savedCard) {
+                // Add the card source
+                Transaction.wrap(function () {
+                    savedCard.setCreditCardToken(hook.data.source.id);
+                });
+            }
         }
     },
 

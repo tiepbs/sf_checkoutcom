@@ -48,30 +48,35 @@ var paymentHelper = {
             // Handle the charge request
             var cardData = null;
             if (cardHelper.isSavedCardRequest(req)) {
+                // Get the saved card
                 var savedCard = cardHelper.getSavedCard(
                     req.form.selectedCardId,
                     req.currentCustomer.profile.customerNo,
                     paymentMethodId
                 );
-                if (savedCard) {    
+
+                // Handle the saved card cases
+                if (savedCard) {
+                    if (cardHelper.cardHasSourceId(savedCard)) {    
+                        // Send the charge request
+                        var chargeResponse = cardHelper.handleSavedCardRequest(
+                            savedCard.getCreditCardToken(),
+                            req.form.selectedCardCvv,
+                            args
+                        );
+                    }
+                    else {
+                        // Prepare the card data
+                        var cardData = getCardDataFromSaved(savedCard, req);
+                    }
+
                     // Send the charge request
-                    var chargeResponse = cardHelper.handleSavedCardRequest(
-                        savedCard.getCreditCardToken(),
-                        req.form.selectedCardCvv,
-                        args
-                    );
+                    var chargeResponse = cardHelper.handleCardRequest(cardData, args);
                 }
             }
             else {
                 // Prepare the card data
-                var cardData = {
-                    owner       : req.form.dwfrm_billing_creditCardFields_cardOwner,
-                    cardNumber  : ckoHelper.getFormattedNumber(req.form.dwfrm_billing_creditCardFields_cardNumber),
-                    expiryMonth : req.form.dwfrm_billing_creditCardFields_expirationMonth,
-                    expiryYear  : req.form.dwfrm_billing_creditCardFields_expirationYear,
-                    cvv         : req.form.dwfrm_billing_creditCardFields_securityCode,
-                    cardType    : req.form.cardType
-                };
+                var cardData = getCardDataFromRequest(req);
 
                 // Save the card
                 if (cardHelper.needsCardSaving(req)) {
