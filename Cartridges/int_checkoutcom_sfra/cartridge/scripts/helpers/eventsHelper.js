@@ -64,6 +64,9 @@ var eventsHelper = {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 
+        // Create the authorized transaction
+        transactionHelper.createAuthorization(hook);
+
         // Handle card saving
         var cardUuid = hook.data.metadata.card_uuid;
         var customerId = hook.data.metadata.customer_id;

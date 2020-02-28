@@ -7,6 +7,9 @@ var OrderMgr = require('dw/order/OrderMgr');
 var Transaction = require('dw/system/Transaction');
 var Money = require('dw/value/Money');
 
+/* Utility */
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
+
 /**
  * Transaction helper.
  */
@@ -22,22 +25,37 @@ var transactionHelper = {
     },
 
     /*
+     * Get webhook transaction amount
+     */
+    getHookTransactionAmount : function (hook) {
+        var divider = ckoHelper.getCkoFormatedValue(hook.data.currency);
+        var amount = parseInt(hook.data.amount) / divider;
+        return new Money(
+            amount,
+            hook.data.currency
+        );
+    },
+
+    /*
      * Create an authorization transaction
      */
-    createAuthorization: function (paymentMethodId, gatewayResponse, order) {
+    createAuthorization: function (hook) {
+        // Get the transaction amount
+        var transactionAmount = this.getHookTransactionAmount(hook);
+
         // Load the order
         var order = OrderMgr.getOrder(hook.data.reference);
 
         // Get the payment processor id
         var paymentProcessorId = hook.data.metadata.payment_processor;
         
-        // Create the payment instrument and processor
         Transaction.wrap(function () {
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            // Create the payment instrument and processor
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
 
             // Create the authorization transaction
-            paymentInstrument.paymentTransaction.setAmount(self.getOrderTransactionAmount(order));
+            paymentInstrument.paymentTransaction.setAmount(transactionAmount);
             paymentInstrument.paymentTransaction.transactionID = gatewayResponse.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.custom.ckoPaymentId = gatewayResponse.id;
@@ -51,6 +69,9 @@ var transactionHelper = {
      * Create a capture transaction
      */
     createCapture: function (hook) {
+        // Get the transaction amount
+        var transactionAmount = this.getHookTransactionAmount(hook);
+
         // Load the order
         var order = OrderMgr.getOrder(hook.data.reference);
 
@@ -59,10 +80,11 @@ var transactionHelper = {
 
         Transaction.wrap(function () {
             // Create the payment instrument and processor
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
 
             // Create the transaction
+            paymentInstrument.paymentTransaction.setAmount(transactionAmount);
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
@@ -76,6 +98,9 @@ var transactionHelper = {
      * Create a refund transaction
      */
     createRefund: function (hook) {
+        // Get the transaction amount
+        var transactionAmount = this.getHookTransactionAmount(hook);
+
         // Load the order
         var order = OrderMgr.getOrder(hook.data.reference);
 
@@ -84,10 +109,11 @@ var transactionHelper = {
         
         Transaction.wrap(function () {
             // Create the payment instrument and processor
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
 
             // Create the refunded transaction
+            paymentInstrument.paymentTransaction.setAmount(transactionAmount);
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
@@ -101,6 +127,9 @@ var transactionHelper = {
      * Create a void transaction
      */
     createVoid: function (hook) {
+        // Get the transaction amount
+        var transactionAmount = this.getHookTransactionAmount(hook);
+
         // Load the order
         var order = OrderMgr.getOrder(hook.data.reference);
 
@@ -109,10 +138,11 @@ var transactionHelper = {
                
         Transaction.wrap(function () {
             // Create the payment instrument and processor
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
 
             // Create the voided transaction
+            paymentInstrument.paymentTransaction.setAmount(transactionAmount);
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
