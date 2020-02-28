@@ -6,12 +6,12 @@
 var ckoCurrencyConfig = {
     x1: {
         currencies  : 'BIF DJF GNF ISK KMF XAF CLF XPF JPY PYG RWF KRW VUV VND XOF',
-        multiple    : '1'
+        multiple    : 1
     },
         
     x1000: {
         currencies  : 'BHD LYD JOD KWD OMR TND',
-        multiple    : '1000'
+        multiple    : 1000
     }
 }
 
