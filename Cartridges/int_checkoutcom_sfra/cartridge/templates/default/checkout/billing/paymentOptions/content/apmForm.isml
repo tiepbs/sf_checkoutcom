@@ -1,7 +1,9 @@
 <!-- APMs -->
-<style>
-	@import url("${URLUtils.staticURL('/css/apm.css')}");
-</style>
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/apm.js');
+    assets.addCss('/css/apm.css');
+</isscript>
 
 <div class="tab-pane" id="cko-apm-content" role="tabpanel">
     <fieldset class="payment-form-fields">
