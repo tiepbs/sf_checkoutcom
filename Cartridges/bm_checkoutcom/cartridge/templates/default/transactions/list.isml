@@ -54,7 +54,6 @@
 		rowId: dw.web.Resource.msg('cko.row.id', 'cko', null),
 		orderNo: dw.web.Resource.msg('cko.row.id', 'cko', null),
 		transactionId: dw.web.Resource.msg('cko.row.id', 'cko', null),
-		parentTransactionId: dw.web.Resource.msg('cko.transaction.parentid', 'cko', null),
 		paymentId: dw.web.Resource.msg('cko.payment.id', 'cko', null),
 		amount: dw.web.Resource.msg('cko.transaction.amount', 'cko', null),
 		currency: dw.web.Resource.msg('cko.transaction.currency', 'cko', null),
