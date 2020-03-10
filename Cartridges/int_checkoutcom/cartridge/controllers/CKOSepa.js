@@ -27,20 +27,20 @@ function mandate()
             // Prepare the view parameters
             creditAmount: order.totalGrossPrice.value.toFixed(2),
             formatedAmount: ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
-            debtor: order.defaultShipment.shippingAddress.firstName + " " + order.defaultShipment.shippingAddress.lastName,
+            debtor: order.billingAddress.fullName,
             debtorAddress1: order.billingAddress.address1,
             debtorAddress2: order.billingAddress.address2,
             debtorCity: order.billingAddress.city,
             debtorPostCode: order.billingAddress.postalCode,
             debtorStateCode: order.billingAddress.stateCode,
-            debtorCountryCode: order.billingAddress.countryCode,
+            debtorCountryCode: order.billingAddress.countryCode.toString().toLocaleUpperCase(),
             
             // Prepare the creditor information
-            creditor: ckoHelper.getValue('ckoBusinessName'),
-            creditorAddress1: ckoHelper.getValue('ckoBusinessAddressLine1'),
-            creditorAddress2: ckoHelper.getValue('ckoBusinessAddressLine2'),
-            creditorCity: ckoHelper.getValue('ckoBusinessCity'),
-            creditorCountry: ckoHelper.getValue('ckoBusinessCountry'),
+            creditor: ckoHelper.upperCaseFirst(ckoHelper.getValue('ckoBusinessName')),
+            creditorAddress1: ckoHelper.upperCaseFirst(ckoHelper.getValue('ckoBusinessAddressLine1')),
+            creditorAddress2: ckoHelper.upperCaseFirst(ckoHelper.getValue('ckoBusinessAddressLine2')),
+            creditorCity: ckoHelper.upperCaseFirst(ckoHelper.getValue('ckoBusinessCity')),
+            creditorCountry: ckoHelper.upperCaseFirst(ckoHelper.getValue('ckoBusinessCountry')),
             ContinueURL: URLUtils.https('CKOSepa-HandleMandate')
         }).render('sepaForm');
     } else {
@@ -51,8 +51,7 @@ function mandate()
 
 function handleMandate()
 {
-    // Set session redirect url to null
-    session.privacy.redirectUrl = null;
+	
     var orderId = ckoHelper.getOrderId();
     
     app.getForm('sepaForm').handleAction({
@@ -70,12 +69,15 @@ function handleMandate()
         },
         submit: function () {
             var sepa = app.getForm('sepaForm');
-            var mandate = sepa.get('mandate').value();
+            var mandateValue = sepa.get('mandate').value();
             
             // If mandate is true
-            if (mandate) {
+            if (mandateValue) {
                 // Clear form
                 app.getForm('sepaForm').clear();
+                
+                // Set session redirect url to null
+                session.privacy.redirectUrl = null;
                 
                 // Get the response object from session
                 var responseObjectId = session.privacy.sepaResponseId;
@@ -114,7 +116,8 @@ function handleMandate()
                     ISML.renderTemplate('custom/common/response/failed.isml');
                 }
             } else {
-                app.getView().render('sepaForm');
+                //load the mandate form 
+            	mandate();
             }
         }
     });

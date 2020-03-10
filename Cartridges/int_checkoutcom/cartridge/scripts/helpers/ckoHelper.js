@@ -70,6 +70,15 @@ var ckoHelper = {
     },
     
     /*
+     * Change Fist Letter of a string to UpperCase
+     */
+    upperCaseFirst: function(data){
+    	var upperChar = data.charAt(0).toUpperCase();
+    	return data.replace(data.charAt(0), upperChar);
+    	
+    },
+    
+    /*
      * Handles string translation with language resource files.
      */
     _: function (strValue, strFile) {
@@ -318,8 +327,10 @@ var ckoHelper = {
     		
     	}else if(gatewayResponse.hasOwnProperty('source')){
     		
-    		return gatewayResponse.source.type == 'sofort';
+    		return gatewayResponse.source.type == 'sofort' || 'bancontact';
     		
+    	}else if(gatewayResponse.hasOwnProperty('reference')){
+    		return gatewayResponse.reference == this.getOrderId();
     	}
     	
     	return false;
@@ -746,16 +757,18 @@ var ckoHelper = {
      * Return capture time
      */
     getCaptureTime: function () {
-        var captureOn = this.getValue('ckoAutoCaptureTime');
-        if (captureOn > 0) {
-            var t = new Date();
-            var m = parseInt(t.getMinutes()) + parseInt(captureOn);
-            t.setMinutes(m);
-            
-            return t;
-        }
-        
-        return null;
+        // Get the current date/time in milliseconds
+        var now = Date.now();
+
+        // Get the capture time configured, or min time 0.5 minute if 0
+        var configCaptureTime = parseInt(this.getValue('ckoAutoCaptureTime'));
+        var captureOnMin =  configCaptureTime > 0 ? configCaptureTime : 0.5;
+
+        // Convert the capture time from minutes to milliseconds
+        var captureOnMs = now + parseInt(captureOnMin) * 60000;
+
+        // Convert the capture time to ISO 8601 format
+        return new Date(captureOnMs).toISOString();
     },
     
     /*

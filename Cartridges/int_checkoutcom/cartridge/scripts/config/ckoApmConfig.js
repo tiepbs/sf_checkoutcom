@@ -222,7 +222,8 @@ var ckoApmConfig = {
             'source_data'   : {
                 'first_name'            : ckoHelper.getCustomerFirstName(args),
                 'last_name'             : ckoHelper.getCustomerLastName(args),
-                'account_iban'          : paymentForm.get('sepa_iban').value() + paymentForm.get('sepa_bic').value(),
+                'account_iban'          : paymentForm.get('sepa_iban').value(),
+                'account_bic'			: paymentForm.get('sepa_bic').value(),
                 'billing_descriptor'    : businessName,
                 'mandate_type'          : 'single'
             }
