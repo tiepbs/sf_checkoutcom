@@ -9,7 +9,7 @@ var BasketMgr = require('dw/order/BasketMgr');
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
-var Money = require('dw/value/Money');
+var Site = require('dw/system/Site');
 
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
@@ -67,6 +67,13 @@ var ckoHelper = {
     getValue: function (field) {
         return dw.system.Site.getCurrent().getCustomPreferenceValue(field);
     },
+
+    /*
+     * Get site country code from locale
+     */
+    getSiteCountryCode: function () {
+        return Site.getCurrent().defaultLocale.split('_')[1];
+    },
     
     /*
      * Handles string translation with language resource files.
@@ -89,7 +96,7 @@ var ckoHelper = {
             }
         }
     },
-    
+
     /*
      * Return order id
      */
@@ -128,7 +135,6 @@ var ckoHelper = {
      */
     gatewayClientRequest: function (serviceId, requestData, method) {
         var method = method || 'POST';
-        var responseData = false;
         var serv = ServiceRegistry.get(serviceId);
         
         // Prepare the request URL and data
@@ -144,17 +150,13 @@ var ckoHelper = {
         // Call the service
         var resp = serv.call(requestData);
 
-        if (resp.status == 'OK') {
-            responseData = resp.object
-        }
-        
-        return responseData;
+        return resp.object;
     },
     
     /*
      * Currency Conversion Ratio
      */
-    getCKOFormatedValue: function (currency) {
+    getCkoFormatedValue: function (currency) {
         if (ckoCurrencyConfig.x1.currencies.match(currency)) {
             return ckoCurrencyConfig.x1.multiple;
         } else if (ckoCurrencyConfig.x1000.currencies.match(currency)) {
@@ -168,7 +170,7 @@ var ckoHelper = {
      * Format price for cko gateway
      */
     getFormattedPrice: function (price, currency) {
-        var ckoFormateBy = this.getCKOFormatedValue(currency);
+        var ckoFormateBy = this.getCkoFormatedValue(currency);
         var orderTotalFormated = price * ckoFormateBy;
         
         return orderTotalFormated.toFixed();
@@ -200,38 +202,6 @@ var ckoHelper = {
         return data;
     },
 
-    /*
-     * Get a parent transaction from a payment id
-     */
-    getParentTransaction: function (paymentId, transactionType) {
-        // Prepare the payload
-        var mode = this.getValue('ckoMode');
-        var ckoChargeData = {
-            chargeId: paymentId
-        }
-
-        // Get the payment actions
-        var paymentActions = this.gatewayClientRequest(
-            'cko.payment.actions.' + mode + '.service',
-            ckoChargeData,
-            'GET'
-        );
-
-        // Convert the list to array
-        if (paymentActions) {
-            var paymentActionsArray = paymentActions.toArray();
-
-            // Return the requested transaction
-            for (var i = 0; i < paymentActionsArray.length; i++) {
-                if (paymentActionsArray[i].type == transactionType) {
-                    return this.loadTransaction(paymentActionsArray[i].id);
-                }
-            }
-        }
-        
-        return null;
-    },
-
     /**
      * Checks if an object already exists in an array.
      */
@@ -253,36 +223,6 @@ var ckoHelper = {
         return item.length > 0 && item.indexOf('CHECKOUTCOM_') >= 0;
     },
 
-    /**
-     * Load a Checkout.com transaction by Id.
-     */
-    loadTransaction: function (transactionId) {
-        // Query the orders
-        var result  = this.getOrders();
-
-        // Loop through the results
-        for each(var item in result) {
-            // Get the payment instruments
-            var paymentInstruments = item.getPaymentInstruments();
-            
-            // Loop through the payment instruments
-            for each(var instrument in paymentInstruments) {
-                // Get the payment transaction
-                var paymentTransaction = instrument.getPaymentTransaction();
-
-                // Prepare the filter condition
-                var isIdMatch = paymentTransaction.transactionID == transactionId;
-
-                // Add the payment transaction to the output
-                if (isIdMatch) {
-                    return paymentTransaction;
-                }
-            }
-        }
-        
-        return null;
-    },
-
     /*
      * Get order currency
      */
@@ -292,16 +232,6 @@ var ckoHelper = {
         var currency = order.getCurrencyCode();
         
         return currency;
-    },
-
-    /*
-     * Get transaction amount
-     */
-    getOrderTransactionAmount : function (order) {
-        return new Money(
-            order.totalGrossPrice.value.toFixed(2),
-            order.getCurrencyCode()
-        );
     },
 
     /*
@@ -727,16 +657,18 @@ var ckoHelper = {
      * Return capture time
      */
     getCaptureTime: function () {
-        var captureOn = this.getValue('ckoAutoCaptureTime');
-        if (captureOn > 0) {
-            var t = new Date();
-            var m = parseInt(t.getMinutes()) + parseInt(captureOn);
-            t.setMinutes(m);
-            
-            return t;
-        }
-        
-        return null;
+        // Get the current date/time in milliseconds
+        var now = Date.now();
+
+        // Get the capture time configured, or min time 0.5 minute if 0
+        var configCaptureTime = parseInt(this.getValue('ckoAutoCaptureTime'));
+        var captureOnMin =  configCaptureTime > 0 ? configCaptureTime : 0.5;
+
+        // Convert the capture time from minutes to milliseconds
+        var captureOnMs = now + parseInt(captureOnMin) * 60000;
+
+        // Convert the capture time to ISO 8601 format
+        return new Date(captureOnMs).toISOString();
     },
     
     /*

@@ -4,10 +4,8 @@
 var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
 var Transaction = require('dw/system/Transaction');
-var PaymentTransaction = require('dw/order/PaymentTransaction');
 var URLUtils = require('dw/web/URLUtils');
 var Resource = require('dw/web/Resource');
-var PaymentMgr = require('dw/order/PaymentMgr');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -15,6 +13,7 @@ var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
 var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
+var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper');
 
 /* APM Configuration */
 var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
@@ -38,10 +37,6 @@ var paymentHelper = {
             // Add order number to the session global object
             session.privacy.ckoOrderId = order.orderNo;
 
-            // Create a new payment instrument
-            var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
-            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
-
             // Prepare the arguments
             var args = {
                 OrderNo: order.orderNo,
@@ -53,30 +48,35 @@ var paymentHelper = {
             // Handle the charge request
             var cardData = null;
             if (cardHelper.isSavedCardRequest(req)) {
+                // Get the saved card
                 var savedCard = cardHelper.getSavedCard(
                     req.form.selectedCardId,
                     req.currentCustomer.profile.customerNo,
                     paymentMethodId
                 );
-                if (savedCard) {    
+
+                // Handle the saved card cases
+                if (savedCard) {
+                    if (cardHelper.cardHasSourceId(savedCard)) {    
+                        // Send the charge request
+                        var chargeResponse = cardHelper.handleSavedCardRequest(
+                            savedCard.getCreditCardToken(),
+                            req.form.selectedCardCvv,
+                            args
+                        );
+                    }
+                    else {
+                        // Prepare the card data
+                        var cardData = getCardDataFromSaved(savedCard, req);
+                    }
+
                     // Send the charge request
-                    var chargeResponse = cardHelper.handleSavedCardRequest(
-                        savedCard.getCreditCardToken(),
-                        req.form.selectedCardCvv,
-                        args
-                    );
+                    var chargeResponse = cardHelper.handleCardRequest(cardData, args);
                 }
             }
             else {
                 // Prepare the card data
-                var cardData = {
-                    owner       : req.form.dwfrm_billing_creditCardFields_cardOwner,
-                    cardNumber  : ckoHelper.getFormattedNumber(req.form.dwfrm_billing_creditCardFields_cardNumber),
-                    expiryMonth : req.form.dwfrm_billing_creditCardFields_expirationMonth,
-                    expiryYear  : req.form.dwfrm_billing_creditCardFields_expirationYear,
-                    cvv         : req.form.dwfrm_billing_creditCardFields_securityCode,
-                    cardType    : req.form.cardType
-                };
+                var cardData = getCardDataFromRequest(req);
 
                 // Save the card
                 if (cardHelper.needsCardSaving(req)) {
@@ -102,22 +102,6 @@ var paymentHelper = {
                 res.redirect(session.privacy.redirectUrl);
             }
             else if (ckoHelper.paymentSuccess(chargeResponse)) {
-                // Prepare the transaction
-                paymentInstrument.creditCardExpirationMonth = chargeResponse.source.expiry_month;
-                paymentInstrument.creditCardExpirationYear = chargeResponse.source.expiry_year;
-                paymentInstrument.creditCardType = chargeResponse.source.scheme;
-                paymentInstrument.creditCardHolder = chargeResponse.source.name;
-
-                // Create the authorization transaction
-                paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
-                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-
                 // Redirect to the confirmation page
                 self.getConfirmationPage(res, order);
             }
@@ -148,15 +132,13 @@ var paymentHelper = {
             // Add order number to the session global object
             session.privacy.ckoOrderId = order.orderNo;
 
-            // Create a new payment instrument
-            var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
-            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
-
             // Make the charge request
             var args = {
                 OrderNo: order.orderNo,
                 ProcessorId: paymentMethodId,
-                ckoGooglePayData: req.form.ckoGooglePayData
+                ckoGooglePayData: req.form.ckoGooglePayData,
+                CardUuid: false,
+                CustomerId: false
             };
 
             // Handle the charge request
@@ -164,16 +146,6 @@ var paymentHelper = {
 
             // Check the response
             if (chargeResponse) {
-                // Create the authorization transaction
-                paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
-                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-
                 // Redirect to the confirmation page
                 self.getConfirmationPage(res, order);
             }
@@ -204,15 +176,13 @@ var paymentHelper = {
             // Add order number to the session global object
             session.privacy.ckoOrderId = order.orderNo;
 
-            // Create a new payment instrument
-            var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
-            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
-
             // Make the charge request
             var args = {
                 OrderNo: order.orderNo,
                 ProcessorId: paymentMethodId,
-                ckoApplePayData: req.form.ckoApplePayData
+                ckoApplePayData: req.form.ckoApplePayData,
+                CardUuid: false,
+                CustomerId: false
             };
 
             // Handle the charge request
@@ -220,16 +190,6 @@ var paymentHelper = {
             
             // Check the response
             if (chargeResponse) {
-                // Create the authorization transaction
-                paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
-                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-
                 // Redirect to the confirmation page
                 self.getConfirmationPage(res, order);
             }
@@ -263,15 +223,13 @@ var paymentHelper = {
             // Get the APM type chosen
             var func = req.form.apm_list + 'PayAuthorization';
 
-            // Create a new payment instrument
-            var paymentInstrument = order.createPaymentInstrument(paymentMethodId, order.totalGrossPrice);
-            var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
-
             // Make the charge request
             var args = {
                 OrderNo: order.orderNo,
                 ProcessorId: paymentMethodId,
-                Form: req.form
+                Form: req.form,
+                CardUuid: false,
+                CustomerId: false
             };
 
             // Get the required apm pay config object
@@ -287,16 +245,6 @@ var paymentHelper = {
 
             // Check the response
             if (chargeResponse) {
-                // Create the authorization transaction
-                paymentInstrument.paymentTransaction.setAmount(ckoHelper.getOrderTransactionAmount(order));
-                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-
                 // Redirect to the confirmation page
                 res.redirect(session.privacy.redirectUrl);
             }
