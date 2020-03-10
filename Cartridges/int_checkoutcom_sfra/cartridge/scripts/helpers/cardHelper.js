@@ -140,6 +140,42 @@ var cardHelper = {
     },
 
     /*
+     * Check if a card has a source id
+     */
+    cardHasSourceId: function (card) {
+        var sourceId = card.getCreditCardToken();
+        return sourceId && sourceId.length > 0;
+    },
+
+    /*
+     * Get payment card data from request
+     */
+    getCardDataFromRequest: function (req) {
+        return {
+            owner       : req.form.dwfrm_billing_creditCardFields_cardOwner,
+            cardNumber  : ckoHelper.getFormattedNumber(req.form.dwfrm_billing_creditCardFields_cardNumber),
+            expiryMonth : req.form.dwfrm_billing_creditCardFields_expirationMonth,
+            expiryYear  : req.form.dwfrm_billing_creditCardFields_expirationYear,
+            cvv         : req.form.dwfrm_billing_creditCardFields_securityCode,
+            cardType    : req.form.cardType
+        };
+    },
+
+    /*
+     * Get payment card data from saved card
+     */
+    getCardDataFromSaved: function (card, req) {
+        return {
+            owner       : card.getCreditCardHolder(),
+            cardNumber  : card.getCreditCardNumber(),
+            expiryMonth : card.getCreditCardExpirationMonth(),
+            expiryYear  : card.getCreditCardExpirationYear(),
+            cvv         : req.form.selectedCardCvv,
+            cardType    : card.getCreditCardType()
+        };
+    },
+
+    /*
      * Save a card in customer account
      */
     saveCardData: function (req, cardData, paymentMethodId) {
