@@ -23,12 +23,14 @@ function setExpirationYears() {
 
     // Add the select list options
     for (var i = 0; i < 10; i++) {
+        /*
         $('#expirationYear').append(
             new Option(
                 currentYear + i,
                 currentYear + i
             )
         );
+        */
     }
 }
 

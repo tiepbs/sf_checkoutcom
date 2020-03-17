@@ -76,7 +76,7 @@ var paymentHelper = {
             }
             else {
                 // Prepare the card data
-                var cardData = getCardDataFromRequest(req);
+                var cardData = cardHelper.getCardDataFromRequest(req);
 
                 // Save the card
                 if (cardHelper.needsCardSaving(req)) {
