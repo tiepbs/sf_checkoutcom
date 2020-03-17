@@ -2,9 +2,6 @@
 
 // Set events on page loaded
 document.addEventListener('DOMContentLoaded', function () { 
-    // Add expiration years
-    setExpirationYears();
-
     // Initialise the card type detection
     initCardTypeDetection();
 
@@ -14,25 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Disable saved cards on card form focus
     initCardFormFocus();
 });
-
-// Sets the expiration years in the form
-function setExpirationYears() {
-    // Get the current year
-    var d = new Date();
-    var currentYear = d.getFullYear();
-
-    // Add the select list options
-    for (var i = 0; i < 10; i++) {
-        /*
-        $('#expirationYear').append(
-            new Option(
-                currentYear + i,
-                currentYear + i
-            )
-        );
-        */
-    }
-}
 
 function initCardTypeDetection() {
     var cleaveCreditCard = new Cleave(

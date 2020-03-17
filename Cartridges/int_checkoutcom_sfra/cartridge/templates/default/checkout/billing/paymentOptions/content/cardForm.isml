@@ -1,6 +1,19 @@
 <isscript>
     var assets = require('*/cartridge/scripts/assets.js');
     assets.addJs('/js/cardPayment.js');
+
+    // Prepare the year options
+    var d = new Date();
+    var currentYear = d.getFullYear();
+    var currentYearOptions = [];
+
+    // Add the select list options
+    for (var i = 0; i < 10; i++) {
+        currentYearOptions.push({
+            key: currentYear + i,
+            val: currentYear + i
+        });
+    }
 </isscript>
 
 <div class="tab-pane" id="cko-card-content" role="tabpanel">
@@ -75,6 +88,9 @@
                     <select class="form-control expirationYear custom-select" id="expirationYear"
                     <isprint value=${creditFields.expirationYear.attributes} encoding="off"/>>
                         <option value="">${Resource.msg('cko.year.select','cko',null)}</option>
+                        <isloop items="${currentYearOptions}" var="yearItem" status="loopSate">
+                            <option value="${yearItem.key.toString()}">${yearItem.val.toString()}</option>
+                        </isloop>
                     </select>
                     <div class="invalid-field-message"></div>
                 </div>
