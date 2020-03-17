@@ -86,7 +86,6 @@
                 <div class="form-group required ${creditFields.expirationYear.htmlName}">
                     <label class="form-control-label" for="expirationYear">${Resource.msg('field.credit.card.expiration.year','creditCard',null)}</label>
                     <select class="form-control expirationYear custom-select" id="expirationYear"
-                    <isprint value=${creditFields.expirationYear.attributes} encoding="off"/>>
                         <option value="">${Resource.msg('cko.year.select','cko',null)}</option>
                         <isloop items="${currentYearOptions}" var="yearItem" status="loopSate">
                             <option value="${yearItem.key.toString()}">${yearItem.val.toString()}</option>

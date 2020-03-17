@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 }, false);
 
 function initCheckoutcomApplePayValidation() {
-    $('#ckoSubmitPayment').off('click touch').on('click touch', function(e) {
+    $('button.submit-payment').off('click touch').on('click touch', function(e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APPLE_PAY') {
             // Reset the error messages
             $('.invalid-field-message').empty();
