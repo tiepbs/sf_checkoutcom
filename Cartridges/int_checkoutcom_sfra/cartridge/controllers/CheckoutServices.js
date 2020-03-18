@@ -2,7 +2,6 @@
 
 /* Server */
 var server = require('server');
-var csrfProtection = require('*/cartridge/scripts/middleware/csrf');
 
 server.extend(module.superModule);
 
@@ -13,7 +12,27 @@ var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
 /**
  * Handles requests to the Checkout.com payment gateway.
  */
-server.replace('SubmitPayment', server.middleware.https, csrfProtection.validateAjaxRequest, function (req, res, next) { 
+server.replace('SubmitPayment', server.middleware.https, function (req, res, next) { 
+	
+	var condition = req.form && req.form.dwfrm_billing_paymentMethod;
+	if (condition) {
+	    // Get the payment method id
+	    var paymentMethodId = req.form.dwfrm_billing_paymentMethod;
+
+	    // Get a camel case function name from event type
+	    var func = '';
+	    var parts = paymentMethodId.toLowerCase().split('_');
+	    for (var i = 0; i < parts.length; i++) {
+	        func += (i == 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+	    }
+
+	    // Add the request suffix
+	    func += 'Request';
+
+	    // Process the request
+	    return paymentHelper[func](paymentMethodId, req, res, next);
+	}
+	
     // Load some classes
     var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
     var AccountModel = require('*/cartridge/models/account');
@@ -68,32 +87,12 @@ server.replace('SubmitPayment', server.middleware.https, csrfProtection.validate
         viewData.phone = { value: paymentForm.contactInfoFields.phone.value };
     }
 
-    var paymentFormResult;
-
-    // Set the payment method ID
-    //var paymentMethodId = req.form.dwfrm_billing_paymentMethod;
-    var paymentMethodId = 'CHECKOUTCOM_CARD';
-    if (!PaymentManager.getPaymentMethod(paymentMethodId).paymentProcessor) {
-        throw new Error(Resource.msg(
-            'error.payment.processor.missing',
-            'checkout',
-            null
-        ));
-    }
-
     res.setViewData(viewData);  
-
-    //res.setViewData(paymentFormResult.viewData);
-
-    var renderedStoredPaymentInstrument = COHelpers.getRenderedPaymentInstruments(
-        req,
-        accountModel
-    );
 
     var billingForm = server.forms.getForm('billing');
 
     res.json({
-        renderedPaymentInstruments: renderedStoredPaymentInstrument,
+        renderedPaymentInstruments: '',
         customer: accountModel,
         order: basketModel,
         form: billingForm,
@@ -102,33 +101,6 @@ server.replace('SubmitPayment', server.middleware.https, csrfProtection.validate
     
 
    return next();
-});
-
-server.replace('PlaceOrder', server.middleware.https, function (req, res, next) {
-	
-
-    var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('line aaa {0}', JSON.stringify(req));
-    logger.debug('line ccc {0}', JSON.parse(req.form));
-
-    
-    // Get the payment method id
-    var paymentMethodId = 'CHECKOUTCOM_CARD';
-    //var paymentMethodId = req.form.dwfrm_billing_paymentMethod;
-
-    // Get a camel case function name from event type
-    var func = '';
-    var parts = paymentMethodId.toLowerCase().split('_');
-    for (var i = 0; i < parts.length; i++) {
-        func += (i == 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
-    }
-
-    // Add the request suffix
-    func += 'Request';
-
-    // Process the request
-    return paymentHelper[func](paymentMethodId, req, res, next);
-
 });
 
 /*

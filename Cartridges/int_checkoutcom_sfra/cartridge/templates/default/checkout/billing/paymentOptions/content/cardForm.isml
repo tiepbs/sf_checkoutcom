@@ -46,10 +46,7 @@
                     <label class="form-control-label" for="cardNumber">${Resource.msg('field.credit.card.number','creditCard',null)}</label>
                     <div class="card-number-wrapper">
                         <input type="text" class="form-control cardNumber" id="cardNumber"
-                            value="${pdict.order.billing.payment.selectedPaymentInstruments
-                                && pdict.order.billing.payment.selectedPaymentInstruments.length > 0
-                                ? pdict.order.billing.payment.selectedPaymentInstruments[0].maskedCreditCardNumber||''
-                                : ''}"
+                            value=""
                             <isprint value=${creditFields.cardNumber.attributes} encoding="off"/>
                             autocomplete="cc-number"
                         >
@@ -86,6 +83,8 @@
                 <div class="form-group required ${creditFields.expirationYear.htmlName}">
                     <label class="form-control-label" for="expirationYear">${Resource.msg('field.credit.card.expiration.year','creditCard',null)}</label>
                     <select class="form-control expirationYear custom-select" id="expirationYear"
+                    <isprint value=${creditFields.expirationYear.attributes} encoding="off"/>>
+
                         <option value="">${Resource.msg('cko.year.select','cko',null)}</option>
                         <isloop items="${currentYearOptions}" var="yearItem" status="loopSate">
                             <option value="${yearItem.key.toString()}">${yearItem.val.toString()}</option>

@@ -72,23 +72,20 @@ function initCheckoutcomCardValidation() {
         $('.invalid-feedback').hide();
         $('input.saved-payment-security-code').removeClass('is-invalid');
         
+        // Prevent the default button click behaviour
         e.preventDefault();
         $.ajax({
             url: $('#dwfrm_billing').attr('action'),
             type: 'post',
-    		contentType: false,
-    		processData:false,
+            dataType: 'text',
+            contentType: 'application/x-www-form-urlencoded',
+            global: false,
             data: $('#dwfrm_billing').serialize(),
             success: function (data) {
-            	alert('success');
             },
             error: function (err) {
-
             }
         });
-        
-        
-
 
         // Prepare the errors array
         var ckoFormErrors = [];
@@ -218,7 +215,6 @@ function checkSavedCardCvv() {
         }
     });
 
-    alert(hasErrors);
     return hasErrors;
 }
 

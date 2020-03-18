@@ -103,7 +103,7 @@ var paymentHelper = {
             }
             else if (ckoHelper.paymentSuccess(chargeResponse)) {
                 // Redirect to the confirmation page
-                self.getConfirmationPage(res, order);
+                return self.getConfirmationPage(res, order);
             }
             else {                
                 // Restore the cart
@@ -261,15 +261,13 @@ var paymentHelper = {
     },
 
     getConfirmationPage: function (res, order) {
-        return res.redirect(
-            URLUtils.url(
-                'Order-Confirm',
-                'ID',
-                order.orderNo,
-                'token',
-                order.orderToken
-            ).toString()
-        );
+        return res.json({
+            error: false,
+            orderID: order.orderNo,
+            orderToken: order.orderToken,
+            continueUrl: URLUtils.url('Order-Confirm').toString()
+        });
+
     },
 
     getFailurePage: function (res) {
