@@ -211,11 +211,14 @@ function checkSavedCardCvv() {
         if (targetField.val().length < 3 || targetField.val().length > 4) {
             targetField.addClass('is-invalid');
             targetField.closest('.saved-payment-instrument').find('.invalid-feedback').css('display', 'block');
-            hasErrors = 1;
+            targetField.data('error', 1);
+        }
+        else {
+            targetField.data('error', 0);
         }
     });
 
-    return hasErrors;
+    return targetField.data('error');
 }
 
 function getFormattedNumber(num) {
