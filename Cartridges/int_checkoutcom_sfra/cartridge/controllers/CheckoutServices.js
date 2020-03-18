@@ -3,6 +3,9 @@
 /* Server */
 var server = require('server');
 
+/* Script Modules */
+var URLUtils = require('dw/web/URLUtils');
+
 server.extend(module.superModule);
 
 /** Utility **/
@@ -30,7 +33,17 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
 	    func += 'Request';
 
 	    // Process the request
-	    return paymentHelper[func](paymentMethodId, req, res, next);
+        var order = paymentHelper[func](paymentMethodId, req, res, next);
+        if (order) {
+            res.json({
+                error: false,
+                orderID: order.orderNo,
+                orderToken: order.orderToken,
+                continueUrl: URLUtils.url('Order-Confirm').toString()
+            });
+        }
+
+        return next();
 	}
 	
     // Load some classes

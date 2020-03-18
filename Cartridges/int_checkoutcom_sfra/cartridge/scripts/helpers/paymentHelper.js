@@ -102,18 +102,15 @@ var paymentHelper = {
                 res.redirect(session.privacy.redirectUrl);
             }
             else if (ckoHelper.paymentSuccess(chargeResponse)) {
-                // Redirect to the confirmation page
-                return self.getConfirmationPage(res, order);
+                return order;
             }
             else {                
                 // Restore the cart
                 ckoHelper.checkAndRestoreBasket(order);
 
                 // Redirect to the checkout process
-                self.getFailurePage(res);
+                return false;
             }
-
-            return next();
         });
     },
 
