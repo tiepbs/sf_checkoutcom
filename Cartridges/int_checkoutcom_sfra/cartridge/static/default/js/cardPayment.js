@@ -201,7 +201,6 @@ function checkCardCvv() {
 }
 
 function checkSavedCardCvv() {
-    var hasErrors = 0;
     $('body').bind('DOMNodeInserted', function(e, hasErrors) {
         // Set the target field
         var targetField = $('#cko-card-content .selected-payment')
@@ -217,8 +216,11 @@ function checkSavedCardCvv() {
             targetField.data('error', 0);
         }
     });
-
-    return targetField.data('error');
+    
+    // Return the target CVV field error state
+    return $('#cko-card-content .selected-payment')
+    .find('input.saved-payment-security-code')
+    .data('error');
 }
 
 function getFormattedNumber(num) {
