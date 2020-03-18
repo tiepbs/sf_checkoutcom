@@ -66,11 +66,29 @@ function initCardFormFocus() {
 }
 
 function initCheckoutcomCardValidation() {
-    $('button.submit-payment').off('click touch').on('click touch', function (e) {
+    $('button.place-order').off('click touch').on('click touch', function (e) {
         // Reset the error messages
         $('.invalid-field-message').empty();
         $('.invalid-feedback').hide();
         $('input.saved-payment-security-code').removeClass('is-invalid');
+        
+        e.preventDefault();
+        $.ajax({
+            url: $('#dwfrm_billing').attr('action'),
+            type: 'post',
+    		contentType: false,
+    		processData:false,
+            data: $('#dwfrm_billing').serialize(),
+            success: function (data) {
+            	alert('success');
+            },
+            error: function (err) {
+
+            }
+        });
+        
+        
+
 
         // Prepare the errors array
         var ckoFormErrors = [];
@@ -186,7 +204,8 @@ function checkCardCvv() {
 }
 
 function checkSavedCardCvv() {
-    $('body').bind('DOMNodeInserted', function() {
+    var hasErrors = 0;
+    $('body').bind('DOMNodeInserted', function(e, hasErrors) {
         // Set the target field
         var targetField = $('#cko-card-content .selected-payment')
         .find('input.saved-payment-security-code');
@@ -195,11 +214,12 @@ function checkSavedCardCvv() {
         if (targetField.val().length < 3 || targetField.val().length > 4) {
             targetField.addClass('is-invalid');
             targetField.closest('.saved-payment-instrument').find('.invalid-feedback').css('display', 'block');
-            return 1;
+            hasErrors = 1;
         }
     });
 
-    return 0;
+    alert(hasErrors);
+    return hasErrors;
 }
 
 function getFormattedNumber(num) {

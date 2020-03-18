@@ -13,7 +13,7 @@ var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
 /**
  * Handles requests to the Checkout.com payment gateway.
  */
-server.replace('SubmitPayment', server.middleware.https, csrfProtection.validateAjaxRequest, function (req, res, next) {    
+server.replace('SubmitPayment', server.middleware.https, csrfProtection.validateAjaxRequest, function (req, res, next) { 
     // Load some classes
     var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
     var AccountModel = require('*/cartridge/models/account');
@@ -106,12 +106,12 @@ server.replace('SubmitPayment', server.middleware.https, csrfProtection.validate
 
 server.replace('PlaceOrder', server.middleware.https, function (req, res, next) {
 	
-    var f1 = server.forms.getForm('billing');
 
     var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('line 1 {0}', JSON.stringify(f1));
-    logger.debug('line 2 {0}', JSON.stringify(req.form));
+    logger.debug('line aaa {0}', JSON.stringify(req));
+    logger.debug('line ccc {0}', JSON.parse(req.form));
 
+    
     // Get the payment method id
     var paymentMethodId = 'CHECKOUTCOM_CARD';
     //var paymentMethodId = req.form.dwfrm_billing_paymentMethod;
