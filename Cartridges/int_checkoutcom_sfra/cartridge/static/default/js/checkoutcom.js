@@ -7,9 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Load the language strings
 	loadTranslations();
 
-	// Handle payment buttons state
-	initButtons();
-
 	// Handle payment tabs state
 	initTabs();
 
@@ -43,14 +40,6 @@ function initTooltips() {
 			$(this).next('.tooltip').hide();
 		}
 	})
-}
-
-function initButtons() {
-	// Hide the global form button
-	$('button.submit-payment').hide();
-	
-	// Show the custom form button
-	$('#ckoSubmitPayment').show();
 }
 
 function initTabs() {

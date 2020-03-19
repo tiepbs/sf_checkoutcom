@@ -2,9 +2,6 @@
 
 // Set events on page loaded
 document.addEventListener('DOMContentLoaded', function () { 
-    // Add expiration years
-    setExpirationYears();
-
     // Initialise the card type detection
     initCardTypeDetection();
 
@@ -14,23 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Disable saved cards on card form focus
     initCardFormFocus();
 });
-
-// Sets the expiration years in the form
-function setExpirationYears() {
-    // Get the current year
-    var d = new Date();
-    var currentYear = d.getFullYear();
-
-    // Add the select list options
-    for (var i = 0; i < 10; i++) {
-        $('#expirationYear').append(
-            new Option(
-                currentYear + i,
-                currentYear + i
-            )
-        );
-    }
-}
 
 function initCardTypeDetection() {
     var cleaveCreditCard = new Cleave(
@@ -86,11 +66,28 @@ function initCardFormFocus() {
 }
 
 function initCheckoutcomCardValidation() {
-    $('#ckoSubmitPayment').off('click touch').on('click touch', function (e) {
+    $('button.place-order').off('click touch').on('click touch', function (e) {
         // Reset the error messages
         $('.invalid-field-message').empty();
         $('.invalid-feedback').hide();
         $('input.saved-payment-security-code').removeClass('is-invalid');
+        
+        // Prevent the default button click behaviour
+        e.preventDefault();
+        $.ajax({
+            url: $('#dwfrm_billing').attr('action'),
+            type: 'post',
+            dataType: 'text',
+            contentType: 'application/x-www-form-urlencoded',
+            global: false,
+            data: $('#dwfrm_billing').serialize(),
+            success: function (data) {
+                alert(data.continueUrl);
+                window.location.href = data.continueUrl;
+            },
+            error: function (err) {
+            }
+        });
 
         // Prepare the errors array
         var ckoFormErrors = [];
@@ -120,6 +117,7 @@ function initCheckoutcomCardValidation() {
         // Invalidate the button click if errors found
         if ($.inArray(1, ckoFormErrors) !== -1) {
             e.preventDefault();
+            return false;
         }
     });
 }
@@ -205,7 +203,7 @@ function checkCardCvv() {
 }
 
 function checkSavedCardCvv() {
-    $('body').bind('DOMNodeInserted', function() {
+    $('body').bind('DOMNodeInserted', function(e, hasErrors) {
         // Set the target field
         var targetField = $('#cko-card-content .selected-payment')
         .find('input.saved-payment-security-code');
@@ -214,11 +212,17 @@ function checkSavedCardCvv() {
         if (targetField.val().length < 3 || targetField.val().length > 4) {
             targetField.addClass('is-invalid');
             targetField.closest('.saved-payment-instrument').find('.invalid-feedback').css('display', 'block');
-            return 1;
+            targetField.data('error', 1);
+        }
+        else {
+            targetField.data('error', 0);
         }
     });
-
-    return 0;
+    
+    // Return the target CVV field error state
+    return $('#cko-card-content .selected-payment')
+    .find('input.saved-payment-security-code')
+    .data('error');
 }
 
 function getFormattedNumber(num) {

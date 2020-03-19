@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
  */
 function initCheckoutcomApmValidation() {
     // Click event
-    $('#ckoSubmitPayment').off('click touch').on('click touch', function (e) {
+    $('button.submit-payment').off('click touch').on('click touch', function (e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APM') {
             // Reset the error messages
             $('.invalid-field-message').empty();
@@ -34,6 +34,7 @@ function initCheckoutcomApmValidation() {
             // Invalidate the button click if errors found
             if ($.inArray(1, ckoFormErrors) !== -1) {
                 e.preventDefault();
+                return false;
             }
         }
     }); 
