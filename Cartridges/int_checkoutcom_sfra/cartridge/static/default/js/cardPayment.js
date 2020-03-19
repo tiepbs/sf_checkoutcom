@@ -83,9 +83,15 @@ function initCheckoutcomCardValidation() {
             global: false,
             data: $('#dwfrm_billing').serialize(),
             success: function (result) {
-                var data = JSON.parse(result);
-                var continueUrl = data.continueUrl + '?ID=' + data.orderID + '&token=' + data.orderToken;
-                window.location.href = continueUrl;
+                if (result) {
+                    var data = JSON.parse(result);
+                    if (data.hasOwnProperty('continueUrl')) {
+                        if (data.hasOwnProperty('orderID') && data.hasOwnProperty('orderToken')) {
+                            data.continueUrl += '?ID=' + data.orderID + '&token=' + data.orderToken;
+                        }
+                        window.location.href = data.continueUrl;
+                    }
+                }
             },
             error: function (err) {
             }
