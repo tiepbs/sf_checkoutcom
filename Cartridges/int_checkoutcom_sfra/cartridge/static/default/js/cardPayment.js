@@ -82,7 +82,6 @@ function initCheckoutcomCardValidation() {
             global: false,
             data: $('#dwfrm_billing').serialize(),
             success: function (data) {
-                console.log(data);
                 window.location.href = data.continueUrl;
             },
             error: function (err) {

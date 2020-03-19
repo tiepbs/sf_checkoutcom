@@ -104,11 +104,6 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
 
 	    // Process the request
         var order = paymentHelper[func](paymentMethodId, req, res, next);
-
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('ordernumber {0}', JSON.stringify(order.orderNo));
-        logger.debug('orderurl {0}', URLUtils.url('Order-Confirm').toString());
-
         if (order) {
             return res.json({
                 error: false,
