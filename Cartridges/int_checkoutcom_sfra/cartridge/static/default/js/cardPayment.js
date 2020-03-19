@@ -84,7 +84,6 @@ function initCheckoutcomCardValidation() {
             data: $('#dwfrm_billing').serialize(),
             success: function (result) {
                 var data = JSON.parse(result);
-                console.log(data);
                 var continueUrl = data.continueUrl + '?ID=' + data.orderID + '&token=' + data.orderToken;
                 window.location.href = continueUrl;
             },
