@@ -74,6 +74,7 @@ function initCheckoutcomCardValidation() {
         
         // Prevent the default button click behaviour
         e.preventDefault();
+        e.stopImmediatePropagation();
         $.ajax({
             url: $('button.place-order').data('action'),
             type: 'post',
