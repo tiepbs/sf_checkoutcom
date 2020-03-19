@@ -262,13 +262,15 @@ var paymentHelper = {
     },
 
     getConfirmationPage: function (res, order) {
-        return res.json({
-            error: false,
-            orderID: order.orderNo,
-            orderToken: order.orderToken,
-            continueUrl: URLUtils.url('Order-Confirm')
-        });
-
+        return res.redirect(
+            URLUtils.url(
+                'Order-Confirm',
+                'ID',
+                order.orderNo,
+                'token',
+                order.orderToken
+            ).toString()
+        );
     },
 
     getFailurePage: function (res) {
