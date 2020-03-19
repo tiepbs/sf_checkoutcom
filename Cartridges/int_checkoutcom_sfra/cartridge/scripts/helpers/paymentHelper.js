@@ -13,7 +13,6 @@ var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
 var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
-var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper');
 
 /* APM Configuration */
 var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
@@ -94,7 +93,7 @@ var paymentHelper = {
         // Check the response
         if (session.privacy.redirectUrl) {
             // Handle the 3ds redirection
-            res.redirect(session.privacy.redirectUrl);
+            return order;
         }
         else if (ckoHelper.paymentSuccess(chargeResponse)) {
             return order;
@@ -256,7 +255,7 @@ var paymentHelper = {
             error: false,
             orderID: order.orderNo,
             orderToken: order.orderToken,
-            continueUrl: URLUtils.url('Order-Confirm').toString()
+            continueUrl: URLUtils.url('Order-Confirm')
         });
 
     },
