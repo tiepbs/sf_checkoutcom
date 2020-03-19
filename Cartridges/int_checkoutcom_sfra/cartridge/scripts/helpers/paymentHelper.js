@@ -22,89 +22,100 @@ var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
 */
 var paymentHelper = {  
     checkoutcomCardRequest: function (paymentMethodId, req, res, next) {
-        // Get the current basket
-        var currentBasket = BasketMgr.getCurrentBasket();
-
-        // Create the order
-        var order = OrderMgr.createOrder(currentBasket);
+        // Reference the object
+        var self = this;
         
-        // Add order number to the session global object
-        session.privacy.ckoOrderId = order.orderNo;
-
-        // Prepare the arguments
-        var args = {
-            OrderNo: order.orderNo,
-            ProcessorId: paymentMethodId,
-            CardUuid: false,
-            CustomerId: false
+        // Prepare the response data
+        var result = {
+            order: false,
+            url: false
         };
 
-        // Handle the charge request
-        var cardData = null;
-        if (cardHelper.isSavedCardRequest(req)) {
-            // Get the saved card
-            var savedCard = cardHelper.getSavedCard(
-                req.form.selectedCardId,
-                req.currentCustomer.profile.customerNo,
-                paymentMethodId
-            );
+        // Transaction wrapper
+        Transaction.wrap(function () {
+            // Get the current basket
+            var currentBasket = BasketMgr.getCurrentBasket();
 
-            // Handle the saved card cases
-            if (savedCard) {
-                if (cardHelper.cardHasSourceId(savedCard)) {    
+            // Create the order
+            var order = OrderMgr.createOrder(currentBasket);
+            
+            // Add order number to the session global object
+            session.privacy.ckoOrderId = order.orderNo;
+
+            // Prepare the arguments
+            var args = {
+                OrderNo: order.orderNo,
+                ProcessorId: paymentMethodId,
+                CardUuid: false,
+                CustomerId: false
+            };
+
+            // Handle the charge request
+            var cardData = null;
+            if (cardHelper.isSavedCardRequest(req)) {
+                // Get the saved card
+                var savedCard = cardHelper.getSavedCard(
+                    req.form.selectedCardId,
+                    req.currentCustomer.profile.customerNo,
+                    paymentMethodId
+                );
+
+                // Handle the saved card cases
+                if (savedCard) {
+                    if (cardHelper.cardHasSourceId(savedCard)) {    
+                        // Send the charge request
+                        var chargeResponse = cardHelper.handleSavedCardRequest(
+                            savedCard.getCreditCardToken(),
+                            req.form.selectedCardCvv,
+                            args
+                        );
+                    }
+                    else {
+                        // Prepare the card data
+                        var cardData = getCardDataFromSaved(savedCard, req);
+                    }
+
                     // Send the charge request
-                    var chargeResponse = cardHelper.handleSavedCardRequest(
-                        savedCard.getCreditCardToken(),
-                        req.form.selectedCardCvv,
-                        args
-                    );
+                    var chargeResponse = cardHelper.handleCardRequest(cardData, args);
                 }
-                else {
-                    // Prepare the card data
-                    var cardData = getCardDataFromSaved(savedCard, req);
+            }
+            else {
+                // Prepare the card data
+                var cardData = cardHelper.getCardDataFromRequest(req);
+
+                // Save the card
+                if (cardHelper.needsCardSaving(req)) {
+                    // Save the card
+                    var cardUuid = cardHelper.saveCardData(
+                        req,
+                        cardData,
+                        paymentMethodId
+                    );
+
+                    // Add the card uuid and customer id to the metadata
+                    args.CardUuid = cardUuid;
+                    args.CustomerId = req.currentCustomer.profile.customerNo
                 }
 
                 // Send the charge request
                 var chargeResponse = cardHelper.handleCardRequest(cardData, args);
             }
-        }
-        else {
-            // Prepare the card data
-            var cardData = cardHelper.getCardDataFromRequest(req);
 
-            // Save the card
-            if (cardHelper.needsCardSaving(req)) {
-                // Save the card
-                var cardUuid = cardHelper.saveCardData(
-                    req,
-                    cardData,
-                    paymentMethodId
-                );
-
-                // Add the card uuid and customer id to the metadata
-                args.CardUuid = cardUuid;
-                args.CustomerId = req.currentCustomer.profile.customerNo
+            // Check the response
+            if (session.privacy.redirectUrl) {
+                // Handle the 3ds redirection
+                self.result.url = session.privacy.redirectUrl;
             }
+            else if (ckoHelper.paymentSuccess(chargeResponse)) {
+                self.result.order = order;
+            }
+            else {                
+                // Restore the cart
+                ckoHelper.checkAndRestoreBasket(order);
+            }
+        });
 
-            // Send the charge request
-            var chargeResponse = cardHelper.handleCardRequest(cardData, args);
-        }
-
-        // Check the response
-        if (session.privacy.redirectUrl) {
-            // Handle the 3ds redirection
-            return order;
-        }
-        else if (ckoHelper.paymentSuccess(chargeResponse)) {
-            return order;
-        }
-        else {                
-            // Restore the cart
-            ckoHelper.checkAndRestoreBasket(order);
-
-            // Redirect to the checkout process
-            return false;
-        }
+        return self.result;
     },
 
     checkoutcomGooglePayRequest: function (paymentMethodId, req, res, next) {

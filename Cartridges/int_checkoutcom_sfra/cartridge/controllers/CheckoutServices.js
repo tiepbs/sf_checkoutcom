@@ -103,14 +103,29 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
 	    func += 'Request';
 
 	    // Process the request
-        var order = paymentHelper[func](paymentMethodId, req, res, next);
-        if (order) {
+        var result = paymentHelper[func](paymentMethodId, req, res, next);
+        if (result.url) {
+            res.json({
+                error: false,
+                orderID: order.orderNo,
+                continueUrl: result.url
+            });
+        }
+        else if (result.order) {
             res.json({
                 error: false,
                 orderID: order.orderNo,
                 orderToken: order.orderToken,
                 continueUrl: URLUtils.url('Order-Confirm').toString()
             });
+        }
+        else {
+            res.json({
+                error: true,
+                orderID: false,
+                orderToken: false,
+                continueUrl: URLUtils.url('Cart-Show').toString()
+            });        
         }
 
         return next();
