@@ -148,14 +148,14 @@ var paymentHelper = {
             // Check the response
             if (chargeResponse) {
                 // Redirect to the confirmation page
-                self.getConfirmationPage(res, order);
+                self.getConfirmationPageRedirect(res, order);
             }
             else {
                 // Restore the cart
                 ckoHelper.checkAndRestoreBasket(order);
 
                 // Redirect to the checkout process
-                self.getFailurePage(res);
+                self.getFailurePageRedirect(res);
             }
 
             return next();
@@ -192,14 +192,14 @@ var paymentHelper = {
             // Check the response
             if (chargeResponse) {
                 // Redirect to the confirmation page
-                self.getConfirmationPage(res, order);
+                self.getConfirmationPageRedirect(res, order);
             }
             else {
                 // Restore the cart
                 ckoHelper.checkAndRestoreBasket(order);
 
                 // Redirect to the checkout process
-                self.getFailurePage(res);
+                self.getFailurePageRedirect(res);
             }
 
             return next();
@@ -254,14 +254,14 @@ var paymentHelper = {
                 ckoHelper.checkAndRestoreBasket(order);
 
                 // Redirect to the checkout process
-                self.getFailurePage(res);
+                self.getFailurePageRedirect(res);
             }
 
             return next();
         });
     },
 
-    getConfirmationPage: function (res, order) {
+    getConfirmationPageRedirect: function (res, order) {
         return res.redirect(
             URLUtils.url(
                 'Order-Confirm',
@@ -273,7 +273,7 @@ var paymentHelper = {
         );
     },
 
-    getFailurePage: function (res) {
+    getFailurePageRedirect: function (res) {
         return res.redirect(
             URLUtils.url(
                 'Checkout-Begin',

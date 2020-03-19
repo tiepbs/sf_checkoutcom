@@ -45,16 +45,16 @@ server.get('HandleReturn', server.middleware.https, function (req, res, next) {
                 var order = OrderMgr.getOrder(gVerify.reference);
 
                 // Show order confirmation page
-                paymentHelper.getConfirmationPage(res, order);
+                paymentHelper.getConfirmationPageRedirect(res, order);
             } else {
                 // Restore the cart
                 ckoHelper.checkAndRestoreBasket(order);
 
                 // Send back to the error page
-                paymentHelper.getFailurePage(res);
+                paymentHelper.getFailurePageRedirect(res);
             }
         } else {
-            paymentHelper.getFailurePage(res);
+            paymentHelper.getFailurePageRedirect(res);
         }
     }
     else {
@@ -65,10 +65,10 @@ server.get('HandleReturn', server.middleware.https, function (req, res, next) {
             var order = OrderMgr.getOrder(gVerify.reference);
 
             // Redirect to the confirmation page
-            paymentHelper.getConfirmationPage(res, order);
+            paymentHelper.getConfirmationPageRedirect(res, order);
         } else {
             // Redirect to the failure page
-            paymentHelper.getFailurePage(res);
+            paymentHelper.getFailurePageRedirect(res);
         }
     }
 
@@ -86,7 +86,7 @@ server.get('HandleFail', server.middleware.https, function (req, res, next) {
     ckoHelper.checkAndRestoreBasket(order);
 
     // Send back to the error page
-    paymentHelper.getFailurePage(res);
+    paymentHelper.getFailurePageRedirect(res);
 
     next();
 });

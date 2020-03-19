@@ -100,9 +100,9 @@ server.get('HandleMandate', server.middleware.https, function (req, res, next) {
                         apmHelper.handleSepaRequest(payObject, order);
                         
                         // Show the confirmation screen
-                        paymentHelper.getConfirmationPage(res, order);
+                        paymentHelper.getConfirmationPageRedirect(res, order);
                     } else {
-                        paymentHelper.getFailurePage(res);
+                        paymentHelper.getFailurePageRedirect(res);
                     }
                 } else {
                     return next(

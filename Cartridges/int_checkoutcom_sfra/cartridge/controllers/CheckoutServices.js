@@ -23,7 +23,6 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
     var Locale = require('dw/util/Locale');
     var BasketMgr = require('dw/order/BasketMgr');
     var currentBasket = BasketMgr.getCurrentBasket();
-    var PaymentManager = require('dw/order/PaymentMgr');
 
     // Load some parameters
     var accountModel = new AccountModel(req.currentCustomer);
