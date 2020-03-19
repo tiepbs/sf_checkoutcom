@@ -74,15 +74,15 @@ function initCheckoutcomCardValidation() {
         
         // Prevent the default button click behaviour
         e.preventDefault();
+        e.stopImmediatePropagation();
         $.ajax({
-            url: $('#dwfrm_billing').attr('action'),
+            url: $('button.place-order').data('action'),
             type: 'post',
             dataType: 'text',
             contentType: 'application/x-www-form-urlencoded',
             global: false,
             data: $('#dwfrm_billing').serialize(),
             success: function (data) {
-                alert(data.continueUrl);
                 window.location.href = data.continueUrl;
             },
             error: function (err) {
