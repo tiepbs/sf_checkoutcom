@@ -111,6 +111,7 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
             });
         }
         else if (result.order) {
+            COHelpers.sendConfirmationEmail(order, req.locale.id);
             res.json({
                 error: false,
                 orderID: result.order.orderNo,

@@ -121,6 +121,12 @@ var paymentHelper = {
     checkoutcomGooglePayRequest: function (paymentMethodId, req, res, next) {
         // Reference the object
         var self = this;
+        
+        // Prepare the response data
+        self.result = {
+            order: false,
+            url: false
+        };
 
         // Transaction wrapper
         Transaction.wrap(function () {
@@ -148,23 +154,26 @@ var paymentHelper = {
             // Check the response
             if (chargeResponse) {
                 // Redirect to the confirmation page
-                self.getConfirmationPageRedirect(res, order);
+                self.result.order = order;
             }
             else {
                 // Restore the cart
                 ckoHelper.checkAndRestoreBasket(order);
-
-                // Redirect to the checkout process
-                self.getFailurePageRedirect(res);
             }
-
-            return next();
         });
+
+        return self.result;
     },
 
     checkoutcomApplePayRequest: function (paymentMethodId, req, res, next) {
         // Reference the object
         var self = this;
+        
+        // Prepare the response data
+        self.result = {
+            order: false,
+            url: false
+        };
 
         // Transaction wrapper
         Transaction.wrap(function () {
@@ -192,23 +201,26 @@ var paymentHelper = {
             // Check the response
             if (chargeResponse) {
                 // Redirect to the confirmation page
-                self.getConfirmationPageRedirect(res, order);
+                self.result.order = order;
             }
             else {
                 // Restore the cart
                 ckoHelper.checkAndRestoreBasket(order);
-
-                // Redirect to the checkout process
-                self.getFailurePageRedirect(res);
             }
-
-            return next();
         });
+
+        return self.result;
     },
 
     checkoutcomApmRequest: function (paymentMethodId, req, res, next) {
         // Reference the object
         var self = this;
+        
+        // Prepare the response data
+        self.result = {
+            order: false,
+            url: false
+        };
 
         // Transaction wrapper
         Transaction.wrap(function () {         
@@ -246,19 +258,16 @@ var paymentHelper = {
 
             // Check the response
             if (chargeResponse) {
-                // Redirect to the confirmation page
-                res.redirect(session.privacy.redirectUrl);
+                // Redirect to the APM page
+                self.result.url = session.privacy.redirectUrl;
             }
             else {
                 // Restore the cart
                 ckoHelper.checkAndRestoreBasket(order);
-
-                // Redirect to the checkout process
-                self.getFailurePageRedirect(res);
             }
-
-            return next();
         });
+
+        return self.result;
     },
 
     getConfirmationPageRedirect: function (res, order) {
