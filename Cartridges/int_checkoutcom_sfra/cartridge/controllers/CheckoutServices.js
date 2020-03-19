@@ -86,6 +86,10 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
 });
 
 server.replace('PlaceOrder', server.middleware.https, function (req, res, next) {
+    // Load some classes
+    var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
+
+    // Process the place order request
 	var condition = req.form && req.form.dwfrm_billing_paymentMethod;
 	if (condition) {
 	    // Get the payment method id
@@ -111,7 +115,7 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
             });
         }
         else if (result.order) {
-            COHelpers.sendConfirmationEmail(order, req.locale.id);
+            COHelpers.sendConfirmationEmail(result.order, req.locale.id);
             res.json({
                 error: false,
                 orderID: result.order.orderNo,
