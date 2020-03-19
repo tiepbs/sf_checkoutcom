@@ -82,10 +82,11 @@ function initCheckoutcomCardValidation() {
             contentType: 'application/x-www-form-urlencoded',
             global: false,
             data: $('#dwfrm_billing').serialize(),
-            success: function (data) {
-                var result = JSON.parse(data);
-                console.log(result);
-                window.location.href = result.continueUrl;
+            success: function (result) {
+                var data = JSON.parse(result);
+                console.log(data);
+                var continueUrl = data.continueUrl + '?ID=' + data.orderID + '&token=' + data.orderToken;
+                window.location.href = continueUrl;
             },
             error: function (err) {
             }

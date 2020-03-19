@@ -105,14 +105,11 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
 	    // Process the request
         var order = paymentHelper[func](paymentMethodId, req, res, next);
         if (order) {
-            return JSON.stringify({
-                continueUrl : URLUtils.url(
-                    'Order-Confirm',
-                    'ID',
-                    order.orderNo,
-                    'token',
-                    order.orderToken
-                ).toString()
+            res.json({
+                error: false,
+                orderID: order.orderNo,
+                orderToken: order.orderToken,
+                continueUrl: URLUtils.url('Order-Confirm').toString()
             });
         }
 
