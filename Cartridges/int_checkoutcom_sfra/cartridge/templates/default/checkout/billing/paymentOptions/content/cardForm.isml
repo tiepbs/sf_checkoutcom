@@ -1,6 +1,19 @@
 <isscript>
     var assets = require('*/cartridge/scripts/assets.js');
     assets.addJs('/js/cardPayment.js');
+
+    // Prepare the year options
+    var d = new Date();
+    var currentYear = d.getFullYear();
+    var currentYearOptions = [];
+
+    // Add the select list options
+    for (var i = 0; i < 10; i++) {
+        currentYearOptions.push({
+            key: currentYear + i,
+            val: currentYear + i
+        });
+    }
 </isscript>
 
 <div class="tab-pane" id="cko-card-content" role="tabpanel">
@@ -33,10 +46,7 @@
                     <label class="form-control-label" for="cardNumber">${Resource.msg('field.credit.card.number','creditCard',null)}</label>
                     <div class="card-number-wrapper">
                         <input type="text" class="form-control cardNumber" id="cardNumber"
-                            value="${pdict.order.billing.payment.selectedPaymentInstruments
-                                && pdict.order.billing.payment.selectedPaymentInstruments.length > 0
-                                ? pdict.order.billing.payment.selectedPaymentInstruments[0].maskedCreditCardNumber||''
-                                : ''}"
+                            value=""
                             <isprint value=${creditFields.cardNumber.attributes} encoding="off"/>
                             autocomplete="cc-number"
                         >
@@ -74,7 +84,11 @@
                     <label class="form-control-label" for="expirationYear">${Resource.msg('field.credit.card.expiration.year','creditCard',null)}</label>
                     <select class="form-control expirationYear custom-select" id="expirationYear"
                     <isprint value=${creditFields.expirationYear.attributes} encoding="off"/>>
+
                         <option value="">${Resource.msg('cko.year.select','cko',null)}</option>
+                        <isloop items="${currentYearOptions}" var="yearItem" status="loopSate">
+                            <option value="${yearItem.key.toString()}">${yearItem.val.toString()}</option>
+                        </isloop>
                     </select>
                     <div class="invalid-field-message"></div>
                 </div>

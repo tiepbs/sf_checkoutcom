@@ -76,7 +76,7 @@ var paymentHelper = {
             }
             else {
                 // Prepare the card data
-                var cardData = getCardDataFromRequest(req);
+                var cardData = cardHelper.getCardDataFromRequest(req);
 
                 // Save the card
                 if (cardHelper.needsCardSaving(req)) {
@@ -102,18 +102,15 @@ var paymentHelper = {
                 res.redirect(session.privacy.redirectUrl);
             }
             else if (ckoHelper.paymentSuccess(chargeResponse)) {
-                // Redirect to the confirmation page
-                self.getConfirmationPage(res, order);
+                return order;
             }
             else {                
                 // Restore the cart
                 ckoHelper.checkAndRestoreBasket(order);
 
                 // Redirect to the checkout process
-                self.getFailurePage(res);
+                return false;
             }
-
-            return next();
         });
     },
 
@@ -261,15 +258,13 @@ var paymentHelper = {
     },
 
     getConfirmationPage: function (res, order) {
-        return res.redirect(
-            URLUtils.url(
-                'Order-Confirm',
-                'ID',
-                order.orderNo,
-                'token',
-                order.orderToken
-            ).toString()
-        );
+        return res.json({
+            error: false,
+            orderID: order.orderNo,
+            orderToken: order.orderToken,
+            continueUrl: URLUtils.url('Order-Confirm').toString()
+        });
+
     },
 
     getFailurePage: function (res) {
