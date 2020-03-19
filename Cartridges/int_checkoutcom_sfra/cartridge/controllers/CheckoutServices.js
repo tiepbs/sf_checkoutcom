@@ -107,15 +107,15 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
         if (result.url) {
             res.json({
                 error: false,
-                orderID: order.orderNo,
+                orderID: result.order.orderNo,
                 continueUrl: result.url
             });
         }
         else if (result.order) {
             res.json({
                 error: false,
-                orderID: order.orderNo,
-                orderToken: order.orderToken,
+                orderID: result.order.orderNo,
+                orderToken: result.order.orderToken,
                 continueUrl: URLUtils.url('Order-Confirm').toString()
             });
         }
