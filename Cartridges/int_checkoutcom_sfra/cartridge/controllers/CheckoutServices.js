@@ -88,7 +88,7 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
 server.replace('PlaceOrder', server.middleware.https, function (req, res, next) {
     // Load some classes
     var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
-
+    
     // Process the place order request
 	var condition = req.form && req.form.dwfrm_billing_paymentMethod;
 	if (condition) {
