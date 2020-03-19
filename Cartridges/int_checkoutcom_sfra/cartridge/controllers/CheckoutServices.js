@@ -16,36 +16,6 @@ var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
  * Handles requests to the Checkout.com payment gateway.
  */
 server.replace('SubmitPayment', server.middleware.https, function (req, res, next) { 
-	
-	var condition = req.form && req.form.dwfrm_billing_paymentMethod;
-	if (condition) {
-	    // Get the payment method id
-	    var paymentMethodId = req.form.dwfrm_billing_paymentMethod;
-
-	    // Get a camel case function name from event type
-	    var func = '';
-	    var parts = paymentMethodId.toLowerCase().split('_');
-	    for (var i = 0; i < parts.length; i++) {
-	        func += (i == 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
-	    }
-
-	    // Add the request suffix
-	    func += 'Request';
-
-	    // Process the request
-        var order = paymentHelper[func](paymentMethodId, req, res, next);
-        if (order) {
-            res.json({
-                error: false,
-                orderID: order.orderNo,
-                orderToken: order.orderToken,
-                continueUrl: URLUtils.url('Order-Confirm').toString()
-            });
-        }
-
-        return next();
-	}
-	
     // Load some classes
     var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
     var AccountModel = require('*/cartridge/models/account');
@@ -114,6 +84,40 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
     
 
    return next();
+});
+
+server.replace('PlaceOrder', server.middleware.https, function (req, res, next) {
+	var condition = req.form && req.form.dwfrm_billing_paymentMethod;
+	if (condition) {
+	    // Get the payment method id
+	    var paymentMethodId = req.form.dwfrm_billing_paymentMethod;
+
+	    // Get a camel case function name from event type
+	    var func = '';
+	    var parts = paymentMethodId.toLowerCase().split('_');
+	    for (var i = 0; i < parts.length; i++) {
+	        func += (i == 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+	    }
+
+	    // Add the request suffix
+	    func += 'Request';
+
+	    // Process the request
+        var order = paymentHelper[func](paymentMethodId, req, res, next);
+
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('ordernumber {0}', JSON.stringify(order.orderNo));
+        logger.debug('orderurl {0}', URLUtils.url('Order-Confirm').toString());
+
+        if (order) {
+            return res.json({
+                error: false,
+                orderID: order.orderNo,
+                orderToken: order.orderToken,
+                continueUrl: URLUtils.url('Order-Confirm').toString()
+            });
+        }
+    }
 });
 
 /*
