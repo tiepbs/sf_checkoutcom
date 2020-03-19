@@ -35,6 +35,7 @@ var paymentHelper = {
         Transaction.wrap(function () {
             // Get the current basket
             var currentBasket = BasketMgr.getCurrentBasket();
+            currentBasket.setCustomerEmail(req.form.ckoCustomerEmail);
 
             // Create the order
             var order = OrderMgr.createOrder(currentBasket);
@@ -132,6 +133,7 @@ var paymentHelper = {
         Transaction.wrap(function () {
             // Get the current basket
             var currentBasket = BasketMgr.getCurrentBasket();
+            currentBasket.setCustomerEmail(req.form.ckoCustomerEmail);
 
             // Create the order
             var order = OrderMgr.createOrder(currentBasket);
@@ -179,6 +181,7 @@ var paymentHelper = {
         Transaction.wrap(function () {
             // Get the current basket
             var currentBasket = BasketMgr.getCurrentBasket();
+            currentBasket.setCustomerEmail(req.form.ckoCustomerEmail);
 
             // Create the order
             var order = OrderMgr.createOrder(currentBasket);
@@ -226,6 +229,7 @@ var paymentHelper = {
         Transaction.wrap(function () {         
             // Get the current basket
             var currentBasket = BasketMgr.getCurrentBasket();
+            currentBasket.setCustomerEmail(req.form.ckoCustomerEmail);
 
             // Create the order
             var order = OrderMgr.createOrder(currentBasket);
