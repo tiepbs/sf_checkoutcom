@@ -26,7 +26,7 @@ var paymentHelper = {
         var self = this;
         
         // Prepare the response data
-        var result = {
+        self.result = {
             order: false,
             url: false
         };
