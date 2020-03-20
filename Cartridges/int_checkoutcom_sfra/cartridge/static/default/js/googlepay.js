@@ -9,10 +9,14 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 function initCheckoutcomGooglePayValidation() {
-    $('button.submit-payment').off('click touch').on('click touch', function(e) {
+    $('button.place-order').off('click touch').on('click touch', function(e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_GOOGLE_PAY') {
             // Reset the error messages
             $('.invalid-field-message').empty();
+
+            // Prevent the default button click behaviour
+            e.preventDefault();
+            e.stopImmediatePropagation();
 
             // Prepare the errors array
             var ckoFormErrors = [];
@@ -22,9 +26,11 @@ function initCheckoutcomGooglePayValidation() {
 
             // Invalidate the button click if errors found
             if ($.inArray(1, ckoFormErrors) !== -1) {
-                e.preventDefault();
                 return false;
             }
+
+            // Send the place order request
+            placeOrder();
         }
     });
 }
