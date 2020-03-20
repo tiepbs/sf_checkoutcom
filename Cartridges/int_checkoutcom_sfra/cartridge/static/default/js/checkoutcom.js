@@ -26,7 +26,10 @@ function loadTranslations() {
 function prepareCustomerEmail() {
 	$('input#email').on('focus', function() {
 		if ($.trim($(this).val()) == '') {
-			$(this).val($('#ckoCustomerEmail').val());
+			var customerEmail = $.trim($('#ckoCustomerEmail').val());
+			if (customerEmail && customerEmail.length > 0 && customerEmail != 'null') {
+				$(this).val(customerEmail);
+			}
 		}
 	});
 }
