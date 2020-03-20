@@ -19,12 +19,16 @@ document.addEventListener('DOMContentLoaded', function () {
  */
 function initCheckoutcomApmValidation() {
     // Click event
-    $('button.submit-payment').off('click touch').on('click touch', function (e) {
+    $('button.place-order').off('click touch').on('click touch', function (e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APM') {
             // Reset the error messages
             $('.invalid-field-message').empty();
             $('#cko-apm-content input').removeClass('is-invalid');
-            
+
+            // Prevent the default button click behaviour
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
             // Prepare the errors array
             var ckoFormErrors = [];
             
@@ -36,6 +40,9 @@ function initCheckoutcomApmValidation() {
                 e.preventDefault();
                 return false;
             }
+
+            // Send the place order request
+            placeOrder();
         }
     }); 
 
