@@ -19,3 +19,7 @@
 .is-invalid {
     border: solid 1px red;
 }
+
+.summary-section-label.payment-info-label {
+    display: none;
+}

@@ -85,3 +85,27 @@ function initFormValidation() {
 	var func = 'init' + selectedOption + 'Validation';
 	window[func]();
 }
+
+function placeOrder() {
+	$.ajax({
+		url: $('button.place-order').data('action'),
+		type: 'post',
+		dataType: 'text',
+		contentType: 'application/x-www-form-urlencoded',
+		global: false,
+		data: $('#dwfrm_billing').serialize(),
+		success: function (result) {
+			if (result) {
+				var data = JSON.parse(result);
+				if (data.hasOwnProperty('continueUrl')) {
+					if (data.hasOwnProperty('orderID') && data.hasOwnProperty('orderToken')) {
+						data.continueUrl += '?ID=' + data.orderID + '&token=' + data.orderToken;
+					}
+					window.location.href = data.continueUrl;
+				}
+			}
+		},
+		error: function (err) {
+		}
+	});
+}

@@ -238,7 +238,7 @@ var ckoHelper = {
      * Strip spaces form number
      */
     getFormattedNumber: function (num) {
-        return num.replace(/\s/g, '');
+        return num.toString().replace(/\s/g, '');
     },
     
     /*

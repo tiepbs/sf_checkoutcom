@@ -150,7 +150,7 @@ var cardHelper = {
     /*
      * Get payment card data from request
      */
-    getCardDataFromRequest: function (req) {
+    getCardDataFromRequest: function (req) {        
         return {
             owner       : req.form.dwfrm_billing_creditCardFields_cardOwner,
             cardNumber  : ckoHelper.getFormattedNumber(req.form.dwfrm_billing_creditCardFields_cardNumber),
