@@ -245,14 +245,20 @@ var ckoHelper = {
      * Confirm is a payment is valid from API response code
      */
     paymentSuccess: function (gatewayResponse) {
-        return gatewayResponse.response_code == "10000" || gatewayResponse.response_code == '10100' || gatewayResponse.response_code == '10200';
+        return gatewayResponse 
+        && (gatewayResponse.response_code == "10000" 
+        || gatewayResponse.response_code == '10100'
+        || gatewayResponse.response_code == '10200');
     },
     
     /*
      * Confirm is a payment is valid from API redirect response code
      */
     redirectPaymentSuccess: function (gatewayResponse) {
-        return gatewayResponse.actions[0].response_code == "10000" || gatewayResponse.actions[0].response_code == '10100' || gatewayResponse.actions[0].response_code == '10200';
+        return gatewayResponse
+        && (gatewayResponse.actions[0].response_code == "10000"
+        || gatewayResponse.actions[0].response_code == '10100'
+        || gatewayResponse.actions[0].response_code == '10200');
     },
     
     /*
