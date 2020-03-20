@@ -197,14 +197,16 @@ function checkSavedCardCvv() {
         var targetField = $('#cko-card-content .selected-payment')
         .find('input.saved-payment-security-code');
 
-        // Check CVV length
-        if (targetField.val().length < 3 || targetField.val().length > 4) {
-            targetField.addClass('is-invalid');
-            targetField.closest('.saved-payment-instrument').find('.invalid-feedback').css('display', 'block');
-            targetField.data('error', 1);
-        }
-        else {
-            targetField.data('error', 0);
+        if (targetField.length) {
+            // Check CVV length
+            if (targetField.val().length < 3 || targetField.val().length > 4) {
+                targetField.addClass('is-invalid');
+                targetField.closest('.saved-payment-instrument').find('.invalid-feedback').css('display', 'block');
+                targetField.data('error', 1);
+            }
+            else {
+                targetField.data('error', 0);
+            }
         }
     });
     
