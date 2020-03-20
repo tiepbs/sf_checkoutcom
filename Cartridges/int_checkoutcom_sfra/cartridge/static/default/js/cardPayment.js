@@ -75,27 +75,6 @@ function initCheckoutcomCardValidation() {
         // Prevent the default button click behaviour
         e.preventDefault();
         e.stopImmediatePropagation();
-        $.ajax({
-            url: $('button.place-order').data('action'),
-            type: 'post',
-            dataType: 'text',
-            contentType: 'application/x-www-form-urlencoded',
-            global: false,
-            data: $('#dwfrm_billing').serialize(),
-            success: function (result) {
-                if (result) {
-                    var data = JSON.parse(result);
-                    if (data.hasOwnProperty('continueUrl')) {
-                        if (data.hasOwnProperty('orderID') && data.hasOwnProperty('orderToken')) {
-                            data.continueUrl += '?ID=' + data.orderID + '&token=' + data.orderToken;
-                        }
-                        window.location.href = data.continueUrl;
-                    }
-                }
-            },
-            error: function (err) {
-            }
-        });
 
         // Prepare the errors array
         var ckoFormErrors = [];
@@ -124,9 +103,11 @@ function initCheckoutcomCardValidation() {
 
         // Invalidate the button click if errors found
         if ($.inArray(1, ckoFormErrors) !== -1) {
-            e.preventDefault();
             return false;
         }
+
+        // Send the place order request
+        placeOrder();
     });
 }
 

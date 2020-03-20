@@ -69,6 +69,17 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
         viewData.phone = { value: paymentForm.contactInfoFields.phone.value };
     }
 
+    if (formFieldErrors.length) {
+        // respond with form data and errors
+        res.json({
+            form: paymentForm,
+            fieldErrors: formFieldErrors,
+            serverErrors: [],
+            error: true
+        });
+        return next();
+    }
+
     res.setViewData(viewData);  
 
     var billingForm = server.forms.getForm('billing');
