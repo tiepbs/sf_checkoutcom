@@ -9,9 +9,6 @@ var apm_selected_box = false;
 document.addEventListener('DOMContentLoaded', function () {
     // Init the APM accordion
     initApmAccordion();
-
-    // Filter the APM
-    filterApm();
 }, false);
 
 /*
@@ -125,6 +122,10 @@ function initApmAccordion()
     // List item radio click action
     $('.cko-apm-accordion input[type="radio"]').on('click touch', function(e) {
         e.stopPropagation();
+
+        // Filter the APM
+        filterApm();
+
         $(this).parents('.cko-apm-accordion').trigger('click');
     });
 
