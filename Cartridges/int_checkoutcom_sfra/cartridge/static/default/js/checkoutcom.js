@@ -24,13 +24,8 @@ function loadTranslations() {
 }
 
 function prepareCustomerEmail() {
-	$('input#email').on('focus', function() {
-		if ($.trim($(this).val()) == '') {
-			var customerEmail = $.trim($('#ckoCustomerEmail').val());
-			if (customerEmail && customerEmail.length > 0 && customerEmail != 'null') {
-				$(this).val(customerEmail);
-			}
-		}
+	$('input#email').on('change', function() {
+		$('#ckoCustomerEmail').val($.trim($(this).val()));
 	});
 }
 
