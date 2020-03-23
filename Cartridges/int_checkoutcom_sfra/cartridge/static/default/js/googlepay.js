@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 function initCheckoutcomGooglePayValidation() {
-    $('button.place-order').off('click touch').on('click touch', function(e) {
+    $('button.submit-payment').off('click touch').on('click touch', function(e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_GOOGLE_PAY') {
             // Reset the error messages
             $('.invalid-field-message').empty();

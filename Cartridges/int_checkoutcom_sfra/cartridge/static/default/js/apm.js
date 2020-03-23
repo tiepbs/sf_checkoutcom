@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
  */
 function initCheckoutcomApmValidation() {
     // Click event
-    $('button.place-order').off('click touch').on('click touch', function (e) {
+    $('button.submit-payment').off('click touch').on('click touch', function (e) {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APM') {
             // Reset the error messages
             $('.invalid-field-message').empty();
