@@ -17,7 +17,6 @@ var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
  */
 server.replace('SubmitPayment', server.middleware.https, function (req, res, next) { 
     // Load some classes
-    var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
     var AccountModel = require('*/cartridge/models/account');
     var OrderModel = require('*/cartridge/models/order');
     var Locale = require('dw/util/Locale');
@@ -35,54 +34,9 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
     // Prepare the payment parameters
     var viewData = {};
     var paymentForm = server.forms.getForm('billing');
-
-    // verify billing form data
-    var billingFormErrors = COHelpers.validateBillingForm(paymentForm.addressFields);
-    var contactInfoFormErrors = COHelpers.validateFields(paymentForm.contactInfoFields);
-
-    var formFieldErrors = [];
-    if (Object.keys(billingFormErrors).length) {
-        formFieldErrors.push(billingFormErrors);
-    } else {
-        viewData.address = {
-            firstName: { value: paymentForm.addressFields.firstName.value },
-            lastName: { value: paymentForm.addressFields.lastName.value },
-            address1: { value: paymentForm.addressFields.address1.value },
-            address2: { value: paymentForm.addressFields.address2.value },
-            city: { value: paymentForm.addressFields.city.value },
-            postalCode: { value: paymentForm.addressFields.postalCode.value },
-            countryCode: { value: paymentForm.addressFields.country.value }
-        };
-
-        if (Object.prototype.hasOwnProperty.call(paymentForm.addressFields, 'states')) {
-            viewData.address.stateCode = { value: paymentForm.addressFields.states.stateCode.value };
-        }
-    }
-
-    if (Object.keys(contactInfoFormErrors).length) {
-        formFieldErrors.push(contactInfoFormErrors);
-    } else {
-        viewData.email = {
-            value: paymentForm.contactInfoFields.email.value
-        };
-
-        viewData.phone = { value: paymentForm.contactInfoFields.phone.value };
-    }
-
-    if (formFieldErrors.length) {
-        // respond with form data and errors
-        res.json({
-            form: paymentForm,
-            fieldErrors: formFieldErrors,
-            serverErrors: [],
-            error: true
-        });
-        return next();
-    }
+    var billingForm = server.forms.getForm('billing');
 
     res.setViewData(viewData);  
-
-    var billingForm = server.forms.getForm('billing');
 
     this.on('route:BeforeComplete', function (req, res) {
         var BasketMgr = require('dw/order/BasketMgr');
@@ -131,53 +85,11 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
 
         var billingAddress = currentBasket.billingAddress;
         var billingForm = server.forms.getForm('billing');
-        billingForm.creditCardFields.cardNumber.htmlValue = '';
-        billingForm.creditCardFields.securityCode.htmlValue = '';
-
-        Transaction.wrap(function () {
-            if (!billingAddress) {
-                billingAddress = currentBasket.createBillingAddress();
-            }
-
-            billingAddress.setFirstName(billingData.address.firstName.value);
-            billingAddress.setLastName(billingData.address.lastName.value);
-            billingAddress.setAddress1(billingData.address.address1.value);
-            billingAddress.setAddress2(billingData.address.address2.value);
-            billingAddress.setCity(billingData.address.city.value);
-            billingAddress.setPostalCode(billingData.address.postalCode.value);
-            if (Object.prototype.hasOwnProperty.call(billingData.address, 'stateCode')) {
-                billingAddress.setStateCode(billingData.address.stateCode.value);
-            }
-            billingAddress.setCountryCode(billingData.address.countryCode.value);
-
-            if (billingData.storedPaymentUUID) {
-                billingAddress.setPhone(req.currentCustomer.profile.phone);
-                currentBasket.setCustomerEmail(req.currentCustomer.profile.email);
-            } else {
-                billingAddress.setPhone(billingData.phone.value);
-                currentBasket.setCustomerEmail(billingData.email.value);
-            }
-        });
 
         // Calculate the basket
         Transaction.wrap(function () {
             basketCalculationHelpers.calculateTotals(currentBasket);
         });
-
-        // Re-calculate the payments.
-        var calculatedPaymentTransaction = COHelpers.calculatePaymentTransaction(
-            currentBasket
-        );
-
-        if (calculatedPaymentTransaction.error) {
-            res.json({
-                form: paymentForm,
-                fieldErrors: [],
-                serverErrors: [Resource.msg('error.technical', 'checkout', null)],
-                error: true
-            });
-            return;
-        }
 
         var usingMultiShipping = req.session.privacyCache.get('usingMultiShipping');
         if (usingMultiShipping === true && currentBasket.shipments.length < 2) {
@@ -192,16 +104,7 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
             { usingMultiShipping: usingMultiShipping, countryCode: currentLocale.country, containerView: 'basket' }
         );
 
-        var accountModel = new AccountModel(req.currentCustomer);
-        var renderedStoredPaymentInstrument = COHelpers.getRenderedPaymentInstruments(
-            req,
-            accountModel
-        );
-
-        delete billingData.paymentInformation;
-
         res.json({
-            renderedPaymentInstruments: renderedStoredPaymentInstrument,
             customer: accountModel,
             order: basketModel,
             form: billingForm,
@@ -212,10 +115,7 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
    return next();
 });
 
-server.replace('PlaceOrder', server.middleware.https, function (req, res, next) {
-    // Load some classes
-    var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
-    
+server.replace('PlaceOrder', server.middleware.https, function (req, res, next) {    
     // Process the place order request
 	var condition = req.form && req.form.dwfrm_billing_paymentMethod;
 	if (condition) {
@@ -242,7 +142,6 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
             });
         }
         else if (result.order) {
-            COHelpers.sendConfirmationEmail(result.order, req.locale.id);
             res.json({
                 error: false,
                 orderID: result.order.orderNo,

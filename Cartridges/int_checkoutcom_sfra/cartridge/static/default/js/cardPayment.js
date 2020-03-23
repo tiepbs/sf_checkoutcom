@@ -66,7 +66,7 @@ function initCardFormFocus() {
 }
 
 function initCheckoutcomCardValidation() {
-    $('button.place-order').off('click touch').on('click touch', function (e) {
+    $('button.submit-payment').off('click touch').on('click touch', function (e) {
         // Reset the error messages
         $('.invalid-field-message').empty();
         $('.invalid-feedback').hide();
@@ -98,16 +98,17 @@ function initCheckoutcomCardValidation() {
         }
         else if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && $('#selectedCardId').val() != '') {
             // Saved card CVV validation
-            ckoFormErrors[0] = checkSavedCardCvv();
+            ckoFormErrors[] = checkSavedCardCvv();
         }
 
         // Invalidate the button click if errors found
         if ($.inArray(1, ckoFormErrors) !== -1) {
             return false;
         }
-
-        // Send the place order request
-        placeOrder();
+        else {
+            // Send the place order request
+            placeOrder();
+        }
     });
 }
 
@@ -197,14 +198,16 @@ function checkSavedCardCvv() {
         var targetField = $('#cko-card-content .selected-payment')
         .find('input.saved-payment-security-code');
 
-        // Check CVV length
-        if (targetField.val().length < 3 || targetField.val().length > 4) {
-            targetField.addClass('is-invalid');
-            targetField.closest('.saved-payment-instrument').find('.invalid-feedback').css('display', 'block');
-            targetField.data('error', 1);
-        }
-        else {
-            targetField.data('error', 0);
+        if (targetField.length) {
+            // Check CVV length
+            if (targetField.val().length < 3 || targetField.val().length > 4) {
+                targetField.addClass('is-invalid');
+                targetField.closest('.saved-payment-instrument').find('.invalid-feedback').css('display', 'block');
+                targetField.data('error', 1);
+            }
+            else {
+                targetField.data('error', 0);
+            }
         }
     });
     

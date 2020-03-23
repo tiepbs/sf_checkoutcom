@@ -26,7 +26,7 @@
 </fieldset>
 
 <!-- Customer email -->
-<input type="hidden" id="ckoCustomerEmail" name="ckoCustomerEmail" value="${pdict.customer.profile.email}">
+<input type="hidden" id="ckoCustomerEmail" name="ckoCustomerEmail" value="${pdict.customer.profile.email || ''}">
 
 <!-- Translation strings -->
 <isscript>
