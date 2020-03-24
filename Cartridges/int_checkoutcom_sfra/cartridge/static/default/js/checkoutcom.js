@@ -80,8 +80,8 @@ function initFormValidation() {
 	}
 
 	// Build and call the validation function name
-	var func = 'init' + selectedOption + 'Validation';
-	window[func]();
+	var func = window['init' + selectedOption + 'Validation'];
+	if (typeof func === "function") func();
 }
 
 function placeOrder() {

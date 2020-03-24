@@ -28,9 +28,10 @@ function initCheckoutcomApplePayValidation() {
             if ($.inArray(1, ckoFormErrors) !== -1) {
                 return false;
             }
-
-            // Send the place order request
-            placeOrder();
+            else {
+                // Send the place order request
+                placeOrder();
+            }
         }
     });
 }

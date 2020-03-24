@@ -129,4 +129,3 @@
 </div>
 
 <input type="hidden" id="cardType" name="cardType" value="" <isprint value=${creditFields.cardType.attributes} encoding="off"/>>
-<script src="${URLUtils.staticURL('/js/cardPayment.js')}"></script>
