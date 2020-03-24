@@ -34,7 +34,6 @@ function initCheckoutcomApmValidation() {
 
             // Invalidate the button click if errors found
             if ($.inArray(1, ckoFormErrors) !== -1) {
-                e.preventDefault();
                 return false;
             }
             else {
