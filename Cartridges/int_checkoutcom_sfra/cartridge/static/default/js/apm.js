@@ -37,9 +37,10 @@ function initCheckoutcomApmValidation() {
                 e.preventDefault();
                 return false;
             }
-
-            // Send the place order request
-            placeOrder();
+            else {
+                // Send the place order request
+                placeOrder();
+            }
         }
     }); 
 

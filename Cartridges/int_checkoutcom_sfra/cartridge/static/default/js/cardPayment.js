@@ -67,6 +67,7 @@ function initCardFormFocus() {
 
 function initCheckoutcomCardValidation() {
     $('button.submit-payment').off('click touch').on('click touch', function (e) {
+
         // Reset the error messages
         $('.invalid-field-message').empty();
         $('.invalid-feedback').hide();
