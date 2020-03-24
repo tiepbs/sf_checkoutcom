@@ -155,7 +155,92 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
    return next();
 });
 
-server.replace('PlaceOrder', server.middleware.https, function (req, res, next) {    
+server.replace('PlaceOrder', server.middleware.https, function (req, res, next) {  
+    var URLUtils = require('dw/web/URLUtils');
+    var BasketMgr = require('dw/order/BasketMgr');
+    var validationHelpers = require('*/cartridge/scripts/helpers/basketValidationHelpers');
+    var Resource = require('dw/web/Resource');
+    var Transaction = require('dw/system/Transaction');
+    var basketCalculationHelpers = require('*/cartridge/scripts/helpers/basketCalculationHelpers');
+    var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
+
+    var currentBasket = BasketMgr.getCurrentBasket();
+
+    if (!currentBasket) {
+        res.json({
+            error: true,
+            cartError: true,
+            fieldErrors: [],
+            serverErrors: [],
+            redirectUrl: URLUtils.url('Cart-Show').toString()
+        });
+        return next();
+    }
+    
+    var validatedProducts = validationHelpers.validateProducts(currentBasket);
+    if (validatedProducts.error) {
+        res.json({
+            error: true,
+            cartError: true,
+            fieldErrors: [],
+            serverErrors: [],
+            redirectUrl: URLUtils.url('Cart-Show').toString()
+        });
+        return next();
+    }
+
+    if (req.session.privacyCache.get('fraudDetectionStatus')) {
+        res.json({
+            error: true,
+            cartError: true,
+            redirectUrl: URLUtils.url('Error-ErrorCode', 'err', '01').toString(),
+            errorMessage: Resource.msg('error.technical', 'checkout', null)
+        });
+
+        return next();
+    }
+
+    // Check to make sure there is a shipping address
+    if (currentBasket.defaultShipment.shippingAddress === null) {
+        res.json({
+            error: true,
+            errorStage: {
+                stage: 'shipping',
+                step: 'address'
+            },
+            errorMessage: Resource.msg('error.no.shipping.address', 'checkout', null)
+        });
+        return next();
+    }
+
+    // Check to make sure billing address exists
+    if (!currentBasket.billingAddress) {
+        res.json({
+            error: true,
+            errorStage: {
+                stage: 'payment',
+                step: 'billingAddress'
+            },
+            errorMessage: Resource.msg('error.no.billing.address', 'checkout', null)
+        });
+        return next();
+    }
+
+    // Calculate the basket
+    Transaction.wrap(function () {
+        basketCalculationHelpers.calculateTotals(currentBasket);
+    });
+
+    // Re-calculate the payments.
+    var calculatedPaymentTransactionTotal = COHelpers.calculatePaymentTransaction(currentBasket);
+    if (calculatedPaymentTransactionTotal.error) {
+        res.json({
+            error: true,
+            errorMessage: Resource.msg('error.technical', 'checkout', null)
+        });
+        return next();
+    }
+    
     // Process the place order request
 	var condition = req.form && req.form.dwfrm_billing_paymentMethod;
 	if (condition) {
