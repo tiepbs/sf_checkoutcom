@@ -6,6 +6,7 @@
         <staging-mode>no-staging</staging-mode>
         <storage-scope>site</storage-scope>
         <key-definition attribute-id="ckoDefaultSettings">
+            <display-name xml:lang="x-default">The Default site for CKO Settings</display-name>
             <type>string</type>
             <min-length>0</min-length>
         </key-definition>
@@ -124,7 +125,7 @@
             </attribute-definition>
             <attribute-definition attribute-id="ckoAutoCapture">
                 <display-name xml:lang="x-default">Auto Capture</display-name>
-                <type>string</type>
+                <type>boolean</type>
                 <localizable-flag>false</localizable-flag>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -132,7 +133,7 @@
             </attribute-definition>
             <attribute-definition attribute-id="ckoAutoCaptureTime">
                 <display-name xml:lang="x-default">Auto Capture Time</display-name>
-                <type>string</type>
+                <type>int</type>
                 <localizable-flag>false</localizable-flag>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -291,7 +292,7 @@
                 <min-length>0</min-length>
             </attribute-definition>
             <attribute-definition attribute-id="ckoSandboxPrivateSharedKey">
-                <display-name xml:lang="x-default">Sandbox Private Shared `key</display-name>
+                <display-name xml:lang="x-default">Sandbox Private Shared Key</display-name>
                 <type>string</type>
                 <localizable-flag>false</localizable-flag>
                 <mandatory-flag>false</mandatory-flag>
