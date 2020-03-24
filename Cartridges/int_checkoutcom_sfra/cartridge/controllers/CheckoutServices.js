@@ -32,27 +32,17 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
 
     // Prepare the payment parameters
     var viewData = {};
-    var paymentForm = server.forms.getForm('billing');
-    var billingForm = server.forms.getForm('billing');
-
     res.setViewData(viewData);  
 
     this.on('route:BeforeComplete', function (req, res) {
         var BasketMgr = require('dw/order/BasketMgr');
-        var HookMgr = require('dw/system/HookMgr');
-        var PaymentMgr = require('dw/order/PaymentMgr');
-        var PaymentInstrument = require('dw/order/PaymentInstrument');
         var Transaction = require('dw/system/Transaction');
-        var AccountModel = require('*/cartridge/models/account');
         var OrderModel = require('*/cartridge/models/order');
         var URLUtils = require('dw/web/URLUtils');
         var Locale = require('dw/util/Locale');
         var basketCalculationHelpers = require('*/cartridge/scripts/helpers/basketCalculationHelpers');
-        var hooksHelper = require('*/cartridge/scripts/helpers/hooks');
         var validationHelpers = require('*/cartridge/scripts/helpers/basketValidationHelpers');
-
         var currentBasket = BasketMgr.getCurrentBasket();
-
         var billingData = res.getViewData();
 
         if (!currentBasket) {
@@ -82,7 +72,6 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
             return;
         }
 
-        var billingAddress = currentBasket.billingAddress;
         var billingForm = server.forms.getForm('billing');
 
         // Calculate the basket
