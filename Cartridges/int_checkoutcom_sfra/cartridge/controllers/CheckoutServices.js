@@ -11,7 +11,6 @@ server.extend(module.superModule);
 /** Utility **/
 var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
 
-
 /**
  * Handles requests to the Checkout.com payment gateway.
  */
