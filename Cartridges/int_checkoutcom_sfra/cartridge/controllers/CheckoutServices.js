@@ -44,60 +44,112 @@ server.replace('SubmitPayment', server.middleware.https, function (req, res, nex
         var validationHelpers = require('*/cartridge/scripts/helpers/basketValidationHelpers');
         var currentBasket = BasketMgr.getCurrentBasket();
         var billingData = res.getViewData();
+        var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
 
-        if (!currentBasket) {
-            delete billingData.paymentInformation;
+        var viewData = {};
+        var paymentForm = server.forms.getForm('billing');
 
-            res.json({
-                error: true,
-                cartError: true,
-                fieldErrors: [],
-                serverErrors: [],
-                redirectUrl: URLUtils.url('Cart-Show').toString()
-            });
-            return;
+        // verify billing form data
+        var billingFormErrors = COHelpers.validateBillingForm(paymentForm.addressFields);
+        var contactInfoFormErrors = COHelpers.validateFields(paymentForm.contactInfoFields);
+
+        var formFieldErrors = [];
+        if (Object.keys(billingFormErrors).length) {
+            formFieldErrors.push(billingFormErrors);
+        } else {
+            viewData.address = {
+                firstName: { value: paymentForm.addressFields.firstName.value },
+                lastName: { value: paymentForm.addressFields.lastName.value },
+                address1: { value: paymentForm.addressFields.address1.value },
+                address2: { value: paymentForm.addressFields.address2.value },
+                city: { value: paymentForm.addressFields.city.value },
+                postalCode: { value: paymentForm.addressFields.postalCode.value },
+                countryCode: { value: paymentForm.addressFields.country.value }
+            };
+
+            if (Object.prototype.hasOwnProperty.call(paymentForm.addressFields, 'states')) {
+                viewData.address.stateCode = { value: paymentForm.addressFields.states.stateCode.value };
+            }
         }
 
-        var validatedProducts = validationHelpers.validateProducts(currentBasket);
-        if (validatedProducts.error) {
-            delete billingData.paymentInformation;
+        if (Object.keys(contactInfoFormErrors).length) {
+            formFieldErrors.push(contactInfoFormErrors);
+        } else {
+            viewData.email = {
+                value: paymentForm.contactInfoFields.email.value
+            };
 
-            res.json({
-                error: true,
-                cartError: true,
-                fieldErrors: [],
-                serverErrors: [],
-                redirectUrl: URLUtils.url('Cart-Show').toString()
-            });
-            return;
+            viewData.phone = { value: paymentForm.contactInfoFields.phone.value };
         }
 
-        var billingForm = server.forms.getForm('billing');
+        if (formFieldErrors.length || paymentFormResult.serverErrors) {
+            // respond with form data and errors
+            res.json({
+                form: paymentForm,
+                fieldErrors: formFieldErrors,
+                serverErrors: paymentFormResult.serverErrors ? paymentFormResult.serverErrors : [],
+                error: true
+            });
+            return next();
+        }
 
-        // Calculate the basket
-        Transaction.wrap(function () {
-            basketCalculationHelpers.calculateTotals(currentBasket);
+        res.setViewData(paymentFormResult.viewData);
+
+        this.on('route:BeforeComplete', function (req, res) {
+            if (!currentBasket) {
+                delete billingData.paymentInformation;
+
+                res.json({
+                    error: true,
+                    cartError: true,
+                    fieldErrors: [],
+                    serverErrors: [],
+                    redirectUrl: URLUtils.url('Cart-Show').toString()
+                });
+                return;
+            }
+
+            var validatedProducts = validationHelpers.validateProducts(currentBasket);
+            if (validatedProducts.error) {
+                delete billingData.paymentInformation;
+
+                res.json({
+                    error: true,
+                    cartError: true,
+                    fieldErrors: [],
+                    serverErrors: [],
+                    redirectUrl: URLUtils.url('Cart-Show').toString()
+                });
+                return;
+            }
+
+            var billingForm = server.forms.getForm('billing');
+
+            // Calculate the basket
+            Transaction.wrap(function () {
+                basketCalculationHelpers.calculateTotals(currentBasket);
+            });
+
+            var usingMultiShipping = req.session.privacyCache.get('usingMultiShipping');
+            if (usingMultiShipping === true && currentBasket.shipments.length < 2) {
+                req.session.privacyCache.set('usingMultiShipping', false);
+                usingMultiShipping = false;
+            }
+
+            var currentLocale = Locale.getLocale(req.locale.id);
+
+            var basketModel = new OrderModel(
+                currentBasket,
+                { usingMultiShipping: usingMultiShipping, countryCode: currentLocale.country, containerView: 'basket' }
+            );
+
+            res.json({
+                customer: accountModel,
+                order: basketModel,
+                form: billingForm,
+                error: false
+            });   
         });
-
-        var usingMultiShipping = req.session.privacyCache.get('usingMultiShipping');
-        if (usingMultiShipping === true && currentBasket.shipments.length < 2) {
-            req.session.privacyCache.set('usingMultiShipping', false);
-            usingMultiShipping = false;
-        }
-
-        var currentLocale = Locale.getLocale(req.locale.id);
-
-        var basketModel = new OrderModel(
-            currentBasket,
-            { usingMultiShipping: usingMultiShipping, countryCode: currentLocale.country, containerView: 'basket' }
-        );
-
-        res.json({
-            customer: accountModel,
-            order: basketModel,
-            form: billingForm,
-            error: false
-        });    
     });
   
    return next();
