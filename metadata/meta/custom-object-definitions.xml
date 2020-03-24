@@ -133,7 +133,7 @@
             </attribute-definition>
             <attribute-definition attribute-id="ckoAutoCaptureTime">
                 <display-name xml:lang="x-default">Auto Capture Time</display-name>
-                <type>int</type>
+                <type>string</type>
                 <localizable-flag>false</localizable-flag>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
