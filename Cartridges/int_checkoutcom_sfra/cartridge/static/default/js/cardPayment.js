@@ -67,7 +67,6 @@ function initCardFormFocus() {
 
 function initCheckoutcomCardValidation() {
     $('button.submit-payment').off('click touch').on('click touch', function (e) {
-
         // Reset the error messages
         $('.invalid-field-message').empty();
         $('.invalid-feedback').hide();
@@ -81,7 +80,8 @@ function initCheckoutcomCardValidation() {
         var ckoFormErrors = [];
 
         // Perform the fields validation
-        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && $('#selectedCardId').val() == '') {            
+        var selectedCardId = $('#selectedCardId').val();
+        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && (selectedCardId == '' || typeof selectedCardId === 'undefined')) {            
             // Card owner validation
             ckoFormErrors[0] = checkCardholder();
 
@@ -97,7 +97,7 @@ function initCheckoutcomCardValidation() {
             // Security code validation
             ckoFormErrors[4] = checkCardCvv();
         }
-        else if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && $('#selectedCardId').val() != '') {
+        else if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && $('#selectedCardId').val() != '' && typeof selectedCardId !== 'undefined') {
             // Saved card CVV validation
             ckoFormErrors[0] = checkSavedCardCvv();
         }
