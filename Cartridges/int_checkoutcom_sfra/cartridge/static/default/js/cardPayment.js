@@ -98,7 +98,7 @@ function initCheckoutcomCardValidation() {
         }
         else if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && $('#selectedCardId').val() != '') {
             // Saved card CVV validation
-            ckoFormErrors[] = checkSavedCardCvv();
+            ckoFormErrors[0] = checkSavedCardCvv();
         }
 
         // Invalidate the button click if errors found
