@@ -80,7 +80,8 @@ function initCheckoutcomCardValidation() {
         var ckoFormErrors = [];
 
         // Perform the fields validation
-        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && $('#selectedCardId').val() == '') {            
+        var selectedCardId = $('#selectedCardId').val();
+        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && (selectedCardId == '' || typeof selectedCardId === 'undefined')) {            
             // Card owner validation
             ckoFormErrors[0] = checkCardholder();
 
@@ -96,9 +97,9 @@ function initCheckoutcomCardValidation() {
             // Security code validation
             ckoFormErrors[4] = checkCardCvv();
         }
-        else if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && $('#selectedCardId').val() != '') {
+        else if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_CARD' && $('#selectedCardId').val() != '' && typeof selectedCardId !== 'undefined') {
             // Saved card CVV validation
-            ckoFormErrors[] = checkSavedCardCvv();
+            ckoFormErrors[0] = checkSavedCardCvv();
         }
 
         // Invalidate the button click if errors found
