@@ -64,6 +64,10 @@ var ckoApmFilterConfig = {
     oxxo: {
         countries   : "MX",
         currencies  : "MXN"
+    },
+    alipay: {
+    	countries	: "CN",
+    	currencies	: ["USD", "CNY"]
     }
 }
 

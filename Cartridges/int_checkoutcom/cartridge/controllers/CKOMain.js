@@ -48,9 +48,13 @@ function handleReturn()
                     var verify = false;
                     
                     // Logging
-                    ckoHelper.doLog('Apm response', gVerify);
+                    ckoHelper.doLog('Redirect response', gVerify);
                     
                     if (ckoHelper.paymentSuccess(gVerify)) {
+                    	
+                    	// Save the order transaction
+                    	ckoHelper.saveRedirectTransaction(gVerify, order);
+                    	
                         // Show order confirmation page
                         app.getController('COSummary').ShowConfirmation(order);
                     } else {

@@ -101,11 +101,21 @@ function handleMandate()
                         session.privacy.sepaResponseId = null;
                         
                         // Handle the SEPA request
-                        apmHelper.handleSepaRequest(payObject, order);
+                        var sepaRequest = apmHelper.handleSepaControllerRequest(payObject, order);
+                        if(apmHelper.handleApmChargeResponse(sepaRequest, order)){
+                        	
+                        	// Save Sepa Transaction
+                        	ckoHelper.saveSepaTransaction(sepaRequest, order);
+                        	
+                            // Show the confirmation screen
+                            app.getController('COSummary').ShowConfirmation(order);
+                        }else{
+                        	// Return to the billing start page
+                        	app.getController('COBilling').Start();
+                        }
                         
-                        // Show the confirmation screen
-                        app.getController('COSummary').ShowConfirmation(order);
                     } else {
+                    	// Return to the billing start page
                         app.getController('COBilling').Start();
                     }
                 } else {

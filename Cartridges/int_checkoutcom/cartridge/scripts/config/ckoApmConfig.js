@@ -29,7 +29,7 @@ var ckoApmConfig = {
                 'type'          : 'ideal',
                 'bic'           : paymentForm.get('ideal_bic').value(),
                 'description'   : args.OrderNo,
-                'language'      : ckoHelper.getLanguage(),
+                'language'      : ckoHelper.getLanguage()
             },
             'type'      : 'ideal',
             'purpose'   : businessName,
@@ -159,7 +159,7 @@ var ckoApmConfig = {
         var payObject = {
             'source'    :   {
                 'type'          : 'knet',
-                'language'      : ckoHelper.getLanguage().substr(0, 2),
+                'language'      : ckoHelper.getLanguage().substr(0, 2)
             },
             'type'      : 'knet',
             'purpose'   : businessName,
@@ -355,7 +355,24 @@ var ckoApmConfig = {
                 }
             },
             'type'          : 'oxxo',
-            'currency'      : ckoHelper.getCurrency(args),
+            'currency'      : ckoHelper.getCurrency(args)
+        };
+        
+        return payObject;
+    },
+    
+    /*
+     * Ali Pay Object
+     */
+    aliPayAuthorization: function (args) {
+        // Build the payment object
+        var payObject = {
+            'source': {
+                'type': 'alipay',
+                'country': ckoHelper.getBillingObject(args).country
+            },
+            'type'          : 'alipay',
+            'currency'      : ckoHelper.getCurrency(args)
         };
         
         return payObject;

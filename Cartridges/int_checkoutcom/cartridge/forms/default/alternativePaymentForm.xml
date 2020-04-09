@@ -48,4 +48,7 @@
     
     <!-- Field for Oxxo pay -->
     <field formid="oxxo_identification" type="string" label="oxxo.label.id" max-length="40" binding="oxxo_identification"/>
+    
+    <!-- Field for Ali pay -->
+    <field formid="alipay_identification" type="string" label="alipay.label.id" max-length="40" binding="alipay_identification"/>
 </form>

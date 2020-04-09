@@ -10,6 +10,8 @@ var PaymentMgr = require('dw/order/PaymentMgr');
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
+var PaymentMgr = require('dw/order/PaymentMgr');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
@@ -17,7 +19,7 @@ var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 /*
 * Utility functions for my cartridge integration.
 */
-var ckoHelper = { 
+var ckoHelper = {
 		
     /*
      * Get the required value for each mode
@@ -1035,6 +1037,98 @@ var ckoHelper = {
         }
         
         return address;
+    },
+    
+    saveCKOTransaction: function(ckoResponse, args){
+
+        // Preparing payment parameters
+        var paymentInstrument = args.PaymentInstrument;
+        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+        
+        Transaction.wrap(function () {
+            paymentInstrument.paymentTransaction.transactionID = ckoResponse.action_id;
+            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+            paymentInstrument.paymentTransaction.custom.ckoPaymentId = ckoResponse.id;
+            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+            paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+        });
+    },
+    
+    saveSepaTransaction: function(ckoResponse, order){
+
+    	var paymentInstruments = order.getPaymentInstruments().iterator();
+    	
+        // Logging
+        this.doLog('Sepa transaction response', ckoResponse);
+    	
+        // Iterate through the payment Instruments
+        while (paymentInstruments.hasNext()) {
+        	var paymentInstrument = paymentInstruments.next();
+        	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+    		
+    		
+            Transaction.wrap(function () {
+                paymentInstrument.paymentTransaction.transactionID = ckoResponse.action_id;
+                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+                paymentInstrument.paymentTransaction.custom.ckoPaymentId = ckoResponse.id;
+                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+            });
+        	
+        }
+    },
+    
+    saveRedirectTransaction: function(ckoResponse, order){
+    	
+    	var paymentInstruments = order.getPaymentInstruments().iterator();
+    	
+        // Iterate through the payment Instruments
+        while (paymentInstruments.hasNext()) {
+        	var paymentInstrument = paymentInstruments.next();
+        	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+        	
+        	if(ckoResponse.hasOwnProperty('actions')){
+
+            	var transactions = ckoResponse.actions;
+        		
+	        	for(var i = 0; i < transactions.length; i++ ){
+	
+	        		var transactionType = (ckoResponse.actions[i].type == "Capture") ? PaymentTransaction.TYPE_CAPTURE : PaymentTransaction.TYPE_AUTH;
+	        		
+	        		
+	                Transaction.wrap(function () {
+	                    paymentInstrument.paymentTransaction.transactionID = ckoResponse.actions[i].id;
+	                    paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+	                    paymentInstrument.paymentTransaction.custom.ckoPaymentId = ckoResponse.id;
+	                    paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+	                    paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+	                    paymentInstrument.paymentTransaction.custom.ckoTransactionType = ckoResponse.actions[i].type;
+	                    paymentInstrument.paymentTransaction.setType(transactionType);
+	                });
+	        		
+	        	}
+	        	
+        	}else{
+        		
+                Transaction.wrap(function () {
+                    paymentInstrument.paymentTransaction.transactionID = ckoResponse.action_id;
+                    paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+                    paymentInstrument.paymentTransaction.custom.ckoPaymentId = ckoResponse.id;
+                    paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+                    paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+                    paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+                    paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+                });
+        		
+        	}
+        	
+        }
+    
+
     }
 }
 

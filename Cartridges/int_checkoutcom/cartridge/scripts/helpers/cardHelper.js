@@ -1,8 +1,11 @@
 "use strict"
 
 /* API Includes */
+var PaymentMgr = require('dw/order/PaymentMgr');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
+var ISML = require('dw/template/ISML');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -11,6 +14,54 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 * Utility functions for my cartridge integration.
 */
 var cardHelper = {
+	
+    /*
+     * Creates Site Genesis Transaction Object
+     * @return object
+     */
+    cardAuthorization: function (payObject, args) {
+        // Preparing payment parameters
+        var paymentInstrument = args.PaymentInstrument;
+        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+        
+        // perform the charge
+        var cardRequest = this.handleCardRequest(payObject, args);
+        
+        // Handle apm result
+        if (cardRequest) {
+            	
+            if (session.privacy.redirectUrl) {
+                
+                // 3ds redirection
+                ISML.renderTemplate('redirects/3DSecure.isml', {
+                    redirectUrl: session.privacy.redirectUrl
+                });
+
+                return {authorized: true, redirected: true};
+
+            } else {
+            	
+                // Create the authorization transaction
+                Transaction.wrap(function () {
+                    paymentInstrument.paymentTransaction.transactionID = cardRequest.action_id;
+                    paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+                    paymentInstrument.paymentTransaction.custom.ckoPaymentId = cardRequest.id;
+                    paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
+                    paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
+                    paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
+                    paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
+                });
+            	
+                return {authorized: true};
+            }
+            
+            
+        } else {
+        	
+            return false
+        }
+    },
+		
     /*
      * Handle full charge Request to CKO API
      */
@@ -29,11 +80,14 @@ var cardHelper = {
                 gatewayRequest
             );
         
-            // Logging
-            ckoHelper.doLog('response', gatewayResponse);
+
 
             // If the charge is valid, process the response
-            if (gatewayResponse) {                
+            if (gatewayResponse) {    
+            	
+                // Logging
+                ckoHelper.doLog('response', gatewayResponse);
+            	
                 // Handle the response
                 if (this.handleFullChargeResponse(gatewayResponse)) {
                     return gatewayResponse;
@@ -60,9 +114,6 @@ var cardHelper = {
         // Clean the session
         session.privacy.redirectUrl = null;
         
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
-        
         // Update customer data
         ckoHelper.updateCustomerData(gatewayResponse);
         
@@ -71,13 +122,17 @@ var cardHelper = {
         
         // Add 3DS redirect URL to session if exists
         if (gatewayLinks.hasOwnProperty('redirect')) {
+        	
+        	// Save redirect link to session
             session.privacy.redirectUrl = gatewayLinks.redirect.href;
-            return true;
+            
+            // Check if its a valid response
+            return ckoHelper.paymentSuccess(gatewayResponse);
+            
         } else {
+        	// Check if its a valid response
             return ckoHelper.paymentSuccess(gatewayResponse);
         }
-
-        return false;
     },
     
     /*
