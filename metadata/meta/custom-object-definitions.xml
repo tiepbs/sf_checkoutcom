@@ -11,6 +11,22 @@
             <min-length>0</min-length>
         </key-definition>
         <attribute-definitions>
+            <attribute-definition attribute-id="ckoUserAgent">
+                <display-name xml:lang="x-default">UserAgent</display-name>
+                <type>string</type>
+                <localizable-flag>false</localizable-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoVersion">
+                <display-name xml:lang="x-default">Version</display-name>
+                <type>String</type>
+                <localizable-flag>false</localizable-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
             <attribute-definition attribute-id="ckoEnabled">
                 <display-name xml:lang="x-default">Enable</display-name>
                 <type>boolean</type>
