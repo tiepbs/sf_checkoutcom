@@ -11,6 +11,14 @@
             <min-length>0</min-length>
         </key-definition>
         <attribute-definitions>
+            <attribute-definition attribute-id="ckoPlatformData">
+                <display-name xml:lang="x-default">PlatformData</display-name>
+                <type>string</type>
+                <localizable-flag>false</localizable-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
             <attribute-definition attribute-id="ckoUserAgent">
                 <display-name xml:lang="x-default">UserAgent</display-name>
                 <type>string</type>
@@ -416,6 +424,7 @@
             <attribute-group group-id="ckoGeneralSettings">
                 <display-name xml:lang="x-default">Checkout.com General Settings</display-name>
                 <attribute attribute-id="creationDate" system="true"/>
+                <attribute attribute-id="ckoPlatformData"/>
                 <attribute attribute-id="ckoUserAgent"/>
                 <attribute attribute-id="ckoVersion"/>
                 <attribute attribute-id="ckoBillingDescriptor1"/>
