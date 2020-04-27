@@ -12,6 +12,8 @@ var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var PaymentMgr = require('dw/order/PaymentMgr');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
+var Site = require('dw/system/Site');
+var CustomObjectMgr = require('dw/object/CustomObjectMgr');
 
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
@@ -22,7 +24,7 @@ var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 var ckoHelper = {
 		
     /*
-     * Get the required value for each mode
+     * Get the required value for each mode.
      */
     getAppModeValue: function (sandboxValue, liveValue) {
         var appMode = this.getValue('ckoMode');
@@ -34,21 +36,21 @@ var ckoHelper = {
     },
     
     /*
-     * Get user language
+     * Get user language.
      */
     getLanguage: function () {        
         return request.locale.replace('_', '-');
     },
     
     /*
-     * Get Site Name
+     * Get Site Name.
      */
     getSiteName: function () {        
         return dw.system.Site.getCurrent().name;
     },
     
     /*
-     * Get site Hostname
+     * Get site Hostname.
      */
     getSiteHostName: function () {        
         return dw.system.Site.getCurrent().httpHostName;
@@ -64,15 +66,13 @@ var ckoHelper = {
         return requestKey == privateSharedKey
     },
     
-    /*
-     * Get value from custom preferences
-     */
-    getValue: function (field) {
-        return dw.system.Site.getCurrent().getCustomPreferenceValue(field);
-    },
+	getValue: function (field) {
+	  var customObject = CustomObjectMgr.getCustomObject('ckoSettings', Site.getCurrent().name);
+	  return customObject.custom[field];
+	},
     
     /*
-     * Change Fist Letter of a string to UpperCase
+     * Change Fist Letter of a string to UpperCase.
      */
     upperCaseFirst: function(data){
     	var upperChar = data.charAt(0).toUpperCase();
@@ -103,7 +103,7 @@ var ckoHelper = {
     },
     
     /*
-     * Return order id
+     * Return order id.
      */
     getOrderId: function () {
         var orderId = (this.getValue('cko3ds')) ? request.httpParameterMap.get('reference').stringValue : request.httpParameterMap.get('reference').stringValue;
@@ -337,7 +337,6 @@ var ckoHelper = {
     	
     	return false;
     },
-    
     
     /*
      * Write order information to session for the current shopper.
@@ -812,7 +811,6 @@ var ckoHelper = {
         return meta;
     },
     
-    
     /*
      * Build metadata object
      */
@@ -834,7 +832,6 @@ var ckoHelper = {
     
         return meta;
     },
-    
     
     /*
      * Build the Billing object
