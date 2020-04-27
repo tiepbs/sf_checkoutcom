@@ -5,6 +5,7 @@
         "./cartridge/scripts/init/cardSourcesInit.js",
         "./cartridge/scripts/init/klarnaSessionInit.js",
         "./cartridge/scripts/init/paymentActionsInit.js",
-        "./cartridge/scripts/init/networkTokenInit.js"
+        "./cartridge/scripts/init/networkTokenInit.js",
+        "./cartridge/scripts/init/paymentTransactionsInit.js"
     ]   	
 }
