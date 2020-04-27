@@ -667,8 +667,8 @@ var ckoHelper = {
         var now = Date.now();
 
         // Get the capture time configured, or min time 0.5 minute if 0
-        var configCaptureTime = parseInt(this.getValue('ckoAutoCaptureTime'));
-        var captureOnMin =  configCaptureTime > 0 ? configCaptureTime : 0.5;
+        var configCaptureTime = this.getValue('ckoAutoCaptureTime');
+        var captureOnMin = configCaptureTime > 0 ? configCaptureTime : 0.5;
 
         // Convert the capture time from minutes to milliseconds
         var captureOnMs = now + parseInt(captureOnMin) * 60000;
