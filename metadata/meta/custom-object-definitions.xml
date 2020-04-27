@@ -416,6 +416,8 @@
             <attribute-group group-id="ckoGeneralSettings">
                 <display-name xml:lang="x-default">Checkout.com General Settings</display-name>
                 <attribute attribute-id="creationDate" system="true"/>
+                <attribute attribute-id="ckoUserAgent"/>
+                <attribute attribute-id="ckoVersion"/>
                 <attribute attribute-id="ckoBillingDescriptor1"/>
                 <attribute attribute-id="ckoBillingDescriptor2"/>
                 <attribute attribute-id="ckoBusinessName"/>
