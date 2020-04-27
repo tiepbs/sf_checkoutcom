@@ -205,27 +205,6 @@ var CKOHelper = {
     },
 
     /**
-     * Build HTTP service Headers.
-     */
-    buildHttpServiceHeaders: function (serviceInstance, method, url) {
-        // Set the method
-        method = method || 'POST';
-
-        // Set the URL
-        url = url || null;
-        if (url) {
-            serviceInstance.setURL(url);
-        }
-
-        // Set the default headers
-        serviceInstance.setRequestMethod(method);
-        serviceInstance.addHeader("Authorization", this.getAccountKeys().secretKey);
-        serviceInstance.addHeader("Content-Type", 'application/json;charset=UTF-8');
-
-        return serviceInstance;
-    },
-
-    /**
      * Retrieves a custom preference value from the configuration.
      */
     getValue: function (fieldName) {
