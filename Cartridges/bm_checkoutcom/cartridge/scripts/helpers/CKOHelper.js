@@ -240,7 +240,7 @@ var CKOHelper = {
         var str = this.getValue('ckoMode') == 'live' ? 'Live' : 'Sandbox';
 
         keys.publicKey = this.getValue('cko' + str + 'PublicKey');
-        keys.secreteKey = this.getValue('cko' + str + 'SecreteKey');
+        keys.secretKey = this.getValue('cko' + str + 'SecreteKey');
         keys.privateKey = this.getValue('cko' + str + 'PrivateKey');
 
         return keys;
