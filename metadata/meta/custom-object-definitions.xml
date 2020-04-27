@@ -55,7 +55,7 @@
                 <display-name xml:lang="x-default">Billing Descriptor Line1</display-name>
                 <type>string</type>
                 <localizable-flag>false</localizable-flag>
-                <mandatory-flag>false</mandatory-flag>
+                <mandatory-flag>true</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
@@ -63,7 +63,7 @@
                 <display-name xml:lang="x-default">Billing Descriptor Line2</display-name>
                 <type>string</type>
                 <localizable-flag>false</localizable-flag>
-                <mandatory-flag>false</mandatory-flag>
+                <mandatory-flag>true</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
