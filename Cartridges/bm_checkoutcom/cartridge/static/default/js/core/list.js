@@ -171,10 +171,11 @@ function getTableColumns()
         {title: 'Date', field: 'creation_date', headerFilter: 'input'},
         {title: 'Type', field: 'type', headerFilter: 'input'},
         {title: 'State', field: 'opened', formatter: 'tickCross', visible: false},
-        {title: 'Processor', field: 'processor', headerFilter: 'input'},
+        {title: 'Processor', field: 'processor', width: 200, headerFilter: 'input'},
         {
             title: 'Actions',
             field: 'actions',
+            width: 230,
             headerSort: false,
             align: 'center',
             formatter: function (cell, formatterParams, onRendered) {
