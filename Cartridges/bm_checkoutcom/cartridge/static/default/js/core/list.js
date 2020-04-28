@@ -195,7 +195,7 @@ function getButtonsHtml(cell)
     var html = '';
     
     // Build the action buttons
-    if (JSON.parse(rowData.opened)) {
+    if (JSON.parse(rowData.opened) && rowData.type != 'CREDIT') {
         // Capture
         if (rowData.type == 'AUTH') {
             html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">Void</button>';
