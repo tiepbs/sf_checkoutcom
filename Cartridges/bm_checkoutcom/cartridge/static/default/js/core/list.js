@@ -198,13 +198,13 @@ function getButtonsHtml(cell)
     if (JSON.parse(rowData.opened) && rowData.type != 'CREDIT') {
         // Capture
         if (rowData.type == 'AUTH') {
-            html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">Void</button>';
-            html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-info ckoAction">Capture</button>';
+            html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">' +  window.ckoLang.void + '</button>';
+            html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-info ckoAction">' +  window.ckoLang.capture + '</button>';
         }
 
         // Void
         if (rowData.type == 'CAPTURE') {
-            html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-secondary ckoAction">Refund</button>';
+            html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-secondary ckoAction">' +  window.ckoLang.refund + '</button>';
         }
     } else {
         html += '<div class="ckoLocked">&#x1f512;</div>';
