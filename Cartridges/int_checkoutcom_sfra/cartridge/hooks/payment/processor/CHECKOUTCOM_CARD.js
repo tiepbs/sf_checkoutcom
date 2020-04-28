@@ -24,6 +24,10 @@ function createToken() {
  * @return {Object} returns an error object
  */
 function Handle(basket, paymentInformation) {
+	var logger = require('dw/system/Logger').getLogger('ckodebug');
+	logger.debug('cko test 1 {0}', 'hook handle called successfully');
+
+
     var currentBasket = basket;
     var cardErrors = {};
     var cardNumber = paymentInformation.cardNumber.value;
@@ -119,6 +123,10 @@ function Handle(basket, paymentInformation) {
  * @return {Object} returns an error object
  */
 function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
+
+	var logger = require('dw/system/Logger').getLogger('ckodebug');
+	logger.debug('cko test 1 {0}', 'hook auth called successfully');
+
     var serverErrors = [];
     var fieldErrors = {};
     var error = false;
