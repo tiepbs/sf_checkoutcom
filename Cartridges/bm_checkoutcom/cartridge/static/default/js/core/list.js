@@ -65,7 +65,7 @@ function initTable(tableData)
     // Build the table instance
     window.ckoTransactionsTable = new Tabulator('#transactions-table', {
         index: 'id',
-        responsiveLayout:true,
+        responsiveLayout: true,
         selectable: 'highlight',
         headerFilterPlaceholder: '>',
         placeholder: window.ckoLang.noResults,
@@ -161,7 +161,6 @@ function getTableColumns()
         {
             title: 'Amount',
             field: 'amount',
-            width: 120,
             headerFilter: 'input',
             formatter: function (cell, formatterParams, onRendered) {
                 var rowData = cell.getRow().getData();
@@ -169,16 +168,15 @@ function getTableColumns()
             }
         },
         {title: 'Currency', field: 'currency', visible: false},
-        {title: 'Date', field: 'creation_date', width: 140, headerFilter: 'input'},
-        {title: 'Type', field: 'type', width: 110, headerFilter: 'input'},
-        {title: 'State', field: 'opened', width: 110, formatter: 'tickCross', visible: false},
-        {title: 'Processor', field: 'processor', width: 190, headerFilter: 'input'},
+        {title: 'Date', field: 'creation_date', headerFilter: 'input'},
+        {title: 'Type', field: 'type', headerFilter: 'input'},
+        {title: 'State', field: 'opened', formatter: 'tickCross', visible: false},
+        {title: 'Processor', field: 'processor', headerFilter: 'input'},
         {
             title: 'Actions',
             field: 'actions',
             headerSort: false,
             align: 'center',
-            width: 200,
             formatter: function (cell, formatterParams, onRendered) {
                 return getButtonsHtml(cell);
             }
