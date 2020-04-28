@@ -4,6 +4,7 @@
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var CustomerMgr = require('dw/customer/CustomerMgr');
+var URLUtils = require('dw/web/URLUtils');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -317,6 +318,8 @@ var cardHelper = {
             'billing_descriptor'    : ckoHelper.getBillingDescriptorObject(),
             'shipping'              : this.getShippingObject(args),
             '3ds'                   : this.get3Ds(),
+            'success_url'           : URLUtils.https('CKOMain-HandleReturn'),
+            'failure_url'           : URLUtils.https('CKOMain-HandleFail'),
             'risk'                  : {enabled: true},
             'payment_ip'            : ckoHelper.getHost(args),
             'metadata'              : ckoHelper.getMetadataObject({}, args)
