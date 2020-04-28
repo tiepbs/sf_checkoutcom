@@ -12,7 +12,6 @@
 .tabulator-cell button {
     cursor: pointer;
     margin-left: 5px;
-    margin-right: 5px;
 }
 
 .tabulator-row .tabulator-cell, .tabulator-col {
@@ -36,6 +35,10 @@
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+[tabulator-field="actions"] {
+    text-align: left !important;
 }
   
 /* Modal Content/Box */
