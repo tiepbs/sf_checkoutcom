@@ -1,8 +1,0 @@
-{
-    "hooks": [
-        {
-            "name": "app.payment.processor.checkoutcom_card",
-            "script": "./cartridge/scripts/hooks/payment/processor/CHECKOUTCOM_CARD"
-        }
-    ]
-}

@@ -1,0 +1,12 @@
+{
+    "hooks": [
+        {
+            "name": "app.payment.processor.checkoutcom_card",
+            "script": "./hooks/payment/processor/CHECKOUTCOM_CARD"
+        },
+        {
+            "name": "app.payment.form.processor.checkoutcom_card",
+            "script": "./hooks/payment/processor/CHECKOUTCOM_CARD_form_processor"
+        }
+    ]
+}

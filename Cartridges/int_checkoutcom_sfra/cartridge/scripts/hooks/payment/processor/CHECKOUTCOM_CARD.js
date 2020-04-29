@@ -87,7 +87,7 @@ function Handle(basket, paymentInformation) {
 
     Transaction.wrap(function () {
         var paymentInstruments = currentBasket.getPaymentInstruments(
-            PaymentInstrument.METHOD_CREDIT_CARD
+            'CHECKOUTCOM_CARD'
         );
 
         collections.forEach(paymentInstruments, function (item) {
@@ -95,7 +95,7 @@ function Handle(basket, paymentInformation) {
         });
 
         var paymentInstrument = currentBasket.createPaymentInstrument(
-            PaymentInstrument.METHOD_CREDIT_CARD, currentBasket.totalGrossPrice
+            'CHECKOUTCOM_CARD', currentBasket.totalGrossPrice
         );
 
         paymentInstrument.setCreditCardHolder(currentBasket.billingAddress.fullName);
