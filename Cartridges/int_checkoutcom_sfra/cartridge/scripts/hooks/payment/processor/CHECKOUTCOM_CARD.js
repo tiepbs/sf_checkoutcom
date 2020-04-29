@@ -1,12 +1,10 @@
 'use strict';
 
 var collections = require('*/cartridge/scripts/util/collections');
-
-var PaymentInstrument = require('dw/order/PaymentInstrument');
-var PaymentMgr = require('dw/order/PaymentMgr');
 var PaymentStatusCodes = require('dw/order/PaymentStatusCodes');
 var Resource = require('dw/web/Resource');
 var Transaction = require('dw/system/Transaction');
+var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 
 /**
  * Creates a token. This should be replaced by utilizing a tokenization provider
@@ -24,62 +22,32 @@ function createToken() {
  * @return {Object} returns an error object
  */
 function Handle(basket, paymentInformation) {
-	var logger = require('dw/system/Logger').getLogger('ckodebug');
-	logger.debug('cko test 1 {0}', 'hook handle called successfully');
-
-
     var currentBasket = basket;
     var cardErrors = {};
-    var cardNumber = paymentInformation.cardNumber.value;
-    var cardSecurityCode = paymentInformation.securityCode.value;
-    var expirationMonth = paymentInformation.expirationMonth.value;
-    var expirationYear = paymentInformation.expirationYear.value;
     var serverErrors = [];
-    var creditCardStatus;
+    var cardIsValid = false;
 
-    var cardType = paymentInformation.cardType.value;
-    var paymentCard = PaymentMgr.getPaymentCard(cardType);
+    // Get the card data
+    var cardData = cardHelper.buildCardData(paymentInformation); 
 
+    // Prepare the arguments
+    var args = {
+        OrderNo: order.orderNo,
+        ProcessorId: 'CHECKOUTCOM_CARD',
+        CardUuid: false,
+        CustomerId: false
+    };
+
+    // Prepare the request data
+    var gatewayRequest = cardHelper.getCardRequest(cardData, args);
+
+    // Pre authorize the card
     if (!paymentInformation.creditCardToken) {
-        if (paymentCard) {
-            creditCardStatus = paymentCard.verify(
-                expirationMonth,
-                expirationYear,
-                cardNumber,
-                cardSecurityCode
+        cardIsValid = cardHelper.preAuthorizeCard(gatewayRequest);
+        if (!cardIsValid) {
+            serverErrors.push(
+                Resource.msg('error.card.information.error', 'creditCard', null)
             );
-        } else {
-            cardErrors[paymentInformation.cardNumber.htmlName] =
-                Resource.msg('error.invalid.card.number', 'creditCard', null);
-
-            return { fieldErrors: [cardErrors], serverErrors: serverErrors, error: true };
-        }
-
-        if (creditCardStatus.error) {
-            collections.forEach(creditCardStatus.items, function (item) {
-                switch (item.code) {
-                    case PaymentStatusCodes.CREDITCARD_INVALID_CARD_NUMBER:
-                        cardErrors[paymentInformation.cardNumber.htmlName] =
-                            Resource.msg('error.invalid.card.number', 'creditCard', null);
-                        break;
-
-                    case PaymentStatusCodes.CREDITCARD_INVALID_EXPIRATION_DATE:
-                        cardErrors[paymentInformation.expirationMonth.htmlName] =
-                            Resource.msg('error.expired.credit.card', 'creditCard', null);
-                        cardErrors[paymentInformation.expirationYear.htmlName] =
-                            Resource.msg('error.expired.credit.card', 'creditCard', null);
-                        break;
-
-                    case PaymentStatusCodes.CREDITCARD_INVALID_SECURITY_CODE:
-                        cardErrors[paymentInformation.securityCode.htmlName] =
-                            Resource.msg('error.invalid.security.code', 'creditCard', null);
-                        break;
-                    default:
-                        serverErrors.push(
-                            Resource.msg('error.card.information.error', 'creditCard', null)
-                        );
-                }
-            });
 
             return { fieldErrors: [cardErrors], serverErrors: serverErrors, error: true };
         }
@@ -125,7 +93,7 @@ function Handle(basket, paymentInformation) {
 function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
 
 	var logger = require('dw/system/Logger').getLogger('ckodebug');
-	logger.debug('cko test 1 {0}', 'hook auth called successfully');
+	logger.debug('cko test Auth {0}', 'hook auth called successfully');
 
     var serverErrors = [];
     var fieldErrors = {};

@@ -14,75 +14,6 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 */
 var cardHelper = {
     /*
-     * Handle full charge Request to CKO API
-     */
-    handleCardRequest: function (cardData, args) {
-        // Load the order information
-        var order = OrderMgr.getOrder(args.OrderNo);
-        
-        // Create billing address object
-        var gatewayRequest = this.getCardRequest(cardData, args);
-
-        // Pre authorize the card
-        if (this.preAuthorizeCard(gatewayRequest)) {
-            // Perform the request to the payment gateway
-            var gatewayResponse = ckoHelper.gatewayClientRequest(
-                "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
-                gatewayRequest
-            );
-
-            // Logging
-            ckoHelper.doLog('response', gatewayResponse);
-
-            // If the charge is valid, process the response
-            if (gatewayResponse && this.handleFullChargeResponse(gatewayResponse)) {                
-                return gatewayResponse;
-            } else {
-                // Fail the order
-                Transaction.wrap(function () {
-                    OrderMgr.failOrder(order);
-                });
-
-                return false;
-            }
-        }
-            
-        return false;
-    },
-    
-    /*
-     * Handle saved card request to CKO API
-     */
-    handleSavedCardRequest: function (sourceId, cvv, args) {
-        // Load the order information
-        var order = OrderMgr.getOrder(args.OrderNo);
-        
-        // Create billing address object
-        var gatewayRequest = this.getSavedCardRequest(sourceId, cvv, args);
-        
-        // Perform the request to the payment gateway
-        var gatewayResponse = ckoHelper.gatewayClientRequest(
-            "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
-            gatewayRequest
-        );
-    
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
-
-        // If the charge is valid, process the response
-        if (gatewayResponse && this.handleFullChargeResponse(gatewayResponse)) {                
-            return gatewayResponse;
-        } else {
-            // Fail the order
-            Transaction.wrap(function () {
-                OrderMgr.failOrder(order);
-            });
-        }       
-    
-        return false;
-    },
-
-    /*
      * Handle full charge Response from CKO API
      */
     handleFullChargeResponse: function (gatewayResponse) {
@@ -151,14 +82,13 @@ var cardHelper = {
     /*
      * Get payment card data from request
      */
-    getCardDataFromRequest: function (req) {        
+    buildCardData: function (paymentInformation) {        
         return {
-            owner       : req.form.dwfrm_billing_creditCardFields_cardOwner,
-            cardNumber  : ckoHelper.getFormattedNumber(req.form.dwfrm_billing_creditCardFields_cardNumber),
-            expiryMonth : req.form.dwfrm_billing_creditCardFields_expirationMonth,
-            expiryYear  : req.form.dwfrm_billing_creditCardFields_expirationYear,
-            cvv         : req.form.dwfrm_billing_creditCardFields_securityCode,
-            cardType    : req.form.cardType
+            cardNumber  : ckoHelper.getFormattedNumber(paymentInformation.cardNumber.value),
+            expiryMonth : paymentInformation.expirationMonth.value,
+            expiryYear  : paymentInformation.expirationYear.value,
+            cvv         : paymentInformation.securityCode.value,
+            cardType    : paymentInformation.cardType.value
         };
     },
 
