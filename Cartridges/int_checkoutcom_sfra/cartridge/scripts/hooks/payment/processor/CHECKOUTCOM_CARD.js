@@ -30,20 +30,9 @@ function Handle(basket, paymentInformation) {
     // Get the card data
     var cardData = cardHelper.buildCardData(paymentInformation); 
 
-    // Prepare the arguments
-    var args = {
-        OrderNo: order.orderNo,
-        ProcessorId: 'CHECKOUTCOM_CARD',
-        CardUuid: false,
-        CustomerId: false
-    };
-
-    // Prepare the request data
-    var gatewayRequest = cardHelper.getCardRequest(cardData, args);
-
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {
-        cardIsValid = cardHelper.preAuthorizeCard(gatewayRequest);
+        cardIsValid = cardHelper.preAuthorizeCard(cardData);
         if (!cardIsValid) {
             serverErrors.push(
                 Resource.msg('error.card.information.error', 'creditCard', null)

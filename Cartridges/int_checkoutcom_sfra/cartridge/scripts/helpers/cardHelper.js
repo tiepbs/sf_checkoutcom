@@ -41,21 +41,27 @@ var cardHelper = {
     /*
      * Pre_Authorize card with zero value
      */
-    preAuthorizeCard: function (requestData) {
-        // Clone the request data
-        var authData = JSON.parse(JSON.stringify(requestData));
-
-        // Prepare the pre authorization charge
-        authData['3ds'].enabled = false;
-        authData.amount = 0;
-        authData.currency = 'USD';
-        authData.capture = false;
-        delete authData['capture_on'];
+    preAuthorizeCard: function(cardData) {
+        var chargeData = {
+            'source'                : {
+                type                : 'card',
+                number              : cardData.cardNumber,
+                expiry_month        : cardData.expiryMonth,
+                expiry_year         : cardData.expiryYear,
+                name                : cardData.owner,
+                cvv                 : cardData.cvv
+            },
+            'amount'                : 0,
+            'currency'              : 'USD',
+            'capture'               : false,
+            '3ds'                   : {enabled: false},
+            'risk'                  : {enabled: true}
+        };
         
         // Send the request
         var authResponse = ckoHelper.gatewayClientRequest(
             'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
-            authData
+            chargeData
         );
         
         // Return the response
