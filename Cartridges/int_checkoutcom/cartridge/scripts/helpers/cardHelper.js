@@ -180,8 +180,8 @@ var cardHelper = {
             'shipping'              : this.getShippingObject(args),
             '3ds'                   : this.get3Ds(),
             'risk'                  : {enabled: true},
-            'success_url'           : URLUtils.https('CKOMain-HandleReturn'),
-            'failure_url'           : URLUtils.https('CKOMain-HandleFail'),
+            'success_url'           : URLUtils.https('CKOMain-HandleReturn').toString(),
+            'failure_url'           : URLUtils.https('CKOMain-HandleFail').toString(),
             'payment_ip'            : ckoHelper.getHost(args),
             'metadata'              : ckoHelper.getMetadataObject(cardData, args),
             'udf5'					: ckoHelper.getMetadataString(cardData, args)
