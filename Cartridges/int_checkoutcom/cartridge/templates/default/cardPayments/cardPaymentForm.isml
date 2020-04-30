@@ -70,7 +70,7 @@
 	<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.type}" id="creditCardType" />
 	
 	<!-- MADA -->
-	<isif condition="${(dw.object.CustomObjectMgr.getCustomObject('ckoSettings', dw.system.Site.getCurrent().name).custom['ckoMada'])}">
+	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMada'))}">
 		<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.mada}" id="mada" />
 	</isif>
 	

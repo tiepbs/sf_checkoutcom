@@ -64,12 +64,14 @@ var ckoHelper = {
         var privateSharedKey = this.getAccountKeys().privateSharedKey;
         
         return requestKey == privateSharedKey
-    },
+    },   
     
-	getValue: function (field) {
-	  var customObject = CustomObjectMgr.getCustomObject('ckoSettings', Site.getCurrent().name);
-	  return customObject.custom[field];
-	},
+    /*
+     * Get value from custom preferences
+     */
+    getValue: function (field) {
+        return dw.system.Site.getCurrent().getCustomPreferenceValue(field);
+    },
     
     /*
      * Change Fist Letter of a string to UpperCase.
