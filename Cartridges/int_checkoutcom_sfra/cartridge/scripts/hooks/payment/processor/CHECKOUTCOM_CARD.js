@@ -33,6 +33,14 @@ function Handle(basket, paymentInformation) {
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {
         cardIsValid = cardHelper.preAuthorizeCard(cardData);
+
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('cardIsValid {0}', JSON.stringify(cardIsValid));
+        logger.debug('cardData {0}', JSON.stringify(cardData));
+            
+    
+
+
         if (!cardIsValid) {
             serverErrors.push(
                 Resource.msg('error.card.information.error', 'creditCard', null)

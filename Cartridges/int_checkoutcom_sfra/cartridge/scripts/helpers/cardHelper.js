@@ -48,7 +48,6 @@ var cardHelper = {
                 number              : cardData.cardNumber,
                 expiry_month        : cardData.expiryMonth,
                 expiry_year         : cardData.expiryYear,
-                name                : cardData.owner,
                 cvv                 : cardData.cvv
             },
             'amount'                : 0,
@@ -64,6 +63,11 @@ var cardHelper = {
             chargeData
         );
         
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('chargeData {0}', JSON.stringify(chargeData));
+        logger.debug('authResponse {0}', JSON.stringify(authResponse));
+
+
         // Return the response
         return ckoHelper.paymentSuccess(authResponse);
     },
