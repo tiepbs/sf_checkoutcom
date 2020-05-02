@@ -1,0 +1,14 @@
+<!--- applicable credit cards--->
+<div class="tab-pane active credit-card-content" id="credit-card-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+
+        <!--- payment method is credit card --->
+        <input type="hidden" class="form-control"
+               name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+               value="CHECKOUTCOM_GOOGLE_PAY"
+        >
+
+        google play content
+
+    </fieldset>
+</div>
