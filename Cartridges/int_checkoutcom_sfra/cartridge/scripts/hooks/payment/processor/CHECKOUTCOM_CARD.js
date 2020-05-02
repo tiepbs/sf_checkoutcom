@@ -28,7 +28,7 @@ function Handle(basket, paymentInformation) {
 
     // Get the card data
     var cardData = cardHelper.buildCardData(paymentInformation); 
-    session.custom.cvv = cardData.cvv;
+    session.custom.cardData = cardData;
     session.custom.basket = basket;
 
     // Pre authorize the card
@@ -59,8 +59,8 @@ function Handle(basket, paymentInformation) {
         paymentInstrument.setCreditCardHolder(currentBasket.billingAddress.fullName);
         paymentInstrument.setCreditCardNumber(cardData.cardNumber);
         paymentInstrument.setCreditCardType(cardData.cardType);
-        paymentInstrument.setCreditCardExpirationMonth(cardData.expirationMonth);
-        paymentInstrument.setCreditCardExpirationYear(cardData.expirationYear);
+        paymentInstrument.setCreditCardExpirationMonth(cardData.expiryMonth);
+        paymentInstrument.setCreditCardExpirationYear(cardData.expiryYear);
         paymentInstrument.setCreditCardToken(
             paymentInformation.creditCardToken
                 ? paymentInformation.creditCardToken
@@ -85,7 +85,7 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
     var fieldErrors = {};
     var error = false;
 
-    var paymentResonse = cardHelper.handleCardRequest(paymentInstrument, orderNumber);
+    var paymentResonse = cardHelper.handleCardRequest(orderNumber);
 
     return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error };
 }

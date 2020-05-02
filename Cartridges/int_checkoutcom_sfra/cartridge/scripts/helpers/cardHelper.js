@@ -5,7 +5,6 @@ var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var CustomerMgr = require('dw/customer/CustomerMgr');
 var URLUtils = require('dw/web/URLUtils');
-var BasketMgr = require('dw/order/BasketMgr');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -17,9 +16,9 @@ var cardHelper = {
     /*
      * Handle full charge Request to CKO API
      */
-    handleCardRequest: function (paymentInstrument, orderNumber) {       
+    handleCardRequest: function (orderNumber) {       
         // Create billing address object
-        var gatewayRequest = this.getCardRequest(paymentInstrument, orderNumber);
+        var gatewayRequest = this.getCardRequest(orderNumber);
 
         // Perform the request to the payment gateway
         var gatewayResponse = ckoHelper.gatewayClientRequest(
@@ -108,21 +107,21 @@ var cardHelper = {
     /*
      * Build the gateway request
      */
-    getCardRequest: function (paymentInstrument, orderNumber) {   
-        // Get the curren basket
-        var basket = BasketMgr.getCurrentBasket();
-
+    getCardRequest: function (orderNumber) {   
         // Prepare the charge data
         var chargeData = {
             'source'                : {
                 type                : 'card',
-                number              : paymentInstrument.getCreditCardNumber(),
-                expiry_month        : paymentInstrument.getCreditCardExpirationMonth(),
-                expiry_year         : paymentInstrument.getCreditCardExpirationYear(),
-                cvv                 : sessoin.custom.cvv,
+                number              : session.custom.cardData.cardNumber,
+                expiry_month        : session.custom.cardData.expiryMonth,
+                expiry_year         : session.custom.cardData.expiryYear,
+                cvv                 : session.custom.cardData.cvv
             },
-            'amount'                : ckoHelper.getFormattedPrice(basket.getTotalGrossPrice().value.toFixed(2), ckoHelper.getCurrency()),
-            'currency'              : ckoHelper.getCurrency(),
+            'amount'                : ckoHelper.getFormattedPrice(
+                session.custom.basket.getTotalGrossPrice().value.toFixed(2),
+                session.custom.basket.getCurrencyCode()
+            ),
+            'currency'              : session.custom.basket.getCurrencyCode(),
             'reference'             : orderNumber,
             'capture'               : ckoHelper.getValue('ckoAutoCapture'),
             'capture_on'            : ckoHelper.getCaptureTime(),
@@ -130,7 +129,7 @@ var cardHelper = {
             '3ds'                   : this.get3Ds(),
             'risk'                  : {enabled: true},
         };   
-
+    
         return chargeData;
     },
 
