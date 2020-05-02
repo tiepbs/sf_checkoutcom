@@ -1,7 +1,6 @@
 'use strict';
 
 var collections = require('*/cartridge/scripts/util/collections');
-var PaymentStatusCodes = require('dw/order/PaymentStatusCodes');
 var Resource = require('dw/web/Resource');
 var Transaction = require('dw/system/Transaction');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
@@ -29,18 +28,11 @@ function Handle(basket, paymentInformation) {
 
     // Get the card data
     var cardData = cardHelper.buildCardData(paymentInformation); 
+    session.custom.cvv = cardData.cvv;
 
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {
         cardIsValid = cardHelper.preAuthorizeCard(cardData);
-
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('cardIsValid {0}', JSON.stringify(cardIsValid));
-        logger.debug('cardData {0}', JSON.stringify(cardData));
-            
-    
-
-
         if (!cardIsValid) {
             serverErrors.push(
                 Resource.msg('error.card.information.error', 'creditCard', null)
@@ -64,10 +56,10 @@ function Handle(basket, paymentInformation) {
         );
 
         paymentInstrument.setCreditCardHolder(currentBasket.billingAddress.fullName);
-        paymentInstrument.setCreditCardNumber(cardNumber);
-        paymentInstrument.setCreditCardType(cardType);
-        paymentInstrument.setCreditCardExpirationMonth(expirationMonth);
-        paymentInstrument.setCreditCardExpirationYear(expirationYear);
+        paymentInstrument.setCreditCardNumber(cardData.cardNumber);
+        paymentInstrument.setCreditCardType(cardData.cardType);
+        paymentInstrument.setCreditCardExpirationMonth(cardData.expirationMonth);
+        paymentInstrument.setCreditCardExpirationYear(cardData.expirationYear);
         paymentInstrument.setCreditCardToken(
             paymentInformation.creditCardToken
                 ? paymentInformation.creditCardToken
@@ -75,7 +67,7 @@ function Handle(basket, paymentInformation) {
         );
     });
 
-    return { fieldErrors: cardErrors, serverErrors: serverErrors, error: false };
+    return { fieldErrors: cardErrors, serverErrors: serverErrors, error: false};
 }
 
 /**
@@ -88,25 +80,11 @@ function Handle(basket, paymentInformation) {
  * @return {Object} returns an error object
  */
 function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
-
-	var logger = require('dw/system/Logger').getLogger('ckodebug');
-	logger.debug('cko test Auth {0}', 'hook auth called successfully');
-
     var serverErrors = [];
     var fieldErrors = {};
     var error = false;
 
-    try {
-        Transaction.wrap(function () {
-            paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-            paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-        });
-    } catch (e) {
-        error = true;
-        serverErrors.push(
-            Resource.msg('error.technical', 'checkout', null)
-        );
-    }
+    var paymentResonse = cardHelper.handleCardRequest(paymentInstrument, orderNumber);
 
     return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error };
 }

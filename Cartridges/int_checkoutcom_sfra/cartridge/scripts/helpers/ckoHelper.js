@@ -662,25 +662,6 @@ var ckoHelper = {
     },
     
     /*
-     * Return phone object
-     */
-    getPhoneObject: function (args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
-
-        // Get billing address information
-        var billingAddress = order.getBillingAddress();
-        
-        // Creating phone object
-        var phone = {
-            country_code        : null,
-            number              : billingAddress.getPhone()
-        };
-        
-        return phone;
-    },
-    
-    /*
      * Return Customer FullName
      */
     getCustomerName: function (args) {
@@ -777,28 +758,6 @@ var ckoHelper = {
     },
     
     /*
-     * Build the Billing object
-     */
-    getBillingObject: function (args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
-
-        // Get billing address information
-        var billingAddress = order.getBillingAddress();
-        // creating billing address object
-        var billingDetails = {
-            address_line1       : billingAddress.getAddress1(),
-            address_line2       : billingAddress.getAddress2(),
-            city                : billingAddress.getCity(),
-            state               : billingAddress.getStateCode(),
-            zip                 : billingAddress.getPostalCode(),
-            country             : billingAddress.getCountryCode().value
-        };
-        
-        return billingDetails;
-    },
-    
-    /*
      * Get Billing Country
      */
     getBillingCountry: function (args) {
@@ -810,35 +769,6 @@ var ckoHelper = {
         var country = billingAddress.getCountryCode().value
         
         return country;
-    },
-    
-    /*
-     * Build the Shipping object
-     */
-    getShippingObject: function (args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
-
-        // Get shipping address object
-        var shippingAddress = order.getDefaultShipment().getShippingAddress();
-        
-        // Creating address object
-        var shippingDetails = {
-            address_line1       : shippingAddress.getAddress1(),
-            address_line2       : shippingAddress.getAddress2(),
-            city                : shippingAddress.getCity(),
-            state               : shippingAddress.getStateCode(),
-            zip                 : shippingAddress.getPostalCode(),
-            country             : shippingAddress.getCountryCode().value
-        };
-        
-        // Shipping object
-        var shipping = {
-            address             : shippingDetails,
-            phone               : this.getPhoneObject(args)
-        };
-        
-        return shipping;
     },
     
     /*
