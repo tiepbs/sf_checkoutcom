@@ -155,7 +155,7 @@ var cardHelper = {
         // Build the shipping object
         var shipping = {
             address             : shippingDetails,
-            phone               : ckoHelper.getPhone(args)
+            phone               : ckoHelper.getPhone()
         };
         
         return shipping;

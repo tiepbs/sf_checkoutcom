@@ -298,6 +298,22 @@ var ckoHelper = {
     },
 
     /*
+     * Return phone object
+     */
+    getPhone: function () {
+        // Get billing address information
+        var billingAddress = session.custom.basket.getDefaultShipment().getBillingAddress();
+        
+        // Creating phone object
+        var phone = {
+            country_code        : null,
+            number              : billingAddress.getPhone()
+        };
+        
+        return phone;
+    },
+
+    /*
      * Strip spaces form number
      */
     getFormattedNumber: function (num) {
