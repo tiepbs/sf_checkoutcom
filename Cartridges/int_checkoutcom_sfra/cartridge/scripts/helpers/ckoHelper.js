@@ -746,8 +746,7 @@ var ckoHelper = {
         // Prepare the base metadata
         var meta = {
             integration_data: this.getCartridgeMeta(),
-            platform_data: this.getValue('ckoPlatformData'),
-            customer_id: args.CustomerId
+            platform_data: this.getValue('ckoPlatformData')
         }
 
         // Add the data info if needed

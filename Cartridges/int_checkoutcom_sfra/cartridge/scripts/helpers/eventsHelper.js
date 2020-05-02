@@ -89,25 +89,6 @@ var eventsHelper = {
 
         // Create the authorized transaction
         transactionHelper.createAuthorization(hook);
-
-        // Handle card saving
-        var customerId = hook.data.metadata.customer_id;
-        var processorId = hook.data.metadata.payment_processor;
-        if (cardUuid != 'false' && customerId) {
-            // Load the saved card
-            var savedCard = cardHelper.getSavedCard(
-                cardUuid,
-                customerId,
-                processorId
-            );
-
-            if (savedCard) {
-                // Add the card source
-                Transaction.wrap(function () {
-                    savedCard.setCreditCardToken(hook.data.source.id);
-                });
-            }
-        }
     },
 
     /**
