@@ -302,7 +302,7 @@ var ckoHelper = {
      */
     getPhone: function () {
         // Get billing address information
-        var billingAddress = session.custom.basket.getDefaultShipment().getBillingAddress();
+        var billingAddress = session.custom.basket.getBillingAddress();
         
         // Creating phone object
         var phone = {
