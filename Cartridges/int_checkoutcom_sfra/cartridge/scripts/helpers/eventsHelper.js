@@ -91,7 +91,6 @@ var eventsHelper = {
         transactionHelper.createAuthorization(hook);
 
         // Handle card saving
-        var cardUuid = hook.data.metadata.card_uuid;
         var customerId = hook.data.metadata.customer_id;
         var processorId = hook.data.metadata.payment_processor;
         if (cardUuid != 'false' && customerId) {

@@ -731,7 +731,6 @@ var ckoHelper = {
         var meta = {
             integration_data: this.getCartridgeMeta(),
             platform_data: this.getValue('ckoPlatformData'),
-            card_uuid: args.CardUuid,
             customer_id: args.CustomerId
         }
 
