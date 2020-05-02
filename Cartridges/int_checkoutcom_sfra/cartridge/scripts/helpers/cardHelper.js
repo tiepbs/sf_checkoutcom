@@ -126,11 +126,38 @@ var cardHelper = {
             'capture'               : ckoHelper.getValue('ckoAutoCapture'),
             'capture_on'            : ckoHelper.getCaptureTime(),
             'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
+            'shipping'              : this.getShipping(),
             '3ds'                   : this.get3Ds(),
             'risk'                  : {enabled: true},
         };   
     
         return chargeData;
+    },
+
+    /*
+     * Build the Shipping object
+     */
+    getShipping: function () {
+        // Get shipping address object
+        var shippingAddress = session.custom.basket.getDefaultShipment().getShippingAddress();
+        
+        // Creating address object
+        var shippingDetails = {
+            address_line1       : shippingAddress.getAddress1(),
+            address_line2       : shippingAddress.getAddress2(),
+            city                : shippingAddress.getCity(),
+            state               : shippingAddress.getStateCode(),
+            zip                 : shippingAddress.getPostalCode(),
+            country             : shippingAddress.getCountryCode().value
+        };
+        
+        // Build the shipping object
+        var shipping = {
+            address             : shippingDetails,
+            phone               : ckoHelper.getPhone(args)
+        };
+        
+        return shipping;
     },
 
     /*

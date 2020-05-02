@@ -36,7 +36,6 @@ var apmHelper = {
                 "billing_address"       : ckoHelper.getBillingObject(args),
                 "source_data"           : payObject.source_data,
                 "reference"             : args.OrderNo,
-                "payment_ip"            : ckoHelper.getHost(args),
                 "metadata"              : ckoHelper.getMetadataObject(payObject, args),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
@@ -122,7 +121,6 @@ var apmHelper = {
                 "capture"               : false,
                 "source"                : payObject.source,
                 "reference"             : args.OrderNo,
-                "payment_ip"            : ckoHelper.getHost(args),
                 "metadata"              : ckoHelper.getMetadataObject(payObject, args),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
@@ -134,7 +132,6 @@ var apmHelper = {
                 "currency"              : currency,
                 "source"                : payObject.source,
                 "reference"             : args.OrderNo,
-                "payment_ip"            : ckoHelper.getHost(args),
                 "metadata"              : ckoHelper.getMetadataObject(payObject, args),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };

@@ -643,17 +643,6 @@ var ckoHelper = {
     },
 
     /*
-     * Get Host IP
-     */
-    getHost: function (args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
-        var host = order.getRemoteHost()
-        
-        return host;
-    },
-
-    /*
      * Return order amount
      */
     getAmount: function (order) {

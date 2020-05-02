@@ -189,7 +189,7 @@ var ckoApmConfig = {
             'source'    : {
                 'type'              : 'fawry',
                 'description'       : businessName,
-                'customer_mobile'   : ckoHelper.getPhoneObject(args).number,
+                'customer_mobile'   : ckoHelper.getPhone(args).number,
                 'customer_email'    : ckoHelper.getCustomer(args).email,
                 'products'          : ckoHelper.getProductInformation(args)
             },
