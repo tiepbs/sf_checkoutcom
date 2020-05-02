@@ -33,10 +33,10 @@ var apmHelper = {
                 "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), payObject.currency),
                 "type"                  : payObject.type,
                 "currency"              : payObject.currency,
-                "billing_address"       : ckoHelper.getBillingObject(args),
+                "billing_address"       : ckoHelper.getBilling(args),
                 "source_data"           : payObject.source_data,
                 "reference"             : args.OrderNo,
-                "metadata"              : ckoHelper.getMetadataObject(payObject, args),
+                "metadata"              : ckoHelper.getMetadata(payObject, args),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
             
@@ -121,7 +121,7 @@ var apmHelper = {
                 "capture"               : false,
                 "source"                : payObject.source,
                 "reference"             : args.OrderNo,
-                "metadata"              : ckoHelper.getMetadataObject(payObject, args),
+                "metadata"              : ckoHelper.getMetadata(payObject, args),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
         } else {
@@ -132,7 +132,7 @@ var apmHelper = {
                 "currency"              : currency,
                 "source"                : payObject.source,
                 "reference"             : args.OrderNo,
-                "metadata"              : ckoHelper.getMetadataObject(payObject, args),
+                "metadata"              : ckoHelper.getMetadata(payObject, args),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
         }

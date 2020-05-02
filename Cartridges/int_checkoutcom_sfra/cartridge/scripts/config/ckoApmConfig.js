@@ -297,7 +297,7 @@ var ckoApmConfig = {
                     'type'                  : 'klarna',
                     'authorization_token'   : args.Form.klarna_token,
                     'locale'                : ckoHelper.getLanguage(),
-                    'purchase_country'      : ckoHelper.getBillingObject(args).country,
+                    'purchase_country'      : ckoHelper.getBilling(args).country,
                     'tax_amount'            : ckoHelper.getFormattedPrice(order.totalTax.value, ckoHelper.getCurrency(args)),
                     'billing_address'       : ckoHelper.getOrderBasketAddress(args),
                     'products'              : ckoHelper.getOrderBasketObject(args)
@@ -336,7 +336,7 @@ var ckoApmConfig = {
             'source': {
                 'type': 'oxxo',
                 'integration_type': 'redirect',
-                'country': ckoHelper.getBillingObject(args).country,
+                'country': ckoHelper.getBilling(args).country,
                 'payer': {
                     'name': ckoHelper.getCustomerName(args),
                     'email': ckoHelper.getCustomer(args).email,

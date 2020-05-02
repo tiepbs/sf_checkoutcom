@@ -43,7 +43,7 @@ var googlePayHelper = {
                 "customer"              : ckoHelper.getCustomer(args),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor(),
                 "shipping"              : ckoHelper.getShipping(args),
-                "metadata"              : ckoHelper.getMetadataObject({}, args)
+                "metadata"              : ckoHelper.getMetadata({}, args)
             };
 
             // Perform the request to the payment gateway
