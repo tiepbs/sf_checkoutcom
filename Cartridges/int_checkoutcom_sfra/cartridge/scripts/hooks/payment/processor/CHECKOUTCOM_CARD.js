@@ -29,6 +29,7 @@ function Handle(basket, paymentInformation) {
     // Get the card data
     var cardData = cardHelper.buildCardData(paymentInformation); 
     session.custom.cvv = cardData.cvv;
+    session.custom.basket = basket;
 
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {

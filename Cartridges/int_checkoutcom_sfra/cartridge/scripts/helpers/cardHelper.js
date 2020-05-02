@@ -5,6 +5,7 @@ var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var CustomerMgr = require('dw/customer/CustomerMgr');
 var URLUtils = require('dw/web/URLUtils');
+var BasketMgr = require('dw/order/BasketMgr');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -108,6 +109,9 @@ var cardHelper = {
      * Build the gateway request
      */
     getCardRequest: function (paymentInstrument, orderNumber) {   
+        // Get the curren basket
+        var basket = BasketMgr.getCurrentBasket();
+
         // Prepare the charge data
         var chargeData = {
             'source'                : {
@@ -117,17 +121,14 @@ var cardHelper = {
                 expiry_year         : paymentInstrument.getCreditCardExpirationYear(),
                 cvv                 : sessoin.custom.cvv,
             },
-            'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
+            'amount'                : ckoHelper.getFormattedPrice(basket.getTotalGrossPrice().value.toFixed(2), ckoHelper.getCurrency()),
             'currency'              : ckoHelper.getCurrency(),
-            'reference'             : args.OrderNo,
+            'reference'             : orderNumber,
             'capture'               : ckoHelper.getValue('ckoAutoCapture'),
             'capture_on'            : ckoHelper.getCaptureTime(),
-            'customer'              : ckoHelper.getCustomer(args),
             'billing_descriptor'    : ckoHelper.getBillingDescriptorObject(),
             '3ds'                   : this.get3Ds(),
             'risk'                  : {enabled: true},
-            'payment_ip'            : ckoHelper.getHost(args),
-            'metadata'              : ckoHelper.getMetadataObject(cardData, args)
         };   
 
         return chargeData;
@@ -141,30 +142,7 @@ var cardHelper = {
             'enabled' : ckoHelper.getValue('cko3ds'),
             'attempt_n3d' : ckoHelper.getValue('ckoN3ds')
         }
-    },
-    
-    /*
-     * Build the Billing object
-     */
-    getBillingObject: function (args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
-
-        // Get billing address information
-        var billingAddress = order.getBillingAddress();
-
-        // Creating billing address object
-        var billingDetails = {
-            address_line1       : billingAddress.getAddress1(),
-            address_line2       : billingAddress.getAddress2(),
-            city                : billingAddress.getCity(),
-            state               : billingAddress.getStateCode(),
-            zip                 : billingAddress.getPostalCode(),
-            country             : billingAddress.getCountryCode().value
-        };
-        
-        return billingDetails;
-    },
+    }
 }
 
 /*
