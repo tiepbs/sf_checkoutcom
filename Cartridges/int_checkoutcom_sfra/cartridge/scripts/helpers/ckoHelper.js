@@ -438,7 +438,7 @@ var ckoHelper = {
     /*
      * Get Billing Descriptor Object from custom preferences
      */
-    getBillingDescriptorObject : function () {
+    getBillingDescriptor : function () {
         
         var billingDescriptor = {
             "name"  : this.getValue('ckoBillingDescriptor1'),

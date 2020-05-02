@@ -125,7 +125,7 @@ var cardHelper = {
             'reference'             : orderNumber,
             'capture'               : ckoHelper.getValue('ckoAutoCapture'),
             'capture_on'            : ckoHelper.getCaptureTime(),
-            'billing_descriptor'    : ckoHelper.getBillingDescriptorObject(),
+            'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
             '3ds'                   : this.get3Ds(),
             'risk'                  : {enabled: true},
         };   

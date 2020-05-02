@@ -38,7 +38,7 @@ var apmHelper = {
                 "reference"             : args.OrderNo,
                 "payment_ip"            : ckoHelper.getHost(args),
                 "metadata"              : ckoHelper.getMetadataObject(payObject, args),
-                "billing_descriptor"    : ckoHelper.getBillingDescriptorObject()
+                "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
             
             // Perform the request to the payment gateway
@@ -124,7 +124,7 @@ var apmHelper = {
                 "reference"             : args.OrderNo,
                 "payment_ip"            : ckoHelper.getHost(args),
                 "metadata"              : ckoHelper.getMetadataObject(payObject, args),
-                "billing_descriptor"    : ckoHelper.getBillingDescriptorObject()
+                "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
         } else {
             // Prepare chargeData object
@@ -136,7 +136,7 @@ var apmHelper = {
                 "reference"             : args.OrderNo,
                 "payment_ip"            : ckoHelper.getHost(args),
                 "metadata"              : ckoHelper.getMetadataObject(payObject, args),
-                "billing_descriptor"    : ckoHelper.getBillingDescriptorObject()
+                "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
         }
         
