@@ -129,6 +129,7 @@ var cardHelper = {
             'shipping'              : this.getShipping(),
             '3ds'                   : this.get3Ds(),
             'risk'                  : {enabled: true},
+            'metadata'              : ckoHelper.getMetadata({}, session.custom.processorId)
         };   
     
         return chargeData;

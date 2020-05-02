@@ -30,6 +30,7 @@ function Handle(basket, paymentInformation) {
     var cardData = cardHelper.buildCardData(paymentInformation); 
     session.custom.cardData = cardData;
     session.custom.basket = basket;
+    session.custom.processorId = 'CHECKOUTCOM_CARD';
 
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {

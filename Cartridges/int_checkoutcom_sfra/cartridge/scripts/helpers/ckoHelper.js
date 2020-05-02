@@ -726,7 +726,7 @@ var ckoHelper = {
     /*
      * Build metadata object
      */
-    getMetadata: function (data, args) {
+    getMetadata: function (data, processorId) {
         // Prepare the base metadata
         var meta = {
             integration_data: this.getCartridgeMeta(),
@@ -740,7 +740,7 @@ var ckoHelper = {
         }
 
         // Add the payment processor to the metadata
-        meta.payment_processor = args.ProcessorId;
+        meta.payment_processor = processorId;
     
         return meta;
     },
