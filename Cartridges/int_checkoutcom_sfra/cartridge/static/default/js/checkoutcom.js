@@ -9,9 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Handle payment tabs state
 	initTabs();
-
-	// Tooltips
-	initTooltips();
 	
 	// Customer email
 	prepareCustomerEmail();
@@ -47,7 +44,7 @@ function initTabs() {
 		'click touch',
 		function() {
 			// Hide all tabs contents
-			$('.ckoPaymentOptions .tab-pane').removeClass('active');
+			$('.tab-pane').removeClass('active');
 
 			// Show the clicked tab content
 			$($(this).attr('href')).addClass('active');
