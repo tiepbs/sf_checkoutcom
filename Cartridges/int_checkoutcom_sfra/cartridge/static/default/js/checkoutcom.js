@@ -41,27 +41,16 @@ function initTooltips() {
 }
 
 function initTabs() {
-	// Remove all active classes
-	$('.ckoPaymentOptions .tab-pane').hide();
-
 	// Handle the click navigation
 	var allTabs = $('.payment-options a.nav-link');
 	allTabs.on(
 		'click touch',
 		function() {
 			// Hide all tabs contents
-			$('.ckoPaymentOptions .tab-pane').hide();
+			$('.ckoPaymentOptions .tab-pane').removeClass('active');
 
 			// Show the clicked tab content
-			$($(this).attr('href')).show();
-
-			// Set the selected option id
-			$('#selectedPaymentOption').val(
-				$(this).closest('li').data('method-id')
-			);
-
-			// Initialize form validation
-			initFormValidation();
+			$($(this).attr('href')).addClass('active');
 		}
 	);
 

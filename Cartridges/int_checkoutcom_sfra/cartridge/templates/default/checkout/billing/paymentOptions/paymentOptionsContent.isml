@@ -3,6 +3,6 @@
         <isinclude template="checkout/billing/paymentOptions/creditCardContent" />
     </isif>
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY'}">
-        <isinclude template="checkout/billing/paymentOptions/creditCardContent" />
+        <isinclude template="checkout/billing/paymentOptions/googlePayContent" />
     </isif>
 </isloop>
