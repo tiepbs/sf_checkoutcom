@@ -6,15 +6,12 @@ var Transaction = require('dw/system/Transaction');
 var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
 
 /**
- * Google Pay Handle hook
+ * Verifies that the payment data is valid.
  */
 function Handle(basket, paymentInformation, processorId) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
-
-    // Get the payment data data
-    session.custom.basket = basket;
 
     // Verify the payload
     if (!paymentInformation.ckoGooglePayData || paymentInformation.ckoGooglePayData.length == 0) {
@@ -26,6 +23,7 @@ function Handle(basket, paymentInformation, processorId) {
     }
 
     Transaction.wrap(function () {
+        // Remove existing payment instruments
         var paymentInstruments = currentBasket.getPaymentInstruments(
             processorId
         );
@@ -34,33 +32,33 @@ function Handle(basket, paymentInformation, processorId) {
             currentBasket.removePaymentInstrument(item);
         });
 
+        // Create a new payment instrument
         var paymentInstrument = currentBasket.createPaymentInstrument(
             processorId, currentBasket.totalGrossPrice
         );
-
     });
 
-    return { fieldErrors: cardErrors, serverErrors: serverErrors, error: false};
+    return {
+        fieldErrors: cardErrors,
+        serverErrors: serverErrors,
+        error: false
+    };
 }
 
 /**
- * Authorizes a payment using a credit card. Customizations may use other processors and custom
- *      logic to authorize credit card payment.
- * @param {number} orderNumber - The current order's number
- * @param {dw.order.PaymentInstrument} paymentInstrument -  The payment instrument to authorize
- * @param {dw.order.PaymentProcessor} paymentProcessor -  The payment processor of the current
- *      payment method
- * @return {Object} returns an error object
+ * Authorizes a payment using a Google Pay card token
  */
 function Authorize(orderNumber, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
-    var paymentResponse = googlePayHelper.handleRequest(orderNumber, processorId);
+
+    // Payment request
+    var success = googlePayHelper.handleRequest(orderNumber, processorId);
 
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
-        error: paymentResponse
+        error: !success
     };
 }
 

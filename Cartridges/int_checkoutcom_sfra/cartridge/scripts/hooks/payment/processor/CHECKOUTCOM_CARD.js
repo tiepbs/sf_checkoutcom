@@ -14,11 +14,7 @@ function createToken() {
 }
 
 /**
- * Verifies that entered credit card information is a valid card. If the information is valid a
- * credit card payment instrument is created
- * @param {dw.order.Basket} basket Current users's basket
- * @param {Object} paymentInformation - the payment information
- * @return {Object} returns an error object
+ * Verifies that the payment data is valid.
  */
 function Handle(basket, paymentInformation, processorId) {
     var currentBasket = basket;
@@ -29,7 +25,6 @@ function Handle(basket, paymentInformation, processorId) {
     // Get the card data
     var cardData = cardHelper.buildCardData(paymentInformation); 
     session.custom.cardData = cardData;
-    session.custom.basket = basket;
 
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {
@@ -44,6 +39,7 @@ function Handle(basket, paymentInformation, processorId) {
     }
 
     Transaction.wrap(function () {
+        // Remove existing payment instruments
         var paymentInstruments = currentBasket.getPaymentInstruments(
             processorId
         );
@@ -52,6 +48,7 @@ function Handle(basket, paymentInformation, processorId) {
             currentBasket.removePaymentInstrument(item);
         });
 
+        // Create a new payment instrument
         var paymentInstrument = currentBasket.createPaymentInstrument(
             processorId, currentBasket.totalGrossPrice
         );
@@ -68,21 +65,21 @@ function Handle(basket, paymentInformation, processorId) {
         );
     });
 
-    return { fieldErrors: cardErrors, serverErrors: serverErrors, error: false};
+    return {
+        fieldErrors: cardErrors,
+        serverErrors: serverErrors,
+        error: false
+    };
 }
 
 /**
- * Authorizes a payment using a credit card. Customizations may use other processors and custom
- *      logic to authorize credit card payment.
- * @param {number} orderNumber - The current order's number
- * @param {dw.order.PaymentInstrument} paymentInstrument -  The payment instrument to authorize
- * @param {dw.order.PaymentProcessor} paymentProcessor -  The payment processor of the current
- *      payment method
- * @return {Object} returns an error object
+ * Authorizes a payment using card details
  */
 function Authorize(orderNumber, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
+
+    // Payment request
     var success = cardHelper.handleRequest(orderNumber, processorId);
 
     return {
