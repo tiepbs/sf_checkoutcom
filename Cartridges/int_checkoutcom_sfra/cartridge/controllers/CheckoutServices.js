@@ -247,7 +247,8 @@ server.replace(
                 result = HookMgr.callHook('app.payment.processor.' + processor.ID.toLowerCase(),
                     'Handle',
                     currentBasket,
-                    billingData.paymentInformation
+                    billingData.paymentInformation,
+                    processor.ID
                 );
             } else {
                 result = HookMgr.callHook('app.payment.processor.default', 'Handle');
@@ -333,10 +334,11 @@ server.replace(
     }
 );
 
-
 server.replace('PlaceOrder', server.middleware.https, function (req, res, next) {
     var BasketMgr = require('dw/order/BasketMgr');
     var OrderMgr = require('dw/order/OrderMgr');
+    var PaymentMgr = require('dw/order/PaymentMgr');
+    var HookMgr = require('dw/system/HookMgr');
     var Resource = require('dw/web/Resource');
     var Transaction = require('dw/system/Transaction');
     var URLUtils = require('dw/web/URLUtils');
@@ -457,7 +459,25 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
     }
 
     // Handles payment authorization
-    var handlePaymentResult = COHelpers.handlePayments(order, order.orderNo);
+    var handlePaymentResult;
+    var billingForm = server.forms.getForm('billing');
+    var paymentMethodID = billingForm.paymentMethod.value;
+    var processor = PaymentMgr.getPaymentMethod(paymentMethodID).getPaymentProcessor();
+
+    if (HookMgr.hasHook('app.payment.processor.' + processor.ID.toLowerCase())) {
+        handlePaymentResult = HookMgr.callHook(
+            'app.payment.processor.' + processor.ID.toLowerCase(),
+            'Authorize',
+            order.orderNo,
+            processor.ID
+        );
+    } else {
+        handlePaymentResult = HookMgr.callHook(
+            'app.payment.processor.default',
+            'Authorize'
+        );
+    }
+    
     if (handlePaymentResult.error) {
         res.json({
             error: true,

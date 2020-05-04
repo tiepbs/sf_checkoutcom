@@ -20,7 +20,7 @@ function createToken() {
  * @param {Object} paymentInformation - the payment information
  * @return {Object} returns an error object
  */
-function Handle(basket, paymentInformation) {
+function Handle(basket, paymentInformation, processorId) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
@@ -30,7 +30,6 @@ function Handle(basket, paymentInformation) {
     var cardData = cardHelper.buildCardData(paymentInformation); 
     session.custom.cardData = cardData;
     session.custom.basket = basket;
-    session.custom.processorId = 'CHECKOUTCOM_CARD';
 
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {
@@ -46,7 +45,7 @@ function Handle(basket, paymentInformation) {
 
     Transaction.wrap(function () {
         var paymentInstruments = currentBasket.getPaymentInstruments(
-            'CHECKOUTCOM_CARD'
+            processorId
         );
 
         collections.forEach(paymentInstruments, function (item) {
@@ -54,7 +53,7 @@ function Handle(basket, paymentInformation) {
         });
 
         var paymentInstrument = currentBasket.createPaymentInstrument(
-            'CHECKOUTCOM_CARD', currentBasket.totalGrossPrice
+            processorId, currentBasket.totalGrossPrice
         );
 
         paymentInstrument.setCreditCardHolder(currentBasket.billingAddress.fullName);
@@ -81,10 +80,10 @@ function Handle(basket, paymentInformation) {
  *      payment method
  * @return {Object} returns an error object
  */
-function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
+function Authorize(orderNumber, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
-    var success = cardHelper.handleRequest(orderNumber);
+    var success = cardHelper.handleRequest(orderNumber, processorId);
 
     return {
         fieldErrors: fieldErrors,
