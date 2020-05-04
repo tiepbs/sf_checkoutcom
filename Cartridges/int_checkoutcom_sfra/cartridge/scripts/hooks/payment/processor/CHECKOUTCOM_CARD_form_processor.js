@@ -13,16 +13,16 @@ function processForm(req, paymentForm, viewFormData) {
     var array = require('*/cartridge/scripts/util/array');
 
     var viewData = viewFormData;
-    var creditCardErrors = {};
+    var fieldErrors = {};
 
     if (!req.form.storedPaymentUUID) {
         // verify credit card form data
-        creditCardErrors = COHelpers.validateCreditCard(paymentForm);
+        fieldErrors = COHelpers.validateCreditCard(paymentForm);
     }
-
-    if (Object.keys(creditCardErrors).length) {
+    
+    if (Object.keys(fieldErrors).length) {
         return {
-            fieldErrors: creditCardErrors,
+            fieldErrors: fieldErrors,
             error: true
         };
     }
