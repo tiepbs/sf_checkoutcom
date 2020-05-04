@@ -34,7 +34,7 @@ s
     },
 
     /*
-     * Handle full charge Response from CKO API
+     * Handle the payment response
      */
     handleResponse: function (gatewayResponse) {
         // Clean the session
@@ -56,7 +56,7 @@ s
     },
     
     /*
-     * Pre_Authorize card with zero value
+     * Pre authorize card with zero value
      */
     preAuthorizeCard: function() {
         var chargeData = {
@@ -143,5 +143,4 @@ s
 /*
 * Module exports
 */
-
 module.exports = cardHelper;

@@ -71,7 +71,7 @@ var googlePayHelper = {
     },
     
     /*
-     * Handle full Google Pay response from CKO API
+     * Handle the payment response
      */
     handleResponse: function (gatewayResponse) {        
         // Update customer data
