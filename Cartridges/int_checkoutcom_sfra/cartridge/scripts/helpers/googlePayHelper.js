@@ -1,7 +1,6 @@
 "use strict"
 
 /* API Includes */
-var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 
 /** Utility **/
@@ -12,9 +11,12 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 */
 var googlePayHelper = {
     /*
-     * Handle full charge Request to CKO API
+     * Handle the payment request
      */
-    handleRequest: function (orderNumber, processorId) {    	
+    handleRequest: function (orderNumber, processorId) {    
+        // Load the order information
+        var order = OrderMgr.getOrder(orderNumber);
+
         // Prepare the parameters
         var requestData = {
             'type': 'googlepay',
@@ -34,14 +36,14 @@ var googlePayHelper = {
                     type: 'token',
                     token: tokenResponse.token
                 },
-                'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
-                'currency'              : ckoHelper.getCurrency(),
-                'reference'             : args.OrderNo,
+                'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
+                'currency'              : order.getCurrencyCode(),
+                'reference'             : order.orderNo,
                 'capture'               : ckoHelper.getValue('ckoAutoCapture'),
                 'capture_on'            : ckoHelper.getCaptureTime(),
-                'customer'              : ckoHelper.getCustomer(args),
+                'customer'              : ckoHelper.getCustomer(order),
                 'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
-                'shipping'              : ckoHelper.getShipping(args),
+                'shipping'              : ckoHelper.getShipping(order),
                 'metadata'              : ckoHelper.getMetadata({}, processorId)
             };
 

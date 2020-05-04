@@ -82,7 +82,7 @@ var transactionHelper = {
             
             // Loop through the payment instruments
             for each(var instrument in paymentInstruments) {
-                if (this.isCkoItem(instrument.paymentMethod) && !this.containsObject(item, data)) {
+                if (ckoHelper.isCkoItem(instrument.paymentMethod) && !ckoHelper.containsObject(item, data)) {
                     data.push(item);
                 }
             }

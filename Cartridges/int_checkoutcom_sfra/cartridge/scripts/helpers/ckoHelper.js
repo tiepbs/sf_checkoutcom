@@ -282,14 +282,14 @@ var ckoHelper = {
     /**
      * Checks if a payment instrument is Checkout.com.
      */
-    isCkoItem: function (item) {
+    isCkoItem: function(item) {
         return item.length > 0 && item.indexOf('CHECKOUTCOM_') >= 0;
     },
 
     /*
      * Get order currency
      */
-    getCurrency : function () {
+    getCurrency : function() {
         var orderId = this.getOrderId();
         var order = OrderMgr.getOrder(orderId);
         var currency = order.getCurrencyCode();
@@ -298,19 +298,23 @@ var ckoHelper = {
     },
 
     /*
+     * Return the customer data
+     */
+    getCustomer: function(order) {        
+        return {
+            email: order.customerEmail,
+            name: order.customerName
+        };
+    },
+
+    /*
      * Return phone object
      */
-    getPhone: function () {
-        // Get billing address information
-        var billingAddress = session.custom.basket.getBillingAddress();
-        
-        // Creating phone object
-        var phone = {
+    getPhone: function(billingAddress) {      
+        return {
             country_code        : null,
             number              : billingAddress.getPhone()
         };
-        
-        return phone;
     },
 
     /*
@@ -318,6 +322,32 @@ var ckoHelper = {
      */
     getFormattedNumber: function (num) {
         return num.toString().replace(/\s/g, '');
+    },
+
+    /*
+     * Build the shipping data
+     */
+    getShipping: function (order) {
+        // Get shipping address
+        var shippingAddress = order.getDefaultShipment().getShippingAddress();
+        
+        // Create the address data
+        var shippingDetails = {
+            address_line1       : shippingAddress.getAddress1(),
+            address_line2       : shippingAddress.getAddress2(),
+            city                : shippingAddress.getCity(),
+            state               : shippingAddress.getStateCode(),
+            zip                 : shippingAddress.getPostalCode(),
+            country             : shippingAddress.getCountryCode().value
+        };
+        
+        // Build the shipping data
+        var shipping = {
+            address             : shippingDetails,
+            phone               : this.getPhone(order.billingAddress)
+        };
+        
+        return shipping;
     },
     
     /*

@@ -1,7 +1,7 @@
 "use strict"
 
 /* API Includes */
-var URLUtils = require('dw/web/URLUtils');
+var OrderMgr = require('dw/order/OrderMgr');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -11,7 +11,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 */
 var cardHelper = {
     /*
-     * Handle full charge Request to CKO API
+     * Handle the payment request
      */
     handleRequest: function (orderNumber, processorId) {       
         // Create billing address object
@@ -55,14 +55,14 @@ var cardHelper = {
     /*
      * Pre_Authorize card with zero value
      */
-    preAuthorizeCard: function(cardData) {
+    preAuthorizeCard: function() {
         var chargeData = {
             'source'                : {
                 type                : 'card',
-                number              : cardData.cardNumber,
-                expiry_month        : cardData.expiryMonth,
-                expiry_year         : cardData.expiryYear,
-                cvv                 : cardData.cvv
+                number              : session.custom.paymentData.cardNumber,
+                expiry_month        : session.custom.paymentData.expiryMonth,
+                expiry_year         : session.custom.paymentData.expiryYear,
+                cvv                 : session.custom.paymentData.cvv
             },
             'amount'                : 0,
             'currency'              : 'USD',
@@ -98,6 +98,9 @@ var cardHelper = {
      * Build the gateway request
      */
     buildRequest: function (orderNumber, processorId) {   
+        // Load the order information
+        var order = OrderMgr.getOrder(orderNumber);
+
         // Prepare the charge data
         var chargeData = {
             'source'                : {
@@ -107,48 +110,20 @@ var cardHelper = {
                 expiry_year         : session.custom.paymentData.expiryYear,
                 cvv                 : session.custom.paymentData.cvv
             },
-            'amount'                : ckoHelper.getFormattedPrice(
-                session.custom.basket.getTotalGrossPrice().value.toFixed(2),
-                session.custom.basket.getCurrencyCode()
-            ),
-            'currency'              : session.custom.basket.getCurrencyCode(),
-            'reference'             : orderNumber,
+            'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
+            'currency'              : order.getCurrencyCode(),
+            'reference'             : order.orderNo,
             'capture'               : ckoHelper.getValue('ckoAutoCapture'),
             'capture_on'            : ckoHelper.getCaptureTime(),
+            'customer'              : ckoHelper.getCustomer(order),
             'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
-            'shipping'              : this.getShipping(),
+            'shipping'              : ckoHelper.getShipping(order),
             '3ds'                   : this.get3Ds(),
             'risk'                  : {enabled: true},
             'metadata'              : ckoHelper.getMetadata({}, processorId)
         };   
     
         return chargeData;
-    },
-
-    /*
-     * Build the Shipping object
-     */
-    getShipping: function () {
-        // Get shipping address object
-        var shippingAddress = session.custom.basket.getDefaultShipment().getShippingAddress();
-        
-        // Creating address object
-        var shippingDetails = {
-            address_line1       : shippingAddress.getAddress1(),
-            address_line2       : shippingAddress.getAddress2(),
-            city                : shippingAddress.getCity(),
-            state               : shippingAddress.getStateCode(),
-            zip                 : shippingAddress.getPostalCode(),
-            country             : shippingAddress.getCountryCode().value
-        };
-        
-        // Build the shipping object
-        var shipping = {
-            address             : shippingDetails,
-            phone               : ckoHelper.getPhone()
-        };
-        
-        return shipping;
     },
 
     /*
