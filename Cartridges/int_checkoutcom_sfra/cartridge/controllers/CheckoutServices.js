@@ -154,6 +154,10 @@ server.replace(
 
             var billingData = res.getViewData();
 
+            var test = server.forms.getForm('billing');
+            var logger = require('dw/system/Logger').getLogger('ckodebug');
+            logger.debug('googlePayForm {0}', JSON.stringify(test.paymentMethod.value));
+        
             if (!currentBasket) {
                 delete billingData.paymentInformation;
 

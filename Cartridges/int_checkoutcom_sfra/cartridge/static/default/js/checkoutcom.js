@@ -28,6 +28,10 @@ function initTabs() {
 
 			// Show the clicked tab content
 			$($(this).attr('href')).addClass('active');
+
+			// Add the selected payment method
+			var methodId = $(this).closest('li').data('method-id');
+			$('input[name="dwfrm_billing_paymentMethod"]').val(methodId);
 		}
 	);
 

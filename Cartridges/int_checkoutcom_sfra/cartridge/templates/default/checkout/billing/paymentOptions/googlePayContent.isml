@@ -12,14 +12,7 @@
 </isscript>
 
 <div class="tab-pane google-pay-content" id="google-pay-content" role="tabpanel">
-    <fieldset class="payment-form-fields">
-        <input type="hidden" class="form-control"
-               name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-               value="CHECKOUTCOM_GOOGLE_PAY"
-        >
-        
-        <isset name="googlePayForm" value="${pdict.forms.billingForm.googlePayForm}" scope="page"/>
-
+    <fieldset class="payment-form-fields">        
         <fieldset>
             <button id="ckoGooglePayButton" type="button" class="cko-google-pay-button ${buttonStyle}"></button>
             <div class="invalid-field-message"></div>

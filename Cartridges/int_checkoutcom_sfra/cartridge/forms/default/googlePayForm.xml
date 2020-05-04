@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
+    <field formid="paymentMethod" type="string" mandatory="true"/>
+
+	<!-- Field for the Google Pay data -->          
+    <field formid="ckoGooglePayData" type="string" binding="ckoGooglePayData" />
+</form>
