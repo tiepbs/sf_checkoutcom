@@ -85,4 +85,3 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
 
 exports.Handle = Handle;
 exports.Authorize = Authorize;
-exports.createToken = createToken;

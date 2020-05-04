@@ -93,7 +93,7 @@ server.replace(
             };
 
             viewData.phone = { value: paymentForm.contactInfoFields.phone.value };
-        }
+        }    
 
         var paymentMethodIdValue = paymentForm.paymentMethod.value;
         if (!PaymentManager.getPaymentMethod(paymentMethodIdValue).paymentProcessor) {
@@ -140,7 +140,6 @@ server.replace(
             var BasketMgr = require('dw/order/BasketMgr');
             var HookMgr = require('dw/system/HookMgr');
             var PaymentMgr = require('dw/order/PaymentMgr');
-            var PaymentInstrument = require('dw/order/PaymentInstrument');
             var Transaction = require('dw/system/Transaction');
             var AccountModel = require('*/cartridge/models/account');
             var OrderModel = require('*/cartridge/models/order');
@@ -154,10 +153,6 @@ server.replace(
 
             var billingData = res.getViewData();
 
-            var test = server.forms.getForm('billing');
-            var logger = require('dw/system/Logger').getLogger('ckodebug');
-            logger.debug('googlePayForm {0}', JSON.stringify(test.paymentMethod.value));
-        
             if (!currentBasket) {
                 delete billingData.paymentInformation;
 
@@ -187,7 +182,8 @@ server.replace(
 
             var billingAddress = currentBasket.billingAddress;
             var billingForm = server.forms.getForm('billing');
-            var paymentMethodID = billingData.paymentMethod.value;
+            var paymentMethodID = billingForm.paymentMethod.value;
+
             var result;
 
             billingForm.creditCardFields.cardNumber.htmlValue = '';

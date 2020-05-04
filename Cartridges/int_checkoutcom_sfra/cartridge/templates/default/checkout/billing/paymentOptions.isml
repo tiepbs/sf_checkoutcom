@@ -12,12 +12,6 @@
     </div>
 </div>
 
-<!--- Selected payment method field --->
-<input type="hidden" class="form-control"
-		name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-		value="CHECKOUTCOM_CARD"
->
-
 <!-- Translation strings -->
 <isscript>
 	var translationStrings = JSON.stringify({
