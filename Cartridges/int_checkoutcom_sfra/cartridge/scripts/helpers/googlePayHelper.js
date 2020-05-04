@@ -53,8 +53,8 @@ var googlePayHelper = {
                 chargeData
             );
 
-            // Validate the response
-            return ckoHelper.paymentSuccess(gatewayResponse);
+            // Process the response
+            return gatewayResponse && this.handleResponse(gatewayResponse);
         } 
     },
     
@@ -67,6 +67,8 @@ var googlePayHelper = {
         
         // Update customer data
         ckoHelper.updateCustomerData(gatewayResponse);
+
+        return ckoHelper.paymentSuccess(gatewayResponse);
     }
 }
 
