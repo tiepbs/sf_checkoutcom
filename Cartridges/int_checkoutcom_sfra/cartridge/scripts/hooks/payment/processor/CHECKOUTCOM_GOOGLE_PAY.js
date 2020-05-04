@@ -8,14 +8,13 @@ var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
 /**
  * Google Pay Handle hook
  */
-function Handle(basket, paymentInformation) {
+function Handle(basket, paymentInformation, processorId) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
 
     // Get the payment data data
     session.custom.basket = basket;
-    session.custom.processorId = 'CHECKOUTCOM_CARD';
 
     // Verify the payload
     if (!paymentInformation.ckoGooglePayData || paymentInformation.ckoGooglePayData.length == 0) {
@@ -28,7 +27,7 @@ function Handle(basket, paymentInformation) {
 
     Transaction.wrap(function () {
         var paymentInstruments = currentBasket.getPaymentInstruments(
-            'CHECKOUTCOM_GOOGLE_PAY'
+            processorId
         );
 
         collections.forEach(paymentInstruments, function (item) {
@@ -36,7 +35,7 @@ function Handle(basket, paymentInformation) {
         });
 
         var paymentInstrument = currentBasket.createPaymentInstrument(
-            'CHECKOUTCOM_GOOGLE_PAY', currentBasket.totalGrossPrice
+            processorId, currentBasket.totalGrossPrice
         );
 
     });
@@ -53,10 +52,10 @@ function Handle(basket, paymentInformation) {
  *      payment method
  * @return {Object} returns an error object
  */
-function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
+function Authorize(orderNumber, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
-    var paymentResponse = googlePayHelper.handleRequest(orderNumber);
+    var paymentResponse = googlePayHelper.handleRequest(orderNumber, processorId);
 
     return {
         fieldErrors: fieldErrors,
