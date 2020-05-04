@@ -90,7 +90,7 @@ var ckoHelper = {
             var logger = Logger.getLogger('ckodebug');
             if (logger) {
                 logger.debug(
-                    this._('cko.gateway.name', 'cko') + ' ' + dataType + ' : {0}',
+                    dataType + ' : {0}',
                     JSON.stringify(gatewayData)
                 );
             }
