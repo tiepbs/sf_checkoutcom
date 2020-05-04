@@ -15,6 +15,14 @@
         {
             "name": "app.payment.form.processor.checkoutcom_google_pay",
             "script": "./hooks/payment/processor/CHECKOUTCOM_GOOGLE_PAY_form_processor"
+        },
+        {
+            "name": "app.payment.processor.checkoutcom_apple_pay",
+            "script": "./hooks/payment/processor/CHECKOUTCOM_APPLE_PAY"
+        },
+        {
+            "name": "app.payment.form.processor.checkoutcom_apple_pay",
+            "script": "./hooks/payment/processor/CHECKOUTCOM_APPLE_PAY_form_processor"
         }
     ]
 }

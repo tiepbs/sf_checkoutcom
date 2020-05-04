@@ -5,4 +5,7 @@
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY'}">
         <isinclude template="checkout/billing/paymentOptions/googlePayContent" />
     </isif>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY'}">
+        <isinclude template="checkout/billing/paymentOptions/applePayContent" />
+    </isif>
 </isloop>

@@ -5,4 +5,7 @@
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnabled')}">
         <isinclude template="checkout/billing/paymentOptions/tabs/googlePayTab"/>
     </isif>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/applePayTab"/>
+    </isif>
 </isloop>

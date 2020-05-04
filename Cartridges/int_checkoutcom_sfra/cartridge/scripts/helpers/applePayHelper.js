@@ -1,7 +1,6 @@
 "use strict"
 
 /* API Includes */
-var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 
 /** Utility **/
@@ -12,87 +11,73 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 */
 var applePayHelper = {
     /*
-     * Handle full charge Request to CKO API
+     * Handle the payment request
      */
-    handleRequest: function (args) {
+    handleRequest: function (orderNumber, processorId) {    
         // Load the order information
-        var order = OrderMgr.getOrder(args.OrderNo);
-        var ckoApplePayData = args.ckoApplePayData;
-    	
+        var order = OrderMgr.getOrder(orderNumber);
+
         // Prepare the parameters
-        var requestData = {
-            "type": "applepay",
-            "token_data": JSON.parse(ckoApplePayData)
-        };
-   
+        var tokenRequest = {
+            'type': 'applepay',
+            'token_data': JSON.parse(session.custom.paymentData)
+        };    
+
+        // Log the payment token request data
+        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.tokenrequest.data', 'cko'), tokenRequest);
+
         // Perform the request to the payment gateway
         var tokenResponse = ckoHelper.gatewayClientRequest(
-            "cko.network.token." + ckoHelper.getValue('ckoMode') + ".service",
-            JSON.stringify(requestData)
+            'cko.network.token.' + ckoHelper.getValue('ckoMode') + '.service',
+            JSON.stringify(tokenRequest)
         );
-    	
+
+        // Log the payment token response data
+        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.tokenresponse.data', 'cko'), tokenResponse);
+
         // If the request is valid, process the response
         if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
-            var chargeData = {
-                "source"                : this.getSourceObject(tokenResponse),
-                "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
-                "currency"              : ckoHelper.getCurrency(),
-                "reference"             : args.OrderNo,
-                "capture"               : ckoHelper.getValue('ckoAutoCapture'),
-                "capture_on"            : ckoHelper.getCaptureTime(),
-                "customer"              : ckoHelper.getCustomer(args),
-                "billing_descriptor"    : ckoHelper.getBillingDescriptor(),
-                "shipping"              : ckoHelper.getShipping(args),
-                "metadata"              : ckoHelper.getMetadata({}, args)
+            var gatewayRequest = {
+                "source"                : {
+                    type: 'token',
+                    token: tokenResponse.token
+                },
+                'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
+                'currency'              : order.getCurrencyCode(),
+                'reference'             : order.orderNo,
+                'capture'               : ckoHelper.getValue('ckoAutoCapture'),
+                'capture_on'            : ckoHelper.getCaptureTime(),
+                'customer'              : ckoHelper.getCustomer(order),
+                'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
+                'shipping'              : ckoHelper.getShipping(order),
+                'metadata'              : ckoHelper.getMetadata({}, processorId)
             };
+
+            // Log the payment request data
+            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
 
             // Perform the request to the payment gateway
             var gatewayResponse = ckoHelper.gatewayClientRequest(
                 "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
-                chargeData
+                gatewayRequest
             );
 
-            // Validate the response
-            if (ckoHelper.paymentSuccess(gatewayResponse)) {
-                return gatewayResponse;
-            }
+            // Log the payment response data
+            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
 
-            return false;
-        } else {
-            // Update the transaction
-            Transaction.wrap(function () {
-                OrderMgr.failOrder(order);
-            });
-            
-            // Restore the cart
-            ckoHelper.checkAndRestoreBasket(order);
-            
-            return false;
-        }
+            // Process the response
+            return gatewayResponse && this.handleResponse(gatewayResponse);
+        } 
     },
     
     /*
-     * Handle full Apple Pay response from CKO API
+     * Handle the payment response
      */
-    handleResponse: function (gatewayResponse) {
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
-        
+    handleResponse: function (gatewayResponse) {        
         // Update customer data
         ckoHelper.updateCustomerData(gatewayResponse);
-    },
-    
-    /*
-     * Build Gateway Source Object
-     */
-    getSourceObject: function (tokenData) {
-        // Source object
-        var source = {
-            type: "token",
-            token: tokenData.token
-        }
-        
-        return source;
+
+        return ckoHelper.paymentSuccess(gatewayResponse);
     }
 }
 
