@@ -14,11 +14,11 @@ var googlePayHelper = {
     /*
      * Handle full charge Request to CKO API
      */
-    handleRequest: function (orderNumber) {    	
+    handleRequest: function (orderNumber, processorId) {    	
         // Prepare the parameters
         var requestData = {
             'type': 'googlepay',
-            'token_data': JSON.parse(args.ckoGooglePayData)
+            'token_data': JSON.parse(session.custom.paymentData)
         };
         
         // Perform the request to the payment gateway
@@ -42,7 +42,7 @@ var googlePayHelper = {
                 'customer'              : ckoHelper.getCustomer(args),
                 'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
                 'shipping'              : ckoHelper.getShipping(args),
-                'metadata'              : ckoHelper.getMetadata({}, args)
+                'metadata'              : ckoHelper.getMetadata({}, processorId)
             };
 
             // Perform the request to the payment gateway

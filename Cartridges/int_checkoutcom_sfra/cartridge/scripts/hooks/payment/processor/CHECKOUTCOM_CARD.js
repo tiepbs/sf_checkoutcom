@@ -22,9 +22,9 @@ function Handle(basket, paymentInformation, processorId) {
     var serverErrors = [];
     var cardIsValid = false;
 
-    // Get the card data
+    // Prepare the payment data
     var cardData = cardHelper.buildCardData(paymentInformation); 
-    session.custom.cardData = cardData;
+    session.custom.paymentData = cardData;
 
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {

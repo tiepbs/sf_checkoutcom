@@ -13,9 +13,9 @@ var cardHelper = {
     /*
      * Handle full charge Request to CKO API
      */
-    handleRequest: function (orderNumber) {       
+    handleRequest: function (orderNumber, processorId) {       
         // Create billing address object
-        var gatewayRequest = this.buildRequest(orderNumber);
+        var gatewayRequest = this.buildRequest(orderNumber, processorId);
 
         // Perform the request to the payment gateway
         var gatewayResponse = ckoHelper.gatewayClientRequest(
@@ -97,15 +97,15 @@ var cardHelper = {
     /*
      * Build the gateway request
      */
-    buildRequest: function (orderNumber) {   
+    buildRequest: function (orderNumber, processorId) {   
         // Prepare the charge data
         var chargeData = {
             'source'                : {
                 type                : 'card',
-                number              : session.custom.cardData.cardNumber,
-                expiry_month        : session.custom.cardData.expiryMonth,
-                expiry_year         : session.custom.cardData.expiryYear,
-                cvv                 : session.custom.cardData.cvv
+                number              : session.custom.paymentData.cardNumber,
+                expiry_month        : session.custom.paymentData.expiryMonth,
+                expiry_year         : session.custom.paymentData.expiryYear,
+                cvv                 : session.custom.paymentData.cvv
             },
             'amount'                : ckoHelper.getFormattedPrice(
                 session.custom.basket.getTotalGrossPrice().value.toFixed(2),
@@ -119,7 +119,7 @@ var cardHelper = {
             'shipping'              : this.getShipping(),
             '3ds'                   : this.get3Ds(),
             'risk'                  : {enabled: true},
-            'metadata'              : ckoHelper.getMetadata({}, session.custom.processorId)
+            'metadata'              : ckoHelper.getMetadata({}, processorId)
         };   
     
         return chargeData;
