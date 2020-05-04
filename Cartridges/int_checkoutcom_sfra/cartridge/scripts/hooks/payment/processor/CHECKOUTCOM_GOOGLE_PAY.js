@@ -14,7 +14,7 @@ function Handle(basket, paymentInformation, processorId) {
     var serverErrors = [];
 
     // Prepare the payment data
-    session.custom.paymentData = paymentInformation.ckoGooglePayData;
+    session.custom.paymentData = paymentInformation.ckoGooglePayData.value;
 
     // Verify the payload
     if (!paymentInformation.ckoGooglePayData || paymentInformation.ckoGooglePayData.length == 0) {

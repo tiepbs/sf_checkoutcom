@@ -21,8 +21,8 @@ var googlePayHelper = {
         var requestData = {
             'type': 'googlepay',
             'token_data': JSON.parse(session.custom.paymentData)
-        };
-        
+        };    
+
         // Perform the request to the payment gateway
         var tokenResponse = ckoHelper.gatewayClientRequest(
             'cko.network.token.' + ckoHelper.getValue('ckoMode') + '.service',
