@@ -12,27 +12,23 @@ function Handle(basket, paymentInformation) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
-    var cardIsValid = false;
 
     // Get the payment data data
     session.custom.basket = basket;
     session.custom.processorId = 'CHECKOUTCOM_CARD';
 
-    // Pre authorize the card
-    if (!paymentInformation.creditCardToken) {
-        cardIsValid = cardHelper.preAuthorizeCard(cardData);
-        if (!cardIsValid) {
-            serverErrors.push(
-                Resource.msg('error.card.information.error', 'creditCard', null)
-            );
+    // Verify the payload
+    if (!paymentInformation.ckoGooglePayData || paymentInformation.ckoGooglePayData.length == 0) {
+        serverErrors.push(
+            Resource.msg('error.card.information.error', 'creditCard', null)
+        );
 
-            return { fieldErrors: [cardErrors], serverErrors: serverErrors, error: true };
-        }
+        return { fieldErrors: [cardErrors], serverErrors: serverErrors, error: true};
     }
 
     Transaction.wrap(function () {
         var paymentInstruments = currentBasket.getPaymentInstruments(
-            'CHECKOUTCOM_CARD'
+            'CHECKOUTCOM_GOOGLE_PAY'
         );
 
         collections.forEach(paymentInstruments, function (item) {
@@ -40,19 +36,9 @@ function Handle(basket, paymentInformation) {
         });
 
         var paymentInstrument = currentBasket.createPaymentInstrument(
-            'CHECKOUTCOM_CARD', currentBasket.totalGrossPrice
+            'CHECKOUTCOM_GOOGLE_PAY', currentBasket.totalGrossPrice
         );
 
-        paymentInstrument.setCreditCardHolder(currentBasket.billingAddress.fullName);
-        paymentInstrument.setCreditCardNumber(cardData.cardNumber);
-        paymentInstrument.setCreditCardType(cardData.cardType);
-        paymentInstrument.setCreditCardExpirationMonth(cardData.expiryMonth);
-        paymentInstrument.setCreditCardExpirationYear(cardData.expiryYear);
-        paymentInstrument.setCreditCardToken(
-            paymentInformation.creditCardToken
-                ? paymentInformation.creditCardToken
-                : createToken()
-        );
     });
 
     return { fieldErrors: cardErrors, serverErrors: serverErrors, error: false};
@@ -70,11 +56,13 @@ function Handle(basket, paymentInformation) {
 function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
     var serverErrors = [];
     var fieldErrors = {};
-    var error = false;
+    var paymentResponse = googlePayHelper.handleRequest(orderNumber);
 
-    var paymentResonse = cardHelper.handleCardRequest(orderNumber);
-
-    return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error };
+    return {
+        fieldErrors: fieldErrors,
+        serverErrors: serverErrors,
+        error: paymentResponse
+    };
 }
 
 exports.Handle = Handle;

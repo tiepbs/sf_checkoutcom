@@ -14,7 +14,7 @@ var googlePayHelper = {
     /*
      * Handle full charge Request to CKO API
      */
-    handleRequest: function (args) {
+    handleRequest: function (orderNumber) {
         // Load the order information
         var order = OrderMgr.getOrder(args.OrderNo);
         var ckoGooglePayData = args.ckoGooglePayData;

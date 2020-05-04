@@ -84,11 +84,13 @@ function Handle(basket, paymentInformation) {
 function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
     var serverErrors = [];
     var fieldErrors = {};
-    var error = false;
+    var paymentResponse = cardHelper.handleCardRequest(orderNumber);
 
-    var paymentResonse = cardHelper.handleCardRequest(orderNumber);
-
-    return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error };
+    return {
+        fieldErrors: fieldErrors,
+        serverErrors: serverErrors,
+        error: paymentResponse
+    };
 }
 
 exports.Handle = Handle;
