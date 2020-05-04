@@ -34,7 +34,11 @@ function Handle(basket, paymentInformation, processorId) {
                 Resource.msg('error.card.information.error', 'creditCard', null)
             );
 
-            return { fieldErrors: [cardErrors], serverErrors: serverErrors, error: true };
+            return {
+                fieldErrors: [cardErrors],
+                serverErrors: serverErrors,
+                error: true
+            };
         }
     }
 
