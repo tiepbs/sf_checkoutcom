@@ -455,22 +455,6 @@ var ckoHelper = {
     },
     
     /*
-     * Return customer object
-     */
-    getCustomer: function (args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
-        
-        // Customer object
-        var customer = {
-            email               : order.customerEmail,
-            name                : order.customerName
-        };
-        
-        return customer;
-    },
-    
-    /*
      * Get Basket Quantities
      */
     getQuantity : function (args) {
