@@ -8,5 +8,4 @@
 
 <div class="cko-apm-panel">
 	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.sepa_iban}" id="sepa_iban" type="text" dynamicname="true" />
-	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.sepa_bic}" id="sepa_bic" type="text" dynamicname="true" />
 </div>
