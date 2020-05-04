@@ -61,7 +61,7 @@ server.replace(
 
         var viewData = {};
         var paymentForm = server.forms.getForm('billing');
-               
+       
         // verify billing form data
         var billingFormErrors = COHelpers.validateBillingForm(paymentForm.addressFields);
         var contactInfoFormErrors = COHelpers.validateFields(paymentForm.contactInfoFields);
