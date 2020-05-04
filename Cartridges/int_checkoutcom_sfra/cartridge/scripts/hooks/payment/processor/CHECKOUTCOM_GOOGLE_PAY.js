@@ -9,18 +9,12 @@ var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
  * Google Pay Handle hook
  */
 function Handle(basket, paymentInformation) {
-
-	var logger = require('dw/system/Logger').getLogger('ckodebug');
-	logger.debug('this is my test {0}', JSON.stringify(paymentInformation));
-
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
     var cardIsValid = false;
 
-    // Get the card data
-    var cardData = cardHelper.buildCardData(paymentInformation); 
-    session.custom.cardData = cardData;
+    // Get the payment data data
     session.custom.basket = basket;
     session.custom.processorId = 'CHECKOUTCOM_CARD';
 

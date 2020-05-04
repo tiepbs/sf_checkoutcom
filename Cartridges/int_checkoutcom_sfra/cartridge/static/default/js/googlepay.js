@@ -187,7 +187,7 @@ function launchGooglePay()
             };
 
             // Store the payload
-            jQuery('[name="ckoGooglePayData"]').val(JSON.stringify(payload));
+            jQuery('#ckoGooglePayData').val(JSON.stringify(payload));
         }
     });
 }

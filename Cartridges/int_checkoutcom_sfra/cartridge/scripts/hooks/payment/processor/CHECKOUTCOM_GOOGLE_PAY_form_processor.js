@@ -10,9 +10,22 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
  * @returns {Object} an object that has error information or payment information
  */
 function processForm(req, paymentForm, viewFormData) {
+    var viewData = viewFormData;
+    viewData.paymentMethod = {
+        value: paymentForm.paymentMethod.value,
+        htmlName: paymentForm.paymentMethod.value
+    };
+
+    viewData.paymentInformation = {
+        ckoGooglePayData: {
+            value: paymentForm.googlePayForm.ckoGooglePayData.htmlValue,
+            htmlName: paymentForm.googlePayForm.ckoGooglePayData.htmlName
+        },
+    };
+
     return {
         error: false,
-        viewData: viewFormData
+        viewData: viewData
     };
 }
 
