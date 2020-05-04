@@ -61,10 +61,7 @@ server.replace(
 
         var viewData = {};
         var paymentForm = server.forms.getForm('billing');
-
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('111 {0}', JSON.stringify(paymentForm.googlePayForm.ckoGooglePayData.htmlValue));
-        
+               
         // verify billing form data
         var billingFormErrors = COHelpers.validateBillingForm(paymentForm.addressFields);
         var contactInfoFormErrors = COHelpers.validateFields(paymentForm.contactInfoFields);
