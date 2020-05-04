@@ -8,46 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     launchGooglePay();
 }, false);
 
-function initCheckoutcomGooglePayValidation() {
-    $('button.submit-payment').off('click touch').on('click touch', function(e) {
-        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_GOOGLE_PAY') {
-            // Reset the error messages
-            $('.invalid-field-message').empty();
-
-            // Prevent the default button click behaviour
-            e.preventDefault();
-            e.stopImmediatePropagation();
-
-            // Prepare the errors array
-            var ckoFormErrors = [];
-
-            // Card number validation
-            ckoFormErrors[0] = checkGooglePayData();
-
-            // Invalidate the button click if errors found
-            if ($.inArray(1, ckoFormErrors) !== -1) {
-                return false;
-            }
-            else {
-                // Send the place order request
-                placeOrder();
-            }
-        }
-    });
-}
-
-function checkGooglePayData() {
-    if ($('#ckoGooglePayData').val() == '') {
-        $('#cko-google-pay-content .invalid-field-message').text(
-            window.ckoLang.googlePayDataInvalid
-        );
-
-        return 1;
-    }
-
-    return 0;
-}
-
 function launchGooglePay()
 {
     jQuery('.cko-google-pay-button').click(function() {

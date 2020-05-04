@@ -8,46 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
     launchApplePay();
 }, false);
 
-function initCheckoutcomApplePayValidation() {
-    $('button.submit-payment').off('click touch').on('click touch', function(e) {
-        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APPLE_PAY') {
-            // Reset the error messages
-            $('.invalid-field-message').empty();
-
-            // Prevent the default button click behaviour
-            e.preventDefault();
-            e.stopImmediatePropagation();
-
-            // Prepare the errors array
-            var ckoFormErrors = [];
-
-            // Card number validation
-            ckoFormErrors[0] = checkApplePayData();
-
-            // Invalidate the button click if errors found
-            if ($.inArray(1, ckoFormErrors) !== -1) {
-                return false;
-            }
-            else {
-                // Send the place order request
-                placeOrder();
-            }
-        }
-    });
-}
-
-function checkApplePayData() {
-    if ($('#ckoApplePayData').val() == '') {
-        $('#cko-apple-pay-content .invalid-field-message').text(
-            window.ckoLang.applePayDataInvalid
-        );
-        
-        return 1;
-    }
-
-    return 0;
-}
-
 function getLineItems()
 {
     return [];
