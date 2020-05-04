@@ -23,8 +23,8 @@
         <fieldset>
             <button id="ckoGooglePayButton" type="button" class="cko-google-pay-button ${buttonStyle}"></button>
             <div class="invalid-field-message"></div>
-            <input type="hidden" id="ckoGooglePayEnvironment" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnvironment'))}">
-            <input type="hidden" id="ckoGooglePayMerchantId" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayMerchantId'))}">
+            <input type="hidden" id="ckoGooglePayEnvironment" value="${dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnvironment').value}">
+            <input type="hidden" id="ckoGooglePayMerchantId" value="${dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayMerchantId')}">
             <input type="hidden" id="ckoGooglePayCurrency" value="${session.getCurrency().getCurrencyCode()}">
             <input type="hidden" id="ckoGooglePayAmount" value="${orderAmount}">
             <input type="hidden" id="ckoGatewayMerchantId" value="${gatewayMerchantId}">
