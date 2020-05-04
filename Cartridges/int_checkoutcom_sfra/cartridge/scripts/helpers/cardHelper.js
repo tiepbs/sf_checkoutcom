@@ -14,8 +14,11 @@ var cardHelper = {
      * Handle the payment request
      */
     handleRequest: function (orderNumber, processorId) {       
-        // Create billing address object
+        // Build the request data
         var gatewayRequest = this.buildRequest(orderNumber, processorId);
+
+        // Log the payment request data
+        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
 
         // Perform the request to the payment gateway
         var gatewayResponse = ckoHelper.gatewayClientRequest(
@@ -23,6 +26,9 @@ var cardHelper = {
             gatewayRequest
         );
 
+        // Log the payment response data
+        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
+s
         // Process the response
         return gatewayResponse && this.handleResponse(gatewayResponse);
     },
@@ -33,9 +39,6 @@ var cardHelper = {
     handleResponse: function (gatewayResponse) {
         // Clean the session
         session.privacy.redirectUrl = null;
-        
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
         
         // Update customer data
         ckoHelper.updateCustomerData(gatewayResponse);

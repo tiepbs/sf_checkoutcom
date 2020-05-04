@@ -18,20 +18,26 @@ var googlePayHelper = {
         var order = OrderMgr.getOrder(orderNumber);
 
         // Prepare the parameters
-        var requestData = {
+        var tokenRequest = {
             'type': 'googlepay',
             'token_data': JSON.parse(session.custom.paymentData)
         };    
 
+        // Log the payment token request data
+        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.tokenrequest.data', 'cko'), tokenRequest);
+
         // Perform the request to the payment gateway
         var tokenResponse = ckoHelper.gatewayClientRequest(
             'cko.network.token.' + ckoHelper.getValue('ckoMode') + '.service',
-            JSON.stringify(requestData)
+            JSON.stringify(tokenRequest)
         );
-            	
+
+        // Log the payment token response data
+        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.tokenresponse.data', 'cko'), tokenResponse);
+
         // If the request is valid, process the response
         if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
-            var chargeData = {
+            var gatewayRequest = {
                 "source"                : {
                     type: 'token',
                     token: tokenResponse.token
@@ -47,11 +53,17 @@ var googlePayHelper = {
                 'metadata'              : ckoHelper.getMetadata({}, processorId)
             };
 
+            // Log the payment request data
+            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
+
             // Perform the request to the payment gateway
             var gatewayResponse = ckoHelper.gatewayClientRequest(
                 "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
-                chargeData
+                gatewayRequest
             );
+
+            // Log the payment response data
+            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
 
             // Process the response
             return gatewayResponse && this.handleResponse(gatewayResponse);
@@ -61,10 +73,7 @@ var googlePayHelper = {
     /*
      * Handle full Google Pay response from CKO API
      */
-    handleResponse: function (gatewayResponse) {
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
-        
+    handleResponse: function (gatewayResponse) {        
         // Update customer data
         ckoHelper.updateCustomerData(gatewayResponse);
 
