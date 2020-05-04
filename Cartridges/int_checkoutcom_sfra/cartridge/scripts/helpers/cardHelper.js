@@ -13,9 +13,9 @@ var cardHelper = {
     /*
      * Handle full charge Request to CKO API
      */
-    handleCardRequest: function (orderNumber) {       
+    handleRequest: function (orderNumber) {       
         // Create billing address object
-        var gatewayRequest = this.getCardRequest(orderNumber);
+        var gatewayRequest = this.buildRequest(orderNumber);
 
         // Perform the request to the payment gateway
         var gatewayResponse = ckoHelper.gatewayClientRequest(
@@ -23,21 +23,14 @@ var cardHelper = {
             gatewayRequest
         );
 
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
-
-        // If the charge is valid, process the response
-        if (gatewayResponse && this.handleFullChargeResponse(gatewayResponse)) {                
-            return true;
-        }
-            
-        return false;
+        // Process the response
+        return gatewayResponse && this.handleResponse(gatewayResponse);
     },
 
     /*
      * Handle full charge Response from CKO API
      */
-    handleFullChargeResponse: function (gatewayResponse) {
+    handleResponse: function (gatewayResponse) {
         // Clean the session
         session.privacy.redirectUrl = null;
         
@@ -104,7 +97,7 @@ var cardHelper = {
     /*
      * Build the gateway request
      */
-    getCardRequest: function (orderNumber) {   
+    buildRequest: function (orderNumber) {   
         // Prepare the charge data
         var chargeData = {
             'source'                : {
