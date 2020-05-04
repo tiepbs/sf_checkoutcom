@@ -14,36 +14,35 @@ var googlePayHelper = {
     /*
      * Handle full charge Request to CKO API
      */
-    handleRequest: function (orderNumber) {
-        // Load the order information
-        var order = OrderMgr.getOrder(args.OrderNo);
-        var ckoGooglePayData = args.ckoGooglePayData;
-    	
+    handleRequest: function (orderNumber) {    	
         // Prepare the parameters
         var requestData = {
-            "type": "googlepay",
-            "token_data": JSON.parse(ckoGooglePayData)
+            'type': 'googlepay',
+            'token_data': JSON.parse(args.ckoGooglePayData)
         };
         
         // Perform the request to the payment gateway
         var tokenResponse = ckoHelper.gatewayClientRequest(
-            "cko.network.token." + ckoHelper.getValue('ckoMode') + ".service",
+            'cko.network.token.' + ckoHelper.getValue('ckoMode') + '.service',
             JSON.stringify(requestData)
         );
             	
         // If the request is valid, process the response
         if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
             var chargeData = {
-                "source"                : this.getSourceObject(tokenResponse),
-                "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
-                "currency"              : ckoHelper.getCurrency(),
-                "reference"             : args.OrderNo,
-                "capture"               : ckoHelper.getValue('ckoAutoCapture'),
-                "capture_on"            : ckoHelper.getCaptureTime(),
-                "customer"              : ckoHelper.getCustomer(args),
-                "billing_descriptor"    : ckoHelper.getBillingDescriptor(),
-                "shipping"              : ckoHelper.getShipping(args),
-                "metadata"              : ckoHelper.getMetadata({}, args)
+                "source"                : {
+                    type: 'token',
+                    token: tokenResponse.token
+                },
+                'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
+                'currency'              : ckoHelper.getCurrency(),
+                'reference'             : args.OrderNo,
+                'capture'               : ckoHelper.getValue('ckoAutoCapture'),
+                'capture_on'            : ckoHelper.getCaptureTime(),
+                'customer'              : ckoHelper.getCustomer(args),
+                'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
+                'shipping'              : ckoHelper.getShipping(args),
+                'metadata'              : ckoHelper.getMetadata({}, args)
             };
 
             // Perform the request to the payment gateway
@@ -53,22 +52,8 @@ var googlePayHelper = {
             );
 
             // Validate the response
-            if (ckoHelper.paymentSuccess(gatewayResponse)) {
-                return gatewayResponse;
-            }
-
-            return false;
-        } else {
-            // Update the transaction
-            Transaction.wrap(function () {
-                OrderMgr.failOrder(order);
-            });
-            
-            // Restore the cart
-            ckoHelper.checkAndRestoreBasket(order);
-            
-            return false;
-        }
+            return ckoHelper.paymentSuccess(gatewayResponse);
+        } 
     },
     
     /*
@@ -80,19 +65,6 @@ var googlePayHelper = {
         
         // Update customer data
         ckoHelper.updateCustomerData(gatewayResponse);
-    },
-    
-    /*
-     * Build Gateway Source Object
-     */
-    getSourceObject: function (tokenData) {
-        // Source object
-        var source = {
-            type: "token",
-            token: tokenData.token
-        }
-        
-        return source;
     }
 }
 

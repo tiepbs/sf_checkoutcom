@@ -1,9 +1,6 @@
 "use strict"
 
 /* API Includes */
-var Transaction = require('dw/system/Transaction');
-var OrderMgr = require('dw/order/OrderMgr');
-var CustomerMgr = require('dw/customer/CustomerMgr');
 var URLUtils = require('dw/web/URLUtils');
 
 /** Utility **/
