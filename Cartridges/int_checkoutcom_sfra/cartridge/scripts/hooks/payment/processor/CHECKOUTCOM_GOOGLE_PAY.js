@@ -14,12 +14,12 @@ function Handle(basket, paymentInformation, processorId) {
     var serverErrors = [];
 
     // Prepare the payment data
-    session.custom.paymentData = paymentInformation.ckoGooglePayData.value;
-
+    session.custom.paymentData = paymentInformation.ckoGooglePayData;
+    
     // Verify the payload
-    if (!paymentInformation.ckoGooglePayData || paymentInformation.ckoGooglePayData.length == 0) {
+    if (!paymentInformation.ckoGooglePayData.value || paymentInformation.ckoGooglePayData.value.length == 0) {
         serverErrors.push(
-            Resource.msg('error.card.information.error', 'creditCard', null)
+            Resource.msg('cko.googlepay.error', 'cko', null)
         );
 
         return {

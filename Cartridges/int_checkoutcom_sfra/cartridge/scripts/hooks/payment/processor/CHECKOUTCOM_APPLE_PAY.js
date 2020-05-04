@@ -17,9 +17,9 @@ function Handle(basket, paymentInformation, processorId) {
     session.custom.paymentData = paymentInformation.ckoApplePayData.value;
 
     // Verify the payload
-    if (!paymentInformation.ckoApplePayData || paymentInformation.ckoApplePayData.length == 0) {
+    if (!paymentInformation.ckoApplePayData.value || paymentInformation.ckoApplePayData.value.length == 0) {
         serverErrors.push(
-            Resource.msg('error.card.information.error', 'creditCard', null)
+            Resource.msg('cko.applepay.error', 'cko', null)
         );
 
         return {
