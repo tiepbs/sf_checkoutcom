@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 }, false);
 
 function initApplePayValidation() {
-    $('button.submit-payment').on('click touch', function (e) {
+    $('button.submit-payment').one('click touch', function (e) {
         if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APPLE_PAY') {
             // Prevent the default button click behaviour
             e.preventDefault();
