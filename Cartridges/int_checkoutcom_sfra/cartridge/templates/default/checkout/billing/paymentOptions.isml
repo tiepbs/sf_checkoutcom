@@ -1,3 +1,12 @@
+<!-- Translation strings -->
+<isscript>
+	var translationStrings = JSON.stringify({
+		apmFieldInvalid: dw.web.Resource.msg('cko.apmfield.invalid', 'cko', null)
+	});
+</isscript>
+<input type="hidden" id="translationStrings" value='${translationStrings}'>
+
+<!-- Payment options -->
 <div class="form-nav billing-nav payment-information"
      data-payment-method-id="CREDIT_CARD"
      data-is-new-payment="${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? false : true}"

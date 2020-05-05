@@ -4,6 +4,9 @@
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function() {
+	// Load the language strings
+	loadTranslations();
+
 	// Handle payment tabs state
 	initTabs();
 		
@@ -29,4 +32,9 @@ function initTabs() {
 
 	// Show the first active
 	$('.card-tab').trigger('click');
+}
+
+function loadTranslations() {
+	var translationStrings = $('#translationStrings').val();
+    window.ckoLang = JSON.parse(translationStrings);
 }
