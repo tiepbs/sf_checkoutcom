@@ -1,7 +1,4 @@
-<!-- PAYPAL pay APM Option -->
-
-<isprint value=${JSON.stringify(apmFields)} encoding="off"/>
-
+<!-- Paypal APM option -->
 <button class="cko-apm-accordion">
 	<input id="paypalPay_apm_radio_btn" type="radio" name="apm_list" value="paypal">
 	<img alt="paypalPay" id="paypalPay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/paypal.jpg')}"/>

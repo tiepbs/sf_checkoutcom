@@ -1,4 +1,4 @@
-<!-- Benefit pay APM Option -->
+<!-- Benefit pay APM option -->
 <button class="cko-apm-accordion">
 	<input id="benefit_apm_radio_btn" type="radio" name="apm_list" value="benefit">
 	<img alt="${Resource.msg('cko.benefit.name','cko',null)}" id="benefitpay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/benefitPay.jpg')}">

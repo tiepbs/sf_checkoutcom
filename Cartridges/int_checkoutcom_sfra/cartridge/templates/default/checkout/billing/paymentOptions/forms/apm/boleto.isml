@@ -1,4 +1,4 @@
-<!-- Boleto APM Option -->
+<!-- Boleto APM option -->
 <button class="cko-apm-accordion">
 	<input id="boleto_apm_radio_btn" type="radio" name="apm_list" value="boleto">
 	<img alt="${Resource.msg('cko.boleto.name','cko',null)}" id="boletopay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/boleto_bancario.png')}">
