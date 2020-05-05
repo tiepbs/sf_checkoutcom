@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function launchGooglePay()
 {
-    jQuery('.cko-google-pay-button').click(function() {
+    jQuery('.google-pay-button').click(function() {
         // Prepare the payment parameters
         var allowedPaymentMethods = ['CARD', 'TOKENIZED_CARD'];
         var allowedCardNetworks = ['VISA', 'MASTERCARD', 'AMEX', 'JCB', 'DISCOVER'];

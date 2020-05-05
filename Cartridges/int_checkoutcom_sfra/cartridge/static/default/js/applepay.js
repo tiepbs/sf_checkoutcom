@@ -76,7 +76,7 @@ function launchApplePay()
     }
 
     // Handle the events
-    jQuery('.cko-apple-pay-button').click(
+    jQuery('.apple-pay-button').click(
         function (evt) {
             // Prepare the parameters
             var runningTotal = jQuery('[id="ckoApplePayAmount"]').val();
