@@ -1,9 +1,9 @@
 function idealFieldsValidation() {
-    var qpayField1 = $('#qpay_national_id');
-    if (qpayField1.val() == '') {
+    var field1 = $('#qpay_national_id');
+    if (field1.val() == '') {
         $('#qpay_pay_box .invalid-field-message').text(
             window.ckoLang.apmFieldInvalid
         );
-        qpayField1.addClass('is-invalid');
+        field1.addClass('is-invalid');
     }
 }

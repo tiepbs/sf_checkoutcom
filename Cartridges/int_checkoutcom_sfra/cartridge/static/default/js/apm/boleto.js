@@ -1,17 +1,17 @@
 function boletoFieldsValidation() {
-    var boletoField1 = $('#boleto_birthDate');
-    if (boletoField1.val() == '') {
+    var field1 = $('#boleto_birthDate');
+    if (field1.val() == '') {
         $('#boleto_pay_box .invalid-field-message').text(
             window.ckoLang.apmFieldInvalid
         );
-        boletoField1.addClass('is-invalid');
+        field1.addClass('is-invalid');
     }
 
-    var boletoField2 = $('#boleto_cpfe');
-    if (boletoField2.val() == '') {
+    var field2 = $('#boleto_cpfe');
+    if (field2.val() == '') {
         $('#boleto_pay_box .invalid-field-message').text(
             window.ckoLang.apmFieldInvalid
         );
-        boletoField2.addClass('is-invalid');
+        field2.addClass('is-invalid');
     }
 }
