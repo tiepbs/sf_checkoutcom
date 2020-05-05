@@ -13,6 +13,24 @@ function Handle(basket, paymentInformation, processorId) {
     var cardErrors = {};
     var serverErrors = [];
 
+	var logger = require('dw/system/Logger').getLogger('ckodebug');
+	logger.debug('apmx {0}', JSON.stringify(paymentInformation));
+
+    // Get the APM type chosen
+    var func = req.form.apm_list + 'PayAuthorization';
+
+    // Make the charge request
+    var args = {
+        OrderNo: order.orderNo,
+        ProcessorId: paymentMethodId,
+        Form: req.form,
+        CardUuid: false,
+        CustomerId: false
+    };
+
+    // Get the required apm pay config object
+    var payObject = apmConfig[func](args);
+
     // Prepare the payment data
     session.custom.paymentData = paymentInformation.ckoApmData;
     

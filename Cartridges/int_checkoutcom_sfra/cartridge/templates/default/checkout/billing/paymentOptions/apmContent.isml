@@ -5,9 +5,10 @@
     assets.addCss('/css/apm.css');
 </isscript>
 
+<isset name="apmFields" value="${pdict.forms.billingForm.apmForm}" scope="page"/>
+
 <div class="tab-pane apm-content" id="apm-content" role="tabpanel">
     <fieldset class="payment-form-fields">
-
         <input type="hidden" class="form-control"
                name="${pdict.forms.billingForm.paymentMethod.htmlName}"
                value="${paymentOption.ID}"
@@ -129,7 +130,7 @@
 				
 				<!-- This to include the Paypal apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoPaypalEnabled'))}">
-					<div id="paypal">	
+					<div id="paypal" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/forms/apm/paypal.isml"/>
 					</div>
 				</isif>
