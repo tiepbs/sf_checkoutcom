@@ -15,7 +15,7 @@ var apmHelper = {
     /*
      * Apm Request
      */
-    handleApmRequest: function (payObject, args) {
+    handleRequest: function (payObject, args) {
         // Gateway response
         var gatewayResponse = false;
         
