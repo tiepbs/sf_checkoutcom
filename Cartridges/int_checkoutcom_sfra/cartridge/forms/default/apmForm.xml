@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <form xmlns="http://www.demandware.com/xml/form/2008-04-19">
 	<!-- Field for alternative payment chosen -->
-    <field formid="ckoSelectedApm" type="string" mandatory="false" binding="ckoSelectedApm"/>
+    <field formid="ckoSelectedApm" type="string" mandatory="true" binding="ckoSelectedApm"/>
     
     <!-- Field for Shop url -->
-    <field formid="store_url" type="string" mandatory="false" binding="store_url"/>
+    <field formid="store_url" type="string" mandatory="true" binding="store_url"/>
 	
 	<!-- Field for Ideal pay -->
     <field formid="ideal" type="string" mandatory="false" binding="ideal"/>
