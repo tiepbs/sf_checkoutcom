@@ -12,20 +12,4 @@
     </div>
 </div>
 
-<!-- Translation strings -->
-<isscript>
-	var translationStrings = JSON.stringify({
-		cardOwnerInvalid: dw.web.Resource.msg('cko.cardowner.invalid', 'cko', null),
-    	cardNumberInvalid: dw.web.Resource.msg('cko.cardnumber.invalid', 'cko', null),
-		cardExpirationMonthInvalid: dw.web.Resource.msg('cko.cardexpirationmonth.invalid', 'cko', null),
-		cardExpirationYearInvalid: dw.web.Resource.msg('cko.cardexpirationyear.invalid', 'cko', null),
-		cardSecurityCodeInvalid: dw.web.Resource.msg('cko.cardsecuritycode.invalid', 'cko', null),
-		googlePayDataInvalid: dw.web.Resource.msg('cko.googlepaydata.invalid', 'cko', null),
-		apmFieldInvalid: dw.web.Resource.msg('cko.apmfield.invalid', 'cko', null)
-	});
-</isscript>
-
-<!-- Translation strings -->
-<input type="hidden" id="translationStrings" value='${translationStrings}'>
-
 <script src="${URLUtils.staticURL('/js/checkoutcom.js')}"></script>
