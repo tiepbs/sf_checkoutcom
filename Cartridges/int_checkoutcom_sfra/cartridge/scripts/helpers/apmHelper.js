@@ -20,7 +20,7 @@ var apmHelper = {
         var order = OrderMgr.getOrder(orderNumber);
         
         // Creating billing address object
-        var gatewayRequest = this.getApmRequest(payObject, args);
+        var gatewayRequest = this.getApmRequest(order, args);
 
         // Test SEPA
         if (payObject.type == "sepa") {
@@ -33,7 +33,7 @@ var apmHelper = {
                 "billing_address"       : ckoHelper.getBilling(order),
                 "source_data"           : payObject.source_data,
                 "reference"             : order.OrderNo,
-                "metadata"              : ckoHelper.getMetadata(payObject, args),
+                "metadata"              : ckoHelper.getMetadata(payObject, processorId),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
             
@@ -97,28 +97,24 @@ var apmHelper = {
     /*
      * Return the APM request data
      */
-    getApmRequest: function (payObject, args) {
+    getApmRequest: function (order, args) {
         // Charge data
         var chargeData = false;
         
-        // Load the order information
-        var order = OrderMgr.getOrder(args.OrderNo);
-        
-        // Load the currency and amount
-        var currency = ckoHelper.getCurrency(payObject.currency);
-        var amount = ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), currency);
+        // Get the order amount
+        var amount = ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode());
         
         // Object APM is SEPA
         if (payObject.type == 'klarna') {
             // Prepare chargeData object
             chargeData = {
-                "customer"              : ckoHelper.getCustomer(args),
+                "customer"              : ckoHelper.getCustomer(order),
                 "amount"                : amount,
-                "currency"              : currency,
+                "currency"              : order.getCurrencyCode(),
                 "capture"               : false,
                 "source"                : payObject.source,
-                "reference"             : args.OrderNo,
-                "metadata"              : ckoHelper.getMetadata(payObject, args),
+                "reference"             : args.orderNo,
+                "metadata"              : ckoHelper.getMetadata({}, args),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
         } else {
