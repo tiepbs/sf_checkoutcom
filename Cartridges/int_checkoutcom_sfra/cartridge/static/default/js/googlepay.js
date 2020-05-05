@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 function initCheckoutcomGooglePayValidation() {
-    $('button.submit-payment').one('click touch', function (e) {
+    $('button.submit-payment').off('click touch').on('click touch', function (e) {
         if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_GOOGLE_PAY') {            
             // Prevent the default button click behaviour
             e.preventDefault();
