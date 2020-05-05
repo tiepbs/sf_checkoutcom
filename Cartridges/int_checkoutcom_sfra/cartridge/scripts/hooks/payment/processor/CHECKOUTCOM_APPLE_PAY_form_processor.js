@@ -19,7 +19,7 @@ function processForm(req, paymentForm, viewFormData) {
     };
 
     viewData.paymentInformation = {
-        ckoGooglePayData: {
+        ckoApplePayData: {
             value: ckoApplePayData.htmlValue,
             htmlName: ckoApplePayData.htmlName
         },
