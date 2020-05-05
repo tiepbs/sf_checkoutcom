@@ -39,17 +39,17 @@ function initTabs() {
 
 function initFormValidation() {
 	// Selected option container
-	var selectedOption = $('input[name="dwfrm_billing_paymentMethod"]').val();
+	var selectedOption = '';
 
 	// Format the selected payment method name
-	var parts = selectedOption.toLowerCase().split('_');
+	var parts = $('input[name="dwfrm_billing_paymentMethod"]').val().toLowerCase().split('_');
 	for (var i = 0; i < parts.length; i++) {
 		selectedOption += parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
 	}
 
 	// Build and call the validation function name
 	var func = window['init' + selectedOption + 'Validation'];
-	if (typeof func === "function") func();
+	window[func]();
 }
 
 function loadTranslations() {
