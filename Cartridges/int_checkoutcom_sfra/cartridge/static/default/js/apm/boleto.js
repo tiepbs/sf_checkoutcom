@@ -1,7 +1,4 @@
 function boletoFieldsValidation() {
-
-    alert('boleto validation called');
-
     var boletoField1 = $('#boleto_birthDate');
     if (boletoField1.val() == '') {
         $('#boleto_pay_box .invalid-field-message').text(
