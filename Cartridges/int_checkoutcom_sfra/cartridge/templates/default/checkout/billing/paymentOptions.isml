@@ -1,9 +1,15 @@
-<!-- Translation strings -->
 <isscript>
+    // CSS and JS
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/checkoutcom.js');
+    assets.addCss('/css/checkoutcom.css');
+
+    // Translatrion strings
 	var translationStrings = JSON.stringify({
 		apmFieldInvalid: dw.web.Resource.msg('cko.apmfield.invalid', 'cko', null)
 	});
 </isscript>
+
 <input type="hidden" id="translationStrings" value='${translationStrings}'>
 
 <!-- Payment options -->
@@ -20,5 +26,3 @@
         <isinclude template="checkout/billing/paymentOptions/paymentOptionsContent" />
     </div>
 </div>
-
-<script src="${URLUtils.staticURL('/js/checkoutcom.js')}"></script>
