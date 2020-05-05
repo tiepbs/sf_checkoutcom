@@ -9,6 +9,10 @@ var apm_selected_box = false;
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize the APM accordion
     initApmAccordion();
+
+    // Initialize the APM forms validation
+    initApmValidation();
+
 }, false);
 
 /*
@@ -95,7 +99,16 @@ function initApmValidation() {
             e.preventDefault();
             e.stopImmediatePropagation();
 
-            alert('clicked');
+            // Get the APM container id
+            var apmId = $('.cko-apm-active').closest('.apm-list-item').attr('id');
+
+            // Build the form validation function name
+            var func = apmId + 'FieldsValidation';
+
+            // Run the form validation
+            if (typeof window[func] === "function") {
+                window[func]();
+            }
         }
     }); 
 }
