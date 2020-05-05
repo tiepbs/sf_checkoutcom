@@ -35,9 +35,6 @@
     transition: max-height 0.2s ease-out;
 }
 
-.cko-apm-panel-opened {
-}
-
 .cko-apm-panel > div {
 	padding-top: 23px;
 	padding-bottom: 20px;
