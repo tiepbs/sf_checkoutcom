@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
 <form xmlns="http://www.demandware.com/xml/form/2008-04-19">
 	<!-- Field for alternative payment chosen -->
-    <field formid="ckoSelectedApm" type="string" mandatory="true" binding="ckoSelectedApm"/>
+    <field formid="ckoSelectedApm" type="string" mandatory="false" binding="ckoSelectedApm"/>
     
     <!-- Field for Shop url -->
-    <field formid="store_url" type="string" mandatory="true" binding="store_url"/>
+    <field formid="store_url" type="string" mandatory="false" binding="store_url"/>
 	
 	<!-- Field for Ideal pay -->
     <field formid="ideal" type="string" mandatory="false" binding="ideal"/>
-    <field formid="ideal_bic" type="string" mandatory="true" max-length="40" binding="ideal_bic"/>	
+    <field formid="ideal_bic" type="string" mandatory="false" max-length="40" binding="ideal_bic"/>	
     
 	<!-- Field for Boleto pay -->
     <field formid="boleto" type="string" mandatory="false" binding="boleto"/>
-    <field formid="boleto_birthDate" type="string" mandatory="true" max-length="40" description="label.example" binding="boleto_birthDate"/>
-    <field formid="boleto_cpf" type="string" mandatory="true" max-length="40" binding="bolito_cpf"/>
-    <field formid="boleto_customerName" type="string" mandatory="true" max-length="40" binding="boleto_customerName"/>
+    <field formid="boleto_birthDate" type="string" mandatory="false" max-length="40" description="label.example" binding="boleto_birthDate"/>
+    <field formid="boleto_cpf" type="string" mandatory="false" max-length="40" binding="bolito_cpf"/>
+    <field formid="boleto_customerName" type="string" mandatory="false" max-length="40" binding="boleto_customerName"/>
     
 	<!-- Field for Bancontact pay -->
     <field formid="bancontact" type="string" mandatory="false" binding="bancontact"/>
-    <field formid="bancontact_account_holder_name" type="string" mandatory="true" max-length="40" binding="bancontact_account_holder_name"/>
+    <field formid="bancontact_account_holder_name" type="string" mandatory="false" max-length="40" binding="bancontact_account_holder_name"/>
     
 	<!-- Field for Benefit pay -->
     <field formid="benefitPay" type="string" mandatory="false" binding="benefitPay"/>
@@ -42,7 +42,7 @@
     
     <!-- Field for Qpay pay -->
     <field formid="qpay" type="string" mandatory="false" binding="qpay"/>
-    <field formid="qpay_national_id" type="string" mandatory="true" max-length="40" binding="qpay_national_id"/>
+    <field formid="qpay_national_id" type="string" mandatory="false" max-length="40" binding="qpay_national_id"/>
     
     <!-- Field for Fawry pay -->
     <field formid="fawry" type="string" mandatory="false" binding="fawry"/>
@@ -50,8 +50,8 @@
     
     <!-- Field for Sepa pay -->
     <field formid="sepa" type="string" mandatory="false" binding="sepa"/>
-    <field formid="sepa_iban" type="string" mandatory="true" max-length="40" binding="sepa_iban"/>
-    <field formid="sepa_bic" type="string" mandatory="true" max-length="40" binding="sepa_bic"/>
+    <field formid="sepa_iban" type="string" mandatory="false" max-length="40" binding="sepa_iban"/>
+    <field formid="sepa_bic" type="string" mandatory="false" max-length="40" binding="sepa_bic"/>
     
     <!-- Field for Klarna pay -->
     <field formid="klarna_token" type="string" max-length="40" binding="klarna_token"/>
