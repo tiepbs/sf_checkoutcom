@@ -20,7 +20,7 @@ function initCheckoutcomApmValidation() {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APM') {
             // Reset the error messages
             $('.invalid-field-message').empty();
-            $('#apm-content input').removeClass('is-invalid');
+            $('#cko-apm-content input').removeClass('is-invalid');
 
             // Prevent the default button click behaviour
             e.preventDefault();
@@ -119,12 +119,12 @@ function checkApmFields() {
  */
 function initApmAccordion()
 {
+    
+    // Filter the APM
+    filterApm();
     // List item radio click action
     $('.cko-apm-accordion input[type="radio"]').on('click touch', function(e) {
         e.stopPropagation();
-
-        // Filter the APM
-        filterApm();
 
         $(this).parents('.cko-apm-accordion').trigger('click');
     });
@@ -167,12 +167,16 @@ function filterApm()
     var xhttpFilter = new XMLHttpRequest();
     xhttpFilter.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            var responseObject = JSON.parse(this.responseText);
-            var filterObject = responseObject.filterObject;
-            var apmsFilterObject = responseObject.ckoApmFilterConfig;
-            for (var apms in apmsFilterObject) {                    
-                if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmsFilterObject[apms].currencies.includes(filterObject.currency)) {
-                    $('#'+ apms).css('display', 'block');
+            var apmList = JSON.parse(this.responseText);
+            console.log('apmList ' + JSON.stringify(apmList));
+
+            var userData = apmList.filterObject;
+            console.log('filterObject ' + JSON.stringify(userData));
+
+            var dataArray = apmList.ckoApmFilterConfig;
+            for (var item in dataArray) {                    
+                if (dataArray[item].countries.includes(userData.country.toUpperCase()) && dataArray[item].currencies.includes(userData.currency)) {
+                    $('#'+ item).css('display', 'block');
                 }
             }
         }
@@ -273,7 +277,7 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, req
     // Prepare the parameters
     var requestObject = JSON.parse(requestData);
     var billingAddress = JSON.parse(address);
-    var emailAddress = $('input[name$="dwfrm_billing_billingAddress_email_emailAddress"]').val();
+    var emailAddress = $('input[name$="dwfrm_billing_contactInfoFields_email"]').val();
     billingAddress.email = emailAddress;
     
     // Authorize the Klarna charge
