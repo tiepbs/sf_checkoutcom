@@ -163,16 +163,21 @@ function initApmAccordion()
  */
 function filterApm()
 {   
+    // Get the APM controller URL
     var controllerUrl = $('#ckoApmFilterUrl').val();
+
+    // Send the APM filter AJAX request
     var xhttpFilter = new XMLHttpRequest();
     xhttpFilter.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
+            // Get the APM countries and currencies list
             var apmList = JSON.parse(this.responseText);
-            console.log('apmList ' + JSON.stringify(apmList));
 
+            // Get the user country and currency
             var userData = apmList.filterObject;
             console.log('filterObject ' + JSON.stringify(userData));
 
+            // Display only the allowed APM for the user
             var dataArray = apmList.ckoApmFilterConfig;
             for (var item in dataArray) {                    
                 if (dataArray[item].countries.includes(userData.country.toUpperCase()) && dataArray[item].currencies.includes(userData.currency)) {
