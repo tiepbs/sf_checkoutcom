@@ -6,7 +6,32 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Launch Google Pay
     launchGooglePay();
+
+    // Initialize the Google Pay validation
+    initGooglePayValidation();
+
 }, false);
+
+function initGooglePayValidation() {
+    $('button.submit-payment').off('click touch').on('click touch', function (e) {
+        if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_GOOGLE_PAY') {
+            // Prevent the default button click behaviour
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            var field1 = $('input[name="dwfrm_billing_googlePayForm_ckoGooglePayData"]');
+            if (field1.val() == '') {
+                $('#google-pay-content .invalid-field-message').text(
+                    window.ckoLang.googlePayDataInvalid
+                );
+            }
+            else 
+            {
+                $(this).trigger('click');
+            }
+        }
+    }); 
+}
 
 function launchGooglePay()
 {

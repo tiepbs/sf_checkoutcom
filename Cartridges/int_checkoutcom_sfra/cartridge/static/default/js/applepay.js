@@ -6,7 +6,32 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Launch Apple Pay
     launchApplePay();
+
+    // Initialize the Apple Pay validation
+    initApplePayValidation();
+
 }, false);
+
+function initApplePayValidation() {
+    $('button.submit-payment').off('click touch').on('click touch', function (e) {
+        if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APPLE_PAY') {
+            // Prevent the default button click behaviour
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            var field1 = $('input[name="dwfrm_billing_applePayForm_ckoApplePayData"]');
+            if (field1.val() == '') {
+                $('#apple-pay-content .invalid-field-message').text(
+                    window.ckoLang.applePayDataInvalid
+                );
+            }
+            else 
+            {
+                $(this).trigger('click');
+            }
+        }
+    }); 
+}
 
 function getLineItems()
 {
