@@ -1,15 +1,3 @@
-#cko-card-content .tooltip {
-    display: none;
-}
-
-#cko-saved-cards {
-    margin-bottom: 20px;
-}
-
-#cko-saved-cards .saved-payment-instrument {
-    border-bottom: solid 1px #f1f1f1;
-}
-
 .invalid-field-message {
     color: red;
     font-size: 0.8em;
