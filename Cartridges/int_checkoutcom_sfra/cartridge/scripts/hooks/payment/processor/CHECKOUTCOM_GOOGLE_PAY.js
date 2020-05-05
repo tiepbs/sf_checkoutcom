@@ -53,7 +53,7 @@ function Handle(basket, paymentInformation, processorId) {
 }
 
 /**
- * Authorizes a payment using a Google Pay card token
+ * Authorizes a payment
  */
 function Authorize(orderNumber, processorId) {
     var serverErrors = [];
