@@ -8,6 +8,8 @@ var URLUtils = require('dw/web/URLUtils');
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
+/* APM Configuration */
+var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
 /*
 * Utility functions for my cartridge integration.
 */
@@ -16,10 +18,10 @@ var apmHelper = {
      * Apm Request
      */
     handleRequest: function (orderNumber, processorId) {
-        // Load the card and order information
+        // Load the order
         var order = OrderMgr.getOrder(orderNumber);
         
-        // Creating billing address object
+        // Create the payment request
         var gatewayRequest = this.getApmRequest(order, args);
 
         // Test SEPA
@@ -99,14 +101,13 @@ var apmHelper = {
      */
     getApmRequest: function (order, args) {
         // Charge data
-        var chargeData = false;
+        var chargeData;
         
         // Get the order amount
         var amount = ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode());
         
-        // Object APM is SEPA
+        // Test Klarna
         if (payObject.type == 'klarna') {
-            // Prepare chargeData object
             chargeData = {
                 "customer"              : ckoHelper.getCustomer(order),
                 "amount"                : amount,
