@@ -15,12 +15,9 @@ var apmHelper = {
     /*
      * Apm Request
      */
-    handleRequest: function (payObject, args) {
-        // Gateway response
-        var gatewayResponse = false;
-        
+    handleRequest: function (orderNumber, processorId) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(orderNumber);
         
         // Creating billing address object
         var gatewayRequest = this.getApmRequest(payObject, args);
@@ -29,46 +26,46 @@ var apmHelper = {
         if (payObject.type == "sepa") {
             // Prepare the charge data
             var chargeData = {
-                "customer"              : ckoHelper.getCustomer(args),
-                "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), payObject.currency),
+                "customer"              : ckoHelper.getCustomer(order),
+                "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
                 "type"                  : payObject.type,
-                "currency"              : payObject.currency,
-                "billing_address"       : ckoHelper.getBilling(args),
+                "currency"              : order.getCurrencyCode(),
+                "billing_address"       : ckoHelper.getBilling(order),
                 "source_data"           : payObject.source_data,
-                "reference"             : args.OrderNo,
+                "reference"             : order.OrderNo,
                 "metadata"              : ckoHelper.getMetadata(payObject, args),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
             
+            // Log the SEPA payment request data
+            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), chargeData);
+
             // Perform the request to the payment gateway
             gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.sources." + ckoHelper.getValue('ckoMode') + ".service", chargeData);
+
+            // Log the SEPA payment response data
+            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
+
         } else {
+            // Log the APM payment request data
+            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
+
             // Perform the request to the payment gateway
             gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
+
+            // Log the APM payment response data
+            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
         }
 
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
-        
-        // If the charge is valid, process the response
-        if (gatewayResponse) {
-            if (this.handleApmResponse(gatewayResponse)) {
-                return gatewayResponse;
-            }
-            
-            return false;
-        } else {
-            // Update the transaction
-            Transaction.wrap(function () {
-                OrderMgr.failOrder(order, true);
-            });
-        }
+        // Process the response
+        return gatewayResponse && this.handleResponse(gatewayResponse);
+
     },
     
     /*
-     * Handle APM charge Response from CKO API
+     * Handle the payment response
      */
-    handleApmResponse: function (gatewayResponse) {
+    handleResponse: function (gatewayResponse) {
         // Clean the session
         session.privacy.redirectUrl = null;
         

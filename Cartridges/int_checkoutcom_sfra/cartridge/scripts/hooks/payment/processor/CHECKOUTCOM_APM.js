@@ -3,7 +3,7 @@
 var collections = require('*/cartridge/scripts/util/collections');
 var Resource = require('dw/web/Resource');
 var Transaction = require('dw/system/Transaction');
-var apmPayHelper = require('~/cartridge/scripts/helpers/apmHelper');
+var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 
 /**
  * Verifies that the payment data is valid.
@@ -60,7 +60,7 @@ function Authorize(orderNumber, processorId) {
     var fieldErrors = {};
 
     // Payment request
-    var success = apmPayHelper.handleRequest(orderNumber, processorId);
+    var success = apmHelper.handleRequest(orderNumber, processorId);
 
     return {
         fieldErrors: fieldErrors,
