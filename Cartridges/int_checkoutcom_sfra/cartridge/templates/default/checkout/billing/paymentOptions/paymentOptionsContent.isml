@@ -8,4 +8,7 @@
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY'}">
         <isinclude template="checkout/billing/paymentOptions/applePayContent" />
     </isif>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APM'}">
+        <isinclude template="checkout/billing/paymentOptions/apmContent" />
+    </isif>
 </isloop>

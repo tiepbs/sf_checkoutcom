@@ -8,4 +8,7 @@
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayEnabled')}">
         <isinclude template="checkout/billing/paymentOptions/tabs/applePayTab"/>
     </isif>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APM' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apmTab"/>
+    </isif>
 </isloop>

@@ -20,7 +20,7 @@ function initCheckoutcomApmValidation() {
         if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APM') {
             // Reset the error messages
             $('.invalid-field-message').empty();
-            $('#cko-apm-content input').removeClass('is-invalid');
+            $('#apm-content input').removeClass('is-invalid');
 
             // Prevent the default button click behaviour
             e.preventDefault();
