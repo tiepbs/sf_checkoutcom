@@ -7,7 +7,7 @@ var apm_selected_box = false;
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
-    // Init the APM accordion
+    // Initialize the APM accordion
     initApmAccordion();
 }, false);
 
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
  */
 function initApmAccordion()
 {
-    // Filter the APM
+    // Filter the available APM
     filterApm();
 
     // List item radio click action
