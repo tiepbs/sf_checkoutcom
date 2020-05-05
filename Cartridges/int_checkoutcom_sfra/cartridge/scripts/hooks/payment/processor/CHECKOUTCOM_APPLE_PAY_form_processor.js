@@ -11,6 +11,8 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
  */
 function processForm(req, paymentForm, viewFormData) {
     var viewData = viewFormData;
+    var ckoApplePayData = paymentForm.applePayForm.ckoApplePayData;
+
     viewData.paymentMethod = {
         value: paymentForm.paymentMethod.value,
         htmlName: paymentForm.paymentMethod.value
@@ -18,8 +20,8 @@ function processForm(req, paymentForm, viewFormData) {
 
     viewData.paymentInformation = {
         ckoGooglePayData: {
-            value: paymentForm.applePayForm.ckoApplePayData.htmlValue,
-            htmlName: paymentForm.applePayForm.ckoApplePayData.htmlName
+            value: ckoApplePayData.htmlValue,
+            htmlName: ckoApplePayData.htmlName
         },
     };
 
