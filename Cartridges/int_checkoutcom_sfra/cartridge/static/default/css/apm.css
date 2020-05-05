@@ -9,7 +9,6 @@
     border: none;
     outline: none;
     transition: 0.4s;
-    border-bottom: solid 1px #cccccc;
 }
 
 .cko-apm-accordion img {
@@ -21,6 +20,7 @@
 
 .apm-list-item {
     display: none;
+    border-bottom: solid 1px #cccccc;
 }
 
 .cko-apm-active, .cko-apm-accordion:hover {
@@ -36,7 +36,6 @@
 }
 
 .cko-apm-panel-opened {
-    border-bottom: solid 1px #f1f1f1;
 }
 
 .cko-apm-panel > div {
