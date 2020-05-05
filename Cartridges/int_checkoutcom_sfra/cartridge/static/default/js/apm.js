@@ -87,6 +87,19 @@ function filterApm()
     xhttpFilter.send();
 }
 
+
+function initApmValidation() {
+    $('button.submit-payment').off('click touch').on('click touch', function (e) {
+        if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APM') {
+            // Prevent the default button click behaviour
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            alert('clicked');
+        }
+    }); 
+}
+
 /*
  * Get the Klarna controller
  */
