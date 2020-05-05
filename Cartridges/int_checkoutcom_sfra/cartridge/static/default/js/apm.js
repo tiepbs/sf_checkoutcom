@@ -54,7 +54,7 @@ function initApmAccordion()
         if (panel.css('maxHeight') != '0px') {
             panel.css('maxHeight', '0px');
         } else {
-            panel.css('maxHeight', panel.prop('scrollHeight') + 'px');
+            panel.css('maxHeight', (panel.prop('scrollHeight') + 20) + 'px');
         } 
     });
 }
