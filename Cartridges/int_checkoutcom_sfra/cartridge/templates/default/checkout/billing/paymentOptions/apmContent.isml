@@ -10,7 +10,7 @@
 
         <input type="hidden" class="form-control"
                name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-               value="CHECKOUTCOM_APPLE_PAY"
+               value="${paymentOption.ID}"
         >
 
         <isset name="apmForm" value="${pdict.forms.billingForm.apmForm}" scope="page"/>

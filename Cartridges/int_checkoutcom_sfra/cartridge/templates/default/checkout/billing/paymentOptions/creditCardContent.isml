@@ -5,7 +5,7 @@
         <!--- payment method is credit card --->
         <input type="hidden" class="form-control"
                name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-               value="CHECKOUTCOM_CARD"
+               value="${paymentOption.ID}"
         >
 
         <!--- register/authenticated user --->

@@ -16,7 +16,7 @@
     <fieldset class="payment-form-fields">
         <input type="hidden" class="form-control"
                name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-               value="CHECKOUTCOM_APPLE_PAY"
+               value="${paymentOption.ID}"
         >
 
         <isinclude template="checkout/billing/paymentOptions/forms/applePayForm" />
