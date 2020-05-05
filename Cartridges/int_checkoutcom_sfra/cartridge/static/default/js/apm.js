@@ -175,7 +175,6 @@ function filterApm()
 
             // Get the user country and currency
             var userData = apmList.filterObject;
-            console.log('filterObject ' + JSON.stringify(userData));
 
             // Display only the allowed APM for the user
             var dataArray = apmList.ckoApmFilterConfig;
