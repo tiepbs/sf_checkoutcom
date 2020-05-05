@@ -1,5 +1,5 @@
 <fieldset>
-    <button id="ckoApplePayButton" type="button" class="apple-pay-button ${buttonStyle}"></button>
+    <button id="ckoApplePayButton" type="button" class="cko-apple-pay-button ${buttonStyle}"></button>
     <div class="ckoApplePayUnavailable">${Resource.msg('cko.applepay.inactive', 'cko', null)}</div>
     <div class="ckoApplePayIncompatible">${Resource.msg('cko.applepay.unavailable', 'cko', null)}</div>
     <input type="hidden" id="ckoApplePayEnvironment" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayEnvironment'))}">
