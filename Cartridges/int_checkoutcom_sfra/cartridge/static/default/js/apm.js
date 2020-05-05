@@ -94,6 +94,9 @@ function initCheckoutcomApmValidation() {
             e.preventDefault();
             e.stopImmediatePropagation();
 
+            // Errors count
+            var errors = 0;
+
             // Get the APM container id
             var apmId = $('.cko-apm-active').closest('.apm-list-item').attr('id');
 
@@ -102,7 +105,12 @@ function initCheckoutcomApmValidation() {
 
             // Run the form validation
             if (typeof window[func] === "function") {
-                window[func]();
+                errors = window[func]();
+                if (errors > 0) {
+                    $('html, body').animate({
+                        scrollTop: parseInt($('#' + apmId).offset().top)
+                    }, 500);
+                }
             }
         }
     }); 
