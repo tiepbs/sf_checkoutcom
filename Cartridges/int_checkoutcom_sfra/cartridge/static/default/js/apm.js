@@ -9,10 +9,6 @@ var apm_selected_box = false;
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize the APM accordion
     initApmAccordion();
-
-    // Initialize the APM forms validation
-    initApmValidation();
-
 }, false);
 
 /*
@@ -91,8 +87,8 @@ function filterApm()
     xhttpFilter.send();
 }
 
-function initApmValidation() {
-    $('button.submit-payment').one('click touch', function (e) {
+function initCheckoutcomApmValidation() {
+    $('button.submit-payment').off('click touch').on('click touch', function (e) {
         if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APM') {
             // Prevent the default button click behaviour
             e.preventDefault();

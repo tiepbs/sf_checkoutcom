@@ -6,14 +6,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Launch Apple Pay
     launchApplePay();
-
-    // Initialize the Apple Pay validation
-    initApplePayValidation();
-
 }, false);
 
-function initApplePayValidation() {
-    $('button.submit-payment').one('click touch', function (e) {
+function initCheckoutcomApplePayValidation() {
+    $('button.submit-payment').off('click touch').on('click touch', function (e) {
         if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APPLE_PAY') {
             // Prevent the default button click behaviour
             e.preventDefault();
