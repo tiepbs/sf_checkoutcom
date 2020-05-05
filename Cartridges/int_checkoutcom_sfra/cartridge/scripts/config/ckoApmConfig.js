@@ -348,6 +348,23 @@ var ckoApmConfig = {
         };
         
         return payObject;
+    },
+
+    /*
+     * Ali Pay Object
+     */
+    aliPayAuthorization: function (args) {
+        // Build the payment object
+        var payObject = {
+            'source': {
+                'type': 'alipay',
+                'country': ckoHelper.getBillingObject(args).country
+            },
+            'type'          : 'alipay',
+            'currency'      : ckoHelper.getCurrency(args)
+        };
+        
+        return payObject;
     }
 }
 
