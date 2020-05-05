@@ -1,0 +1,13 @@
+<!-- Boleto APM Option -->
+<button class="cko-apm-accordion">
+	<input id="boleto_apm_radio_btn" type="radio" name="apm_list" value="boleto">
+	<img alt="${Resource.msg('cko.boleto.name','cko',null)}" id="boletopay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/boleto_bancario.png')}">
+	${Resource.msg('cko.boleto.name','cko',null)}
+</button>
+<div class="cko-apm-panel">
+	<div id="boleto_pay_box">
+		${Resource.msg('cko.boleto.birthdate','cko',null)} <input id="boleto_birthDate" name="boleto_birthDate" type="text">
+		${Resource.msg('cko.boleto.cpfe','cko',null)} <input id="boleto_cpfe" name="boleto_cpfe" type="text">
+		<div class="invalid-field-message"></div>
+	</div>
+</div>

@@ -7,5 +7,7 @@
     <include formid="creditCardFields" name="creditCard"/>
     <include formid="googlePayForm" name="googlePayForm"/>
     <include formid="applePayForm" name="applePayForm"/>
+    <include formid="apmForm" name="apmForm"/>
+    <include formid="sepaForm" name="sepaForm"/>
     <field formid="subscribe" type="boolean" checked="false" default-value="false" mandatory="false" />
 </form>
