@@ -12,116 +12,13 @@ document.addEventListener('DOMContentLoaded', function () {
 }, false);
 
 /*
- * Alternative Payments
- */
-function initCheckoutcomApmValidation() {
-    // Click event
-    $('button.submit-payment').off('click touch').on('click touch', function (e) {
-        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APM') {
-            // Reset the error messages
-            $('.invalid-field-message').empty();
-            $('#cko-apm-content input').removeClass('is-invalid');
-
-            // Prevent the default button click behaviour
-            e.preventDefault();
-            e.stopImmediatePropagation();
-
-            // Prepare the errors array
-            var ckoFormErrors = [];
-            
-            // Card number validation
-            ckoFormErrors[0] = checkApmFields();
-
-            // Invalidate the button click if errors found
-            if ($.inArray(1, ckoFormErrors) !== -1) {
-                return false;
-            }
-            else {
-                // Send the place order request
-                placeOrder();
-            }
-        }
-    }); 
-
-    // Boleto birth date formatter
-    var cleave = new Cleave('#boleto_birthDate', {
-        date: true,
-        delimiter: '-',
-        datePattern: ['Y', 'm', 'd']
-    });
-}
-
-function checkApmFields() {
-    var errors = 0;
-    // Ideal form validation
-    var idealField = $('#ideal_bic');
-    if ($('#ideal_apm_radio_btn').is(':checked') && idealField.val() == '') {
-        $('#ideal_pay_box .invalid-field-message').text(
-            window.ckoLang.apmFieldInvalid
-        );
-        idealField.addClass('is-invalid');
-        errors++;
-    }
-
-    // Boleto form validation
-    var boletoField1 = $('#boleto_birthDate');
-    if ($('#boleto_apm_radio_btn').is(':checked') && boletoField1.val() == '') {
-        $('#boleto_pay_box .invalid-field-message').text(
-            window.ckoLang.apmFieldInvalid
-        );
-        boletoField1.addClass('is-invalid');
-        errors++;
-    }
-
-    var boletoField2 = $('#boleto_cpfe');
-    if ($('#boleto_apm_radio_btn').is(':checked') && boletoField2.val() == '') {
-        $('#boleto_pay_box .invalid-field-message').text(
-            window.ckoLang.apmFieldInvalid
-        );
-        boletoField2.addClass('is-invalid');
-        errors++;
-    }
-
-    // QPAY form validation
-    var qpayField = $('#qpay_national_id');
-    if ($('#qpay_apm_radio_btn').is(':checked') && qpayField.val() == '') {
-        $('#qpay_pay_box .invalid-field-message').text(
-            window.ckoLang.apmFieldInvalid
-        );
-        qpayField.addClass('is-invalid');
-        errors++;
-    }
-
-    // SEPA form validation
-    var sepaField1 = $('#sepa_iban');
-    if ($('#sepa_apm_radio_btn').is(':checked') && sepaField1.val() == '') {
-        $('#sepa_pay_box .invalid-field-message').text(
-            window.ckoLang.apmFieldInvalid
-        );
-        sepaField1.addClass('is-invalid');
-        errors++;
-    }
-
-    var sepaField2 = $('#sepa_bic');
-    if ($('#sepa_apm_radio_btn').is(':checked') && sepaField2.val() == '') {
-        $('#sepa_pay_box .invalid-field-message').text(
-            window.ckoLang.apmFieldInvalid
-        );
-        sepaField2.addClass('is-invalid');
-        errors++;
-    }
-
-    return errors;
-}
-
-/*
  * Set APM Forms
  */
 function initApmAccordion()
 {
-    
     // Filter the APM
     filterApm();
+
     // List item radio click action
     $('.cko-apm-accordion input[type="radio"]').on('click touch', function(e) {
         e.stopPropagation();
