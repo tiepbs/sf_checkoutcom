@@ -48,8 +48,10 @@ function initFormValidation() {
 	}
 
 	// Build and call the validation function name
-	var func = window['init' + selectedOption + 'Validation'];
-	window[func]();
+	var func = 'init' + selectedOption + 'Validation';
+	if (typeof window[func] === "function") {
+		window[func]();
+	}
 }
 
 function loadTranslations() {

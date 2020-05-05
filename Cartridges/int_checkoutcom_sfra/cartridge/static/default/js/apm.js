@@ -88,7 +88,7 @@ function filterApm()
 }
 
 function initCheckoutcomApmValidation() {
-    $('button.submit-payment').on('click touch', function (e) {
+    $('button.submit-payment').off('click touch').one('click touch', function (e) {
         if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APM') {
             // Prevent the default button click behaviour
             e.preventDefault();
