@@ -53,7 +53,7 @@ function handleReturn()
                     if (ckoHelper.paymentSuccess(gVerify)) {
                     	
                     	// Save the order transaction
-                    	ckoHelper.saveRedirectTransaction(gVerify, order);
+                    	ckoHelper.saveCKOTransaction(gVerify, order);
                     	
                         // Show order confirmation page
                         app.getController('COSummary').ShowConfirmation(order);
@@ -118,22 +118,22 @@ function handleWebhook()
 {
     var isValidResponse = ckoHelper.isValidResponse();
     if (isValidResponse) {
+        
+    	var logger = require('dw/system/Logger').getLogger('ckodebug');
+    	logger.debug('this is my test {0}', 'handleWebhook');
+    	
         // Get the response as JSON object
         var hook = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
-        
-//    	var logger = require('dw/system/Logger').getLogger('ckodebug');
-//    	logger.debug('this is my test {0}', 'handleWebhook: ' + JSON.stringify(hook.type));
 
         // Check the webhook event
         if (hook !== null && hook.hasOwnProperty('type')) {
+        	
             // Get a camel case function name from event type
             var func = '';
             var parts = hook.type.split('_');
             for (var i = 0; i < parts.length; i++) {
                 func += (i == 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
             }
-            
-
 
             // Call the event
             eventsHelper[func](hook);

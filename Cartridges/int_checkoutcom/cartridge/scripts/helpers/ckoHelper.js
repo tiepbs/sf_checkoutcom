@@ -1039,50 +1039,7 @@ var ckoHelper = {
         return address;
     },
     
-    saveCKOTransaction: function(ckoResponse, args){
-
-        // Preparing payment parameters
-        var paymentInstrument = args.PaymentInstrument;
-        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
-        
-        Transaction.wrap(function () {
-            paymentInstrument.paymentTransaction.transactionID = ckoResponse.action_id;
-            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-            paymentInstrument.paymentTransaction.custom.ckoPaymentId = ckoResponse.id;
-            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-        });
-    },
-    
-    saveSepaTransaction: function(ckoResponse, order){
-
-    	var paymentInstruments = order.getPaymentInstruments().iterator();
-    	
-        // Logging
-        this.doLog('Sepa transaction response', ckoResponse);
-    	
-        // Iterate through the payment Instruments
-        while (paymentInstruments.hasNext()) {
-        	var paymentInstrument = paymentInstruments.next();
-        	var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
-    		
-    		
-            Transaction.wrap(function () {
-                paymentInstrument.paymentTransaction.transactionID = ckoResponse.action_id;
-                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                paymentInstrument.paymentTransaction.custom.ckoPaymentId = ckoResponse.id;
-                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-            });
-        	
-        }
-    },
-    
-    saveRedirectTransaction: function(ckoResponse, order){
+    saveCKOTransaction: function(ckoResponse, order){
     	
     	var paymentInstruments = order.getPaymentInstruments().iterator();
     	

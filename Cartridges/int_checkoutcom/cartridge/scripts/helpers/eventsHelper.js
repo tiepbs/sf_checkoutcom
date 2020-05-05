@@ -18,9 +18,6 @@ var eventsHelper = {
      */
     addWebhookInfo: function (hook, paymentStatus, orderStatus) {
     	
-    	var logger = require('dw/system/Logger').getLogger('ckodebug');
-    	logger.debug('this is my test {0}', 'addWebhookInfo');
-    	
         // Load the order
         var order = OrderMgr.getOrder(hook.data.reference);
         if (order) {
@@ -54,9 +51,6 @@ var eventsHelper = {
      * Payment captured event.
      */
     paymentCaptured: function (hook) {
-    	
-    	var logger = require('dw/system/Logger').getLogger('ckodebug');
-    	logger.debug('this is my test {0}', 'paymentCaptured');
     	
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);

@@ -42,16 +42,10 @@ var cardHelper = {
 
             } else {
             	
-                // Create the authorization transaction
-                Transaction.wrap(function () {
-                    paymentInstrument.paymentTransaction.transactionID = cardRequest.action_id;
-                    paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                    paymentInstrument.paymentTransaction.custom.ckoPaymentId = cardRequest.id;
-                    paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                    paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                    paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                    paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-                });
+                // Load the card and order information
+                var order = OrderMgr.getOrder(args.OrderNo);
+            	
+            	ckoHelper.saveCKOTransaction(cardRequest, order);
             	
                 return {authorized: true};
             }
