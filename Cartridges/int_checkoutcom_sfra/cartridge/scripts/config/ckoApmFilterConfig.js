@@ -68,6 +68,10 @@ var ckoApmFilterConfig = {
     alipay: {
     	countries	: "CN",
     	currencies	: ["USD", "CNY"]
+    },
+    paypal: {
+    	countries	: "*",
+    	currencies	: ["*"]
     }
 }
 
