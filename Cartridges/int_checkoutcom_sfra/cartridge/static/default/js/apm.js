@@ -98,7 +98,7 @@ function initCheckoutcomApmValidation() {
             var apmId = $('.cko-apm-active').closest('.apm-list-item').attr('id');
 
             // Build the form validation function name
-            var func = apmId + 'FieldsValidation';
+            var func = apmId + 'FormValidation';
 
             // Run the form validation
             if (typeof window[func] === "function") {

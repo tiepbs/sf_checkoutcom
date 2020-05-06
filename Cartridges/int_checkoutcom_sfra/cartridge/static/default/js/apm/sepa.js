@@ -1,4 +1,4 @@
-function sepaFieldsValidation() {
+function sepaFormValidation() {
     // Errors count
     var errors = 0;
 

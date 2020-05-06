@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initBoletoFieldFormatters();
 }, false);
 
-function boletoFieldsValidation() {
+function boletoFormValidation() {
     // Errors count
     var errors = 0;
 

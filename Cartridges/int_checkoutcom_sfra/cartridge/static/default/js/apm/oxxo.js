@@ -1,4 +1,4 @@
-function oxxoFieldsValidation() {
+function oxxoFormValidation() {
     // Errors count
     var errors = 0;
 

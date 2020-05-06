@@ -1,4 +1,4 @@
-function idealFieldsValidation() {
+function idealFormValidation() {
     // Errors count
     var errors = 0;
 
