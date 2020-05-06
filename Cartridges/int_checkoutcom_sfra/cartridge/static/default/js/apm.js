@@ -109,6 +109,9 @@ function initCheckoutcomApmValidation() {
                     }, 500);
                 }
             }
+            else {
+                $(this).trigger('click');
+            }
         }
     }); 
 }
