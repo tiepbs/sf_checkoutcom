@@ -14,7 +14,7 @@ function Handle(basket, paymentInformation, processorId) {
     var serverErrors = [];
 
     // Get the APM type chosen
-    var func = paymentInformation.ckoApmData + 'PayAuthorization';
+    var func = paymentInformation.ckoApm.data.ckoSelectedApm.htmlValue + 'Authorization';
 
     // Make the charge request
     var args = {

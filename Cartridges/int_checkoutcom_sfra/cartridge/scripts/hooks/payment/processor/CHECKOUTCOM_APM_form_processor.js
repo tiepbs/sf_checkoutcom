@@ -11,7 +11,6 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
  */
 function processForm(req, paymentForm, viewFormData) {
     var viewData = viewFormData;
-    var ckoApmData = paymentForm.apmForm;
 
     viewData.paymentMethod = {
         value: paymentForm.paymentMethod.value,
@@ -19,9 +18,10 @@ function processForm(req, paymentForm, viewFormData) {
     };
 
     viewData.paymentInformation = {
-        ckoApmData: {
-            value: ckoApmData.htmlValue,
-            htmlName: ckoApmData.htmlName
+        ckoApm: {
+            value: paymentForm.apmForm.ckoSelectedApm.htmlValue,
+            htmlName: paymentForm.apmForm.ckoSelectedApm.htmlName,
+            data: paymentForm.apmForm
         },
     };
 
