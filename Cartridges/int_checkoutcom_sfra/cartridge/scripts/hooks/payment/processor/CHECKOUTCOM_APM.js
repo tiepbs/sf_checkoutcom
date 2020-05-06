@@ -14,9 +14,6 @@ function Handle(basket, paymentInformation, processorId) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
-
-    // Prepare the payment data
-    session.custom.paymentData = paymentInformation.ckoApm;
     
     // Verify the payload
     if (!paymentInformation.ckoApm.value || paymentInformation.ckoApm.value.length == 0) {
@@ -57,7 +54,7 @@ function Handle(basket, paymentInformation, processorId) {
 /**
  * Authorizes a payment
  */
-function Authorize(orderNumber, processorId) {
+function Authorize(orderNumber, billingForm, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
 
@@ -67,11 +64,11 @@ function Authorize(orderNumber, processorId) {
     var args = {
         order: order,
         processorId: processorId,
-        paymentData: session.custom.paymentData
+        paymentData: billingForm.apmForm
     };
 
     // Get the selected APM request data
-    var func = session.custom.paymentData.value + 'Authorization';
+    var func = billingForm.apmForm.ckoSelectedApm.htmlValue + 'Authorization';
     var apmConfigData = apmConfig[func](args);
 
     // Payment request
