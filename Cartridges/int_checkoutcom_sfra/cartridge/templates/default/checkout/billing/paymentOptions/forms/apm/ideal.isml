@@ -5,14 +5,14 @@
 </isscript>
 
 <button class="cko-apm-accordion">
-	<input id="ideal_apm_radio_btn" type="radio" name="apm_list" value="ideal">
+	<input id="ideal_apm_radio_btn" name="${apmFields.ideal.htmlName}" type="radio" value="ideal">
 	<img alt="${Resource.msg('cko.ideal.name','cko',null)}" id="idealpay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/idealPay.png')}">
 	${Resource.msg('cko.ideal.name','cko',null)} 
 </button>
 
 <div class="cko-apm-panel">
 	<div id="ideal_pay_box">
-		${Resource.msg('cko.ideal.bic','cko',null)} <input id="ideal_bic" name="ideal_bic" type="text">
+		${Resource.msg('cko.ideal.bic','cko',null)} <input id="ideal_bic" type="text" name="${apmFields.ideal_bic.htmlName}">
 		<div class="invalid-field-message"></div>
 	</div>
 </div>
