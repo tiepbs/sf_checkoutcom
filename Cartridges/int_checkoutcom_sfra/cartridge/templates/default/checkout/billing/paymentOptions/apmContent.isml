@@ -15,6 +15,7 @@
         >
 
     	<input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
+		<input type="hidden" id="ckoSelectedApm" name="${apmFields.ckoSelectedApm.htmlName}" value="">
 
 		<fieldset>
 			<div id="apmsBox">
