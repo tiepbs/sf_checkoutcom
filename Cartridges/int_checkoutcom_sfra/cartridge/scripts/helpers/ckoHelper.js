@@ -676,7 +676,7 @@ var ckoHelper = {
      * Return order amount
      */
     getAmount: function (order) {
-        var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), this.getCurrency());
+        var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode());
         return amount;
     },
     

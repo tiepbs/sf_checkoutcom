@@ -5,6 +5,7 @@ var Resource = require('dw/web/Resource');
 var Transaction = require('dw/system/Transaction');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
+var OrderMgr = require('dw/order/OrderMgr');
 
 /**
  * Verifies that the payment data is valid.
@@ -60,10 +61,13 @@ function Authorize(orderNumber, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
 
+    var order = OrderMgr.getOrder(orderNumber);
+
     // Prepare the arguments
     var args = {
-        orderNo: orderNumber,
-        processorId: processorId
+        order: order,
+        processorId: processorId,
+        paymentData: session.custom.paymentData
     };
 
     // Get the selected APM request data

@@ -1,8 +1,5 @@
 'use strict'
 
-/* API Includes */
-var OrderMgr = require('dw/order/OrderMgr');
-
 /* Business Name */
 var businessName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBusinessName');
 
@@ -13,18 +10,18 @@ var ckoApmConfig = {
     /*
      * Ideal authorization
      */
-    idealAuthorization: function (args) {  
+    idealAuthorization: function (args) {
         // Building ideal pay object
         var payObject = {
             'source'    : {
                 'type'          : 'ideal',
-                'bic'           : args.Form.ideal_bic,
-                'description'   : args.orderNo,
+                'bic'           : args.paymentData.ideal_bic.htmlValue,
+                'description'   : args.order.orderNo,
                 'language'      : ckoHelper.getLanguage(),
             },
             'type'      : 'ideal',
             'purpose'   : businessName,
-            'currency'  : ckoHelper.getCurrency(args)
+            'currency'  : args.order.getCurrencyCode()
         };
         
         return payObject;
@@ -38,13 +35,13 @@ var ckoApmConfig = {
         var payObject = {
             'source'        : {
                 'type'  : 'boleto',
-                'birthDate' : args.Form.boleto_birthDate,
-                'cpf'       : args.Form.boleto_cpf,
+                'birthDate' : args.paymentData.boleto_birthDate.htmlValue,
+                'cpf'       : args.paymentData.boleto_cpf.htmlValue,
                 'customerName' : ckoHelper.getCustomerName(args)
             },
             'type'      : 'boleto',
             'purpose'   : businessName,
-            'currency'  : ckoHelper.getCurrency(args)
+            'currency'  : args.order.getCurrencyCode()
         };
         
         return payObject;
@@ -64,7 +61,7 @@ var ckoApmConfig = {
             },
             'type'      : 'bancontact',
             'purpose'   : businessName,
-            'currency'  : ckoHelper.getCurrency(args)
+            'currency'  : args.order.getCurrencyCode()
         };
         
         return payObject;
@@ -82,7 +79,7 @@ var ckoApmConfig = {
             },
             'type'      : 'benefitpay',
             'purpose'   : businessName,
-            'currency'  : ckoHelper.getCurrency(args)
+            'currency'  : args.order.getCurrencyCode()
         };
         
         return payObject;
@@ -100,7 +97,7 @@ var ckoApmConfig = {
             },
             'type'      : 'giropay',
             'purpose'   : businessName,
-            'currency'  : ckoHelper.getCurrency(args)
+            'currency'  : args.order.getCurrencyCode()
         };
         
         return payObject;
@@ -118,7 +115,7 @@ var ckoApmConfig = {
             },
             'type'      : 'eps',
             'purpose'   : businessName,
-            'currency'  : ckoHelper.getCurrency(args)
+            'currency'  : args.order.getCurrencyCode()
         };
         
         return payObject;
@@ -135,7 +132,7 @@ var ckoApmConfig = {
             },
             'type'      : 'sofort',
             'purpose'   : businessName,
-            'currency'  : ckoHelper.getCurrency(args)
+            'currency'  : args.order.getCurrencyCode()
         };
         
         return payObject;
@@ -153,7 +150,7 @@ var ckoApmConfig = {
             },
             'type'      : 'knet',
             'purpose'   : businessName,
-            'currency'  : ckoHelper.getCurrency(args)
+            'currency'  : args.order.getCurrencyCode()
         };
         
         return payObject;
@@ -170,11 +167,11 @@ var ckoApmConfig = {
                 'description'   : businessName,
                 'language'      : ckoHelper.getLanguage().substr(0, 2),
                 'quantity'      : ckoHelper.getProductQuantity(args),
-                'national_id'   : args.Form.qpay_national_id
+                'national_id'   : args.paymentData.qpay_national_id.htmlValue
             },
             'type'      : 'qpay',
             'purpose'   : businessName,
-            'currency'  : ckoHelper.getCurrency(args)
+            'currency'  : args.order.getCurrencyCode()
         };
         
         return payObject;
@@ -195,7 +192,7 @@ var ckoApmConfig = {
             },
             'type'      : 'fawry',
             'purpose'   : businessName,
-            'currency'  : ckoHelper.getCurrency(args)
+            'currency'  : args.order.getCurrencyCode()
         };
         
         return payObject;
@@ -212,7 +209,7 @@ var ckoApmConfig = {
             'source_data'   : {
                 'first_name'            : ckoHelper.getCustomerFirstName(args),
                 'last_name'             : ckoHelper.getCustomerLastName(args),
-                'account_iban'          : args.Form.sepa_iban + args.Forms.epa_bic,
+                'account_iban'          : args.paymentData.sepa_iban.htmlValue + args.paymentData.sepa_bic.htmlValue,
                 'billing_descriptor'    : businessName,
                 'mandate_type'          : 'single'
             }
@@ -228,7 +225,7 @@ var ckoApmConfig = {
         // Building pay object
         var payObject = {
             'type'      : 'multibanco',
-            'currency'  : ckoHelper.getCurrency(args),
+            'currency'  : args.order.getCurrencyCode(),
             'source'    : {
                 'type'                  : 'multibanco',
                 'payment_country'       : ckoHelper.getBillingCountry(args),
@@ -247,7 +244,7 @@ var ckoApmConfig = {
         // Building pay object
         var payObject = {
             'type'      : 'poli',
-            'currency'  : ckoHelper.getCurrency(args),
+            'currency'  : args.order.getCurrencyCode(),
             'source'    : {
                 'type'      : 'poli'
             }
@@ -263,7 +260,7 @@ var ckoApmConfig = {
         // Building pay object
         var payObject = {
             'type'          : 'p24',
-            'currency'      : ckoHelper.getCurrency(args),
+            'currency'      : args.order.getCurrencyCode(),
             'source'        : {
                 'type'                  : 'p24',
                 'payment_country'       : ckoHelper.getBillingCountry(args),
@@ -280,22 +277,22 @@ var ckoApmConfig = {
      * Klarna authorization
      */
     klarnaAuthorization: function (args) {
-        // Gdt the order
+        // Get the order
         var order = OrderMgr.getOrder(args.orderNo);
         
         // Klarna Form Inputs
-        var klarna_approved = args.Form.klarna_approved;
+        var klarna_approved = args.paymentData.klarna_approved.htmlValue;
         
         if (klarna_approved) {
             // Build the payment object
             var payObject = {
                 'type'      : 'klarna',
                 'amount'    : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency(args)),
-                'currency'  : ckoHelper.getCurrency(args),
+                'currency'  : args.order.getCurrencyCode(),
                 'capture'   : false,
                 'source'    : {
                     'type'                  : 'klarna',
-                    'authorization_token'   : args.Form.klarna_token,
+                    'authorization_token'   : args.paymentData.klarna_token.htmlValue,
                     'locale'                : ckoHelper.getLanguage(),
                     'purchase_country'      : ckoHelper.getBilling(args).country,
                     'tax_amount'            : ckoHelper.getFormattedPrice(order.totalTax.value, ckoHelper.getCurrency(args)),
@@ -317,10 +314,10 @@ var ckoApmConfig = {
         // Build the payment object
         var payObject = {
             'type'          : 'paypal',
-            'currency'      : ckoHelper.getCurrency(args),
+            'currency'      : args.order.getCurrencyCode(),
             'source'        : {
                 'type'              : 'paypal',
-                'invoice_number'    : args.orderNo
+                'invoice_number'    : args.order.orderNo
             }
         };
 
@@ -340,11 +337,11 @@ var ckoApmConfig = {
                 'payer': {
                     'name': ckoHelper.getCustomerName(args),
                     'email': ckoHelper.getCustomer(args).email,
-                    'document': args.Form.oxxo_identification
+                    'document': args.paymentData.oxxo_identification.htmlValue
                 }
             },
             'type'          : 'oxxo',
-            'currency'      : ckoHelper.getCurrency(args),
+            'currency'      : args.order.getCurrencyCode(),
         };
         
         return payObject;
@@ -361,7 +358,7 @@ var ckoApmConfig = {
                 'country': ckoHelper.getBillingObject(args).country
             },
             'type'          : 'alipay',
-            'currency'      : ckoHelper.getCurrency(args)
+            'currency'      : args.order.getCurrencyCode()
         };
         
         return payObject;
