@@ -5,7 +5,7 @@
 </isscript>
 
 <button class="cko-apm-accordion">
-	<input id="boleto_apm_radio_btn" type="radio" name="apm_list" value="boleto">
+	<input id="boleto_apm_radio_btn" type="radio" name="apm_list" value="boleto" placeholder="${Resource.msg('cko.boleto.dateformat','cko',null)}">
 	<img alt="${Resource.msg('cko.boleto.name','cko',null)}" id="boletopay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/boleto_bancario.png')}">
 	${Resource.msg('cko.boleto.name','cko',null)}
 </button>
