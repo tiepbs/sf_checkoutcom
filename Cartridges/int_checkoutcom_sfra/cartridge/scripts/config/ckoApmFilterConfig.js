@@ -13,11 +13,11 @@ var ckoApmFilterConfig = {
         countries   : "BE",
         currencies  : "EUR"
     },
-    benefit: {
+    benefitpay: {
         countries   : "BH",
         currencies  : "BHD"
     },
-    giro: {
+    giropay: {
         countries   : "DE",
         currencies  : "EUR"
     },

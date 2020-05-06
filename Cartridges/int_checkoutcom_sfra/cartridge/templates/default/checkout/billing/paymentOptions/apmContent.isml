@@ -42,8 +42,8 @@
 				
 				<!-- This to include the benefit pay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBenefitEnabled'))}">
-					<div id="benefit" class="apm-list-item">	
-						<isinclude template="checkout/billing/paymentOptions/forms/apm/benefitPay.isml"/>
+					<div id="benefitpay" class="apm-list-item">	
+						<isinclude template="checkout/billing/paymentOptions/forms/apm/benefitpay.isml"/>
 					</div>
 				</isif>
 				
