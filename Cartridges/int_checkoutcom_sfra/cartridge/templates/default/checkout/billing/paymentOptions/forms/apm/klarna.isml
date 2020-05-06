@@ -1,4 +1,10 @@
 <!-- Klarna APM option -->
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/apm/klarna.js');
+    assets.addCss('/css/apm/klarna.css');
+</isscript>
+
 <button class="cko-apm-accordion">
 	<input id="klarna_apm_radio_btn" type="radio" name="apm_list" value="klarna" onclick="callKlarnaController('${URLUtils.url('CKOKlarna-klarnaSession')}')">
 	<img alt="${Resource.msg('cko.klarna.name','cko',null)}" id="klarnapay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}"/>

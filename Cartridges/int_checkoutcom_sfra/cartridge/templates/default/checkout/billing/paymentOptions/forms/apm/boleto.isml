@@ -2,6 +2,7 @@
 <isscript>
     var assets = require('*/cartridge/scripts/assets.js');
     assets.addJs('/js/apm/boleto.js');
+    assets.addCss('/css/apm/boleto.css');
 </isscript>
 
 <button class="cko-apm-accordion">
