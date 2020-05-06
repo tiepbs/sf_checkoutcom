@@ -3,9 +3,13 @@
 var collections = require('*/cartridge/scripts/util/collections');
 var Resource = require('dw/web/Resource');
 var Transaction = require('dw/system/Transaction');
+
+var OrderMgr = require('dw/order/OrderMgr');
+
+/** Utility **/
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
-var OrderMgr = require('dw/order/OrderMgr');
 
 /**
  * Verifies that the payment data is valid.
@@ -73,6 +77,13 @@ function Authorize(orderNumber, billingForm, processorId) {
 
     // Payment request
     var success = apmHelper.handleRequest(orderNumber, processorId, apmConfigData);
+
+    // Handle errors
+    if (!success) {
+        serverErrors.push(
+            ckoHelper.getPaymentFailureMessage()
+        );
+    }
 
     return {
         fieldErrors: fieldErrors,

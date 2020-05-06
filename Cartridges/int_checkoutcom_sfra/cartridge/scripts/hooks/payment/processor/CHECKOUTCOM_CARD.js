@@ -3,6 +3,9 @@
 var collections = require('*/cartridge/scripts/util/collections');
 var Resource = require('dw/web/Resource');
 var Transaction = require('dw/system/Transaction');
+
+/** Utility **/
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 
 /**
@@ -84,6 +87,13 @@ function Authorize(orderNumber, billingForm, processorId) {
         billingForm.creditCardFields,
         processorId
     );
+
+    // Handle errors
+    if (!success) {
+        serverErrors.push(
+            ckoHelper.getPaymentFailureMessage()
+        );
+    }
 
     return {
         fieldErrors: fieldErrors,

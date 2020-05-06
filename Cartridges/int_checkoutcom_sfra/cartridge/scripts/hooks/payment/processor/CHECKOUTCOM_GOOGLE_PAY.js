@@ -3,6 +3,9 @@
 var collections = require('*/cartridge/scripts/util/collections');
 var Resource = require('dw/web/Resource');
 var Transaction = require('dw/system/Transaction');
+
+/** Utility **/
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
 
 /**
@@ -62,6 +65,13 @@ function Authorize(orderNumber, billingForm, processorId) {
         billingForm.googlePayForm.ckoGooglePayData.htmlValue,
         processorId
     );
+
+    // Handle errors
+    if (!success) {
+        serverErrors.push(
+            ckoHelper.getPaymentFailureMessage()
+        );
+    }
 
     return {
         fieldErrors: fieldErrors,

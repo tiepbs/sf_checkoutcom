@@ -3,6 +3,9 @@
 var collections = require('*/cartridge/scripts/util/collections');
 var Resource = require('dw/web/Resource');
 var Transaction = require('dw/system/Transaction');
+
+/** Utility **/
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
 
 /**
@@ -57,11 +60,18 @@ function Authorize(orderNumber, billingForm, processorId) {
     var fieldErrors = {};
 
     // Payment request
-    var success = googlePayHelper.handleRequest(
+    var success = applePayHelper.handleRequest(
         orderNumber, 
         billingForm.applePayForm.ckoApplePayData.htmlValue,
         processorId
     );
+
+    // Handle errors
+    if (!success) {
+        serverErrors.push(
+            ckoHelper.getPaymentFailureMessage()
+        );
+    }
 
     return {
         fieldErrors: fieldErrors,
