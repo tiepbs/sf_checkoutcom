@@ -24,7 +24,7 @@ function Handle(basket, paymentInformation, processorId) {
 
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {
-        cardIsValid = cardHelper.preAuthorizeCard(paymentInformation, currentBasket);
+        cardIsValid = cardHelper.preAuthorizeCard(paymentInformation, currentBasket, processorId);
         if (!cardIsValid) {
             serverErrors.push(
                 Resource.msg('error.card.information.error', 'creditCard', null)

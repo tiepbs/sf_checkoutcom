@@ -58,7 +58,7 @@ var cardHelper = {
     /*
      * Pre authorize card with zero value
      */
-    preAuthorizeCard: function(paymentInformation, currentBasket) {
+    preAuthorizeCard: function(paymentInformation, currentBasket, processorId) {
         var chargeData = {
             'source'                : {
                 type                : 'card',
