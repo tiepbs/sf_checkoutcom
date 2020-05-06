@@ -13,7 +13,9 @@
                name="${pdict.forms.billingForm.paymentMethod.htmlName}"
                value="${paymentOption.ID}"
         >
-        
+
+    	<input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
+
 		<fieldset>
 			<div id="apmsBox">
 				<!-- This to include the ideal pay apm form -->
