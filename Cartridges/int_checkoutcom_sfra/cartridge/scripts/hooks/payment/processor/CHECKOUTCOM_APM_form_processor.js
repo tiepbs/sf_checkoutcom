@@ -12,7 +12,11 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
 function processForm(req, paymentForm, viewFormData) {
     var viewData = viewFormData;
     var ckoApmData = paymentForm.apmForm;
-    
+
+	var logger = require('dw/system/Logger').getLogger('ckodebug');
+    logger.debug('xapm1 {0}', JSON.stringify(viewData));
+    logger.debug('xapm2 {0}', JSON.stringify(ckoApmData));
+
     viewData.paymentMethod = {
         value: paymentForm.paymentMethod.value,
         htmlName: paymentForm.paymentMethod.value
