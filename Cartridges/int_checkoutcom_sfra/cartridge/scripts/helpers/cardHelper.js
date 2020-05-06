@@ -78,12 +78,18 @@ var cardHelper = {
             '3ds'                   : {enabled: false},
             'risk'                  : {enabled: true}
         };
-        
+     
+        // Log the payment authorization request data
+        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.verification.request.data', 'cko'), chargeData);
+
         // Send the request
         var authResponse = ckoHelper.gatewayClientRequest(
             'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
             chargeData
         );
+
+        // Log the payment authorization response data
+        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.verification.response.data', 'cko'), authResponse);
 
         // Return the response
         return ckoHelper.paymentSuccess(authResponse);
