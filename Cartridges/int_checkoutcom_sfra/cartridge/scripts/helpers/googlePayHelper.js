@@ -13,14 +13,14 @@ var googlePayHelper = {
     /*
      * Handle the payment request
      */
-    handleRequest: function (orderNumber, processorId) {    
+    handleRequest: function (orderNumber, paymentData, processorId) {    
         // Load the order information
         var order = OrderMgr.getOrder(orderNumber);
 
         // Prepare the parameters
         var tokenRequest = {
             'type': 'googlepay',
-            'token_data': JSON.parse(session.custom.paymentData)
+            'token_data': JSON.parse(paymentData)
         };    
 
         // Log the payment token request data

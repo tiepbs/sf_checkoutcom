@@ -13,9 +13,9 @@ var cardHelper = {
     /*
      * Handle the payment request
      */
-    handleRequest: function (orderNumber, processorId) {       
+    handleRequest: function (orderNumber, paymentData, processorId) {       
         // Build the request data
-        var gatewayRequest = this.buildRequest(orderNumber, processorId);
+        var gatewayRequest = this.buildRequest(orderNumber, paymentData, processorId);
 
         // Log the payment request data
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
@@ -58,14 +58,14 @@ var cardHelper = {
     /*
      * Pre authorize card with zero value
      */
-    preAuthorizeCard: function() {
+    preAuthorizeCard: function(paymentInformation) {
         var chargeData = {
             'source'                : {
                 type                : 'card',
-                number              : session.custom.paymentData.cardNumber,
-                expiry_month        : session.custom.paymentData.expiryMonth,
-                expiry_year         : session.custom.paymentData.expiryYear,
-                cvv                 : session.custom.paymentData.cvv
+                number              : ckoHelper.getFormattedNumber(paymentInformation.cardNumber.value),
+                expiry_month        : paymentInformation.expirationMonth.value,
+                expiry_year         : paymentInformation.expirationYear.value,
+                cvv                 : paymentInformation.securityCode.value
             },
             'amount'                : 0,
             'currency'              : 'USD',
@@ -85,22 +85,9 @@ var cardHelper = {
     },
 
     /*
-     * Get payment card data from request
-     */
-    buildCardData: function (paymentInformation) {        
-        return {
-            cardNumber  : ckoHelper.getFormattedNumber(paymentInformation.cardNumber.value),
-            expiryMonth : paymentInformation.expirationMonth.value,
-            expiryYear  : paymentInformation.expirationYear.value,
-            cvv         : paymentInformation.securityCode.value,
-            cardType    : paymentInformation.cardType.value
-        };
-    },
-
-    /*
      * Build the gateway request
      */
-    buildRequest: function (orderNumber, processorId) {   
+    buildRequest: function (orderNumber, paymentData, processorId) {   
         // Load the order information
         var order = OrderMgr.getOrder(orderNumber);
 
@@ -108,10 +95,10 @@ var cardHelper = {
         var chargeData = {
             'source'                : {
                 type                : 'card',
-                number              : session.custom.paymentData.cardNumber,
-                expiry_month        : session.custom.paymentData.expiryMonth,
-                expiry_year         : session.custom.paymentData.expiryYear,
-                cvv                 : session.custom.paymentData.cvv
+                number              : ckoHelper.getFormattedNumber(paymentData.cardNumber.htmlValue),
+                expiry_month        : paymentData.expirationMonth.htmlValue,
+                expiry_year         : paymentData.expirationYear.htmlValue,
+                cvv                 : paymentData.securityCode.htmlValue
             },
             'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
             'currency'              : order.getCurrencyCode(),

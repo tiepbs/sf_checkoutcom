@@ -13,9 +13,6 @@ function Handle(basket, paymentInformation, processorId) {
     var cardErrors = {};
     var serverErrors = [];
 
-    // Prepare the payment data
-    session.custom.paymentData = paymentInformation.ckoApplePayData;
-
     // Verify the payload
     if (!paymentInformation.ckoApplePayData.value || paymentInformation.ckoApplePayData.value.length == 0) {
         serverErrors.push(
@@ -55,12 +52,16 @@ function Handle(basket, paymentInformation, processorId) {
 /**
  * Authorizes a payment
  */
-function Authorize(orderNumber, processorId) {
+function Authorize(orderNumber, billingForm, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
 
     // Payment request
-    var success = applePayHelper.handleRequest(orderNumber, processorId);
+    var success = googlePayHelper.handleRequest(
+        orderNumber, 
+        billingForm.applePayForm.ckoApplePayData.htmlValue,
+        processorId
+    );
 
     return {
         fieldErrors: fieldErrors,

@@ -22,13 +22,9 @@ function Handle(basket, paymentInformation, processorId) {
     var serverErrors = [];
     var cardIsValid = false;
 
-    // Prepare the payment data
-    var cardData = cardHelper.buildCardData(paymentInformation); 
-    session.custom.paymentData = cardData;
-
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {
-        cardIsValid = cardHelper.preAuthorizeCard();
+        cardIsValid = cardHelper.preAuthorizeCard(paymentInformation);
         if (!cardIsValid) {
             serverErrors.push(
                 Resource.msg('error.card.information.error', 'creditCard', null)
@@ -57,11 +53,10 @@ function Handle(basket, paymentInformation, processorId) {
             processorId, currentBasket.totalGrossPrice
         );
 
-        paymentInstrument.setCreditCardHolder(currentBasket.billingAddress.fullName);
-        paymentInstrument.setCreditCardNumber(cardData.cardNumber);
-        paymentInstrument.setCreditCardType(cardData.cardType);
-        paymentInstrument.setCreditCardExpirationMonth(cardData.expiryMonth);
-        paymentInstrument.setCreditCardExpirationYear(cardData.expiryYear);
+        paymentInstrument.setCreditCardNumber(paymentInformation.cardNumber.value);
+        paymentInstrument.setCreditCardType(paymentInformation.cardType.value);
+        paymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
+        paymentInstrument.setCreditCardExpirationYear(paymentInformation.expirationYear.value);
         paymentInstrument.setCreditCardToken(
             paymentInformation.creditCardToken
                 ? paymentInformation.creditCardToken
@@ -79,12 +74,16 @@ function Handle(basket, paymentInformation, processorId) {
 /**
  * Authorizes a payment using card details
  */
-function Authorize(orderNumber, processorId) {
+function Authorize(orderNumber, billingForm, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
 
     // Payment request
-    var success = cardHelper.handleRequest(orderNumber, processorId);
+    var success = cardHelper.handleRequest(
+        orderNumber,
+        billingForm.creditCardFields,
+        processorId
+    );
 
     return {
         fieldErrors: fieldErrors,

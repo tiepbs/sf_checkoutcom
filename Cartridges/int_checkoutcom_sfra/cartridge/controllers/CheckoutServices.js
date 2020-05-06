@@ -469,6 +469,7 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
             'app.payment.processor.' + processor.ID.toLowerCase(),
             'Authorize',
             order.orderNo,
+            billingForm,
             processor.ID
         );
     } else {
