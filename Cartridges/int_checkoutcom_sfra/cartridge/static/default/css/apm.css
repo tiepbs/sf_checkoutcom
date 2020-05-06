@@ -40,6 +40,11 @@
 	padding-bottom: 20px;
 }
 
+/* Boleto */
+#boleto_birthDate {
+    text-indent: 5px;
+}
+
 /* Klarna */
 #klarnaPay_pay_box {
     min-width: 280px;
