@@ -62,7 +62,7 @@ function Authorize(orderNumber, processorId) {
 
     // Prepare the arguments
     var args = {
-        orderNo: order.orderNo,
+        orderNo: orderNumber,
         processorId: paymentMethodId
     };
 
