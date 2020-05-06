@@ -1,3 +1,12 @@
+"use strict";
+
+/**
+ * jQuery Ajax helpers on DOM ready.
+ */
+document.addEventListener('DOMContentLoaded', function () {
+    initBoletoFieldFormatters();
+}, false);
+
 function boletoFieldsValidation() {
     // Errors count
     var errors = 0;
@@ -23,4 +32,13 @@ function boletoFieldsValidation() {
     }
 
     return errors;
+}
+
+function initBoletoFieldFormatters() {
+    // Boleto birth date formatter
+    var cleave = new Cleave('#boleto_birthDate', {
+        date: true,
+        delimiter: '-',
+        datePattern: ['Y', 'm', 'd']
+    });
 }
