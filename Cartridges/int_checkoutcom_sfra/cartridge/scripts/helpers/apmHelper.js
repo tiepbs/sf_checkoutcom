@@ -25,12 +25,12 @@ var apmHelper = {
         var gatewayRequest = this.getApmRequest(order, processorId, apmConfigData);
 
         // Test SEPA
-        if (payObject.type == "sepa") {
+        if (apmConfigData.type == "sepa") {
             // Prepare the charge data
             var chargeData = {
                 "customer"              : ckoHelper.getCustomer(order),
                 "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
-                "type"                  : payObject.type,
+                "type"                  : apmConfigData.type,
                 "currency"              : order.getCurrencyCode(),
                 "billing_address"       : ckoHelper.getBilling(order),
                 "source_data"           : apmConfigData.source_data,
@@ -82,7 +82,7 @@ var apmHelper = {
         
         // Add redirect to sepa source reqeust
         if (type == 'Sepa') {
-            session.privacy.redirectUrl = URLUtils.url('CKOSepa-Mandate');
+            session.privacy.redirectUrl = URLUtils.url('CKOSepa-Mandate').value;
             session.privacy.sepaResponseId = gatewayResponse.id;
             return true;
         }
@@ -126,7 +126,7 @@ var apmHelper = {
     },
     
     /*
-     * Sepa apm Request
+     * Sepa APM request
      */
     handleSepaRequest: function (payObject, order) {
         // Gateway response

@@ -60,13 +60,6 @@ function Authorize(orderNumber, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
 
-    // Prepare the APM parameters
-    var args = {
-        OrderNo: orderNumber,
-        ProcessorId: processorId,
-        Form: req.form,
-    };
-
     // Get the selected APM request data
     var func = session.custom.paymentData.value + 'Authorization';
     var apmConfigData = apmConfig[func](args);
