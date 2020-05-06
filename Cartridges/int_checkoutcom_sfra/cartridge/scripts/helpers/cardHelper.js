@@ -72,7 +72,7 @@ var cardHelper = {
             'capture'               : false,
             'customer'              : {
                 email: currentBasket.getCustomerEmail(),
-                name: currentBasket.getCustomerName()
+                name: currentBasket.getBillingAddress().getFullName()
             },
             'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
             '3ds'                   : {enabled: false},
