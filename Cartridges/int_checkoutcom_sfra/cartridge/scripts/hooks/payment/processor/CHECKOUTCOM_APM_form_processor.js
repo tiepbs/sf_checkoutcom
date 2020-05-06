@@ -14,7 +14,7 @@ function processForm(req, paymentForm, viewFormData) {
 
     viewData.paymentInformation = {
         ckoApm: {
-            value: paymentForm.apmForm.ckoSelectedApm.htmlValue,
+            value: paymentForm.apmForm.ckoSelectedApm.value.toString(),
             htmlName: paymentForm.apmForm.ckoSelectedApm.htmlName,
             data: paymentForm.apmForm
         },

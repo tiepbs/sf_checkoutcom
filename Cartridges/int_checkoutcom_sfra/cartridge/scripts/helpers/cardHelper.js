@@ -99,6 +99,10 @@ var cardHelper = {
      * Build the gateway request
      */
     buildRequest: function (orderNumber, paymentData, processorId) {   
+
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('buildRequest {0}', JSON.stringify(paymentData));
+    
         // Load the order information
         var order = OrderMgr.getOrder(orderNumber);
 
@@ -106,10 +110,10 @@ var cardHelper = {
         var chargeData = {
             'source'                : {
                 type                : 'card',
-                number              : ckoHelper.getFormattedNumber(paymentData.cardNumber.htmlValue),
-                expiry_month        : paymentData.expirationMonth.htmlValue,
-                expiry_year         : paymentData.expirationYear.htmlValue,
-                cvv                 : paymentData.securityCode.htmlValue
+                number              : ckoHelper.getFormattedNumber(paymentData.cardNumber.value.toString()),
+                expiry_month        : paymentData.expirationMonth.value.toString(),
+                expiry_year         : paymentData.expirationYear.value.toString(),
+                cvv                 : paymentData.securityCode.value.toString()
             },
             'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
             'currency'              : order.getCurrencyCode(),
