@@ -12,11 +12,6 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
 function processForm(req, paymentForm, viewFormData) {
     var viewData = viewFormData;
 
-    viewData.paymentMethod = {
-        value: paymentForm.paymentMethod.value,
-        htmlName: paymentForm.paymentMethod.value
-    };
-
     viewData.paymentInformation = {
         ckoApm: {
             value: paymentForm.apmForm.ckoSelectedApm.htmlValue,

@@ -13,26 +13,11 @@ function Handle(basket, paymentInformation, processorId) {
     var cardErrors = {};
     var serverErrors = [];
 
-    // Get the APM type chosen
-    var func = paymentInformation.ckoApm.data.ckoSelectedApm.htmlValue + 'Authorization';
-
-    // Make the charge request
-    var args = {
-        OrderNo: order.orderNo,
-        ProcessorId: paymentMethodId,
-        Form: req.form,
-        CardUuid: false,
-        CustomerId: false
-    };
-
-    // Get the required apm pay config object
-    var payObject = apmConfig[func](args);
-
     // Prepare the payment data
-    session.custom.paymentData = paymentInformation.ckoApmData;
+    session.custom.paymentData = paymentInformation.ckoApm;
     
     // Verify the payload
-    if (!paymentInformation.ckoApmData.value || paymentInformation.ckoApmData.value.length == 0) {
+    if (!paymentInformation.ckoApm.value || paymentInformation.ckoApm.value.length == 0) {
         serverErrors.push(
             Resource.msg('cko.apm.error', 'cko', null)
         );
@@ -73,6 +58,9 @@ function Handle(basket, paymentInformation, processorId) {
 function Authorize(orderNumber, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
+
+    var logger = require('dw/system/Logger').getLogger('ckodebug');
+    logger.debug('authapm {0}', JSON.stringify(session.custom.paymentData));
 
     // Payment request
     var success = apmHelper.handleRequest(orderNumber, processorId);
