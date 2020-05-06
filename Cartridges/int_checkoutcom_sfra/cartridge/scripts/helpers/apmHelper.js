@@ -17,12 +17,12 @@ var apmHelper = {
     /*
      * Apm Request
      */
-    handleRequest: function (orderNumber, processorId) {
+    handleRequest: function (orderNumber, processorId, apmConfigData) {
         // Load the order
         var order = OrderMgr.getOrder(orderNumber);
         
         // Create the payment request
-        var gatewayRequest = this.getApmRequest(order, args);
+        var gatewayRequest = this.getApmRequest(order, processorId, apmConfigData);
 
         // Test SEPA
         if (payObject.type == "sepa") {
@@ -33,9 +33,9 @@ var apmHelper = {
                 "type"                  : payObject.type,
                 "currency"              : order.getCurrencyCode(),
                 "billing_address"       : ckoHelper.getBilling(order),
-                "source_data"           : payObject.source_data,
+                "source_data"           : apmConfigData.source_data,
                 "reference"             : order.OrderNo,
-                "metadata"              : ckoHelper.getMetadata(payObject, processorId),
+                "metadata"              : ckoHelper.getMetadata({}, processorId),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
             
@@ -99,36 +99,27 @@ var apmHelper = {
     /*
      * Return the APM request data
      */
-    getApmRequest: function (order, args) {
+    getApmRequest: function (order, processorId, apmConfigData) {
         // Charge data
         var chargeData;
         
         // Get the order amount
         var amount = ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode());
         
+        // Prepare the charge data
+        chargeData = {
+            "customer"              : ckoHelper.getCustomer(order),
+            "amount"                : amount,
+            "currency"              : order.getCurrencyCode(),
+            "source"                : apmConfigData.source,
+            "reference"             : order.orderNo,
+            "metadata"              : ckoHelper.getMetadata({}, processorId),
+            "billing_descriptor"    : ckoHelper.getBillingDescriptor()
+        };
+
         // Test Klarna
-        if (payObject.type == 'klarna') {
-            chargeData = {
-                "customer"              : ckoHelper.getCustomer(order),
-                "amount"                : amount,
-                "currency"              : order.getCurrencyCode(),
-                "capture"               : false,
-                "source"                : payObject.source,
-                "reference"             : args.orderNo,
-                "metadata"              : ckoHelper.getMetadata({}, args),
-                "billing_descriptor"    : ckoHelper.getBillingDescriptor()
-            };
-        } else {
-            // Prepare chargeData object
-            chargeData = {
-                "customer"              : ckoHelper.getCustomer(args),
-                "amount"                : amount,
-                "currency"              : currency,
-                "source"                : payObject.source,
-                "reference"             : args.OrderNo,
-                "metadata"              : ckoHelper.getMetadata(payObject, args),
-                "billing_descriptor"    : ckoHelper.getBillingDescriptor()
-            };
+        if (apmConfigData.type == 'klarna') {
+            chargeData.capture = false;
         }
         
         return chargeData;

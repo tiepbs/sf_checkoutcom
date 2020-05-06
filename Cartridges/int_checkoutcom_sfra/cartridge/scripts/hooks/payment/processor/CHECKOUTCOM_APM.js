@@ -4,6 +4,7 @@ var collections = require('*/cartridge/scripts/util/collections');
 var Resource = require('dw/web/Resource');
 var Transaction = require('dw/system/Transaction');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
+var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
 
 /**
  * Verifies that the payment data is valid.
@@ -59,11 +60,19 @@ function Authorize(orderNumber, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
 
-    var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('authapm {0}', JSON.stringify(session.custom.paymentData));
+    // Prepare the APM parameters
+    var args = {
+        OrderNo: orderNumber,
+        ProcessorId: processorId,
+        Form: req.form,
+    };
+
+    // Get the selected APM request data
+    var func = session.custom.paymentData.value + 'Authorization';
+    var apmConfigData = apmConfig[func](args);
 
     // Payment request
-    var success = apmHelper.handleRequest(orderNumber, processorId);
+    var success = apmHelper.handleRequest(orderNumber, processorId, apmConfigData);
 
     return {
         fieldErrors: fieldErrors,
