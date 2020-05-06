@@ -63,7 +63,7 @@ function Authorize(orderNumber, processorId) {
     // Prepare the arguments
     var args = {
         orderNo: orderNumber,
-        processorId: paymentMethodId
+        processorId: processorId
     };
 
     // Get the selected APM request data
