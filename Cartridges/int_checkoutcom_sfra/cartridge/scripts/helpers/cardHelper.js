@@ -58,7 +58,7 @@ var cardHelper = {
     /*
      * Pre authorize card with zero value
      */
-    preAuthorizeCard: function(paymentInformation) {
+    preAuthorizeCard: function(paymentInformation, currentBasket) {
         var chargeData = {
             'source'                : {
                 type                : 'card',
@@ -70,6 +70,11 @@ var cardHelper = {
             'amount'                : 0,
             'currency'              : 'USD',
             'capture'               : false,
+            'customer'              : {
+                email: currentBasket.getCustomerEmail(),
+                name: currentBasket.getCustomerName()
+            },
+            'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
             '3ds'                   : {enabled: false},
             'risk'                  : {enabled: true}
         };
