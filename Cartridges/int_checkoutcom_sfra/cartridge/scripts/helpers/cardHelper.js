@@ -98,11 +98,7 @@ var cardHelper = {
     /*
      * Build the gateway request
      */
-    buildRequest: function (orderNumber, paymentData, processorId) {   
-
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('buildRequest {0}', JSON.stringify(paymentData));
-    
+    buildRequest: function (orderNumber, paymentData, processorId) {       
         // Load the order information
         var order = OrderMgr.getOrder(orderNumber);
 
