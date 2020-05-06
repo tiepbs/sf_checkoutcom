@@ -1,8 +1,5 @@
 "use strict";
 
-var apm_selected = false;
-var apm_selected_box = false;
-
 /**
  * jQuery Ajax helpers on DOM ready.
  */
