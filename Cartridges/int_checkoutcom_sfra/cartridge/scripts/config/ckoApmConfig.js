@@ -19,7 +19,7 @@ var ckoApmConfig = {
             'source'    : {
                 'type'          : 'ideal',
                 'bic'           : args.Form.ideal_bic,
-                'description'   : args.OrderNo,
+                'description'   : args.orderNo,
                 'language'      : ckoHelper.getLanguage(),
             },
             'type'      : 'ideal',
@@ -281,7 +281,7 @@ var ckoApmConfig = {
      */
     klarnaAuthorization: function (args) {
         // Gdt the order
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.orderNo);
         
         // Klarna Form Inputs
         var klarna_approved = args.Form.klarna_approved;
@@ -320,7 +320,7 @@ var ckoApmConfig = {
             'currency'      : ckoHelper.getCurrency(args),
             'source'        : {
                 'type'              : 'paypal',
-                'invoice_number'    : args.OrderNo
+                'invoice_number'    : args.orderNo
             }
         };
 
