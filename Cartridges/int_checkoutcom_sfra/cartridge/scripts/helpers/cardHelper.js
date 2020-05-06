@@ -28,7 +28,7 @@ var cardHelper = {
 
         // Log the payment response data
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
-s
+
         // Process the response
         return gatewayResponse && this.handleResponse(gatewayResponse);
     },
