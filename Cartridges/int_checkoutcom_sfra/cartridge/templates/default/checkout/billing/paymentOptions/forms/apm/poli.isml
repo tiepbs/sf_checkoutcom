@@ -1,6 +1,6 @@
 <!-- Poli APM option -->
 <button class="cko-apm-accordion">
-	<input id="poliPay_apm_radio_btn" type="radio" name="${apmFields.poli.htmlName}" value="poli">
+	<input id="poliPay_apm_radio_btn" type="radio" name="${apmFields.poli.htmlName}" value="">
 	<img alt="poliPay" id="poliPay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/poli.png')}"/>
 	${Resource.msg('cko.poli.name','cko',null)} 
 </button>

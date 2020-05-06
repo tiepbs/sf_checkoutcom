@@ -47,9 +47,9 @@
 					</div>
 				</isif>
 				
-				<!-- This to include the giro pay apm form -->
+				<!-- This to include the giropay apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGiroEnabled'))}">
-					<div id="giro" class="apm-list-item">	
+					<div id="giropay" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/forms/apm/giropay.isml"/>
 					</div>
 				</isif>

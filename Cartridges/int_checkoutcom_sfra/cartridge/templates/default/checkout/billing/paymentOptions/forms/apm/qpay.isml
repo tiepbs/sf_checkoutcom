@@ -5,7 +5,7 @@
 </isscript>
 
 <button class="cko-apm-accordion">
-	<input id="qpay_apm_radio_btn" type="radio" name="${apmFields.qpay.htmlName}" value="qpay">
+	<input id="qpay_apm_radio_btn" type="radio" name="${apmFields.qpay.htmlName}" value="">
 	<img alt="${Resource.msg('cko.qpay.name','cko',null)}" id="qpay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/qpay.png')}"/>
 	${Resource.msg('cko.qpay.name','cko',null)} 
 </button>

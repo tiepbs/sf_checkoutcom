@@ -41,9 +41,10 @@ function initApmAccordion()
         // Set the active element
         $(this).addClass('cko-apm-active');
 
-        // Set the selected APM hidden field
+        // Set the selected APM fields
         var apmId = $('.cko-apm-active').closest('.apm-list-item').attr('id');
-        $('input[name="dwfrm_billing_apmForm_ckoSelectedApm"]').val(apmId);       
+        $('input[name="dwfrm_billing_apmForm_ckoSelectedApm"]').val(apmId);
+        $('input#' + apmId).val(apmId);           
 
         // Open the sibling panel
         var panel = $(this).next();
