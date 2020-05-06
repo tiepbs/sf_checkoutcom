@@ -15,7 +15,7 @@ var ckoApmConfig = {
         var payObject = {
             'source'    : {
                 'type'          : 'ideal',
-                'bic'           : args.paymentData.ideal_bic.htmlValue,
+                'bic'           : args.ideal_bic.htmlValue,
                 'description'   : args.order.orderNo,
                 'language'      : ckoHelper.getLanguage(),
             },
@@ -35,8 +35,8 @@ var ckoApmConfig = {
         var payObject = {
             'source'        : {
                 'type'  : 'boleto',
-                'birthDate' : args.paymentData.boleto_birthDate.htmlValue,
-                'cpf'       : args.paymentData.boleto_cpf.htmlValue,
+                'birthDate' : args.boleto_birthDate.htmlValue,
+                'cpf'       : args.boleto_cpf.htmlValue,
                 'customerName' : ckoHelper.getCustomerName(args)
             },
             'type'      : 'boleto',
@@ -167,7 +167,7 @@ var ckoApmConfig = {
                 'description'   : businessName,
                 'language'      : ckoHelper.getLanguage().substr(0, 2),
                 'quantity'      : ckoHelper.getProductQuantity(args),
-                'national_id'   : args.paymentData.qpay_national_id.htmlValue
+                'national_id'   : args.qpay_national_id.htmlValue
             },
             'type'      : 'qpay',
             'purpose'   : businessName,
@@ -209,7 +209,7 @@ var ckoApmConfig = {
             'source_data'   : {
                 'first_name'            : ckoHelper.getCustomerFirstName(args),
                 'last_name'             : ckoHelper.getCustomerLastName(args),
-                'account_iban'          : args.paymentData.sepa_iban.htmlValue + args.paymentData.sepa_bic.htmlValue,
+                'account_iban'          : args.sepa_iban.htmlValue + args.sepa_bic.htmlValue,
                 'billing_descriptor'    : businessName,
                 'mandate_type'          : 'single'
             }
@@ -281,7 +281,7 @@ var ckoApmConfig = {
         var order = OrderMgr.getOrder(args.orderNo);
         
         // Klarna Form Inputs
-        var klarna_approved = args.paymentData.klarna_approved.htmlValue;
+        var klarna_approved = args.klarna_approved.htmlValue;
         
         if (klarna_approved) {
             // Build the payment object
@@ -292,7 +292,7 @@ var ckoApmConfig = {
                 'capture'   : false,
                 'source'    : {
                     'type'                  : 'klarna',
-                    'authorization_token'   : args.paymentData.klarna_token.htmlValue,
+                    'authorization_token'   : args.klarna_token.htmlValue,
                     'locale'                : ckoHelper.getLanguage(),
                     'purchase_country'      : ckoHelper.getBilling(args).country,
                     'tax_amount'            : ckoHelper.getFormattedPrice(order.totalTax.value, ckoHelper.getCurrency(args)),
@@ -337,7 +337,7 @@ var ckoApmConfig = {
                 'payer': {
                     'name': ckoHelper.getCustomerName(args),
                     'email': ckoHelper.getCustomer(args).email,
-                    'document': args.paymentData.oxxo_identification.htmlValue
+                    'document': args.oxxo_identification.htmlValue
                 }
             },
             'type'          : 'oxxo',

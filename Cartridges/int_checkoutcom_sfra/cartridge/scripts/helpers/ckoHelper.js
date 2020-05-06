@@ -684,7 +684,7 @@ var ckoHelper = {
      * Return Customer FullName
      */
     getCustomerName: function (args) {
-        // Load the card and order information
+        // Load the order information
         var order = OrderMgr.getOrder(args.orderNo);
 
         // Get billing address information
