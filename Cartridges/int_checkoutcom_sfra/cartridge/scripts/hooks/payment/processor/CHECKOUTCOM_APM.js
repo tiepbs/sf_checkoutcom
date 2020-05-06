@@ -13,9 +13,6 @@ function Handle(basket, paymentInformation, processorId) {
     var cardErrors = {};
     var serverErrors = [];
 
-	var logger = require('dw/system/Logger').getLogger('ckodebug');
-	logger.debug('xapm3 {0}', JSON.stringify(paymentInformation));
-
     // Get the APM type chosen
     var func = req.form.apm_list + 'PayAuthorization';
 
