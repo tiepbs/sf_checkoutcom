@@ -15,7 +15,7 @@ var ckoApmConfig = {
         var payObject = {
             'source'    : {
                 'type'          : 'ideal',
-                'bic'           : args.ideal_bic.htmlValue,
+                'bic'           : args.paymentData.data.ideal_bic.htmlValue,
                 'description'   : args.order.orderNo,
                 'language'      : ckoHelper.getLanguage(),
             },
@@ -23,7 +23,7 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : args.order.getCurrencyCode()
         };
-        
+     
         return payObject;
     },
     
@@ -35,8 +35,8 @@ var ckoApmConfig = {
         var payObject = {
             'source'        : {
                 'type'  : 'boleto',
-                'birthDate' : args.boleto_birthDate.htmlValue,
-                'cpf'       : args.boleto_cpf.htmlValue,
+                'birthDate' : args.paymentData.data.boleto_birthDate.htmlValue,
+                'cpf'       : args.paymentData.data.boleto_cpf.htmlValue,
                 'customerName' : ckoHelper.getCustomerName(args)
             },
             'type'      : 'boleto',
@@ -167,7 +167,7 @@ var ckoApmConfig = {
                 'description'   : businessName,
                 'language'      : ckoHelper.getLanguage().substr(0, 2),
                 'quantity'      : ckoHelper.getProductQuantity(args),
-                'national_id'   : args.qpay_national_id.htmlValue
+                'national_id'   : args.paymentData.data.qpay_national_id.htmlValue
             },
             'type'      : 'qpay',
             'purpose'   : businessName,
@@ -209,7 +209,7 @@ var ckoApmConfig = {
             'source_data'   : {
                 'first_name'            : ckoHelper.getCustomerFirstName(args),
                 'last_name'             : ckoHelper.getCustomerLastName(args),
-                'account_iban'          : args.sepa_iban.htmlValue + args.sepa_bic.htmlValue,
+                'account_iban'          : args.paymentData.data.sepa_iban.htmlValue + args.sepa_bic.htmlValue,
                 'billing_descriptor'    : businessName,
                 'mandate_type'          : 'single'
             }
@@ -276,10 +276,7 @@ var ckoApmConfig = {
     /*
      * Klarna authorization
      */
-    klarnaAuthorization: function (args) {
-        // Get the order
-        var order = OrderMgr.getOrder(args.orderNo);
-        
+    klarnaAuthorization: function (args) {        
         // Klarna Form Inputs
         var klarna_approved = args.klarna_approved.htmlValue;
         
@@ -287,7 +284,7 @@ var ckoApmConfig = {
             // Build the payment object
             var payObject = {
                 'type'      : 'klarna',
-                'amount'    : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency(args)),
+                'amount'    : ckoHelper.getFormattedPrice(args.order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency(args)),
                 'currency'  : args.order.getCurrencyCode(),
                 'capture'   : false,
                 'source'    : {
@@ -295,7 +292,7 @@ var ckoApmConfig = {
                     'authorization_token'   : args.klarna_token.htmlValue,
                     'locale'                : ckoHelper.getLanguage(),
                     'purchase_country'      : ckoHelper.getBilling(args).country,
-                    'tax_amount'            : ckoHelper.getFormattedPrice(order.totalTax.value, ckoHelper.getCurrency(args)),
+                    'tax_amount'            : ckoHelper.getFormattedPrice(args.order.totalTax.value, ckoHelper.getCurrency(args)),
                     'billing_address'       : ckoHelper.getOrderBasketAddress(args),
                     'products'              : ckoHelper.getOrderBasketObject(args)
                 }
@@ -337,7 +334,7 @@ var ckoApmConfig = {
                 'payer': {
                     'name': ckoHelper.getCustomerName(args),
                     'email': ckoHelper.getCustomer(args).email,
-                    'document': args.oxxo_identification.htmlValue
+                    'document': args.paymentData.data.oxxo_identification.htmlValue
                 }
             },
             'type'          : 'oxxo',
