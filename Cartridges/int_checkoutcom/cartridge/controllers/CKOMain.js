@@ -116,18 +116,17 @@ function handleFail()
  */
 function handleWebhook()
 {
+	var logger = require('dw/system/Logger').getLogger('ckodebug');
+	logger.debug('this is my test {0}', 'handleWebhook');
+	
     var isValidResponse = ckoHelper.isValidResponse();
     if (isValidResponse) {
-        
-    	var logger = require('dw/system/Logger').getLogger('ckodebug');
-    	logger.debug('this is my test {0}', 'handleWebhook');
     	
         // Get the response as JSON object
         var hook = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
 
         // Check the webhook event
         if (hook !== null && hook.hasOwnProperty('type')) {
-        	
             // Get a camel case function name from event type
             var func = '';
             var parts = hook.type.split('_');
@@ -137,7 +136,7 @@ function handleWebhook()
 
             // Call the event
             eventsHelper[func](hook);
-        }
+       }
     }
 }
 

@@ -362,9 +362,6 @@ var ckoHelper = {
             // Logging
             this.doLog(this._('cko.cartridge.failed', 'cko'), JSON.stringify(gatewayResponse));
         }
-        
-        // Load the error template
-        //app.getController('COBilling').Start();
 
         // Send back to the error page
         ISML.renderTemplate('custom/common/response/failed.isml');
@@ -756,6 +753,13 @@ var ckoHelper = {
         
         return lastname;
     },
+    
+    /*
+     * Return AutoCapture
+     */
+    getCapture: function () {
+    	return ckoHelper.getValue('ckoAutoCapture') && ckoHelper.getValue('ckoAutoCaptureTime') <= 0 ? ckoHelper.getValue('ckoAutoCapture') : true ;
+    },
         
     /*
      * Return capture time
@@ -772,7 +776,7 @@ var ckoHelper = {
         var captureOnMs = now + parseInt(captureOnMin) * 60000;
 
         // Convert the capture time to ISO 8601 format
-        return new Date(captureOnMs).toISOString();
+        return ckoHelper.getValue('ckoAutoCapture') ? null : new Date(captureOnMs).toISOString();
     },
     
     /*
