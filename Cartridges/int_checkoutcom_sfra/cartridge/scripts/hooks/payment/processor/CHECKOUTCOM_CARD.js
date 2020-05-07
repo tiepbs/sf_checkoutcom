@@ -20,6 +20,10 @@ function Handle(basket, paymentInformation, processorId) {
         cardToken: false
     };
 
+	var logger = require('dw/system/Logger').getLogger('ckodebug');
+	logger.debug('xpay {0}', JSON.stringify(paymentInformation));
+
+
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {
         result = cardHelper.preAuthorizeCard(paymentInformation, currentBasket, processorId);
@@ -99,4 +103,3 @@ function Authorize(orderNumber, billingForm, processorId) {
 
 exports.Handle = Handle;
 exports.Authorize = Authorize;
-exports.createToken = createToken;
