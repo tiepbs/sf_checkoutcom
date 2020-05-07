@@ -27,9 +27,6 @@ function Handle(basket, paymentInformation, processorId) {
         success: false,
         cardToken: false
     };
-
-	var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('xpay {0}', JSON.stringify(paymentInformation));
     
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {
@@ -67,7 +64,6 @@ function Handle(basket, paymentInformation, processorId) {
         paymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
         paymentInstrument.setCreditCardExpirationYear(paymentInformation.expirationYear.value);
 
-        // Set the card token if available
         if (result.cardToken) {
             paymentInstrument.setCreditCardToken(result.cardToken);
         }
