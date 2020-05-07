@@ -11,13 +11,13 @@ var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
 /**
  * Verifies that the payment data is valid.
  */
-function Handle(basket, paymentInformation, processorId) {
+function Handle(basket, billingData, processorId) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
 
     // Verify the payload
-    if (!paymentInformation.ckoApplePayData.value || paymentInformation.ckoApplePayData.value.length == 0) {
+    if (!billingData.paymentInformation.ckoApplePayData.value || billingData.paymentInformation.ckoApplePayData.value.length == 0) {
         serverErrors.push(
             Resource.msg('cko.applepay.error', 'cko', null)
         );

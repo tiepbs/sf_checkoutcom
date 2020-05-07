@@ -19,7 +19,7 @@ function createToken() {
 /**
  * Verifies that the payment data is valid.
  */
-function Handle(basket, paymentInformation, processorId) {
+function Handle(basket, billingData, processorId) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
@@ -29,8 +29,8 @@ function Handle(basket, paymentInformation, processorId) {
     };
     
     // Pre authorize the card
-    if (!paymentInformation.creditCardToken) {
-        result = cardHelper.preAuthorizeCard(paymentInformation, currentBasket, processorId);
+    if (!billingData.paymentInformation.creditCardToken) {
+        result = cardHelper.preAuthorizeCard(billingData.paymentInformation, currentBasket, processorId);
         if (!result.success) {
             serverErrors.push(
                 Resource.msg('error.card.information.error', 'creditCard', null)
@@ -59,10 +59,10 @@ function Handle(basket, paymentInformation, processorId) {
             processorId, currentBasket.totalGrossPrice
         );
 
-        paymentInstrument.setCreditCardNumber(paymentInformation.cardNumber.value);
-        paymentInstrument.setCreditCardType(paymentInformation.cardType.value);
-        paymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
-        paymentInstrument.setCreditCardExpirationYear(paymentInformation.expirationYear.value);
+        paymentInstrument.setCreditCardNumber(billingData.paymentInformation.cardNumber.value);
+        paymentInstrument.setCreditCardType(billingData.paymentInformation.cardType.value);
+        paymentInstrument.setCreditCardExpirationMonth(billingData.paymentInformation.expirationMonth.value);
+        paymentInstrument.setCreditCardExpirationYear(billingData.paymentInformation.expirationYear.value);
 
         if (result.cardToken) {
             paymentInstrument.setCreditCardToken(result.cardToken);

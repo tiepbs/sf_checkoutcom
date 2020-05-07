@@ -11,13 +11,13 @@ var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
 /**
  * Verifies that the payment data is valid.
  */
-function Handle(basket, paymentInformation, processorId) {
+function Handle(basket, billingData, processorId) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
     
     // Verify the payload
-    if (!paymentInformation.ckoGooglePayData.value || paymentInformation.ckoGooglePayData.value.length == 0) {
+    if (!billingData.paymentInformation.ckoGooglePayData.value || billingData.paymentInformation.ckoGooglePayData.value.length == 0) {
         serverErrors.push(
             Resource.msg('cko.googlepay.error', 'cko', null)
         );

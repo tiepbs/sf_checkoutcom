@@ -98,7 +98,7 @@ var cardHelper = {
         }
 
         // Add the card source id if the payment is successful
-        if (response.success) {
+        if (response.success && authResponse.source.id) {
             response.cardToken = authResponse.source.id;
         }
 

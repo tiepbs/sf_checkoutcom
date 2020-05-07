@@ -247,7 +247,7 @@ server.replace(
                 result = HookMgr.callHook('app.payment.processor.' + processor.ID.toLowerCase(),
                     'Handle',
                     currentBasket,
-                    billingData.paymentInformation,
+                    billingData,
                     processor.ID
                 );
             } else {
