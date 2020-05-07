@@ -9,26 +9,21 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 
 /**
- * Creates a token. This should be replaced by utilizing a tokenization provider
- * @returns {string} a token
- */
-function createToken() {
-    return Math.random().toString(36).substr(2);
-}
-
-/**
  * Verifies that the payment data is valid.
  */
 function Handle(basket, paymentInformation, processorId) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
-    var cardIsValid = false;
+    var result = {
+        success: false,
+        cardToken: false
+    };
 
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {
-        cardIsValid = cardHelper.preAuthorizeCard(paymentInformation, currentBasket, processorId);
-        if (!cardIsValid) {
+        result = cardHelper.preAuthorizeCard(paymentInformation, currentBasket, processorId);
+        if (!result.success) {
             serverErrors.push(
                 Resource.msg('error.card.information.error', 'creditCard', null)
             );
@@ -60,11 +55,11 @@ function Handle(basket, paymentInformation, processorId) {
         paymentInstrument.setCreditCardType(paymentInformation.cardType.value);
         paymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
         paymentInstrument.setCreditCardExpirationYear(paymentInformation.expirationYear.value);
-        paymentInstrument.setCreditCardToken(
-            paymentInformation.creditCardToken
-                ? paymentInformation.creditCardToken
-                : createToken()
-        );
+
+        // Set the card token if available
+        if (result.cardToken) {
+            paymentInstrument.setCreditCardToken(result.cardToken);
+        }
     });
 
     return {

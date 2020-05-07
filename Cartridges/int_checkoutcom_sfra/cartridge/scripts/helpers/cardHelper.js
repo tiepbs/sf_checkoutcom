@@ -92,7 +92,17 @@ var cardHelper = {
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.verification.response.data', 'cko'), authResponse);
 
         // Return the response
-        return ckoHelper.paymentSuccess(authResponse);
+        var response = {
+            success: ckoHelper.paymentSuccess(authResponse),
+            cardToken: false
+        }
+
+        // Add the card source id if the payment is successful
+        if (response.success) {
+            response.cardToken = authResponse.source.id;
+        }
+
+        return response;
     },
 
     /*
