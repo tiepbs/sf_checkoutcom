@@ -9,6 +9,14 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 
 /**
+ * Creates a token. This should be replaced by utilizing a tokenization provider
+ * @returns {string} a token
+ */
+function createToken() {
+    return Math.random().toString(36).substr(2);
+}
+
+/**
  * Verifies that the payment data is valid.
  */
 function Handle(basket, paymentInformation, processorId) {
@@ -21,9 +29,8 @@ function Handle(basket, paymentInformation, processorId) {
     };
 
 	var logger = require('dw/system/Logger').getLogger('ckodebug');
-	logger.debug('xpay {0}', JSON.stringify(paymentInformation));
-
-
+    logger.debug('xpay {0}', JSON.stringify(paymentInformation));
+    
     // Pre authorize the card
     if (!paymentInformation.creditCardToken) {
         result = cardHelper.preAuthorizeCard(paymentInformation, currentBasket, processorId);
@@ -103,3 +110,4 @@ function Authorize(orderNumber, billingForm, processorId) {
 
 exports.Handle = Handle;
 exports.Authorize = Authorize;
+exports.createToken = createToken;
