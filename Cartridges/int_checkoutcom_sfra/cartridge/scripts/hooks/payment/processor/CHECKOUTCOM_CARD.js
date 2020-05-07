@@ -64,7 +64,8 @@ function Handle(basket, billingData, processorId) {
         paymentInstrument.setCreditCardExpirationMonth(billingData.paymentInformation.expirationMonth.value);
         paymentInstrument.setCreditCardExpirationYear(billingData.paymentInformation.expirationYear.value);
 
-        if (result.cardToken) {
+        // Save the card source id if needed
+        if (result.cardToken && JSON.parse(billingData.saveCard) === true) {
             paymentInstrument.setCreditCardToken(result.cardToken);
         }
     });
