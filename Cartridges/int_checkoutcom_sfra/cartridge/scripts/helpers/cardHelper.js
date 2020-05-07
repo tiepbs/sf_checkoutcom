@@ -145,7 +145,32 @@ var cardHelper = {
             'enabled' : ckoHelper.getValue('cko3ds'),
             'attempt_n3d' : ckoHelper.getValue('ckoN3ds')
         }
-    }
+    },
+
+    /*
+     * Get a customer saved card
+     */
+    getSavedCard: function (cardUuid, customerId) {
+        // Get the customer
+        var customer = CustomerMgr.getCustomerByCustomerNumber(customerId);
+
+        // Get the customer wallet
+        var wallet = customer.getProfile().getWallet();
+
+        // Get the existing payment instruments
+        var paymentInstruments = wallet.getPaymentInstruments();
+
+        // Math the saved card
+        for (var i = 0; i < paymentInstruments.length; i++) {
+            var card = paymentInstruments[i];
+            if (card.getUUID() == cardUuid) {
+                return card;
+            }
+        } 
+        
+        return null;
+    },
+
 }
 
 /*

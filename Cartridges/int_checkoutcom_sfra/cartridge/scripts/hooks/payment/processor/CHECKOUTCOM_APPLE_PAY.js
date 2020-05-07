@@ -11,7 +11,7 @@ var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
 /**
  * Verifies that the payment data is valid.
  */
-function Handle(basket, billingData, processorId) {
+function Handle(basket, billingData, processorId, req) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];

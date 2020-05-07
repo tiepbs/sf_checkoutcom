@@ -19,8 +19,9 @@ function createToken() {
 /**
  * Verifies that the payment data is valid.
  */
-function Handle(basket, billingData, processorId) {
+function Handle(basket, billingData, processorId, req) {
     var currentBasket = basket;
+    var customerId = (req.currentCustomer.profile.customerNo) ? req.currentCustomer.profile.customerNo : null;
     var cardErrors = {};
     var serverErrors = [];
     var result = {
@@ -28,6 +29,9 @@ function Handle(basket, billingData, processorId) {
         cardToken: false
     };
     
+    var savedCard = cardHelper.getSavedCard(billingData.paymentInformation.storedPaymentUUID, customerId);
+    logger.debug('zomi2 {0}', JSON.stringify(savedCard));
+
     // Pre authorize the card
     if (!billingData.paymentInformation.creditCardToken) {
         result = cardHelper.preAuthorizeCard(billingData.paymentInformation, currentBasket, processorId);

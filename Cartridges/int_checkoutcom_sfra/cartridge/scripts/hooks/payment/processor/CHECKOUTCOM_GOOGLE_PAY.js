@@ -11,7 +11,7 @@ var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
 /**
  * Verifies that the payment data is valid.
  */
-function Handle(basket, billingData, processorId) {
+function Handle(basket, billingData, processorId, req) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];

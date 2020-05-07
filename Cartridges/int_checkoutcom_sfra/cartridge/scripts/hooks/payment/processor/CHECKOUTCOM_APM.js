@@ -14,7 +14,7 @@ var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
 /**
  * Verifies that the payment data is valid.
  */
-function Handle(basket, billingData, processorId) {
+function Handle(basket, billingData, processorId, req) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];

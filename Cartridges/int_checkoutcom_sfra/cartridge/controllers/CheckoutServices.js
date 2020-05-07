@@ -248,7 +248,8 @@ server.replace(
                     'Handle',
                     currentBasket,
                     billingData,
-                    processor.ID
+                    processor.ID,
+                    req
                 );
             } else {
                 result = HookMgr.callHook('app.payment.processor.default', 'Handle');
