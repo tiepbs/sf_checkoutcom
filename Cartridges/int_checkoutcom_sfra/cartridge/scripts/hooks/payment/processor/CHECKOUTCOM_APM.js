@@ -14,13 +14,13 @@ var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
 /**
  * Verifies that the payment data is valid.
  */
-function Handle(basket, paymentInformation, processorId) {
+function Handle(basket, billingData, processorId) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
     
     // Verify the payload
-    if (!paymentInformation.ckoApm.value || paymentInformation.ckoApm.value.length == 0) {
+    if (!billingData.paymentInformation.ckoApm.value || billingData.paymentInformation.ckoApm.value.length == 0) {
         serverErrors.push(
             Resource.msg('cko.apm.error', 'cko', null)
         );
