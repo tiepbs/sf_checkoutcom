@@ -26,8 +26,8 @@ function Handle(basket, billingData, processorId, req) {
     var result = {
         success: false,
         cardToken: false
-    };
-    
+    }; 
+
     // Pre authorize the card
     if (!billingData.storedPaymentUUID) {
         result = cardHelper.preAuthorizeCard(billingData.paymentInformation, currentBasket, processorId);
