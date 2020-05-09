@@ -30,7 +30,12 @@ function Handle(basket, billingData, processorId, req) {
 
     // Pre authorize the card
     if (!billingData.storedPaymentUUID) {
-        result = cardHelper.preAuthorizeCard(billingData.paymentInformation, currentBasket, processorId);
+        result = cardHelper.preAuthorizeCard(
+            billingData.paymentInformation,
+            currentBasket,
+            req.currentCustomer.profile.customerNo,
+            processorId
+        );
     }
     else {
         var savedCard = cardHelper.getSavedCard(

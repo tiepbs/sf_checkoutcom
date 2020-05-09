@@ -59,7 +59,7 @@ var cardHelper = {
     /*
      * Pre authorize card with zero value
      */
-    preAuthorizeCard: function(paymentInformation, currentBasket, processorId) {
+    preAuthorizeCard: function(paymentInformation, currentBasket, customerNo, processorId) {
         var chargeData = {
             'source'                : {
                 type                : 'card',
@@ -98,9 +98,13 @@ var cardHelper = {
             cardToken: false
         }
 
-        // Add the card source id if the payment is successful
+        // If the payment is successful
         if (response.success && authResponse.source.id) {
+            // Add the card source id
             response.cardToken = authResponse.source.id;
+
+            // Save the card
+            this.saveCard(paymentInformation, customerNo, processorId);
         }
 
         return response;
@@ -151,9 +155,9 @@ var cardHelper = {
     /*
      * Get a customer saved card
      */
-    getSavedCard: function (cardUuid, customerId) {
+    getSavedCard: function (cardUuid, customerNo) {
         // Get the customer
-        var customer = CustomerMgr.getCustomerByCustomerNumber(customerId);
+        var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
 
         // Get the customer wallet
         var wallet = customer.getProfile().getWallet();
@@ -172,6 +176,45 @@ var cardHelper = {
         return null;
     },
 
+    /*
+     * Save a card in customer account
+     */
+    saveCard: function (paymentInformation, customerNo, processorId) {
+        // Get the customer
+        var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
+
+        // Get the customer wallet
+        var wallet = customer.getProfile().getWallet();
+
+        // Get the existing payment instruments
+        var paymentInstruments = wallet.getPaymentInstruments(processorId);
+
+        // Check for duplicates
+        var isDuplicateCard = false;
+        for (var i = 0; i < paymentInstruments.length; i++) {
+            var card = paymentInstruments[i];
+            if (this.customerCardExists(card, cardData)) {
+                isDuplicateCard = true;
+                break;
+            }
+        }       
+
+        // Create a stored payment instrument
+        var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
+        if (!isDuplicateCard) {
+            Transaction.wrap(function () {
+                storedPaymentInstrument.setCreditCardNumber(paymentInformation.cardNumber.value);
+                storedPaymentInstrument.setCreditCardType(paymentInformation.cardType.value);
+                storedPaymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
+                storedPaymentInstrument.setCreditCardExpirationYear(paymentInformation.expirationYear.value);
+            });
+
+            // Return the card uuid
+            return storedPaymentInstrument.getUUID();
+        }
+
+        return false;
+    }
 }
 
 /*

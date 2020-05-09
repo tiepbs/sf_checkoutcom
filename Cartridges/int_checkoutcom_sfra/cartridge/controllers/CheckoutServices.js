@@ -268,17 +268,6 @@ server.replace(
                 return;
             }
 
-            if (HookMgr.hasHook('app.payment.form.processor.' + processor.ID.toLowerCase())) {
-                HookMgr.callHook('app.payment.form.processor.' + processor.ID.toLowerCase(),
-                    'savePaymentInformation',
-                    req,
-                    currentBasket,
-                    billingData
-                );
-            } else {
-                HookMgr.callHook('app.payment.form.processor.default', 'savePaymentInformation');
-            }
-
             // Calculate the basket
             Transaction.wrap(function () {
                 basketCalculationHelpers.calculateTotals(currentBasket);
