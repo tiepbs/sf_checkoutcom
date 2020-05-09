@@ -28,35 +28,31 @@ function Handle(basket, billingData, processorId, req) {
         cardToken: false
     };
     
-    var savedCard = cardHelper.getSavedCard(
-        billingData.selectedCardUuid,
-        req.currentCustomer.profile.customerNo,
-        processorId
-    );
-
-
-
-    var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('billingDatax {0}', JSON.stringify(billingData));
-    logger.debug('req.currentCustomer.profile.customerNox {0}', JSON.stringify(req.currentCustomer.profile.customerNo));
-    logger.debug('savedcardx {0}', JSON.stringify(savedCard));
-    logger.debug('req.currentCustomer.profilex {0}', JSON.stringify(req.currentCustomer.profile));
-
-
     // Pre authorize the card
-    if (!billingData.paymentInformation.creditCardToken) {
+    if (!billingData.storedPaymentUUID) {
         result = cardHelper.preAuthorizeCard(billingData.paymentInformation, currentBasket, processorId);
-        if (!result.success) {
-            serverErrors.push(
-                Resource.msg('error.card.information.error', 'creditCard', null)
-            );
+    }
+    else {
+        var savedCard = cardHelper.getSavedCard(
+            billingData.storedPaymentUUID,
+            req.currentCustomer.profile.customerNo,
+            processorId
+        );
 
-            return {
-                fieldErrors: [cardErrors],
-                serverErrors: serverErrors,
-                error: true
-            };
-        }
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('savedcardy {0}', JSON.stringify(savedCard));
+    }
+
+    if (!result.success) {
+        serverErrors.push(
+            Resource.msg('error.card.information.error', 'creditCard', null)
+        );
+
+        return {
+            fieldErrors: [cardErrors],
+            serverErrors: serverErrors,
+            error: true
+        };
     }
 
     Transaction.wrap(function () {
