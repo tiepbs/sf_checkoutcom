@@ -186,6 +186,9 @@ server.post('SavePayment', csrfProtection.validateAjaxRequest, function (req, re
     var paymentForm = server.forms.getForm('creditCard');
     var result = getDetailsObject(paymentForm);
 
+    var logger = require('dw/system/Logger').getLogger('ckodebug');
+    logger.debug('SavePayment paymentForm {0}', JSON.stringify(paymentForm));
+
     if (paymentForm.valid && !verifyCard(req, result, paymentForm)) {
         res.setViewData(result);
         this.on('route:BeforeComplete', function (req, res) { // eslint-disable-line no-shadow

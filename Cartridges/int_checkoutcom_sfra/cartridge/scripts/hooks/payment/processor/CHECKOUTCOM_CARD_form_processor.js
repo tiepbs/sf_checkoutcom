@@ -11,25 +11,17 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
  */
 function processForm(req, paymentForm, viewFormData) {
     var viewData = viewFormData;
-    var fieldErrors = {};
-    var selectedCardUuid = paymentForm.creditCardFields.selectedCardUuid.value.toString();
-    
-    if (!selectedCardUuid) {
-        // verify credit card form data
-        fieldErrors = COHelpers.validateCreditCard(paymentForm);
+    var selectedCardUuid = paymentForm.creditCardFields.selectedCardUuid.value;
 
-        if (Object.keys(fieldErrors).length) {
-            return {
-                fieldErrors: fieldErrors,
-                error: true
-            };
-        }
-    
-        viewData.paymentMethod = {
-            value: paymentForm.paymentMethod.value,
-            htmlName: paymentForm.paymentMethod.value
-        };
-    
+    // Add the payment method info
+    viewData.paymentMethod = {
+        value: paymentForm.paymentMethod.value,
+        htmlName: paymentForm.paymentMethod.value
+    };
+
+    // Process the card info
+    if (!selectedCardUuid) { 
+        // New card
         viewData.paymentInformation = {
             cardType: {
                 value: paymentForm.creditCardFields.cardType.value,
@@ -59,7 +51,8 @@ function processForm(req, paymentForm, viewFormData) {
         viewData.saveCard = paymentForm.creditCardFields.saveCard.checked;
     }
     else {
-        viewData.storedPaymentUUID = selectedCardUuid;
+        // Saved card
+        viewData.storedPaymentUUID = selectedCardUuid.toString();
     }
 
     return {
