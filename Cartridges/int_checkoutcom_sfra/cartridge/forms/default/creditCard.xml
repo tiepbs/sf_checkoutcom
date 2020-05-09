@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <form xmlns="http://www.demandware.com/xml/form/2008-04-19">
+    <field formid="selectedCardUuid" type="string" mandatory="false" binding="selectedCardUuid" />
+    <field formid="selectedCardCvv" type="string" mandatory="false" binding="selectedCardCvv" />
 
     <!-- field for edit credit card number -->
     <field

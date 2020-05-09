@@ -8,6 +8,8 @@
                value="${paymentOption.ID}"
         >
 
+        <isset name="creditFields" value="${pdict.forms.billingForm.creditCardFields}" scope="page"/>
+
         <!--- register/authenticated user --->
         <isif condition="${pdict.customer.registeredUser}">
             <div class="user-payment-instruments container ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? '' : 'checkout-hidden'}">
