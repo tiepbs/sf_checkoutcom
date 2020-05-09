@@ -28,6 +28,9 @@ function initTabs() {
 			var methodId = $(this).closest('li').data('method-id');
 			$('input[name="dwfrm_billing_paymentMethod"]').val(methodId);
 
+			// Clear the selected card UUID field
+			$('input[name="dwfrm_billing_creditCardFields_selectedCardUuid"]').val('');
+
 			// Initialize the form validation
 			initFormValidation();
 		}

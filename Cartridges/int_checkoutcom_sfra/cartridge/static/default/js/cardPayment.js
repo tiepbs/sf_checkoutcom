@@ -9,13 +9,11 @@ function initSavedCardSelection() {
     // Set the selected card uuid
     $('.saved-payment-instrument').on('click touch', function (e) {
         var self = $(this);
+
+        // Set the selected card uuid
         $('input[name="dwfrm_billing_creditCardFields_selectedCardUuid"]').val(
             self.data('uuid')
         );
-
-        alert(self.data('uuid'));
-        $('input[name="dwfrm_billing_creditCardFields_selectedCardUuid"]').val();
-        
     });
 
     // Set the card cvv event
