@@ -5,6 +5,7 @@ var OrderMgr = require('dw/order/OrderMgr');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
+var CustomerMgr = require('dw/customer/CustomerMgr');
 
 /*
 * Utility functions for my cartridge integration.

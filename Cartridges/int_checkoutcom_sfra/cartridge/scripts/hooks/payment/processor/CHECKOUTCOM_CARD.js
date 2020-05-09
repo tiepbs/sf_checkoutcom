@@ -21,7 +21,6 @@ function createToken() {
  */
 function Handle(basket, billingData, processorId, req) {
     var currentBasket = basket;
-    var customerId = (req.currentCustomer.profile.customerNo) ? req.currentCustomer.profile.customerNo : null;
     var cardErrors = {};
     var serverErrors = [];
     var result = {
@@ -29,8 +28,20 @@ function Handle(basket, billingData, processorId, req) {
         cardToken: false
     };
     
-    var savedCard = cardHelper.getSavedCard(billingData.paymentInformation.storedPaymentUUID, customerId);
-    logger.debug('zomi2 {0}', JSON.stringify(savedCard));
+    var savedCard = cardHelper.getSavedCard(
+        billingData.storedPaymentUUID,
+        req.currentCustomer.profile.customerNo,
+        processorId
+    );
+
+
+
+    var logger = require('dw/system/Logger').getLogger('ckodebug');
+    logger.debug('billingData.storedPaymentUUID {0}', JSON.stringify(billingData.storedPaymentUUID));
+    logger.debug('req.currentCustomer.profile.customerNo {0}', JSON.stringify(req.currentCustomer.profile.customerNo));
+    logger.debug('savedcard {0}', JSON.stringify(savedCard));
+    logger.debug('req.currentCustomer.profile {0}', JSON.stringify(req.currentCustomer.profile));
+
 
     // Pre authorize the card
     if (!billingData.paymentInformation.creditCardToken) {
