@@ -37,10 +37,10 @@ function Handle(basket, billingData, processorId, req) {
 
 
     var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('billingData.selectedCardUuid {0}', JSON.stringify(billingData.selectedCardUuid.value.toString()));
-    logger.debug('req.currentCustomer.profile.customerNo {0}', JSON.stringify(req.currentCustomer.profile.customerNo));
-    logger.debug('savedcard {0}', JSON.stringify(savedCard));
-    logger.debug('req.currentCustomer.profile {0}', JSON.stringify(req.currentCustomer.profile));
+    logger.debug('billingDatax {0}', JSON.stringify(billingData));
+    logger.debug('req.currentCustomer.profile.customerNox {0}', JSON.stringify(req.currentCustomer.profile.customerNo));
+    logger.debug('savedcardx {0}', JSON.stringify(savedCard));
+    logger.debug('req.currentCustomer.profilex {0}', JSON.stringify(req.currentCustomer.profile));
 
 
     // Pre authorize the card
