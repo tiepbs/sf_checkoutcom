@@ -95,15 +95,11 @@ var cardHelper = {
 
         // Return the response
         var response = {
-            success: ckoHelper.paymentSuccess(authResponse),
-            cardToken: false
+            success: ckoHelper.paymentSuccess(authResponse)
         }
 
         // If the payment is successful
-        if (response.success && authResponse.source.id) {
-            // Add the card source id
-            response.cardToken = authResponse.source.id;
-
+        if (response.success) {
             // Save the card
             this.saveCard(
                 paymentInformation,
@@ -161,7 +157,7 @@ var cardHelper = {
     /*
      * Get a customer saved card
      */
-    getSavedCard: function (cardUuid, customerNo) {
+    getSavedCard: function (cardUuid, customerNo, processorId) {
         // Get the customer
         var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
 
@@ -169,9 +165,9 @@ var cardHelper = {
         var wallet = customer.getProfile().getWallet();
 
         // Get the existing payment instruments
-        var paymentInstruments = wallet.getPaymentInstruments();
+        var paymentInstruments = wallet.getPaymentInstruments(processorId);
 
-        // Math the saved card
+        // Match the saved card
         for (var i = 0; i < paymentInstruments.length; i++) {
             var card = paymentInstruments[i];
             if (card.getUUID() == cardUuid) {
@@ -216,6 +212,7 @@ var cardHelper = {
                 storedPaymentInstrument.setCreditCardType(cardType);
                 storedPaymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
                 storedPaymentInstrument.setCreditCardExpirationYear(paymentInformation.expirationYear.value);
+                storedPaymentInstrument.setCreditCardToken(authResponse.source.id);
             });
         }
     }

@@ -45,7 +45,8 @@ function Handle(basket, billingData, processorId, req) {
         );
 
         var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('savedcardy {0}', JSON.stringify(savedCard));
+        logger.debug('savedcarduuidss {0}', JSON.stringify(savedCard.getUUID()));
+        logger.debug('savedcardtokenss {0}', JSON.stringify(savedCard.getCreditCardToken()));
     }
 
     if (!result.success) {
