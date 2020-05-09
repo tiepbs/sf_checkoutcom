@@ -29,7 +29,7 @@ function Handle(basket, billingData, processorId, req) {
     };
     
     var savedCard = cardHelper.getSavedCard(
-        billingData.storedPaymentUUID,
+        billingData.selectedCardUuid,
         req.currentCustomer.profile.customerNo,
         processorId
     );
@@ -37,7 +37,7 @@ function Handle(basket, billingData, processorId, req) {
 
 
     var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('billingData.storedPaymentUUID {0}', JSON.stringify(billingData.storedPaymentUUID));
+    logger.debug('billingData.selectedCardUuid {0}', JSON.stringify(billingData.selectedCardUuid.value.toString()));
     logger.debug('req.currentCustomer.profile.customerNo {0}', JSON.stringify(req.currentCustomer.profile.customerNo));
     logger.debug('savedcard {0}', JSON.stringify(savedCard));
     logger.debug('req.currentCustomer.profile {0}', JSON.stringify(req.currentCustomer.profile));

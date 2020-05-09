@@ -10,7 +10,6 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
  * @returns {Object} an object that has error information or payment information
  */
 function processForm(req, paymentForm, viewFormData) {
-    var array = require('*/cartridge/scripts/util/array');
     var viewData = viewFormData;
     var fieldErrors = {};
     var selectedCardUuid = paymentForm.creditCardFields.selectedCardUuid.toString();
