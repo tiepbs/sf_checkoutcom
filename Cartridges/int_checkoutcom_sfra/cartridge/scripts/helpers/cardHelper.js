@@ -2,10 +2,11 @@
 
 /* API Includes */
 var OrderMgr = require('dw/order/OrderMgr');
+var Transaction = require('dw/system/Transaction');
+var CustomerMgr = require('dw/customer/CustomerMgr');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
-var CustomerMgr = require('dw/customer/CustomerMgr');
 
 /*
 * Utility functions for my cartridge integration.
