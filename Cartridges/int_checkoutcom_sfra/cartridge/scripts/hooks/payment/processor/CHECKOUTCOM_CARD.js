@@ -34,15 +34,6 @@ function Handle(basket, billingData, processorId, req) {
         processorId
     );
 
-
-
-    var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('billingData.storedPaymentUUID {0}', JSON.stringify(billingData.storedPaymentUUID));
-    logger.debug('req.currentCustomer.profile.customerNo {0}', JSON.stringify(req.currentCustomer.profile.customerNo));
-    logger.debug('savedcard {0}', JSON.stringify(savedCard));
-    logger.debug('req.currentCustomer.profile {0}', JSON.stringify(req.currentCustomer.profile));
-
-
     // Pre authorize the card
     if (!billingData.paymentInformation.creditCardToken) {
         result = cardHelper.preAuthorizeCard(billingData.paymentInformation, currentBasket, processorId);
