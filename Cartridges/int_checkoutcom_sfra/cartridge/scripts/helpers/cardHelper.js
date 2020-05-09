@@ -200,20 +200,15 @@ var cardHelper = {
         }       
 
         // Create a stored payment instrument
-        var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
         if (!isDuplicateCard) {
             Transaction.wrap(function () {
+                var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
                 storedPaymentInstrument.setCreditCardNumber(paymentInformation.cardNumber.value);
                 storedPaymentInstrument.setCreditCardType(paymentInformation.cardType.value);
                 storedPaymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
                 storedPaymentInstrument.setCreditCardExpirationYear(paymentInformation.expirationYear.value);
             });
-
-            // Return the card uuid
-            return storedPaymentInstrument.getUUID();
         }
-
-        return false;
     }
 }
 
