@@ -11,16 +11,11 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
  */
 function processForm(req, paymentForm, viewFormData) {
     var array = require('*/cartridge/scripts/util/array');
-
-    var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('req1 {0}', JSON.stringify(req));
-    logger.debug('paymentForm1 {0}', JSON.stringify(paymentForm));
-    logger.debug('viewFormData1 {0}', JSON.stringify(viewFormData));
-
     var viewData = viewFormData;
     var fieldErrors = {};
-
-    if (!req.form.storedPaymentUUID) {
+    var selectedCardUuid = paymentForm.creditCardFields.selectedCardUuid.toString();
+    
+    if (!selectedCardUuid) {
         // verify credit card form data
         fieldErrors = COHelpers.validateCreditCard(paymentForm);
 
@@ -65,25 +60,7 @@ function processForm(req, paymentForm, viewFormData) {
         viewData.saveCard = paymentForm.creditCardFields.saveCard.checked;
     }
     else {
-        viewData.storedPaymentUUID = req.form.storedPaymentUUID;
-
-        // process payment information
-        if (viewData.storedPaymentUUID
-            && req.currentCustomer.raw.authenticated
-            && req.currentCustomer.raw.registered
-        ) {
-            var paymentInstruments = req.currentCustomer.wallet.paymentInstruments;
-            var paymentInstrument = array.find(paymentInstruments, function (item) {
-                return viewData.storedPaymentUUID === item.UUID;
-            });
-
-            viewData.paymentInformation.cardNumber.value = paymentInstrument.creditCardNumber;
-            viewData.paymentInformation.cardType.value = paymentInstrument.creditCardType;
-            viewData.paymentInformation.securityCode.value = req.form.securityCode;
-            viewData.paymentInformation.expirationMonth.value = paymentInstrument.creditCardExpirationMonth;
-            viewData.paymentInformation.expirationYear.value = paymentInstrument.creditCardExpirationYear;
-            viewData.paymentInformation.creditCardToken = paymentInstrument.raw.creditCardToken;
-        }
+        viewData.storedPaymentUUID = selectedCardUuid;
     }
 
     return {

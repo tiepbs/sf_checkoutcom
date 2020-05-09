@@ -7,17 +7,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function initSavedCardSelection() {
     // Set the selected card uuid
-    $('.saved-payment-instrument').off('click touch').on('click touch', function (e) {
+    $('.saved-payment-instrument').on('click touch', function (e) {
         var self = $(this);
-        $('input[name="selectedCardUuid"]').val(
+        $('input[name="dwfrm_billing_creditCardFields_selectedCardUuid"]').val(
             self.data('uuid')
         );
+
+        alert(self.data('uuid'));
+        $('input[name="dwfrm_billing_creditCardFields_selectedCardUuid"]').val();
+        
     });
 
     // Set the card cvv event
     $('.saved-payment-instrument').on('change', function (e) {
         var self = $(this);
-        $('input[name="selectedCardCvv"]').val(
+        $('input[name="dwfrm_billing_creditCardFields_selectedCardCvv"]').val(
             self.find('input.saved-payment-security-code').val()
         );
     });
