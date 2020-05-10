@@ -110,7 +110,7 @@ var cardHelper = {
             this.saveCard(
                 paymentInformation,
                 customerNo,
-                response.cardToken,
+                authResponse,
                 processorId
             );
         }
@@ -201,10 +201,7 @@ var cardHelper = {
     /*
      * Save a card in customer account
      */
-    saveCard: function (paymentInformation, customerNo, cardToken, processorId) {
-        // Get the card type
-        var cardType = authResponse.source.scheme.toLowerCase();
-
+    saveCard: function (paymentInformation, customerNo, authResponse, processorId) {
         // Get the customer
         var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
 
@@ -229,10 +226,10 @@ var cardHelper = {
             Transaction.wrap(function () {
                 var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
                 storedPaymentInstrument.setCreditCardNumber(paymentInformation.cardNumber.value);
-                storedPaymentInstrument.setCreditCardType(cardType);
+                storedPaymentInstrument.setCreditCardType(authResponse.source.scheme.toLowerCase());
                 storedPaymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
                 storedPaymentInstrument.setCreditCardExpirationYear(paymentInformation.expirationYear.value);
-                storedPaymentInstrument.setCreditCardToken(cardToken);
+                storedPaymentInstrument.setCreditCardToken(authResponse.source.id);
             });
         }
     }
