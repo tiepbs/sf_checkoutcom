@@ -148,7 +148,7 @@ var cardHelper = {
         var selectedCardUuid = paymentData.creditCardFields.selectedCardUuid.htmlValue;
         var selectedCardCvv = paymentData.creditCardFields.selectedCardCvv.htmlValue;
 
-        if (selectedCardCvv.length != 0 && selectedCardUuid.length != 0) {
+        if (selectedCardCvv.length > 0 && selectedCardUuid.length > 0) {
             return {
                 type: 'id',
                 id: selectedCardUuid,
