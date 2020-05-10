@@ -97,12 +97,10 @@ var cardHelper = {
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.verification.response.data', 'cko'), authResponse);
 
         // Return the response
-        var result = {
-            error: !ckoHelper.paymentSuccess(authResponse),
-        }
+        var success = ckoHelper.paymentSuccess(authResponse);
 
         // If the payment is successful
-        if (!result.error) {
+        if (success) {
             // Save the card
             this.saveCard(
                 paymentInformation,
@@ -112,7 +110,7 @@ var cardHelper = {
             );
         }
 
-        return result;
+        return success;
     },
 
     /*

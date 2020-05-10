@@ -15,11 +15,11 @@ function Handle(basket, billingData, processorId, req) {
     var currentBasket = basket;
     var fieldErrors = {};
     var serverErrors = [];
-    var result = {error: false}; 
+    var success = true; 
 
     // Pre authorize the card
     if (!billingData.selectedCardUuid) {
-        result = cardHelper.preAuthorizeCard(
+        success = cardHelper.preAuthorizeCard(
             billingData.paymentInformation,
             currentBasket,
             req.currentCustomer.profile.customerNo,
@@ -27,7 +27,7 @@ function Handle(basket, billingData, processorId, req) {
         );
     }
 
-    if (result.error) {
+    if (!success) {
         serverErrors.push(
             Resource.msg('error.card.information.error', 'creditCard', null)
         );
@@ -36,7 +36,7 @@ function Handle(basket, billingData, processorId, req) {
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
-        error: result.error
+        error: !success
     };
 }
 
@@ -47,7 +47,10 @@ function Authorize(orderNumber, billingForm, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
     var success = false;
- 
+
+    var logger = require('dw/system/Logger').getLogger('ckodebug');
+	logger.debug('Authorize success before {0}', JSON.stringify('Authorize success before'));
+
     // Payment request
     success = cardHelper.handleRequest(
         orderNumber,
@@ -55,13 +58,16 @@ function Authorize(orderNumber, billingForm, processorId) {
         processorId
     );
 
+    var logger = require('dw/system/Logger').getLogger('ckodebug');
+	logger.debug('Authorize success after {0}', JSON.stringify(success));
+
     // Handle errors
     if (!success) {
         serverErrors.push(
             ckoHelper.getPaymentFailureMessage()
         );
     }
-
+   
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,

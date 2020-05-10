@@ -147,9 +147,7 @@ server.replace(
             var basketCalculationHelpers = require('*/cartridge/scripts/helpers/basketCalculationHelpers');
             var hooksHelper = require('*/cartridge/scripts/helpers/hooks');
             var validationHelpers = require('*/cartridge/scripts/helpers/basketValidationHelpers');
-
             var currentBasket = BasketMgr.getCurrentBasket();
-
             var billingData = res.getViewData();
 
             if (!currentBasket) {
@@ -240,7 +238,6 @@ server.replace(
 
             var processor = PaymentMgr.getPaymentMethod(paymentMethodID).getPaymentProcessor();
             var result;
-            
             if (HookMgr.hasHook('app.payment.processor.' + processor.ID.toLowerCase())) {
                 result = HookMgr.callHook('app.payment.processor.' + processor.ID.toLowerCase(),
                     'Handle',
@@ -254,7 +251,7 @@ server.replace(
             }
 
             // need to invalidate credit card fields
-            if (result.error) {
+            if (result.error === true) {
                 delete billingData.paymentInformation;
 
                 res.json({
@@ -412,20 +409,6 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
         basketCalculationHelpers.calculateTotals(currentBasket);
     });
 
-    // Re-validates existing payment instruments
-    var validPayment = COHelpers.validatePayment(req, currentBasket);
-    if (validPayment.error) {
-        res.json({
-            error: true,
-            errorStage: {
-                stage: 'payment',
-                step: 'paymentInstrument'
-            },
-            errorMessage: Resource.msg('error.payment.not.valid', 'checkout', null)
-        });
-        return next();
-    }
-
     // Re-calculate the payments.
     var calculatedPaymentTransactionTotal = COHelpers.calculatePaymentTransaction(currentBasket);
     if (calculatedPaymentTransactionTotal.error) {
@@ -448,10 +431,9 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
 
     // Handles payment authorization
     var handlePaymentResult;
-    var billingForm = server.forms.getForm('billing');
+    var billingForm = server.forms.getForm('billing');    
     var paymentMethodID = billingForm.paymentMethod.value;
     var processor = PaymentMgr.getPaymentMethod(paymentMethodID).getPaymentProcessor();
-
     if (HookMgr.hasHook('app.payment.processor.' + processor.ID.toLowerCase())) {
         handlePaymentResult = HookMgr.callHook(
             'app.payment.processor.' + processor.ID.toLowerCase(),
@@ -466,8 +448,8 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
             'Authorize'
         );
     }
-    
-    if (handlePaymentResult.error) {
+
+    if (handlePaymentResult.error === true) {
         res.json({
             error: true,
             errorMessage: Resource.msg('error.technical', 'checkout', null)
