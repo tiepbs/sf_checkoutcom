@@ -15,10 +15,7 @@ function Handle(basket, billingData, processorId, req) {
     var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
-    var result = {
-        success: false,
-        cardToken: false
-    }; 
+    var result = {error: false}; 
 
     // Pre authorize the card
     if (!billingData.selectedCardUuid) {
@@ -30,44 +27,16 @@ function Handle(basket, billingData, processorId, req) {
         );
     }
 
-    if (!result.success) {
+    if (result.error) {
         serverErrors.push(
             Resource.msg('error.card.information.error', 'creditCard', null)
         );
-
-        return {
-            fieldErrors: [cardErrors],
-            serverErrors: serverErrors,
-            error: true
-        };
     }
 
-    Transaction.wrap(function () {
-        // Remove existing payment instruments
-        var paymentInstruments = currentBasket.getPaymentInstruments(
-            processorId
-        );
-
-        collections.forEach(paymentInstruments, function (item) {
-            currentBasket.removePaymentInstrument(item);
-        });
-
-        // Create a new payment instrument
-        var paymentInstrument = currentBasket.createPaymentInstrument(
-            processorId, currentBasket.totalGrossPrice
-        );
-
-        paymentInstrument.setCreditCardNumber(billingData.paymentInformation.cardNumber.value);
-        paymentInstrument.setCreditCardType(billingData.paymentInformation.cardType.value);
-        paymentInstrument.setCreditCardExpirationMonth(billingData.paymentInformation.expirationMonth.value);
-        paymentInstrument.setCreditCardExpirationYear(billingData.paymentInformation.expirationYear.value);
-        paymentInstrument.setCreditCardToken(result.cardToken);
-    });
-
     return {
-        fieldErrors: cardErrors,
+        fieldErrors: [cardErrors],
         serverErrors: serverErrors,
-        error: false
+        error: result.error
     };
 }
 

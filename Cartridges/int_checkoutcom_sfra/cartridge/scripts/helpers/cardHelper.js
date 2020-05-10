@@ -97,15 +97,12 @@ var cardHelper = {
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.verification.response.data', 'cko'), authResponse);
 
         // Return the response
-        var response = {
-            success: ckoHelper.paymentSuccess(authResponse),
+        var result = {
+            error: !ckoHelper.paymentSuccess(authResponse),
         }
 
         // If the payment is successful
-        if (response.success) {
-            // Add the card source id
-            response.cardToken = authResponse.source.id;
-
+        if (!result.error) {
             // Save the card
             this.saveCard(
                 paymentInformation,
@@ -115,13 +112,18 @@ var cardHelper = {
             );
         }
 
-        return response;
+        return result;
     },
 
     /*
      * Build the gateway request
      */
-    buildRequest: function (order, paymentData, processorId) {       
+    buildRequest: function (order, paymentData, processorId) {     
+        
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('buildRequest.paymentData {0}', JSON.stringify(paymentData));
+
+        
         // Prepare the charge data
         var chargeData = {
             'source'                : this.getCardSource(paymentData),
@@ -145,12 +147,7 @@ var cardHelper = {
     /*
      * Get a card source
      */
-    getCardSource: function (paymentData) {  
-
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('tatapaymentData {0}', JSON.stringify(paymentData));
-        
-
+    getCardSource: function (paymentData) {          
         var selectedCardUuid = paymentData.creditCardFields.selectedCardUuid.htmlValue.length != 0;
         var selectedCardCvv = paymentData.creditCardFields.selectedCardCvv.htmlValue.length != 0;
         if (selectedCardCvv && selectedCardUuid) {
