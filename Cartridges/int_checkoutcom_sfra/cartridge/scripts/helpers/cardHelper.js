@@ -157,7 +157,7 @@ var cardHelper = {
         if (selectedCardCvv.length > 0 && selectedCardUuid.length > 0 && savedCard) {
             cardSource = {
                 type: 'id',
-                id: savedCard.getCardToken(),
+                id: savedCard.getCreditCardToken(),
                 cvv: selectedCardCvv
             };
         }
