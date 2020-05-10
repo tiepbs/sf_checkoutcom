@@ -55,9 +55,6 @@ function Authorize(orderNumber, billingForm, processorId) {
         processorId
     );
 
-    var logger = require('dw/system/Logger').getLogger('ckodebug');
-	logger.debug('Authorize success after {0}', JSON.stringify(success));
-
     // Handle errors
     if (!success) {
         serverErrors.push(

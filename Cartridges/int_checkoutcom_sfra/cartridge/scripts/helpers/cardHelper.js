@@ -119,13 +119,13 @@ var cardHelper = {
     buildRequest: function (order, paymentData, processorId) {           
         // Prepare the charge data
         var chargeData = {
-            'source'                : this.getCardSource(paymentData),
+            'source'                : this.getCardSource(paymentData, order, processorId),
             'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
             'currency'              : order.getCurrencyCode(),
             'reference'             : order.orderNo,
             'capture'               : ckoHelper.getValue('ckoAutoCapture'),
             'capture_on'            : ckoHelper.getCaptureTime(),
-            //'customer'              : ckoHelper.getCustomer(order),
+            'customer'              : ckoHelper.getCustomer(order),
             'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
             'shipping'              : ckoHelper.getShipping(order),
             '3ds'                   : this.get3Ds(),
@@ -140,23 +140,29 @@ var cardHelper = {
     /*
      * Get a card source
      */
-    getCardSource: function (paymentData) {         
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('getCardSource {0}', JSON.stringify(paymentData));
-        
+    getCardSource: function (paymentData, order, processorId) {              
         // Replace selectedCardUuid by get saved card token from selectedCardUuid
+        var cardSource;
         var selectedCardUuid = paymentData.creditCardFields.selectedCardUuid.htmlValue;
         var selectedCardCvv = paymentData.creditCardFields.selectedCardCvv.htmlValue;
 
-        if (selectedCardCvv.length > 0 && selectedCardUuid.length > 0) {
-            return {
+        // Get the saved card
+        var savedCard = this.getSavedCard(
+            selectedCardUuid,
+            order.getCustomerNo(),
+            processorId
+        );
+
+        // If the saved card data is valid
+        if (selectedCardCvv.length > 0 && selectedCardUuid.length > 0 && savedCard) {
+            cardSource = {
                 type: 'id',
-                id: selectedCardUuid,
+                id: savedCard.getCardToken(),
                 cvv: selectedCardCvv
             };
         }
         else {
-            return {
+            cardSource = {
                 type                : 'card',
                 number              : ckoHelper.getFormattedNumber(paymentData.creditCardFields.cardNumber.value.toString()),
                 expiry_month        : paymentData.creditCardFields.expirationMonth.value.toString(),
@@ -164,6 +170,8 @@ var cardHelper = {
                 cvv                 : paymentData.creditCardFields.securityCode.value.toString()
             };
         }
+
+        return cardSource;
     },
 
     /*
