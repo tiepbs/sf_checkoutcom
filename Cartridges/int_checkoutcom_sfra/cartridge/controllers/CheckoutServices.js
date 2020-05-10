@@ -204,7 +204,7 @@ server.replace(
                 }
                 billingAddress.setCountryCode(billingData.address.countryCode.value);
 
-                if (billingData.storedPaymentUUID) {
+                if (billingData.selectedCardUuid) {
                     billingAddress.setPhone(req.currentCustomer.profile.phone);
                     currentBasket.setCustomerEmail(req.currentCustomer.profile.email);
                 } else {

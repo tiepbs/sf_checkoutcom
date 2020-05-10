@@ -24,7 +24,7 @@ function Handle(basket, billingData, processorId, req) {
     logger.debug('this is my test billingData {0}', JSON.stringify(billingData));
  
     // Pre authorize the card
-    if (!billingData.storedPaymentUUID) {
+    if (!billingData.selectedCardUuid) {
         result = cardHelper.preAuthorizeCard(
             billingData.paymentInformation,
             currentBasket,

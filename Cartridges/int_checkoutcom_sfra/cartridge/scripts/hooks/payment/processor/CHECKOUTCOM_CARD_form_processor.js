@@ -10,16 +10,13 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
  * @returns {Object} an object that has error information or payment information
  */
 function processForm(paymentForm, viewFormData) {
-    var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('this is my test paymentForm {0}', JSON.stringify(paymentForm));
- 
     var viewData = viewFormData;
     var selectedCardUuid = paymentForm.creditCardFields.selectedCardUuid.value;
 
     // Add the payment method info
     viewData.paymentMethod = {
-        value: paymentForm.paymentMethod.value,
-        htmlName: paymentForm.paymentMethod.value
+        value: paymentForm.paymentMethod.value.toString(),
+        htmlName: paymentForm.paymentMethod.htmlName
     };
 
     // Process the card info
@@ -55,7 +52,7 @@ function processForm(paymentForm, viewFormData) {
     }
     else {
         // Saved card
-        viewData.storedPaymentUUID = selectedCardUuid.toString();
+        viewData.selectedCardUuid = selectedCardUuid.toString();
     }
 
     return {
