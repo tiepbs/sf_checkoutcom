@@ -222,17 +222,17 @@ var cardHelper = {
         var paymentInstruments = wallet.getPaymentInstruments(processorId);
 
         // Check for duplicates
-        var isDuplicateCard = false;
+        var cardExists = false;
         for (var i = 0; i < paymentInstruments.length; i++) {
             var card = paymentInstruments[i];
-            if (this.customerCardExists(card, cardData)) {
-                isDuplicateCard = true;
+            if (card.getCreditCardToken() == authResponse.source.id) {
+                cardExists = true;
                 break;
             }
         }       
 
         // Create a stored payment instrument
-        if (!isDuplicateCard) {
+        if (!cardExists) {
             Transaction.wrap(function () {
                 var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
                 storedPaymentInstrument.setCreditCardNumber(paymentInformation.cardNumber.value);
