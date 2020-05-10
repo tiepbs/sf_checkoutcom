@@ -78,9 +78,6 @@ function Authorize(orderNumber, billingForm, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
     var success = false;
-
-    var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('this is my test Authorize.billingForm {0}', JSON.stringify(billingForm));
  
     // Payment request
     success = cardHelper.handleRequest(
