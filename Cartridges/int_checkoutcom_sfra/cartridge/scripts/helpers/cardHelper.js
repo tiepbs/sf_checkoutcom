@@ -13,11 +13,14 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 */
 var cardHelper = {
     /*
-     * Handle the payment request
+     * Handle the payment request.
      */
-    handleRequest: function (orderNumber, paymentData, processorId) {       
+    handleCardRequest: function (orderNumber, paymentData, processorId) {    
+        // Load the order information
+        var order = OrderMgr.getOrder(orderNumber);
+
         // Build the request data
-        var gatewayRequest = this.buildRequest(orderNumber, paymentData, processorId);
+        var gatewayRequest = this.buildRequest(order, paymentData, processorId);
 
         // Log the payment request data
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
@@ -33,6 +36,35 @@ var cardHelper = {
 
         // Process the response
         return gatewayResponse && this.handleResponse(gatewayResponse);
+    },
+
+    /*
+     * Handle the saved card payment request.
+     */
+    handleSavedCardRequest: function (orderNumber, paymentData, sourceId, processorId) {        
+        // Create billing address object
+        var gatewayRequest = this.buildSavedCardRequest(sourceId, cvv, args);
+        
+        // Perform the request to the payment gateway
+        var gatewayResponse = ckoHelper.gatewayClientRequest(
+            "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
+            gatewayRequest
+        );
+    
+        // Logging
+        ckoHelper.doLog('response', gatewayResponse);
+
+        // If the charge is valid, process the response
+        if (gatewayResponse && this.handleFullChargeResponse(gatewayResponse)) {                
+            return gatewayResponse;
+        } else {
+            // Fail the order
+            Transaction.wrap(function () {
+                OrderMgr.failOrder(order);
+            });
+        }       
+    
+        return false;
     },
 
     /*
@@ -95,16 +127,19 @@ var cardHelper = {
 
         // Return the response
         var response = {
-            success: ckoHelper.paymentSuccess(authResponse)
+            success: ckoHelper.paymentSuccess(authResponse),
         }
 
         // If the payment is successful
         if (response.success) {
+            // Add the card source id
+            response.cardToken = authResponse.source.id;
+
             // Save the card
             this.saveCard(
                 paymentInformation,
                 customerNo,
-                authResponse,
+                response.cardToken,
                 processorId
             );
         }
@@ -115,10 +150,7 @@ var cardHelper = {
     /*
      * Build the gateway request
      */
-    buildRequest: function (orderNumber, paymentData, processorId) {       
-        // Load the order information
-        var order = OrderMgr.getOrder(orderNumber);
-
+    buildRequest: function (order, paymentData, processorId) {       
         // Prepare the charge data
         var chargeData = {
             'source'                : {
@@ -141,6 +173,34 @@ var cardHelper = {
             'metadata'              : ckoHelper.getMetadata({}, processorId)
         };   
     
+        return chargeData;
+    },
+
+    /*
+     * Build a gateway saved card request
+     */
+    buildSavedCardRequest: function (order, paymentData, processorId) {    
+        // Prepare the charge data
+        var chargeData = {
+            'source': {
+                type: 'id',
+                id: paymentData.selectedCardUuid.value.toString(),
+                cvv: paymentData.selectedCardCvv.value.toString()
+            },
+            'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
+            'currency'              : order.getCurrencyCode(),
+            'reference'             : order.orderNo,
+            'capture'               : ckoHelper.getValue('ckoAutoCapture'),
+            'capture_on'            : ckoHelper.getCaptureTime(),
+            'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
+            'shipping'              : ckoHelper.getShipping(order),
+            '3ds'                   : this.get3Ds(),
+            'success_url'           : URLUtils.https('CKOMain-HandleReturn'),
+            'failure_url'           : URLUtils.https('CKOMain-HandleFail'),
+            'risk'                  : {enabled: true},
+            'metadata'              : ckoHelper.getMetadata({}, processorId)
+        };   
+
         return chargeData;
     },
 
@@ -181,7 +241,7 @@ var cardHelper = {
     /*
      * Save a card in customer account
      */
-    saveCard: function (paymentInformation, customerNo, authResponse, processorId) {
+    saveCard: function (paymentInformation, customerNo, cardToken, processorId) {
         // Get the card type
         var cardType = authResponse.source.scheme.toLowerCase();
 
@@ -212,7 +272,7 @@ var cardHelper = {
                 storedPaymentInstrument.setCreditCardType(cardType);
                 storedPaymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
                 storedPaymentInstrument.setCreditCardExpirationYear(paymentInformation.expirationYear.value);
-                storedPaymentInstrument.setCreditCardToken(authResponse.source.id);
+                storedPaymentInstrument.setCreditCardToken(cardToken);
             });
         }
     }

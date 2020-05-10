@@ -37,17 +37,6 @@ function Handle(basket, billingData, processorId, req) {
             processorId
         );
     }
-    else {
-        var savedCard = cardHelper.getSavedCard(
-            billingData.storedPaymentUUID,
-            req.currentCustomer.profile.customerNo,
-            processorId
-        );
-
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('savedcarduuidss {0}', JSON.stringify(savedCard.getUUID()));
-        logger.debug('savedcardtokenss {0}', JSON.stringify(savedCard.getCreditCardToken()));
-    }
 
     if (!result.success) {
         serverErrors.push(
@@ -80,11 +69,7 @@ function Handle(basket, billingData, processorId, req) {
         paymentInstrument.setCreditCardType(billingData.paymentInformation.cardType.value);
         paymentInstrument.setCreditCardExpirationMonth(billingData.paymentInformation.expirationMonth.value);
         paymentInstrument.setCreditCardExpirationYear(billingData.paymentInformation.expirationYear.value);
-
-        // Save the card source id if needed
-        if (result.cardToken && JSON.parse(billingData.saveCard) === true) {
-            paymentInstrument.setCreditCardToken(result.cardToken);
-        }
+        paymentInstrument.setCreditCardToken(result.cardToken);
     });
 
     return {
@@ -100,13 +85,23 @@ function Handle(basket, billingData, processorId, req) {
 function Authorize(orderNumber, billingForm, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
+    var success = false;
 
     // Payment request
-    var success = cardHelper.handleRequest(
-        orderNumber,
-        billingForm.creditCardFields,
-        processorId
-    );
+    if (!billingData.storedPaymentUUID) {
+        success = cardHelper.handleRequest(
+            orderNumber,
+            billingForm.creditCardFields,
+            processorId
+        );
+    }
+    else {
+        success = cardHelper.buildSavedCardRequest(
+            orderNumber,
+            billingForm.creditCardFields,
+            processorId
+        );
+    }
 
     // Handle errors
     if (!success) {

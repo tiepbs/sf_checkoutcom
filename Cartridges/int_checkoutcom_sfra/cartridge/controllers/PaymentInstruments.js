@@ -122,10 +122,6 @@ server.post('SavePayment', csrfProtection.validateAjaxRequest, function (req, re
                 req.currentCustomer.profile.customerNo
             );
             var wallet = customer.getProfile().getWallet();
-
-            var logger = require('dw/system/Logger').getLogger('ckodebug');
-            logger.debug('pi paymentForm {0}', JSON.stringify(paymentForm));
-            logger.debug('pi formInfo {0}', JSON.stringify(formInfo));
         
             Transaction.wrap(function () {
                 var paymentInstrument = wallet.createPaymentInstrument(dwOrderPaymentInstrument.METHOD_CREDIT_CARD);
