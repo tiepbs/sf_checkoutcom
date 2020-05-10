@@ -15,6 +15,10 @@
         >
 
         <isset name="creditFields" value="${pdict.forms.billingForm.creditCardFields}" scope="page"/>
+        
+        <!--- Hidden input for selected saved card --->
+        <input type="hidden" class="form-control" id="selectedCardUuid" <isprint value=${creditFields.selectedCardUuid.attributes} encoding="off"/> value="">
+        <input type="hidden" class="form-control" id="selectedCardCvv" <isprint value=${creditFields.selectedCardCvv.attributes} encoding="off"/> value="">
 
         <!--- register/authenticated user --->
         <isif condition="${pdict.customer.registeredUser}">

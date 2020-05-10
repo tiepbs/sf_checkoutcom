@@ -146,6 +146,11 @@ var cardHelper = {
      * Get a card source
      */
     getCardSource: function (paymentData) {  
+
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('tatapaymentData {0}', JSON.stringify(paymentData));
+        
+
         var selectedCardUuid = paymentData.creditCardFields.selectedCardUuid.htmlValue.length != 0;
         var selectedCardCvv = paymentData.creditCardFields.selectedCardCvv.htmlValue.length != 0;
         if (selectedCardCvv && selectedCardUuid) {

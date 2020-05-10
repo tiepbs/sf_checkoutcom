@@ -5,10 +5,6 @@
         value="${paymentOption.ID}"
 >
 
-<!--- Hidden input for selected saved card --->
-<input type="hidden" class="form-control" id="selectedCardUuid" <isprint value=${creditFields.selectedCardUuid.attributes} encoding="off"/> value="">
-<input type="hidden" class="form-control" id="selectedCardCvv" <isprint value=${creditFields.selectedCardCvv.attributes} encoding="off"/> value="">
-
 <isloop items="${pdict.customer.customerPaymentInstruments}" var="paymentInstrument" status="loopState">
     <div class="row saved-payment-instrument ${loopState.first ? 'selected-payment' : ''}" data-uuid="${paymentInstrument.UUID}">
         <div class="form-group required saved-security-code col-6 col-md-3">
