@@ -20,6 +20,9 @@ function Handle(basket, billingData, processorId, req) {
         cardToken: false
     }; 
 
+    var logger = require('dw/system/Logger').getLogger('ckodebug');
+    logger.debug('this is my test billingData {0}', JSON.stringify(billingData));
+ 
     // Pre authorize the card
     if (!billingData.storedPaymentUUID) {
         result = cardHelper.preAuthorizeCard(

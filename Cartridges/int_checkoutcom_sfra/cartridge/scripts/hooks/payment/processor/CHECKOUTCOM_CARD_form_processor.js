@@ -9,7 +9,10 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
  * @param {Object} viewFormData - object contains billing form data
  * @returns {Object} an object that has error information or payment information
  */
-function processForm(req, paymentForm, viewFormData) {
+function processForm(paymentForm, viewFormData) {
+    var logger = require('dw/system/Logger').getLogger('ckodebug');
+    logger.debug('this is my test paymentForm {0}', JSON.stringify(paymentForm));
+ 
     var viewData = viewFormData;
     var selectedCardUuid = paymentForm.creditCardFields.selectedCardUuid.value;
 

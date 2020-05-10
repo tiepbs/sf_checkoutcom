@@ -145,7 +145,7 @@ var cardHelper = {
     /*
      * Get a card source
      */
-    getCardSource: function (paymentData) { 
+    getCardSource: function (paymentData) {    
         if (paymentData.creditCardFields.storedPaymentUUID) {
             return {
                 type: 'id',
