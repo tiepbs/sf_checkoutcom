@@ -9,14 +9,6 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 
 /**
- * Creates a token. This should be replaced by utilizing a tokenization provider
- * @returns {string} a token
- */
-function createToken() {
-    return Math.random().toString(36).substr(2);
-}
-
-/**
  * Verifies that the payment data is valid.
  */
 function Handle(basket, billingData, processorId, req) {
@@ -88,20 +80,11 @@ function Authorize(orderNumber, billingForm, processorId) {
     var success = false;
 
     // Payment request
-    if (!billingData.storedPaymentUUID) {
-        success = cardHelper.handleRequest(
-            orderNumber,
-            billingForm.creditCardFields,
-            processorId
-        );
-    }
-    else {
-        success = cardHelper.buildSavedCardRequest(
-            orderNumber,
-            billingForm.creditCardFields,
-            processorId
-        );
-    }
+    success = cardHelper.handleRequest(
+        orderNumber,
+        billingForm,
+        processorId
+    );
 
     // Handle errors
     if (!success) {
@@ -119,4 +102,3 @@ function Authorize(orderNumber, billingForm, processorId) {
 
 exports.Handle = Handle;
 exports.Authorize = Authorize;
-exports.createToken = createToken;

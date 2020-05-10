@@ -15,7 +15,7 @@ var cardHelper = {
     /*
      * Handle the payment request.
      */
-    handleCardRequest: function (orderNumber, paymentData, processorId) {    
+    handleRequest: function (orderNumber, paymentData, processorId) {    
         // Load the order information
         var order = OrderMgr.getOrder(orderNumber);
 
@@ -36,35 +36,6 @@ var cardHelper = {
 
         // Process the response
         return gatewayResponse && this.handleResponse(gatewayResponse);
-    },
-
-    /*
-     * Handle the saved card payment request.
-     */
-    handleSavedCardRequest: function (orderNumber, paymentData, sourceId, processorId) {        
-        // Create billing address object
-        var gatewayRequest = this.buildSavedCardRequest(sourceId, cvv, args);
-        
-        // Perform the request to the payment gateway
-        var gatewayResponse = ckoHelper.gatewayClientRequest(
-            "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
-            gatewayRequest
-        );
-    
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
-
-        // If the charge is valid, process the response
-        if (gatewayResponse && this.handleFullChargeResponse(gatewayResponse)) {                
-            return gatewayResponse;
-        } else {
-            // Fail the order
-            Transaction.wrap(function () {
-                OrderMgr.failOrder(order);
-            });
-        }       
-    
-        return false;
     },
 
     /*
@@ -153,13 +124,7 @@ var cardHelper = {
     buildRequest: function (order, paymentData, processorId) {       
         // Prepare the charge data
         var chargeData = {
-            'source'                : {
-                type                : 'card',
-                number              : ckoHelper.getFormattedNumber(paymentData.cardNumber.value.toString()),
-                expiry_month        : paymentData.expirationMonth.value.toString(),
-                expiry_year         : paymentData.expirationYear.value.toString(),
-                cvv                 : paymentData.securityCode.value.toString()
-            },
+            'source'                : this.getCardSource(paymentData),
             'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
             'currency'              : order.getCurrencyCode(),
             'reference'             : order.orderNo,
@@ -176,32 +141,27 @@ var cardHelper = {
         return chargeData;
     },
 
+
     /*
-     * Build a gateway saved card request
+     * Get a card source
      */
-    buildSavedCardRequest: function (order, paymentData, processorId) {    
-        // Prepare the charge data
-        var chargeData = {
-            'source': {
+    getCardSource: function (paymentData) { 
+        if (paymentData.creditCardFields.storedPaymentUUID) {
+            return {
                 type: 'id',
                 id: paymentData.selectedCardUuid.value.toString(),
                 cvv: paymentData.selectedCardCvv.value.toString()
-            },
-            'amount'                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
-            'currency'              : order.getCurrencyCode(),
-            'reference'             : order.orderNo,
-            'capture'               : ckoHelper.getValue('ckoAutoCapture'),
-            'capture_on'            : ckoHelper.getCaptureTime(),
-            'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
-            'shipping'              : ckoHelper.getShipping(order),
-            '3ds'                   : this.get3Ds(),
-            'success_url'           : URLUtils.https('CKOMain-HandleReturn'),
-            'failure_url'           : URLUtils.https('CKOMain-HandleFail'),
-            'risk'                  : {enabled: true},
-            'metadata'              : ckoHelper.getMetadata({}, processorId)
-        };   
-
-        return chargeData;
+            };
+        }
+        else {
+            return {
+                type                : 'card',
+                number              : ckoHelper.getFormattedNumber(paymentData.creditCardFields.cardNumber.value.toString()),
+                expiry_month        : paymentData.creditCardFields.expirationMonth.value.toString(),
+                expiry_year         : paymentData.creditCardFields.expirationYear.value.toString(),
+                cvv                 : paymentData.creditCardFields.securityCode.value.toString()
+            };
+        }
     },
 
     /*
