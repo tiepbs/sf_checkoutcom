@@ -32,7 +32,7 @@ var cardHelper = {
         );
 
         // Log the payment response data
-        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
+        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
 
         // Process the response
         return gatewayResponse && this.handleResponse(gatewayResponse);
@@ -125,7 +125,7 @@ var cardHelper = {
             'reference'             : order.orderNo,
             'capture'               : ckoHelper.getValue('ckoAutoCapture'),
             'capture_on'            : ckoHelper.getCaptureTime(),
-            'customer'              : ckoHelper.getCustomer(order),
+            //'customer'              : ckoHelper.getCustomer(order),
             'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
             'shipping'              : ckoHelper.getShipping(order),
             '3ds'                   : this.get3Ds(),
@@ -140,14 +140,19 @@ var cardHelper = {
     /*
      * Get a card source
      */
-    getCardSource: function (paymentData) {          
-        var selectedCardUuid = paymentData.creditCardFields.selectedCardUuid.htmlValue.length != 0;
-        var selectedCardCvv = paymentData.creditCardFields.selectedCardCvv.htmlValue.length != 0;
-        if (selectedCardCvv && selectedCardUuid) {
+    getCardSource: function (paymentData) {         
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('getCardSource {0}', JSON.stringify(paymentData));
+        
+        // Replace selectedCardUuid by get saved card token from selectedCardUuid
+        var selectedCardUuid = paymentData.creditCardFields.selectedCardUuid.htmlValue;
+        var selectedCardCvv = paymentData.creditCardFields.selectedCardCvv.htmlValue;
+
+        if (selectedCardCvv.length != 0 && selectedCardUuid.length != 0) {
             return {
                 type: 'id',
-                id: selectedCardUuid.value.toString(),
-                cvv: selectedCardCvv.value.toString()
+                id: selectedCardUuid,
+                cvv: selectedCardCvv
             };
         }
         else {
