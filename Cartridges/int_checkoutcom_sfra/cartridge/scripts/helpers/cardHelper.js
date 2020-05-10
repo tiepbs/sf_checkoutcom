@@ -15,7 +15,7 @@ var cardHelper = {
     /*
      * Handle the payment request.
      */
-    handleRequest: function (orderNumber, paymentData, processorId) {    
+    handleRequest: function (orderNumber, paymentData, processorId) {      
         // Load the order information
         var order = OrderMgr.getOrder(orderNumber);
 
@@ -118,12 +118,7 @@ var cardHelper = {
     /*
      * Build the gateway request
      */
-    buildRequest: function (order, paymentData, processorId) {     
-        
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('buildRequest.paymentData {0}', JSON.stringify(paymentData));
-
-        
+    buildRequest: function (order, paymentData, processorId) {           
         // Prepare the charge data
         var chargeData = {
             'source'                : this.getCardSource(paymentData),

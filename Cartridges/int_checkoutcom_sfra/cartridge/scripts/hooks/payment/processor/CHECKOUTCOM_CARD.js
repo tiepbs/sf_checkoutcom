@@ -13,7 +13,7 @@ var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
  */
 function Handle(basket, billingData, processorId, req) {
     var currentBasket = basket;
-    var cardErrors = {};
+    var fieldErrors = {};
     var serverErrors = [];
     var result = {error: false}; 
 
@@ -34,7 +34,7 @@ function Handle(basket, billingData, processorId, req) {
     }
 
     return {
-        fieldErrors: [cardErrors],
+        fieldErrors: fieldErrors,
         serverErrors: serverErrors,
         error: result.error
     };

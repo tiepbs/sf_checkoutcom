@@ -183,8 +183,6 @@ server.replace(
             var billingForm = server.forms.getForm('billing');
             var paymentMethodID = billingForm.paymentMethod.value;
 
-            var result;
-
             billingForm.creditCardFields.cardNumber.htmlValue = '';
             billingForm.creditCardFields.securityCode.htmlValue = '';
 
@@ -241,7 +239,8 @@ server.replace(
             }
 
             var processor = PaymentMgr.getPaymentMethod(paymentMethodID).getPaymentProcessor();
-
+            var result;
+            
             if (HookMgr.hasHook('app.payment.processor.' + processor.ID.toLowerCase())) {
                 result = HookMgr.callHook('app.payment.processor.' + processor.ID.toLowerCase(),
                     'Handle',
