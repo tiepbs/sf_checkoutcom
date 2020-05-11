@@ -17,13 +17,23 @@ function Handle(basket, billingData, processorId, req) {
     var fieldErrors = {};
     var serverErrors = [];
     var success = true; 
+    var customerNo = null;
 
     // Pre authorize the card
     if (!billingData.selectedCardUuid) {
+        // Prepare the customer number
+        var condition = req.hasOwnProperty('currentCustomer')
+        && req.currentCustomer.hasOwnProperty('profile')
+        && req.currentCustomer.profile.hasOwnProperty('customerNo');
+        if (condition) {
+            customerNo = req.currentCustomer.profile.customerNo;
+        }
+
+        // Send the request
         success = cardHelper.preAuthorizeCard(
             billingData,
             currentBasket,
-            req.currentCustomer.profile.customerNo,
+            customerNo,
             processorId
         );
     }
