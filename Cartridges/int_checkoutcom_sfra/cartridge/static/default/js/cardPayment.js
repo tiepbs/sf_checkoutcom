@@ -27,13 +27,29 @@ function initSavedCardSelection() {
 }
 
 function initCheckoutcomCardValidation() {
-    if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD') {
+    // Is card payment
+    var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD';
+
+    // Saved cards invisible
+    var condition2 = $('.user-payment-instruments').hasClass('checkout-hidden');
+
+    // Validation event
+    if (condition1 && !condition2) {
         $('button.submit-payment').off('click touch').one('click touch', function (e) {
             var savedCard = $('.saved-payment-instrument');
             var buttonEvent = e;
             savedCard.each(function() {
                 var self = $(this);
-                if (self.hasClass('selected-payment') && self.find('input.saved-payment-security-code').val() == '') {
+                var cvvField = self.find('input.saved-payment-security-code');
+
+                // Field is empty
+                var condition3 = cvvField.val() == '';
+
+                // Field is numeric
+                var condition4 = cvvField.val()%1 == 0;
+
+                // Field validation
+                if (condition3 || !condition4) {
                     // Prevent the default button click behaviour
                     buttonEvent.preventDefault();
                     buttonEvent.stopImmediatePropagation();

@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Handle payment tabs state
 	initTabs();
-		
 }, true);
 
 function initTabs() {
