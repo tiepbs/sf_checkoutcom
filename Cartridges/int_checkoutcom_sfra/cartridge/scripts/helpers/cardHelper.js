@@ -34,20 +34,14 @@ var cardHelper = {
         // Log the payment response data
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
 
-        // Get the response
-        var response = this.handleResponse(gatewayResponse);
-
         // Process the response
-        return gatewayResponse && !response.error;
+        return this.handleResponse(gatewayResponse);
     },
 
     /*
      * Handle the payment response
      */
     handleResponse: function (gatewayResponse) {
-        // Clean the session
-        session.privacy.redirectUrl = null;
-        
         // Update customer data
         ckoHelper.updateCustomerData(gatewayResponse);
         
@@ -71,14 +65,14 @@ var cardHelper = {
     /*
      * Pre authorize card with zero value
      */
-    preAuthorizeCard: function(paymentInformation, currentBasket, customerNo, processorId) {
+    preAuthorizeCard: function(billingData, currentBasket, customerNo, processorId) {
         var chargeData = {
             'source'                : {
                 type                : 'card',
-                number              : ckoHelper.getFormattedNumber(paymentInformation.cardNumber.value),
-                expiry_month        : paymentInformation.expirationMonth.value,
-                expiry_year         : paymentInformation.expirationYear.value,
-                cvv                 : paymentInformation.securityCode.value
+                number              : ckoHelper.getFormattedNumber(billingData.paymentInformation.cardNumber.value),
+                expiry_month        : billingData.paymentInformation.expirationMonth.value,
+                expiry_year         : billingData.paymentInformation.expirationYear.value,
+                cvv                 : billingData.paymentInformation.securityCode.value
             },
             'amount'                : 0,
             'currency'              : 'USD',
@@ -107,11 +101,14 @@ var cardHelper = {
         // Return the response
         var success = ckoHelper.paymentSuccess(authResponse);
 
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('this is my test billingDatax {0}', JSON.stringify(billingData));
+
         // If the payment is successful
-        if (success) {
+        if (success && billingData.saveCard) {
             // Save the card
             this.saveCard(
-                paymentInformation,
+                billingData.paymentInformation,
                 customerNo,
                 authResponse,
                 processorId

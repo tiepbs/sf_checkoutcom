@@ -21,7 +21,7 @@ function Handle(basket, billingData, processorId, req) {
     // Pre authorize the card
     if (!billingData.selectedCardUuid) {
         success = cardHelper.preAuthorizeCard(
-            billingData.paymentInformation,
+            billingData,
             currentBasket,
             req.currentCustomer.profile.customerNo,
             processorId
