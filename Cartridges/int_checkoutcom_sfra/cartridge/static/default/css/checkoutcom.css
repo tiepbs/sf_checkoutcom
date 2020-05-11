@@ -9,5 +9,5 @@
 }
 
 .summary-section-label.payment-info-label {
-    display: none;
+    display: none !important;
 }
