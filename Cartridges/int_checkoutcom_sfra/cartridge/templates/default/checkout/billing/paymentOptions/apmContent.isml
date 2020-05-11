@@ -14,7 +14,7 @@
 
     	<input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
 		<isset name="apmFields" value="${pdict.forms.billingForm.apmForm}" scope="page"/>
-		<input type="hidden" id="ckoSelectedApm" name="${apmFields.ckoSelectedApm.htmlName}" value="">
+		<input type="hidden" id="ckoSelectedApm" <isprint value=${apmFields.ckoSelectedApm.attributes} encoding="off"/> value="">
 
 		<fieldset>
 			<div id="apmsBox">

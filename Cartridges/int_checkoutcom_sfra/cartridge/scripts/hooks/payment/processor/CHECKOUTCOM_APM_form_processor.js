@@ -15,11 +15,11 @@ function processForm(paymentForm, viewFormData) {
         viewData: viewData
     };
 
-    if (ckoSelectedApm.ckoSelectedApm.value.length > 0) {
+    if (ckoSelectedApm.htmlValue.length > 0) {
         viewData.paymentInformation = {
             ckoApm: {
-                value: ckoSelectedApm.ckoSelectedApm.value,
-                htmlName: ckoSelectedApm.ckoSelectedApm.value,
+                value: ckoSelectedApm.htmlValue,
+                htmlName: ckoSelectedApm.htmlValue,
                 data: paymentForm.apmForm
             },
         };
