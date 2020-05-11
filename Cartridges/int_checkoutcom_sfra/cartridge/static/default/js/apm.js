@@ -28,6 +28,9 @@ function initApmAccordion()
         // Prevent the form submission
         e.preventDefault();
 
+        // Uncheck all radio buttons
+        $('.cko-apm-accordion input[type="radio"]').prop('checked', false);
+        
         // Activate the input
         $(this).children('input[type="radio"]').prop('checked', true);
 
