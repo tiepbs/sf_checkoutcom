@@ -31,6 +31,9 @@ function initTabs() {
 			// Clear the selected card UUID field
 			$('input[name="dwfrm_billing_creditCardFields_selectedCardUuid"]').val('');
 
+			// Disable any selected saved card
+			$('.saved-payment-instrument').removeClass('selected-payment');
+
 			// Initialize the form validation
 			initFormValidation();
 		}

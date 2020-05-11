@@ -28,7 +28,7 @@ function initSavedCardSelection() {
 
 function initCheckoutcomCardValidation() {
     if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD') {
-        $('button.submit-payment').on('click touch', function (e) {
+        $('button.submit-payment').off('click touch').one('click touch', function (e) {
             var savedCard = $('.saved-payment-instrument');
             var buttonEvent = e;
             savedCard.each(function() {
