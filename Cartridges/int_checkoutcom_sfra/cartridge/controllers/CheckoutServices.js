@@ -454,7 +454,7 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
         );
     }
 
-    // Handle errore
+    // Handle error
     if (handlePaymentResult.error === true) {
         Transaction.wrap(function () { 
             OrderMgr.failOrder(order, true); 

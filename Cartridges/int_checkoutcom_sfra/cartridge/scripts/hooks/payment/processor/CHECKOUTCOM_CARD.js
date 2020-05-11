@@ -68,7 +68,7 @@ function Authorize(orderNumber, billingForm, processorId) {
         billingForm,
         processorId
     );
-
+    
     // Handle errors
     if (result.error) {
         serverErrors.push(

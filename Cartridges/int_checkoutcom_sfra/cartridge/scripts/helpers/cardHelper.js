@@ -149,15 +149,15 @@ var cardHelper = {
         var selectedCardUuid = paymentData.creditCardFields.selectedCardUuid.htmlValue;
         var selectedCardCvv = paymentData.creditCardFields.selectedCardCvv.htmlValue;
 
-        // Get the saved card
-        var savedCard = this.getSavedCard(
-            selectedCardUuid,
-            order.getCustomerNo(),
-            processorId
-        );
-
         // If the saved card data is valid
-        if (selectedCardCvv.length > 0 && selectedCardUuid.length > 0 && savedCard) {
+        if (selectedCardCvv.length > 0 && selectedCardUuid.length > 0) {
+            // Get the saved card
+            var savedCard = this.getSavedCard(
+                selectedCardUuid,
+                order.getCustomerNo(),
+                processorId
+            );
+            
             cardSource = {
                 type: 'id',
                 id: savedCard.getCreditCardToken(),
