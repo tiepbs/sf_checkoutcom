@@ -108,10 +108,13 @@ server.replace(
 
         var paymentFormResult;
     
+
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('000req {0}', JSON.stringify(HookManager.hasHook('app.payment.form.processor.' + paymentProcessor.ID.toLowerCase())));
+
         if (HookManager.hasHook('app.payment.form.processor.' + paymentProcessor.ID.toLowerCase())) {
             paymentFormResult = HookManager.callHook('app.payment.form.processor.' + paymentProcessor.ID.toLowerCase(),
                 'processForm',
-                req,
                 paymentForm,
                 viewData
             );

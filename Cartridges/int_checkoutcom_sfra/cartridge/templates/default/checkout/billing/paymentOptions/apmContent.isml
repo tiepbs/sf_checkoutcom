@@ -5,8 +5,6 @@
     assets.addCss('/css/apm.css');
 </isscript>
 
-<isset name="apmFields" value="${pdict.forms.billingForm.apmForm}" scope="page"/>
-
 <div class="tab-pane apm-content" id="apm-content" role="tabpanel">
     <fieldset class="payment-form-fields">
         <input type="hidden" class="form-control"
@@ -15,6 +13,7 @@
         >
 
     	<input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
+		<isset name="apmFields" value="${pdict.forms.billingForm.apmForm}" scope="page"/>
 		<input type="hidden" id="ckoSelectedApm" name="${apmFields.ckoSelectedApm.htmlName}" value="">
 
 		<fieldset>

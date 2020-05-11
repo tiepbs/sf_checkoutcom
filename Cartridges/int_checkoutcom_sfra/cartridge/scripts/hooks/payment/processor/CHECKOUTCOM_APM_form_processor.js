@@ -7,24 +7,28 @@
  * @param {Object} viewFormData - object contains billing form data
  * @returns {Object} an object that has error information or payment information
  */
-function processForm(req, paymentForm, viewFormData) {
+function processForm(paymentForm, viewFormData) {
     var viewData = viewFormData;
-    var ckoSelectedApm = req.apmForm.ckoSelectedApm;
+    var ckoSelectedApm = paymentForm.apmForm.ckoSelectedApm;
+    var result = {
+        error: false,
+        viewData: viewData
+    };
 
-    if (ckoSelectedApm.ckoSelectedApm.htmlName.length > 0) {
+    if (ckoSelectedApm.ckoSelectedApm.value.length > 0) {
         viewData.paymentInformation = {
             ckoApm: {
-                value: ckoSelectedApm.ckoSelectedApm.htmlName,
-                htmlName: ckoSelectedApm.ckoSelectedApm.htmlName,
+                value: ckoSelectedApm.ckoSelectedApm.value,
+                htmlName: ckoSelectedApm.ckoSelectedApm.value,
                 data: paymentForm.apmForm
             },
         };
     }
+    else {
+        result.error = true;
+    }
 
-    return {
-        error: false,
-        viewData: viewData
-    };
+    return result;
 }
 
 exports.processForm = processForm;
