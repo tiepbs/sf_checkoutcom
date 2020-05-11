@@ -109,6 +109,7 @@ var cardHelper = {
             // Save the card
             this.saveCard(
                 billingData.paymentInformation,
+                currentBasket,
                 customerNo,
                 authResponse,
                 processorId
@@ -216,7 +217,7 @@ var cardHelper = {
     /*
      * Save a card in customer account
      */
-    saveCard: function (paymentInformation, customerNo, authResponse, processorId) {
+    saveCard: function (paymentInformation, currentBasket, customerNo, authResponse, processorId) {
         // Get the customer
         var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
 
@@ -240,6 +241,7 @@ var cardHelper = {
         if (!cardExists) {
             Transaction.wrap(function () {
                 var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
+                storedPaymentInstrument.setCreditCardHolder(currentBasket.billingAddress.fullName);
                 storedPaymentInstrument.setCreditCardNumber(paymentInformation.cardNumber.value);
                 storedPaymentInstrument.setCreditCardType(authResponse.source.scheme.toLowerCase());
                 storedPaymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
