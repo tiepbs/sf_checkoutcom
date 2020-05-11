@@ -10,12 +10,7 @@ var ckoApmConfig = {
     /*
      * Ideal authorization
      */
-    idealAuthorization: function (args) {
-
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('ideal args {0}', JSON.stringify(args));
-
-        
+    idealAuthorization: function (args) {       
         // Building ideal pay object
         var payObject = {
             'source'    : {
