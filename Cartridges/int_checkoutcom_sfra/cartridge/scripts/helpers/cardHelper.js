@@ -34,8 +34,11 @@ var cardHelper = {
         // Log the payment response data
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
 
+        // Get the response
+        var response = this.handleResponse(gatewayResponse);
+
         // Process the response
-        return gatewayResponse && this.handleResponse(gatewayResponse);
+        return gatewayResponse && !response.error;
     },
 
     /*
@@ -51,13 +54,18 @@ var cardHelper = {
         // Get the gateway links
         var gatewayLinks = gatewayResponse._links;
         
+
+        var result = {
+            error: ckoHelper.paymentSuccess(gatewayResponse),
+            redirectUrl: false
+        }
+
         // Add 3DS redirect URL to session if exists
         if (gatewayLinks.hasOwnProperty('redirect')) {
-            session.privacy.redirectUrl = gatewayLinks.redirect.href;
-            return true;
+            result.redirectUrl = gatewayLinks.redirect.href;
         } 
         
-        return ckoHelper.paymentSuccess(gatewayResponse);
+        return resutl;
     },
     
     /*

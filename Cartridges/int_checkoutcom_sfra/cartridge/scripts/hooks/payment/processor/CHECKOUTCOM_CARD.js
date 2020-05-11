@@ -3,6 +3,7 @@
 var collections = require('*/cartridge/scripts/util/collections');
 var Resource = require('dw/web/Resource');
 var Transaction = require('dw/system/Transaction');
+var ISML = require('dw/template/ISML');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -46,20 +47,31 @@ function Handle(basket, billingData, processorId, req) {
 function Authorize(orderNumber, billingForm, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
-    var success = false;
+    var result = {
+        error: false,
+        redurectUrl: false
+    };
 
     // Payment request
-    success = cardHelper.handleRequest(
+    result = cardHelper.handleRequest(
         orderNumber,
         billingForm,
         processorId
     );
 
     // Handle errors
-    if (!success) {
+    if (result.error) {
         serverErrors.push(
             ckoHelper.getPaymentFailureMessage()
         );
+    }
+
+    // Handle 3ds
+    if (result.redirecUrl) {
+        ISML.renderTemplate('redirects/url.isml', {
+            redirectUrl: result.redirecUrl,
+        });
+        
     }
    
     return {
