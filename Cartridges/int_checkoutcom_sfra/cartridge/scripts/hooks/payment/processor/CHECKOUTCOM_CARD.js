@@ -49,7 +49,7 @@ function Authorize(orderNumber, billingForm, processorId) {
     var fieldErrors = {};
     var result = {
         error: false,
-        redurectUrl: false
+        redirectUrl: false
     };
 
     // Payment request
@@ -78,7 +78,7 @@ function Authorize(orderNumber, billingForm, processorId) {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
         error: !result.error,
-        redirecUrl: result.redirecUrl
+        redirectUrl: result.redirectUrl
     };
 }
 
