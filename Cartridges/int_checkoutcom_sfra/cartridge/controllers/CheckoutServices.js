@@ -449,6 +449,7 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
         );
     }
 
+    // Handle redirection
     if (handlePaymentResult.error === true) {
         res.json({
             error: true,
@@ -458,6 +459,7 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
         return next();
     }
 
+    // Handle errors
     if (handlePaymentResult.redirectUrl) {
         res.json({
             error: false,

@@ -65,14 +65,6 @@ function Authorize(orderNumber, billingForm, processorId) {
             ckoHelper.getPaymentFailureMessage()
         );
     }
-
-    // Handle 3ds
-    if (result.redirecUrl) {
-        ISML.renderTemplate('redirects/url.isml', {
-            redirectUrl: result.redirecUrl,
-        });
-        
-    }
    
     return {
         fieldErrors: fieldErrors,

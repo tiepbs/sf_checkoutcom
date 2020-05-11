@@ -16,7 +16,7 @@ var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
  */
 function Handle(basket, billingData, processorId, req) {
     var currentBasket = basket;
-    var cardErrors = {};
+    var fieldErrors = {};
     var serverErrors = [];
     
     // Verify the payload
@@ -26,7 +26,7 @@ function Handle(basket, billingData, processorId, req) {
         );
 
         return {
-            fieldErrors: [cardErrors],
+            fieldErrors: [fieldErrors],
             serverErrors: serverErrors,
             error: true
         };
@@ -49,7 +49,7 @@ function Handle(basket, billingData, processorId, req) {
     });
 
     return {
-        fieldErrors: cardErrors,
+        fieldErrors: fieldErrors,
         serverErrors: serverErrors,
         error: false
     };
@@ -61,7 +61,12 @@ function Handle(basket, billingData, processorId, req) {
 function Authorize(orderNumber, billingForm, processorId) {
     var serverErrors = [];
     var fieldErrors = {};
+    var result = {
+        error: false,
+        redirectUrl: false
+    };
 
+    // Get the order
     var order = OrderMgr.getOrder(orderNumber);
 
     // Prepare the arguments
@@ -76,19 +81,27 @@ function Authorize(orderNumber, billingForm, processorId) {
     var apmConfigData = apmConfig[func](args);
 
     // Payment request
-    var success = apmHelper.handleRequest(orderNumber, processorId, apmConfigData);
+    var result = apmHelper.handleRequest(orderNumber, processorId, apmConfigData);
 
     // Handle errors
-    if (!success) {
+    if (result.error) {
         serverErrors.push(
             ckoHelper.getPaymentFailureMessage()
         );
     }
 
+    // Handle redirection
+    if (result.redirecUrl) {
+        ISML.renderTemplate('redirects/url.isml', {
+            redirectUrl: result.redirecUrl,
+        });
+        
+    }
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
-        error: !success
+        error: !result.error,
+        redirectUrl: result.redirectUrl
     };
 }
 
