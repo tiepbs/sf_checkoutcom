@@ -1,7 +1,5 @@
 'use strict';
 
-var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
-
 /**
  * Verifies the required information for billing form is provided.
  * @param {Object} req - The request object

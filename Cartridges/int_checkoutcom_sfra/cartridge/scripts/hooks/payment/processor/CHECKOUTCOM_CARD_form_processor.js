@@ -9,7 +9,7 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
  * @param {Object} viewFormData - object contains billing form data
  * @returns {Object} an object that has error information or payment information
  */
-function processForm(paymentForm, viewFormData) {
+function processForm(req, paymentForm, viewFormData) {
     var viewData = viewFormData;
     var selectedCardUuid = paymentForm.creditCardFields.selectedCardUuid.value;
 

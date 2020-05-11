@@ -111,6 +111,7 @@ server.replace(
         if (HookManager.hasHook('app.payment.form.processor.' + paymentProcessor.ID.toLowerCase())) {
             paymentFormResult = HookManager.callHook('app.payment.form.processor.' + paymentProcessor.ID.toLowerCase(),
                 'processForm',
+                req,
                 paymentForm,
                 viewData
             );
