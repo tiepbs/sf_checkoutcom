@@ -10,6 +10,7 @@
     var orderAmount = pdict.order.totals.grandTotal.replace(/[^\d\.\,\s]+/g, '');
 </isscript>
 
+<input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
 <isset name="applePayFields" value="${pdict.forms.billingForm.applePayForm}" scope="page"/>
 
 <div class="tab-pane apple-pay-content" id="apple-pay-content" role="tabpanel">
