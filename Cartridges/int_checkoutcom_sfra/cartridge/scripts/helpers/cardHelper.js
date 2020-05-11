@@ -56,6 +56,7 @@ var cardHelper = {
 
         // Add 3DS redirect URL to session if exists
         if (gatewayLinks.hasOwnProperty('redirect')) {
+            result.error = false;
             result.redirectUrl = gatewayLinks.redirect.href;
         } 
         

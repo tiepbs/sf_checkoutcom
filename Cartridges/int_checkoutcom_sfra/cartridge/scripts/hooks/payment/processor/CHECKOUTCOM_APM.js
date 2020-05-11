@@ -90,17 +90,10 @@ function Authorize(orderNumber, billingForm, processorId) {
         );
     }
 
-    // Handle redirection
-    if (result.redirecUrl) {
-        ISML.renderTemplate('redirects/url.isml', {
-            redirectUrl: result.redirecUrl,
-        });
-        
-    }
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
-        error: !result.error,
+        error: result.error,
         redirectUrl: result.redirectUrl
     };
 }
