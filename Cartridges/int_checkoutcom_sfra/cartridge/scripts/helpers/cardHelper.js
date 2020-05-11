@@ -54,7 +54,7 @@ var cardHelper = {
         // Get the gateway links
         var gatewayLinks = gatewayResponse._links;
         
-
+        // Prepare the result
         var result = {
             error: ckoHelper.paymentSuccess(gatewayResponse),
             redirectUrl: false
@@ -65,7 +65,7 @@ var cardHelper = {
             result.redirectUrl = gatewayLinks.redirect.href;
         } 
         
-        return resutl;
+        return result;
     },
     
     /*
