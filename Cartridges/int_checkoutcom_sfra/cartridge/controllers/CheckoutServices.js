@@ -332,6 +332,7 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
     var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
     var validationHelpers = require('*/cartridge/scripts/helpers/basketValidationHelpers');
     var addressHelpers = require('*/cartridge/scripts/helpers/addressHelpers');
+    var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
     var currentBasket = BasketMgr.getCurrentBasket();
 
@@ -449,8 +450,15 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
         );
     }
 
-    // Handle redirection
+    // Handle errore
     if (handlePaymentResult.error === true) {
+        Transaction.wrap(function () { 
+            OrderMgr.failOrder(order, true); 
+        });
+
+        // Restore the cart
+        ckoHelper.checkAndRestoreBasket(order);
+
         res.json({
             error: true,
             errorMessage: Resource.msg('error.technical', 'checkout', null)
@@ -459,7 +467,7 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
         return next();
     }
 
-    // Handle errors
+    // Handle redirection
     if (handlePaymentResult.redirectUrl) {
         res.json({
             error: false,
@@ -471,7 +479,12 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
 
     var fraudDetectionStatus = hooksHelper('app.fraud.detection', 'fraudDetection', currentBasket, require('*/cartridge/scripts/hooks/fraudDetection').fraudDetection);
     if (fraudDetectionStatus.status === 'fail') {
-        Transaction.wrap(function () { OrderMgr.failOrder(order, true); });
+        Transaction.wrap(function () { 
+            OrderMgr.failOrder(order, true); 
+        });
+
+        // Restore the cart
+        ckoHelper.checkAndRestoreBasket(order);
 
         // fraud detection failed
         req.session.privacyCache.set('fraudDetectionStatus', true);
