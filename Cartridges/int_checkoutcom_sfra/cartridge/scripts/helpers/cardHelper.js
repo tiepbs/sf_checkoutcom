@@ -56,7 +56,7 @@ var cardHelper = {
         
         // Prepare the result
         var result = {
-            error: ckoHelper.paymentSuccess(gatewayResponse),
+            error: !ckoHelper.paymentSuccess(gatewayResponse),
             redirectUrl: false
         }
 
