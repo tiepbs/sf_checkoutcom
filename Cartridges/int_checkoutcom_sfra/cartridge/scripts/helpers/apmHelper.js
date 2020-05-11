@@ -60,7 +60,7 @@ var apmHelper = {
         }
 
         // Process the response
-        return gatewayResponse && this.handleResponse(gatewayResponse);
+        return this.handleResponse(gatewayResponse);
 
     },
     
@@ -80,20 +80,26 @@ var apmHelper = {
         // Get the response type
         var type = gatewayResponse.type;
         
+        // Prepare the result
+        var result = {
+            error: !ckoHelper.paymentSuccess(gatewayResponse),
+            redirectUrl: false
+        }
+
         // Add redirect to sepa source reqeust
         if (type == 'Sepa') {
             session.privacy.redirectUrl = URLUtils.url('CKOSepa-Mandate').value;
+            result.redirectUrl = URLUtils.url('CKOSepa-Mandate').value;
             session.privacy.sepaResponseId = gatewayResponse.id;
-            return true;
         }
         
         // Add redirect URL to session if exists
         if (gatewayLinks.hasOwnProperty('redirect')) {
             session.privacy.redirectUrl = gatewayLinks.redirect.href
-            return true;
+            result.redirectUrl = gatewayLinks.redirect.href;
         }
         
-        return ckoHelper.paymentSuccess(gatewayResponse);
+        return result;
     },
 
     /*
