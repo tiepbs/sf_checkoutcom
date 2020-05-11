@@ -11,11 +11,16 @@ var ckoApmConfig = {
      * Ideal authorization
      */
     idealAuthorization: function (args) {
+
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('ideal args {0}', JSON.stringify(args));
+
+        
         // Building ideal pay object
         var payObject = {
             'source'    : {
                 'type'          : 'ideal',
-                'bic'           : args.paymentData.data.ideal_bic.value.toString(),
+                'bic'           : args.paymentData.ideal_bic.value.toString(),
                 'description'   : args.order.orderNo,
                 'language'      : ckoHelper.getLanguage(),
             },
@@ -35,8 +40,8 @@ var ckoApmConfig = {
         var payObject = {
             'source'        : {
                 'type'  : 'boleto',
-                'birthDate' : args.paymentData.data.boleto_birthDate.value.toString(),
-                'cpf'       : args.paymentData.data.boleto_cpf.value.toString(),
+                'birthDate' : args.paymentData.boleto_birthDate.value.toString(),
+                'cpf'       : args.paymentData.boleto_cpf.value.toString(),
                 'customerName' : ckoHelper.getCustomerName(args)
             },
             'type'      : 'boleto',
@@ -167,7 +172,7 @@ var ckoApmConfig = {
                 'description'   : businessName,
                 'language'      : ckoHelper.getLanguage().substr(0, 2),
                 'quantity'      : ckoHelper.getProductQuantity(args),
-                'national_id'   : args.paymentData.data.qpay_national_id.value.toString()
+                'national_id'   : args.paymentData.qpay_national_id.value.toString()
             },
             'type'      : 'qpay',
             'purpose'   : businessName,
@@ -209,7 +214,7 @@ var ckoApmConfig = {
             'source_data'   : {
                 'first_name'            : ckoHelper.getCustomerFirstName(args),
                 'last_name'             : ckoHelper.getCustomerLastName(args),
-                'account_iban'          : args.paymentData.data.sepa_iban.value.toString() + args.sepa_bic.value.toString(),
+                'account_iban'          : args.paymentData.sepa_iban.value.toString() + args.sepa_bic.value.toString(),
                 'billing_descriptor'    : businessName,
                 'mandate_type'          : 'single'
             }
@@ -334,7 +339,7 @@ var ckoApmConfig = {
                 'payer': {
                     'name': ckoHelper.getCustomerName(args),
                     'email': ckoHelper.getCustomer(args).email,
-                    'document': args.paymentData.data.oxxo_identification.value.toString()
+                    'document': args.paymentData.oxxo_identification.value.toString()
                 }
             },
             'type'          : 'oxxo',
