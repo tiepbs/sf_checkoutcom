@@ -101,9 +101,6 @@ var cardHelper = {
         // Return the response
         var success = ckoHelper.paymentSuccess(authResponse);
 
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('this is my test billingDatax {0}', JSON.stringify(billingData));
-
         // If the payment is successful
         if (success && billingData.saveCard) {
             // Save the card

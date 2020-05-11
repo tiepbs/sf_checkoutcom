@@ -77,7 +77,8 @@ function Authorize(orderNumber, billingForm, processorId) {
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
-        error: !result.error
+        error: !result.error,
+        redirecUrl: result.redirecUrl
     };
 }
 

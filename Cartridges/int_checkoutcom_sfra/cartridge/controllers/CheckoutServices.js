@@ -454,6 +454,16 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
             error: true,
             errorMessage: Resource.msg('error.technical', 'checkout', null)
         });
+
+        return next();
+    }
+
+    if (handlePaymentResult.redirectUrl) {
+        res.json({
+            error: false,
+            continueUrl: handlePaymentResult.redirectUrl
+        });
+
         return next();
     }
 
