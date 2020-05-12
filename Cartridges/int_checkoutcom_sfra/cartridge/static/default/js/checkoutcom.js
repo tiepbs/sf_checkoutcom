@@ -37,9 +37,6 @@ function initTabs() {
 			initFormValidation();
 		}
 	);
-
-	// Show the first active
-	$('.card-tab').trigger('click');
 }
 
 function initFormValidation() {

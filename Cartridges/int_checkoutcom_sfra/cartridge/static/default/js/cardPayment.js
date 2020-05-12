@@ -1,11 +1,6 @@
 function initCheckoutcomCardValidation() {
 	// Saved card selection
     initSavedCardSelection();
-    
-    // Card switch
-    $('.button.add-payment, .cancel-new-payment').on('click touch', function (e) {
-        initCheckoutcomCardValidation();
-    });
 
     // Is card payment
     var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD';
@@ -18,7 +13,7 @@ function initCheckoutcomCardValidation() {
         cardFormValidation();
     }
     else if (condition1 && !condition2) {
-        //savedCardFormValidation();
+        savedCardFormValidation();
     }
 }
 
