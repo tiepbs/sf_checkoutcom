@@ -1,17 +1,12 @@
-'use strict';
-
-/**
- * jQuery Ajax helpers on DOM ready.
- */
-document.addEventListener('DOMContentLoaded', function() {
+function initCheckoutcomCardValidation() {
 	// Saved card selection
     initSavedCardSelection();
+    
+    // Card switch
+    $('.button.add-payment, .cancel-new-payment').on('click touch', function (e) {
+        initCheckoutcomCardValidation();
+    });
 
-    // Enable the first saved card
-    $('.saved-payment-instrument').first().trigger('click');
-}, true);
-
-function initCheckoutcomCardValidation() {
     // Is card payment
     var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD';
 
@@ -23,12 +18,12 @@ function initCheckoutcomCardValidation() {
         cardFormValidation();
     }
     else if (condition1 && !condition2) {
-        savedCardFormValidation();
+        //savedCardFormValidation();
     }
 }
 
 function cardFormValidation() {
-    $('button.submit-payment').off('click touch').on('click touch', function (e) {
+    $('button.submit-payment').off('click touch').one('click touch', function (e) {
         // Reset the form error messages
         resetFormErrors();
 
@@ -65,7 +60,7 @@ function cardFormValidation() {
 
 function savedCardFormValidation() {
     // Submit event
-    $('button.submit-payment').off('click touch').on('click touch', function (e) {
+    $('button.submit-payment').off('click touch').one('click touch', function (e) {
         // Reset the form error messages
         resetFormErrors();
 
@@ -109,6 +104,9 @@ function resetFormErrors() {
 }
 
 function initSavedCardSelection() {
+    // Enable the first saved card
+    $('.saved-payment-instrument').first().addClass('selected-payment');
+
     // A saved card is selected
     var condition1 = $('.user-payment-instruments .selected-payment').length > 0;
 
