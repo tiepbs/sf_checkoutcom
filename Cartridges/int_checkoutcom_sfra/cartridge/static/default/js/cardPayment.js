@@ -3,7 +3,7 @@ function initCheckoutcomCardValidation() {
     var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD';
 
     // Is card form
-    var condition2 = JSON.parse($.cookie('ckoSavedCard')) !== true;
+    var condition2 = $.cookie('ckoSavedCard') != 'true';
 
     // Run the default form validation
     if (condition1 && condition2) { 
@@ -15,6 +15,10 @@ function initCheckoutcomCardValidation() {
 }
 
 function cardFormValidation() {
+    // Show the card form
+    $('.credit-card-form').removeClass('checkout-hidden');
+
+    // Submit event
     $('button.submit-payment').off('click touch').one('click touch', function (e) {
         // Reset the form error messages
         resetFormErrors();
