@@ -90,6 +90,7 @@ var apmHelper = {
 
         // Add redirect to sepa source reqeust
         if (!result.error && type == 'Sepa') {
+            result.error = false;
             session.privacy.redirectUrl = URLUtils.url('CKOSepa-Mandate').value;
             result.redirectUrl = URLUtils.url('CKOSepa-Mandate').value;
             session.privacy.sepaResponseId = gatewayResponse.id;
@@ -97,6 +98,7 @@ var apmHelper = {
         
         // Add redirect URL to session if exists
         if (!result.error && gatewayResponse.hasOwnProperty('_links')) {
+            result.error = false;
             var gatewayLinks = gatewayResponse._links;
             session.privacy.redirectUrl = gatewayLinks.redirect.href
             result.redirectUrl = gatewayLinks.redirect.href;
