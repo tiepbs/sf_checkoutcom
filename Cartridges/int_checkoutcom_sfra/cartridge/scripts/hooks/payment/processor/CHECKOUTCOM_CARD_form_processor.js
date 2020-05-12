@@ -12,6 +12,7 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
 function processForm(paymentForm, viewFormData) {
     var viewData = viewFormData;
     var selectedCardUuid = paymentForm.creditCardFields.selectedCardUuid.value;
+    var creditCardErrors = {};
 
     // Add the payment method info
     viewData.paymentMethod = {
@@ -21,6 +22,15 @@ function processForm(paymentForm, viewFormData) {
 
     // Process the card info
     if (!selectedCardUuid) { 
+        // Verify credit card form data
+        creditCardErrors = COHelpers.validateCreditCard(paymentForm);
+        if (Object.keys(creditCardErrors).length) {
+            return {
+                fieldErrors: creditCardErrors,
+                error: true
+            };
+        }
+
         // New card
         viewData.paymentInformation = {
             cardType: {
