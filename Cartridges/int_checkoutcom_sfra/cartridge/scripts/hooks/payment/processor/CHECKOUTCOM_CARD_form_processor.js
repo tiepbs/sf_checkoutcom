@@ -11,7 +11,8 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
  */
 function processForm(paymentForm, viewFormData) {
     var viewData = viewFormData;
-    var selectedCardUuid = paymentForm.creditCardFields.selectedCardUuid.value;
+    var selectedCardUuid = paymentForm.savedCardForm.selectedCardUuid.value;
+    var selectedCardCvv = paymentForm.savedCardForm.selectedCardCvv.value;
     var creditCardErrors = {};
 
     // Add the payment method info
@@ -21,7 +22,7 @@ function processForm(paymentForm, viewFormData) {
     };
 
     // Process the card info
-    if (!selectedCardUuid) { 
+    if (!selectedCardUuid || !selectedCardCvv) { 
         // Verify credit card form data
         creditCardErrors = COHelpers.validateCreditCard(paymentForm);
         if (Object.keys(creditCardErrors).length) {
@@ -63,6 +64,7 @@ function processForm(paymentForm, viewFormData) {
     else {
         // Saved card
         viewData.selectedCardUuid = selectedCardUuid.toString();
+        viewData.selectedCardCvv = selectedCardCvv.toString();
     }
 
     return {

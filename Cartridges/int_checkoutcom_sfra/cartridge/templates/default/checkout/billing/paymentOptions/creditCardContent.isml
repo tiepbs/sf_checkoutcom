@@ -16,25 +16,6 @@
 
     	<input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
         <isset name="creditFields" value="${pdict.forms.billingForm.creditCardFields}" scope="page"/>
-        
-        <!--- Hidden input for selected saved card --->
-        <input type="hidden" class="form-control" id="selectedCardUuid" <isprint value=${creditFields.selectedCardUuid.attributes} encoding="off"/> value="">
-        <input type="hidden" class="form-control" id="selectedCardCvv" <isprint value=${creditFields.selectedCardCvv.attributes} encoding="off"/> value="">
-
-        <!--- register/authenticated user --->
-        <isif condition="${pdict.customer.registeredUser}">
-            <div class="user-payment-instruments container ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? '' : 'checkout-hidden'}">
-                <!--- Stored user payments --->
-                <div class="stored-payments">
-                    <isinclude template="checkout/billing/storedPaymentInstruments" />
-                </div>
-
-                <!--- Add new credit card button --->
-                <div class="row">
-                    <button class="btn btn-block add-payment btn-outline-primary" type="button">${Resource.msg('button.add.payment', 'checkout', null)}</button>
-                </div>
-            </div>
-        </isif>
 
         <fieldset class="credit-card-form ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? 'checkout-hidden' : ''}">
             <isinclude template="checkout/billing/paymentOptions/forms/creditCardForm" />
