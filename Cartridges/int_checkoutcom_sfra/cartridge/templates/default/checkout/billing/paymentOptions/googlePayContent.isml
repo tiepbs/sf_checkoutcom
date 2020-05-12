@@ -16,11 +16,6 @@
 
 <div class="tab-pane google-pay-content" id="google-pay-content" role="tabpanel">
     <fieldset class="payment-form-fields">
-        <input type="hidden" class="form-control"
-               name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-               value="${paymentOption.ID}"
-        >
-        
         <isinclude template="checkout/billing/paymentOptions/forms/googlePayForm" />
     </fieldset>
 </div>

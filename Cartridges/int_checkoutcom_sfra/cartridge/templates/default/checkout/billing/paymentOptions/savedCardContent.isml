@@ -3,8 +3,9 @@
     <fieldset class="payment-form-fields">
 
         <isset name="savedCardFields" value="${pdict.forms.billingForm.savedCardFields}" scope="page"/>
-        <input type="hidden" class="form-control" id="selectedCardUuid" <isprint value=${savedCardFields.selectedCardUuid.attributes} encoding="off"/> value="">
-        <input type="hidden" class="form-control" id="selectedCardCvv" <isprint value=${savedCardFields.selectedCardCvv.attributes} encoding="off"/> value="">
+        <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
+        <input type="hidden" id="selectedCardUuid" <isprint value=${savedCardFields.selectedCardUuid.attributes} encoding="off"/> value="">
+        <input type="hidden" id="selectedCardCvv" <isprint value=${savedCardFields.selectedCardCvv.attributes} encoding="off"/> value="">
 
         <!--- register/authenticated user --->
         <isif condition="${pdict.customer.registeredUser}">

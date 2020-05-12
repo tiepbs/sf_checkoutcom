@@ -1,3 +1,5 @@
+<input type="hidden" name="${pdict.forms.billingForm.paymentMethod.htmlName}" value="">
+
 <isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="paymentOption">
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_CARD'}">
         <isinclude template="checkout/billing/paymentOptions/creditCardContent" />
