@@ -19,6 +19,7 @@ var eventsHelper = {
      * Adds the gateway webhook information to the newly created order.
      */
     addWebhookInfo: function (hook, paymentStatus, orderStatus) {
+    	
         // Load the order
         var order = OrderMgr.getOrder(hook.data.reference);
         if (order) {
@@ -52,6 +53,7 @@ var eventsHelper = {
      * Payment captured event.
      */
     paymentCaptured: function (hook) {
+    	
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);
 
@@ -84,6 +86,7 @@ var eventsHelper = {
      * Payment authorized event.
      */
     paymentApproved: function (hook) {
+    	
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 

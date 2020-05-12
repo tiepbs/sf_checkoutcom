@@ -104,9 +104,6 @@ function handleMandate()
                         var sepaRequest = apmHelper.handleSepaControllerRequest(payObject, order);
                         if(apmHelper.handleApmChargeResponse(sepaRequest, order)){
                         	
-                        	// Save Sepa Transaction
-                        	ckoHelper.saveCKOTransaction(sepaRequest, order);
-                        	
                             // Show the confirmation screen
                             app.getController('COSummary').ShowConfirmation(order);
                         }else{
