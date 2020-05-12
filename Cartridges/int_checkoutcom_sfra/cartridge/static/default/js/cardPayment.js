@@ -1,3 +1,15 @@
+'use strict';
+
+/**
+ * jQuery Ajax helpers on DOM ready.
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	// Saved card selection
+    initSavedCardSelection();
+
+    // Enable the first saved card
+    $('.saved-payment-instrument').first().trigger('click');
+}, true);
 
 function initCheckoutcomCardValidation() {
     // Is card payment
@@ -7,10 +19,10 @@ function initCheckoutcomCardValidation() {
     var condition2 = $('.user-payment-instruments').hasClass('checkout-hidden');
 
     // Validation events
-    if (condition1 && !condition2) { 
+    if (condition1 && condition2) { 
         cardFormValidation();
     }
-    else {
+    else if (condition1 && !condition2) {
         savedCardFormValidation();
     }
 }
@@ -36,7 +48,7 @@ function cardFormValidation() {
         cardFields.push(checkCardCvv());
 
         // Handle errors
-        $.each(cardFields , function(i, field){
+        $.each(cardFields , function(i, field) {
             if (field.error == 1) {
                 $('#' + field.id).next('.invalid-feedback').show();
             }
@@ -52,9 +64,6 @@ function cardFormValidation() {
 }
 
 function savedCardFormValidation() {
-    // Saved card selection
-    initSavedCardSelection();
-
     // Submit event
     $('button.submit-payment').off('click touch').on('click touch', function (e) {
         // Reset the form error messages
@@ -65,7 +74,7 @@ function savedCardFormValidation() {
         var buttonEvent = e;
 
         // Implement the event
-        savedCard.each(function() {
+        savedCard.each(function(i) {
             // Prepare the variables
             var self = $(this);
             var cvvField = self.find('input.saved-payment-security-code');
@@ -135,7 +144,7 @@ function checkCardNumber() {
     // Set the target field
     var targetField = $('#cardNumber');
     var field = {
-        id: targetField,
+        id: targetField.attr('id'),
         error: 0
     }
 
@@ -155,7 +164,7 @@ function checkCardExpirationMonth() {
     // Set the target field
     var targetField = $('#expirationMonth');
     var field = {
-        id: targetField,
+        id: targetField.attr('id'),
         error: 0
     }
     
@@ -175,7 +184,7 @@ function checkCardExpirationYear() {
     // Set the target field
     var targetField = $('#expirationYear');
     var field = {
-        id: targetField,
+        id: targetField.attr('id'),
         error: 0
     }
 
@@ -195,7 +204,7 @@ function checkCardCvv() {
     // Set the target field
     var targetField = $('#securityCode');
     var field = {
-        id: targetField,
+        id: targetField.attr('id'),
         error: 0
     }
 
@@ -209,4 +218,8 @@ function checkCardCvv() {
     }
 
     return field;
+}
+
+function getFormattedNumber(num) {
+    return num.replace(/\s/g, '');
 }
