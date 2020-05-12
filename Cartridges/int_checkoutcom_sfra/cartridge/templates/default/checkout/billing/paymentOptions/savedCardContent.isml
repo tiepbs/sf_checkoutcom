@@ -1,9 +1,3 @@
-<isscript>
-    // CSS and JS
-    var assets = require('*/cartridge/scripts/assets.js');
-    assets.addJs('/js/savedCardPayment.js');
-</isscript>
-
 <!--- Hidden input for selected saved card --->
 <div class="tab-pane saved-card-content" id="saved-card-content" role="tabpanel">
     <fieldset class="payment-form-fields">

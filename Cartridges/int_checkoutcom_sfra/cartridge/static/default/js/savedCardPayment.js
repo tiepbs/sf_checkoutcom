@@ -1,20 +1,8 @@
-function initCheckoutcomCardValidation() {
-    // Is card payment
-    var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD';
-
-    // Saved cards invisible
-    var condition2 = $('.user-payment-instruments').hasClass('checkout-hidden');
-
-    // Run the form validation
-    if (condition1 && !condition2) {
-        savedCardFormValidation();
-        savedCardSelection();
-        $('.saved-payment-instrument').first().addClass('selected-payment');
-    }
-}
-
 function savedCardFormValidation() {
-    alert('savedCardFormValidation');
+    // Enable the saved card selection
+    savedCardSelection();
+
+    // Submit event
     $('button.submit-payment').off('click touch').one('click touch', function (e) {
         // Reset the form error messages
         resetFormErrors();
@@ -30,16 +18,16 @@ function savedCardFormValidation() {
             var cvvField = self.find('input.saved-payment-security-code');
 
             // The saved card is selected
-            var condition3 = self.hasClass('selected-payment');
+            var condition1 = self.hasClass('selected-payment');
 
             // Field is empty
-            var condition4 = cvvField.val() == '';
+            var condition2 = cvvField.val() == '';
 
             // Field is numeric
-            var condition5 = cvvField.val()%1 == 0;
+            var condition3 = cvvField.val()%1 == 0;
 
             // Field validation
-            if (condition3 && (condition4 || !condition5)) {
+            if (condition1 && (condition2 || !condition3)) {
                 // Prevent the default button click behaviour
                 buttonEvent.preventDefault();
                 buttonEvent.stopImmediatePropagation();
@@ -52,30 +40,24 @@ function savedCardFormValidation() {
 }
 
 function savedCardSelection() {
-    // Is card payment
-    var condition2 = $('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD';
+    // Set the selected card uuid
+    $('.saved-payment-instrument').off('click touch').one('click touch', function (e) {
+        var self = $(this);
 
-    // Saved cards invisible
-    var condition3 = $('.user-payment-instruments').hasClass('checkout-hidden');
-
-    // Validation event
-    if (condition2 && !condition3) {
         // Set the selected card uuid
-        $('.saved-payment-instrument').off('click touch').one('click touch', function (e) {
-            var self = $(this);
+        $('input[name="dwfrm_billing_savedCardForm_selectedCardUuid"]').val(
+            self.data('uuid')
+        );
+    });
 
-            // Set the selected card uuid
-            $('input[name="dwfrm_billing_savedCardForm_selectedCardUuid"]').val(
-                self.data('uuid')
-            );
-        });
+    // Set the card cvv event
+    $('.saved-payment-instrument').off('click touch').one('click touch', function (e) {
+        var self = $(this);
+        $('input[name="dwfrm_billing_savedCardForm_selectedCardCvv"]').val(
+            self.find('input.saved-payment-security-code').val()
+        );
+    });
 
-        // Set the card cvv event
-        $('.saved-payment-instrument').off('click touch').one('click touch', function (e) {
-            var self = $(this);
-            $('input[name="dwfrm_billing_savedCardForm_selectedCardCvv"]').val(
-                self.find('input.saved-payment-security-code').val()
-            );
-        });
-    }
+    // Select the first item in the list
+    $('.saved-payment-instrument').first().addClass('selected-payment');
 }

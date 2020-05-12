@@ -1,8 +1,9 @@
 <isscript>
     // CSS and JS
     var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/lib/jquery.cookie.js');
     assets.addJs('/js/checkoutcom.js');
-    assets.addJs('/js/cleave.js');
+    assets.addJs('/js/lib/cleave.js');
     assets.addCss('/css/checkoutcom.css');
 
     // Translatrion strings
