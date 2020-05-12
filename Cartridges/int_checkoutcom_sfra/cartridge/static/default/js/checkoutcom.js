@@ -23,6 +23,9 @@ function initTabs() {
 			// Show the clicked tab content
 			$($(this).attr('href')).addClass('active');
 
+			// Handle the saved cards cookie
+			$.cookie('ckoSavedCard') = ($(this).attr('href') == '#saved-card-content');
+
 			// Add the selected payment method
 			var methodId = $(this).closest('li').data('method-id');
 			$('input[name="dwfrm_billing_paymentMethod"]').val(methodId);
