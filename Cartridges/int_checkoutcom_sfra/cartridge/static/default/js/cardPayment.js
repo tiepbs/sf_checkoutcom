@@ -1,23 +1,36 @@
 function initCheckoutcomCardValidation() {
-	// Saved card selection
-    initSavedCardSelection();
-
     // Is card payment
     var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD';
 
     // Saved cards invisible
     var condition2 = $('.user-payment-instruments').hasClass('checkout-hidden');
 
-    // Validation events
+    // Card form switch event
+    $('button.add-payment').on('click touch', function () {
+        cardFormValidation();
+    });
+
+    // Saved card form switch event
+    $('button.cancel-new-payment').on('click touch', function () {
+        savedCardFormValidation();
+        savedCardSelection();
+        $('.saved-payment-instrument').first().addClass('selected-payment');
+
+    });
+
+    // Run the default form validation
     if (condition1 && condition2) { 
         cardFormValidation();
     }
     else if (condition1 && !condition2) {
         savedCardFormValidation();
+        savedCardSelection();
+        $('.saved-payment-instrument').first().addClass('selected-payment');
     }
 }
 
 function cardFormValidation() {
+    alert('cardFormValidation');
     $('button.submit-payment').off('click touch').one('click touch', function (e) {
         // Reset the form error messages
         resetFormErrors();
@@ -54,7 +67,7 @@ function cardFormValidation() {
 }
 
 function savedCardFormValidation() {
-    // Submit event
+    alert('savedCardFormValidation');
     $('button.submit-payment').off('click touch').one('click touch', function (e) {
         // Reset the form error messages
         resetFormErrors();
@@ -88,7 +101,7 @@ function savedCardFormValidation() {
                 self.find('.invalid-feedback').show();
             }
         });
-    });        
+    }); 
 }
 
 function resetFormErrors() {
@@ -98,7 +111,7 @@ function resetFormErrors() {
     });        
 }
 
-function initSavedCardSelection() {
+function savedCardSelection() {
     // Is card payment
     var condition2 = $('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD';
 
@@ -109,7 +122,6 @@ function initSavedCardSelection() {
     if (condition2 && !condition3) {
         // Set the selected card uuid
         $('.saved-payment-instrument').off('click touch').one('click touch', function (e) {
-            alert('auto click');
             var self = $(this);
 
             // Set the selected card uuid
@@ -125,9 +137,6 @@ function initSavedCardSelection() {
                 self.find('input.saved-payment-security-code').val()
             );
         });
-
-        // Select the first card in the list
-        $('.saved-payment-instrument').first().trigger('click');
     }
 }
 
