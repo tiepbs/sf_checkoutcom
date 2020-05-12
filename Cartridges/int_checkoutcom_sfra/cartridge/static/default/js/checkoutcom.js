@@ -37,6 +37,9 @@ function initTabs() {
 			initFormValidation();
 		}
 	);
+
+	// Show the first active
+	$('.credit-card-tab').trigger('click');
 }
 
 function initFormValidation() {

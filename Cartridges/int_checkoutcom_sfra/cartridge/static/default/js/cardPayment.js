@@ -99,12 +99,6 @@ function resetFormErrors() {
 }
 
 function initSavedCardSelection() {
-    // Enable the first saved card
-    $('.saved-payment-instrument').first().addClass('selected-payment');
-
-    // A saved card is selected
-    var condition1 = $('.user-payment-instruments .selected-payment').length > 0;
-
     // Is card payment
     var condition2 = $('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD';
 
@@ -112,9 +106,10 @@ function initSavedCardSelection() {
     var condition3 = $('.user-payment-instruments').hasClass('checkout-hidden');
 
     // Validation event
-    if (condition1 && (condition2 || !condition3)) {
+    if (condition2 && !condition3) {
         // Set the selected card uuid
         $('.saved-payment-instrument').off('click touch').one('click touch', function (e) {
+            alert('auto click');
             var self = $(this);
 
             // Set the selected card uuid
@@ -130,6 +125,9 @@ function initSavedCardSelection() {
                 self.find('input.saved-payment-security-code').val()
             );
         });
+
+        // Select the first card in the list
+        $('.saved-payment-instrument').first().trigger('click');
     }
 }
 
