@@ -96,6 +96,10 @@ server.replace(
         }    
 
         var paymentMethodIdValue = paymentForm.paymentMethod.value;
+
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('aaw {0}', JSON.stringify(paymentForm));
+
         if (!PaymentManager.getPaymentMethod(paymentMethodIdValue).paymentProcessor) {
             throw new Error(Resource.msg(
                 'error.payment.processor.missing',
