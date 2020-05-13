@@ -27,7 +27,7 @@ function initTabs() {
 			$(targetId).addClass('active');
 			
 			// Handle the saved cards cookie
-			$.cookie('ckoSavedCard', targetId == '#saved-card-content');
+			$.cookie('ckoSavedCard', (targetId == '#saved-card-content'));
 
 			// Add the selected payment method
 			var methodId = $(this).parents('li').data('method-id');
