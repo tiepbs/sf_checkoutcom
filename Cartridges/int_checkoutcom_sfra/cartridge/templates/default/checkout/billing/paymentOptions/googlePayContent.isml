@@ -13,6 +13,10 @@
 
 <div class="tab-pane google-pay-content" id="google-pay-content" role="tabpanel">
     <fieldset class="payment-form-fields">
+		<input type="hidden" class="form-control"
+				name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+				value=""
+		>
         <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
         <isset name="googlePayFields" value="${pdict.forms.billingForm.googlePayForm}" scope="page"/>
 
