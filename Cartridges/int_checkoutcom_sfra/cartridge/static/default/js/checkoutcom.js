@@ -36,6 +36,9 @@ function initTabs() {
 			initFormValidation();
 		}
 	);
+
+	// Show the first active
+	$('.payment-options li.nav-item').first().find('a.nav-link').trigger('click');
 }
 
 function initFormValidation() {
