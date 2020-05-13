@@ -11,7 +11,7 @@
     	<input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
         <isset name="creditFields" value="${pdict.forms.billingForm.creditCardFields}" scope="page"/>
 
-        <fieldset class="credit-card-form ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? 'checkout-hidden' : ''}">
+        <fieldset class="credit-card-form">
             <isinclude template="checkout/billing/paymentOptions/forms/creditCardForm" />
         </fieldset>
 

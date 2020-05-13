@@ -15,10 +15,6 @@ function initCheckoutcomCardValidation() {
 }
 
 function cardFormValidation() {
-    // Show the card form
-    $('.credit-card-form').removeClass('checkout-hidden');
-
-    // Submit event
     $('button.submit-payment').off('click touch').one('click touch', function (e) {
         // Reset the form error messages
         resetFormErrors();
