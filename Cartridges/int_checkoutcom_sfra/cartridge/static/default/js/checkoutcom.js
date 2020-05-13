@@ -32,7 +32,6 @@ function initTabs() {
 			// Add the selected payment method
 			var methodId = $(this).parents('li').data('method-id');
 			$('input[name="dwfrm_billing_paymentMethod"]').val(methodId);
-			alert($('input[name="dwfrm_billing_paymentMethod"]').val());
 
 			// Initialize the form validation
 			initFormValidation();
