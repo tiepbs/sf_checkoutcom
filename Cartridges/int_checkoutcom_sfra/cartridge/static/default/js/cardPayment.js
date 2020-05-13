@@ -3,13 +3,13 @@ function initCheckoutcomCardValidation() {
     var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD';
 
     // Is card form
-    var condition2 = $.cookie('ckoSavedCard') != 'true';
+    var condition2 = $('.saved-card-tab').hasClass('active');
 
     // Run the default form validation
-    if (condition1 && condition2) { 
+    if (condition1 && !condition2) { 
         cardFormValidation();
     }
-    else if (condition1 && !condition2) {
+    else if (condition1 && condition2) {
         savedCardFormValidation();
     }
 }
