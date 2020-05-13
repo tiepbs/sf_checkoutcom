@@ -719,7 +719,7 @@ var ckoHelper = {
         var captureOnMs = now + parseInt(captureOnMin) * 60000;
 
         // Convert the capture time to ISO 8601 format
-        return ckoHelper.getValue('ckoAutoCapture') ? null : new Date(captureOnMs).toISOString();
+        return new Date(captureOnMs).toISOString();
     },
     
     // Build 3ds object
