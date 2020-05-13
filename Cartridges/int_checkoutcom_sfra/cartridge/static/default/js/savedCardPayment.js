@@ -48,11 +48,7 @@ function savedCardSelection() {
         $('input[name="dwfrm_billing_savedCardForm_selectedCardUuid"]').val(
             self.data('uuid')
         );
-    });
 
-    // Set the card cvv event
-    $('.saved-payment-instrument').off('click touch').one('click touch', function (e) {
-        var self = $(this);
         $('input[name="dwfrm_billing_savedCardForm_selectedCardCvv"]').val(
             self.find('input.saved-payment-security-code').val()
         );
