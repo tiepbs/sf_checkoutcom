@@ -11,11 +11,11 @@
     var orderAmount = pdict.order.totals.grandTotal.replace(/[^\d\.\,\s]+/g, '');
 </isscript>
 
-<input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
-<isset name="googlePayFields" value="${pdict.forms.billingForm.googlePayForm}" scope="page"/>
-
 <div class="tab-pane google-pay-content" id="google-pay-content" role="tabpanel">
     <fieldset class="payment-form-fields">
+        <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
+        <isset name="googlePayFields" value="${pdict.forms.billingForm.googlePayForm}" scope="page"/>
+
         <isinclude template="checkout/billing/paymentOptions/forms/googlePayForm" />
     </fieldset>
 </div>

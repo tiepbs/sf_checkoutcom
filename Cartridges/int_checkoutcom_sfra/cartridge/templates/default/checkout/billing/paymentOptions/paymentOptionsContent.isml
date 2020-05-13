@@ -1,4 +1,7 @@
-<input type="hidden" <isprint value=${pdict.forms.billingForm.paymentMethod.attributes} encoding="off"/> value="">
+<input type="hidden" class="form-control"
+        name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+        value="CREDIT_CARD"
+>
 
 <isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="paymentOption">
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_CARD'}">
