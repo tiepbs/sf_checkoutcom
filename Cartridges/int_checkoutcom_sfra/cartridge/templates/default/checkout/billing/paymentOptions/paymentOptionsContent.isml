@@ -2,7 +2,9 @@
 <isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="paymentOption">
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_CARD'}">
         <isinclude template="checkout/billing/paymentOptions/creditCardContent" />
-        <isinclude template="checkout/billing/paymentOptions/savedCardContent" />
+        <isif condition="${pdict.customer.registeredUser}">
+            <isinclude template="checkout/billing/paymentOptions/savedCardContent" />
+        </isif>
     </isif>
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY'}">
         <isinclude template="checkout/billing/paymentOptions/googlePayContent" />
