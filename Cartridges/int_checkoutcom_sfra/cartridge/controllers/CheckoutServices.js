@@ -96,6 +96,7 @@ server.replace(
         }    
 
         var paymentMethodIdValue = paymentForm.paymentMethod.value;
+
         if (!PaymentManager.getPaymentMethod(paymentMethodIdValue).paymentProcessor) {
             throw new Error(Resource.msg(
                 'error.payment.processor.missing',
@@ -108,10 +109,6 @@ server.replace(
 
         var paymentFormResult;
     
-
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('000req {0}', JSON.stringify(HookManager.hasHook('app.payment.form.processor.' + paymentProcessor.ID.toLowerCase())));
-
         if (HookManager.hasHook('app.payment.form.processor.' + paymentProcessor.ID.toLowerCase())) {
             paymentFormResult = HookManager.callHook('app.payment.form.processor.' + paymentProcessor.ID.toLowerCase(),
                 'processForm',
@@ -204,7 +201,7 @@ server.replace(
                 }
                 billingAddress.setCountryCode(billingData.address.countryCode.value);
 
-                if (billingData.selectedCardUuid) {
+                if (billingForm.savedCardForm.selectedCardUuid.htmlValue.length > 0) {
                     billingAddress.setPhone(req.currentCustomer.profile.phone);
                     currentBasket.setCustomerEmail(req.currentCustomer.profile.email);
                 } else {

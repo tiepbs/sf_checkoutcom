@@ -16,7 +16,9 @@
                     autocomplete="cc-number"
                     aria-describedby="cardNumberInvalidMessage"
                 >
-                <div class="invalid-feedback" id="cardNumberInvalidMessage"></div>
+                <div class="invalid-feedback" id="cardNumberInvalidMessage">
+                    ${Resource.msg('cko.cardnumber.invalid', 'cko', null)}
+                </div>
             </div>
         </div>
     </div>
@@ -43,7 +45,9 @@
                     </option>
                 </isloop>
             </select>
-            <div class="invalid-feedback" id="expirationMonthInvalidMessage"></div>
+            <div class="invalid-feedback" id="expirationMonthInvalidMessage">
+                ${Resource.msg('cko.cardexpirationmonth.invalid', 'cko', null)}
+            </div>
         </div>
     </div>
     <div class="col-6">
@@ -66,7 +70,9 @@
                     <isprint value="${year}" formatter="####" /></option>
                 </isloop>
             </select>
-            <div class="invalid-feedback" id="expirationYearInvalidMessage"></div>
+            <div class="invalid-feedback" id="expirationYearInvalidMessage">
+                ${Resource.msg('cko.cardexpirationyear.invalid', 'cko', null)}
+            </div>
         </div>
     </div>
 </div>
@@ -89,7 +95,9 @@
             <input type="text" class="form-control securityCode" id="securityCode"
                 <isprint value=${creditFields.securityCode.attributes} encoding="off"/>
                 aria-describedby="securityCodeInvalidMessage" >
-            <div class="invalid-feedback" id="securityCodeInvalidMessage"></div>
+            <div class="invalid-feedback" id="securityCodeInvalidMessage">
+                ${Resource.msg('cko.cardsecuritycode.invalid', 'cko', null)}
+            </div>
         </div>
     </div>
 </div>

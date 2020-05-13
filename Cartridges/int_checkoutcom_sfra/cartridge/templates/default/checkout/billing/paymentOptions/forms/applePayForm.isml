@@ -12,5 +12,5 @@
     <input type="hidden" id="ckoApplePaySiteName" value="${dw.system.Site.getCurrent().name}">
     <input type="hidden" id="ckoApplePaySiteCountry" value="${ckoHelper.getSiteCountryCode()}">
     <input type="hidden" id="ckoApplePayValidationUrl" value="${URLUtils.https('Applepay-GetValidation')}">
-    <input type="hidden" id="ckoApplePayData" name="${applePayFields.ckoApplePayData.htmlName}" value="">
+    <input type="hidden" id="ckoApplePayData" <isprint value=${applePayFields.ckoApplePayData.attributes} encoding="off"/>  value="">
 </fieldset>

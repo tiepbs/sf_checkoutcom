@@ -147,8 +147,8 @@ var cardHelper = {
     getCardSource: function (paymentData, order, processorId) {              
         // Replace selectedCardUuid by get saved card token from selectedCardUuid
         var cardSource;
-        var selectedCardUuid = paymentData.creditCardFields.selectedCardUuid.htmlValue;
-        var selectedCardCvv = paymentData.creditCardFields.selectedCardCvv.htmlValue;
+        var selectedCardUuid = paymentData.savedCardForm.selectedCardUuid.htmlValue;
+        var selectedCardCvv = paymentData.savedCardForm.selectedCardCvv.htmlValue;
 
         // If the saved card data is valid
         if (selectedCardCvv.length > 0 && selectedCardUuid.length > 0) {

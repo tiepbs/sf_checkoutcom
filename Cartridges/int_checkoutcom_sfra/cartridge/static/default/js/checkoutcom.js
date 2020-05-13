@@ -19,19 +19,18 @@ function initTabs() {
 		function() {
 			// Hide all tabs contents
 			$('.tab-pane').removeClass('active');
+			$('a.nav-link').removeClass('active');
+
+			// Get the target id
+			var targetId = $(this).attr('href');
 
 			// Show the clicked tab content
-			$($(this).attr('href')).addClass('active');
-
+			$(targetId).addClass('active');
+			$(this).addClass('active');
+			
 			// Add the selected payment method
-			var methodId = $(this).closest('li').data('method-id');
+			var methodId = $(this).parents('li').data('method-id');
 			$('input[name="dwfrm_billing_paymentMethod"]').val(methodId);
-
-			// Clear the selected card UUID field
-			$('input[name="dwfrm_billing_creditCardFields_selectedCardUuid"]').val('');
-
-			// Disable any selected saved card
-			$('.saved-payment-instrument').removeClass('selected-payment');
 
 			// Initialize the form validation
 			initFormValidation();
@@ -39,7 +38,7 @@ function initTabs() {
 	);
 
 	// Show the first active
-	$('.credit-card-tab').trigger('click');
+	$('.payment-options li.nav-item').first().find('a.nav-link').trigger('click');
 }
 
 function initFormValidation() {
@@ -57,6 +56,13 @@ function initFormValidation() {
 	if (typeof window[func] === "function") {
 		window[func]();
 	}
+}
+
+function resetFormErrors() {
+    $('.invalid-feedback').hide();
+    $('.credit-card-content .is-invalid').each(function() {
+        $(this).removeClass('is-invalid');
+    });        
 }
 
 function loadTranslations() {

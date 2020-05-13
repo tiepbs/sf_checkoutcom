@@ -1,10 +1,5 @@
 
 <!--- selected card --->
-<input type="hidden" class="form-control"
-        name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-        value="${paymentOption.ID}"
->
-
 <isloop items="${pdict.customer.customerPaymentInstruments}" var="paymentInstrument" status="loopState">
     <div class="row saved-payment-instrument" data-uuid="${paymentInstrument.UUID}">
         <div class="form-group required saved-security-code col-6 col-md-3">
