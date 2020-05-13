@@ -19,12 +19,14 @@ function initTabs() {
 		function() {
 			// Hide all tabs contents
 			$('.tab-pane').removeClass('active');
+			$('a.nav-link').removeClass('active');
 
 			// Get the target id
 			var targetId = $(this).attr('href');
 
 			// Show the clicked tab content
 			$(targetId).addClass('active');
+			$(this).addClass('active');
 			
 			// Add the selected payment method
 			var methodId = $(this).parents('li').data('method-id');
@@ -34,9 +36,6 @@ function initTabs() {
 			initFormValidation();
 		}
 	);
-
-	// Show the first active
-	$('.credit-card-tab').trigger('click');
 }
 
 function initFormValidation() {
