@@ -40,8 +40,11 @@ function savedCardFormValidation() {
 }
 
 function savedCardSelection() {
+    // Target saved card
+    var savedCardItem = $('.saved-payment-instrument');
+
     // Set the selected card uuid
-    $('.saved-payment-instrument').off('click touch').one('click touch', function (e) {
+    savedCardItem.off('click touch').one('click touch', function (e) {
         var self = $(this);
 
         // Set the selected card uuid
@@ -49,11 +52,13 @@ function savedCardSelection() {
             self.data('uuid')
         );
 
-        $('input[name="dwfrm_billing_savedCardForm_selectedCardCvv"]').val(
-            self.find('input.saved-payment-security-code').val()
-        );
+        // Set the selected card security code event
+        var cvvField = self.find('input.saved-payment-security-code');
+        cvvField.off('change').one('change', function (e) {
+            $('input[name="dwfrm_billing_savedCardForm_selectedCardCvv"]').val($(this).val());
+        });
     });
 
     // Select the first item in the list
-    $('.saved-payment-instrument').first().addClass('selected-payment');
+    savedCardItem.first().addClass('selected-payment');
 }
