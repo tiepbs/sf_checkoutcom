@@ -9,43 +9,25 @@ document.addEventListener('DOMContentLoaded', function () {
 }, false);
 
 function initCheckoutcomApplePayValidation() {
-    $('button.submit-payment').off('click touch').on('click touch', function(e) {
-        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_APPLE_PAY') {
-            // Reset the error messages
-            $('.invalid-field-message').empty();
-
+    $('button.submit-payment').off('click touch').one('click touch', function (e) {
+        if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APPLE_PAY') {
             // Prevent the default button click behaviour
             e.preventDefault();
             e.stopImmediatePropagation();
 
-            // Prepare the errors array
-            var ckoFormErrors = [];
-
-            // Card number validation
-            ckoFormErrors[0] = checkApplePayData();
-
-            // Invalidate the button click if errors found
-            if ($.inArray(1, ckoFormErrors) !== -1) {
-                return false;
+            // Validate the payment data
+            var field1 = $('input[name="dwfrm_billing_applePayForm_ckoApplePayData"]');
+            if (field1.val() == '') {
+                $('#apple-pay-content .invalid-field-message').text(
+                    window.ckoLang.applePayDataInvalid
+                );
             }
-            else {
-                // Send the place order request
-                placeOrder();
+            else 
+            {
+                $(this).trigger('click');
             }
         }
-    });
-}
-
-function checkApplePayData() {
-    if ($('#ckoApplePayData').val() == '') {
-        $('#cko-apple-pay-content .invalid-field-message').text(
-            window.ckoLang.applePayDataInvalid
-        );
-        
-        return 1;
-    }
-
-    return 0;
+    }); 
 }
 
 function getLineItems()
@@ -116,7 +98,7 @@ function launchApplePay()
     }
 
     // Handle the events
-    jQuery('.ckoApplePayButton').click(
+    jQuery('.apple-pay-button').click(
         function (evt) {
             // Prepare the parameters
             var runningTotal = jQuery('[id="ckoApplePayAmount"]').val();

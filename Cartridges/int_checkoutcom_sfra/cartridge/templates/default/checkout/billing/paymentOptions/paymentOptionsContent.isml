@@ -1,14 +1,18 @@
-<isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="paymentOption" status="loopSate">
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_CARD' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
-        <isinclude template="checkout/billing/paymentOptions/content/cardForm"/>
+
+<isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="paymentOption">
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_CARD'}">
+        <isinclude template="checkout/billing/paymentOptions/creditCardContent" />
+        <isif condition="${pdict.customer.registeredUser}">
+            <isinclude template="checkout/billing/paymentOptions/savedCardContent" />
+        </isif>
     </isif>
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APM' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
-        <isinclude template="checkout/billing/paymentOptions/content/apmForm"/>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY'}">
+        <isinclude template="checkout/billing/paymentOptions/googlePayContent" />
     </isif>
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayEnabled')}">
-        <isinclude template="checkout/billing/paymentOptions/content/applePayForm"/>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY'}">
+        <isinclude template="checkout/billing/paymentOptions/applePayContent" />
     </isif>
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnabled')}">
-        <isinclude template="checkout/billing/paymentOptions/content/googlePayForm"/>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APM'}">
+        <isinclude template="checkout/billing/paymentOptions/apmContent" />
     </isif>
 </isloop>

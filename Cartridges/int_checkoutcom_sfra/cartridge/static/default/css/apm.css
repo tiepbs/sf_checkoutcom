@@ -9,7 +9,6 @@
     border: none;
     outline: none;
     transition: 0.4s;
-    border-bottom: solid 1px #cccccc;
 }
 
 .cko-apm-accordion img {
@@ -21,6 +20,7 @@
 
 .apm-list-item {
     display: none;
+    border-bottom: solid 1px #cccccc;
 }
 
 .cko-apm-active, .cko-apm-accordion:hover {
@@ -35,52 +35,7 @@
     transition: max-height 0.2s ease-out;
 }
 
-.cko-apm-panel-opened {
-    border-bottom: solid 1px #f1f1f1;
-}
-
 .cko-apm-panel > div {
 	padding-top: 23px;
 	padding-bottom: 20px;
-}
-
-/* Klarna */
-#klarnaPay_pay_box {
-    min-width: 280px;
-    border: solid 1px #aaa;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-radius: 5px;
-}
-
-#klarna-payments-container {
-    min-width: 280px;
-    padding: 10px;
-}
-
-#klarna_authorize_btn {
-    width: 100%;
-    margin-top: 30px;
-}
-
-.klarna-button {
-    padding: 10px;
-    border: solid 0.5px #eee;
-    border-radius: 5px;
-}
-
-.klarna-button img {
-    margin-top: 10px;
-    float: right;
-}
-
-.klarna-button p {
-    color: #84bd00;
-    float: right;
-    display: none;
-}
-
-.klarna-button span {
-    font-size: 20px;
-    color: black;
 }

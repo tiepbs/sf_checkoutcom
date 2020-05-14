@@ -65,7 +65,7 @@ function initTable(tableData)
     // Build the table instance
     window.ckoTransactionsTable = new Tabulator('#transactions-table', {
         index: 'id',
-        responsiveLayout:true,
+        responsiveLayout: true,
         selectable: 'highlight',
         headerFilterPlaceholder: '>',
         placeholder: window.ckoLang.noResults,
@@ -161,7 +161,6 @@ function getTableColumns()
         {
             title: 'Amount',
             field: 'amount',
-            width: 120,
             headerFilter: 'input',
             formatter: function (cell, formatterParams, onRendered) {
                 var rowData = cell.getRow().getData();
@@ -169,16 +168,16 @@ function getTableColumns()
             }
         },
         {title: 'Currency', field: 'currency', visible: false},
-        {title: 'Date', field: 'creation_date', width: 140, headerFilter: 'input'},
-        {title: 'Type', field: 'type', width: 110, headerFilter: 'input'},
-        {title: 'State', field: 'opened', width: 110, formatter: 'tickCross', visible: false},
-        {title: 'Processor', field: 'processor', width: 190, headerFilter: 'input'},
+        {title: 'Date', field: 'creation_date', headerFilter: 'input'},
+        {title: 'Type', field: 'type', headerFilter: 'input'},
+        {title: 'State', field: 'opened', formatter: 'tickCross', visible: false},
+        {title: 'Processor', field: 'processor', width: 200, headerFilter: 'input'},
         {
             title: 'Actions',
             field: 'actions',
+            width: 230,
             headerSort: false,
             align: 'center',
-            width: 200,
             formatter: function (cell, formatterParams, onRendered) {
                 return getButtonsHtml(cell);
             }
@@ -195,16 +194,16 @@ function getButtonsHtml(cell)
     var html = '';
     
     // Build the action buttons
-    if (JSON.parse(rowData.opened)) {
+    if (JSON.parse(rowData.opened) && rowData.type != 'CREDIT') {
         // Capture
         if (rowData.type == 'AUTH') {
-            html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">Void</button>';
-            html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-info ckoAction">Capture</button>';
+            html += '<button type="button" id="void-button-' + rowData.transaction_id + '" class="btn btn-default ckoAction">' +  window.ckoLang.void + '</button>';
+            html += '<button type="button" id="capture-button-' + rowData.transaction_id + '" class="btn btn-info ckoAction">' +  window.ckoLang.capture + '</button>';
         }
 
         // Void
         if (rowData.type == 'CAPTURE') {
-            html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-secondary ckoAction">Refund</button>';
+            html += '<button type="button" id="refund-button-' + rowData.transaction_id + '" class="btn btn-secondary ckoAction">' +  window.ckoLang.refund + '</button>';
         }
     } else {
         html += '<div class="ckoLocked">&#x1f512;</div>';

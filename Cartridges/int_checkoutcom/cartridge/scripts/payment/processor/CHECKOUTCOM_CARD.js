@@ -3,8 +3,6 @@
 /* API Includes */
 var PaymentMgr = require('dw/order/PaymentMgr');
 var Transaction = require('dw/system/Transaction');
-var ISML = require('dw/template/ISML');
-var PaymentTransaction = require('dw/order/PaymentTransaction');
 
 /* Site controller */
 var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
@@ -95,7 +93,6 @@ function Authorize(args)
 {
     // Preparing payment parameters
     var paymentInstrument = args.PaymentInstrument;
-    var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
 
     // Add order number to the session global object
     session.privacy.ckoOrderId = args.OrderNo;
@@ -110,35 +107,11 @@ function Authorize(args)
         'expiryMonth'   : paymentInstrument.creditCardExpirationMonth,
         'expiryYear'    : paymentInstrument.creditCardExpirationYear,
         'cvv'           : paymentForm.get('cvn').value(),
-        'type'          : paymentInstrument.creditCardType,
+        'type'          : paymentInstrument.creditCardType
     };
-
-    // Make the charge request
-    var chargeResponse = cardHelper.handleCardRequest(cardData, args);
-
-    // Handle card charge request result
-    if (chargeResponse) {
-        if (ckoHelper.getValue('cko3ds')) {
-            // 3ds redirection
-            ISML.renderTemplate('redirects/3DSecure.isml', {
-                redirectUrl: session.privacy.redirectUrl
-            });
-
-            return {authorized: true, redirected: true};
-        } else {
-            // Create the authorization transaction
-            Transaction.wrap(function () {
-                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-            });
-
-            return {authorized: true};
-        }
+    
+    if (cardHelper.cardAuthorization(cardData, args)) {
+        return {success: true};
     } else {
         return {error: true};
     }

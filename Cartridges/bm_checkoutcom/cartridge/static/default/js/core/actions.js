@@ -3,7 +3,7 @@
 /**
  * jQuery Ajax helpers on DOM ready.
  */
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     // Initialize the button events
     initButtons();
 }, false);
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function initButtons()
 {
     // Close the modal window
-    jQuery('.ckoModal .modal-content .close').click(function (e) {
+    jQuery('.ckoModal .modal-content .close').click(function(e) {
         jQuery('.ckoModal .modal-content input').val('');
         jQuery('.ckoModal .modal-content span').not('.close, .label').empty();
         jQuery('.ckoModal').hide();

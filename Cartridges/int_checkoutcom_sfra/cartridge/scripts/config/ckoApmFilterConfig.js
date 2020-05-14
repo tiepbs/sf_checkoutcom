@@ -13,11 +13,11 @@ var ckoApmFilterConfig = {
         countries   : "BE",
         currencies  : "EUR"
     },
-    benefit: {
+    benefitpay: {
         countries   : "BH",
         currencies  : "BHD"
     },
-    giro: {
+    giropay: {
         countries   : "DE",
         currencies  : "EUR"
     },
@@ -64,6 +64,14 @@ var ckoApmFilterConfig = {
     oxxo: {
         countries   : "MX",
         currencies  : "MXN"
+    },
+    alipay: {
+    	countries	: "CN",
+    	currencies	: ["USD", "CNY"]
+    },
+    paypal: {
+    	countries	: "*",
+    	currencies	: ["*"]
     }
 }
 
