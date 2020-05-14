@@ -9,48 +9,30 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 function initCheckoutcomGooglePayValidation() {
-    $('button.submit-payment').off('click touch').on('click touch', function(e) {
-        if ($('#selectedPaymentOption').val() == 'CHECKOUTCOM_GOOGLE_PAY') {
-            // Reset the error messages
-            $('.invalid-field-message').empty();
-
+    $('button.submit-payment').off('click touch').one('click touch', function (e) {
+        if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_GOOGLE_PAY') {            
             // Prevent the default button click behaviour
             e.preventDefault();
             e.stopImmediatePropagation();
 
-            // Prepare the errors array
-            var ckoFormErrors = [];
-
-            // Card number validation
-            ckoFormErrors[0] = checkGooglePayData();
-
-            // Invalidate the button click if errors found
-            if ($.inArray(1, ckoFormErrors) !== -1) {
-                return false;
+            // Validate the payment data
+            var field1 = $('input[name="dwfrm_billing_googlePayForm_ckoGooglePayData"]');
+            if (field1.val() == '') {
+                $('#google-pay-content .invalid-field-message').text(
+                    window.ckoLang.googlePayDataInvalid
+                );
             }
-            else {
-                // Send the place order request
-                placeOrder();
+            else 
+            {
+                $(this).trigger('click');
             }
         }
-    });
-}
-
-function checkGooglePayData() {
-    if ($('#ckoGooglePayData').val() == '') {
-        $('#cko-google-pay-content .invalid-field-message').text(
-            window.ckoLang.googlePayDataInvalid
-        );
-
-        return 1;
-    }
-
-    return 0;
+    }); 
 }
 
 function launchGooglePay()
 {
-    jQuery('.cko-google-pay-button').click(function() {
+    jQuery('.google-pay-button').click(function() {
         // Prepare the payment parameters
         var allowedPaymentMethods = ['CARD', 'TOKENIZED_CARD'];
         var allowedCardNetworks = ['VISA', 'MASTERCARD', 'AMEX', 'JCB', 'DISCOVER'];
@@ -187,7 +169,7 @@ function launchGooglePay()
             };
 
             // Store the payload
-            jQuery('[name="ckoGooglePayData"]').val(JSON.stringify(payload));
+            jQuery('#ckoGooglePayData').val(JSON.stringify(payload));
         }
     });
 }

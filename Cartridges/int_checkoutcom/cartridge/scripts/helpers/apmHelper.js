@@ -32,16 +32,6 @@ var apmHelper = {
             if (this.handleApmChargeResponse(apmRequest)) {
             	
                 if (session.privacy.redirectUrl) {
-                    // Create the authorization transaction
-                    Transaction.wrap(function () {
-                        paymentInstrument.paymentTransaction.transactionID = apmRequest.action_id;
-                        paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                        paymentInstrument.paymentTransaction.custom.ckoPaymentId = apmRequest.id;
-                        paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                        paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                        paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                        paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-                    });
                     
                     // Set the redirection template
                     var templatePath;
@@ -58,6 +48,7 @@ var apmHelper = {
                     
                     return {authorized: true, redirected: true};
                 } else {
+                	
                     return {authorized: true};
                 }
             	
@@ -81,9 +72,6 @@ var apmHelper = {
         // clean the session
         session.privacy.redirectUrl = null;
         
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
-        
         // Update customer data
         ckoHelper.updateCustomerData(gatewayResponse);
         
@@ -101,8 +89,8 @@ var apmHelper = {
         
         // Add redirect URL to session if exists
         if (gatewayLinks.hasOwnProperty('redirect')) {
-            session.privacy.redirectUrl = gatewayLinks.redirect.href
-            return true;
+            session.privacy.redirectUrl = gatewayLinks.redirect.href;
+            return ckoHelper.paymentSuccess(gatewayResponse);
         } else {
             return ckoHelper.paymentSuccess(gatewayResponse);
         }  
@@ -121,7 +109,7 @@ var apmHelper = {
         // Creating billing address object
         var gatewayRequest = this.getApmRequest(payObject, args);
         
-        // Test SEPA
+        // Test for SEPA
         if (payObject.type == "sepa") {
             // Prepare the charge data
             var chargeData = {
@@ -173,8 +161,7 @@ var apmHelper = {
         var order = OrderMgr.getOrder(args.OrderNo);
         
         // Load the currency and amount
-        var currency = ckoHelper.getCurrency(payObject.currency);
-        var amount = ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), currency);
+        var amount = ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), payObject.currency);
         
         // Object APM is SEPA
         if (payObject.type == 'klarna') {
@@ -182,7 +169,7 @@ var apmHelper = {
             chargeData = {
                 "customer"              : ckoHelper.getCustomer(args),
                 "amount"                : amount,
-                "currency"              : currency,
+                "currency"              : payObject.currency,
                 "capture"               : false,
                 "source"                : payObject.source,
                 "reference"             : args.OrderNo,
@@ -195,7 +182,7 @@ var apmHelper = {
             chargeData = {
                 "customer"              : ckoHelper.getCustomer(args),
                 "amount"                : amount,
-                "currency"              : currency,
+                "currency"              : payObject.currency,
                 "source"                : payObject.source,
                 "reference"             : args.OrderNo,
                 "payment_ip"            : ckoHelper.getHost(args),
@@ -208,9 +195,9 @@ var apmHelper = {
     },
     
     /*
-     * Sepa apm Request
+     * Sepa controller Request
      */
-    handleSepaRequest: function (payObject, order) {
+    handleSepaControllerRequest: function (payObject, order) {
         // Gateway response
         var gatewayResponse = false;
         
@@ -219,7 +206,12 @@ var apmHelper = {
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
-            this.handleApmChargeResponse(gatewayResponse, order);
+        	
+            // Logging
+            ckoHelper.doLog('sepa response', gatewayResponse);
+        	
+            return gatewayResponse;
+            
         } else {
             // Update the transaction
             Transaction.wrap(function () {
@@ -231,8 +223,6 @@ var apmHelper = {
             
             return false;
         }
-
-        return true;
     }
 }
 

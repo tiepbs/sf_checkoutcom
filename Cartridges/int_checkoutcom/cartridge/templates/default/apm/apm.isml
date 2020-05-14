@@ -125,6 +125,14 @@
 	</isif>
 	
 	
+	<!-- This to include the Alipay apm form -->
+	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoAlipayEnabled'))}">
+		<div id="alipay" class="hideApm apmBox">	
+			<isinclude template="apm/alipay.isml"/>
+		</div>
+	</isif>
+	
+	
 	<!-- This to include the klarna apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoKlarnaEnabled'))}">
 		<div id="klarna" class="hideApm apmBox">	

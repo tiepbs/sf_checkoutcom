@@ -1,20 +1,59 @@
 "use strict"
 
 /* API Includes */
+var PaymentMgr = require('dw/order/PaymentMgr');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
+var ISML = require('dw/template/ISML');
+var URLUtils = require('dw/web/URLUtils');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
-/*
-* Utility functions for my cartridge integration.
-*/
+// Utility functions for my cartridge integration
 var cardHelper = {
-    /*
-     * Handle full charge Request to CKO API
-     */
+	
+    // Creates Site Genesis Transaction Object
+    cardAuthorization: function (payObject, args) {
+    	
+        // Preparing payment parameters
+        var paymentInstrument = args.PaymentInstrument;
+        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
+        
+        // perform the charge
+        var cardRequest = this.handleCardRequest(payObject, args);
+        
+        // Handle apm result
+        if (cardRequest) {
+            	
+            if (session.privacy.redirectUrl) {
+                
+                // 3ds redirection
+                ISML.renderTemplate('redirects/3DSecure.isml', {
+                    redirectUrl: session.privacy.redirectUrl
+                });
+
+                return {authorized: true, redirected: true};
+
+            } else {
+            	
+                // Load the card and order information
+                var order = OrderMgr.getOrder(args.OrderNo);
+            	
+                return {authorized: true};
+            }
+            
+            
+        } else {
+        	
+            return false
+        }
+    },
+		
+    // Handle full charge Request to CKO API
     handleCardRequest: function (cardData, args) {
+    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         
@@ -23,17 +62,19 @@ var cardHelper = {
         
         // Pre authorize the card
         if (this.preAuthorizeCard(gatewayRequest)) {
+        	
             // Perform the request to the payment gateway
             var gatewayResponse = ckoHelper.gatewayClientRequest(
                 "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
                 gatewayRequest
             );
-        
-            // Logging
-            ckoHelper.doLog('response', gatewayResponse);
 
             // If the charge is valid, process the response
-            if (gatewayResponse) {                
+            if (gatewayResponse) {    
+            	
+                // Logging
+                ckoHelper.doLog('response', gatewayResponse);
+            	
                 // Handle the response
                 if (this.handleFullChargeResponse(gatewayResponse)) {
                     return gatewayResponse;
@@ -53,15 +94,11 @@ var cardHelper = {
         return false;
     },
     
-    /*
-     * Handle full charge Response from CKO API
-     */
+    // Handle full charge Response from CKO API
     handleFullChargeResponse: function (gatewayResponse) {
+    	
         // Clean the session
         session.privacy.redirectUrl = null;
-        
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
         
         // Update customer data
         ckoHelper.updateCustomerData(gatewayResponse);
@@ -71,19 +108,23 @@ var cardHelper = {
         
         // Add 3DS redirect URL to session if exists
         if (gatewayLinks.hasOwnProperty('redirect')) {
+        	
+        	// Save redirect link to session
             session.privacy.redirectUrl = gatewayLinks.redirect.href;
-            return true;
+            
+            // Check if its a valid response
+            return ckoHelper.paymentSuccess(gatewayResponse);
+            
         } else {
+        	
+        	// Check if its a valid response
             return ckoHelper.paymentSuccess(gatewayResponse);
         }
-
-        return false;
     },
     
-    /*
-     * Pre_Authorize card with zero value
-     */
+    // Pre_Authorize card with zero value
     preAuthorizeCard: function (requestData) {
+    	
         // Clone the request data
         var authData = JSON.parse(JSON.stringify(requestData));
 
@@ -104,10 +145,9 @@ var cardHelper = {
         return ckoHelper.paymentSuccess(authResponse);
     },
     
-    /*
-     * Build the gateway request
-     */
+    // Build the gateway request
     getCardRequest: function (cardData, args) {
+    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
     
@@ -124,6 +164,8 @@ var cardHelper = {
             'shipping'              : this.getShippingObject(args),
             '3ds'                   : this.get3Ds(),
             'risk'                  : {enabled: true},
+            'success_url'           : URLUtils.https('CKOMain-HandleReturn').toString(),
+            'failure_url'           : URLUtils.https('CKOMain-HandleFail').toString(),
             'payment_ip'            : ckoHelper.getHost(args),
             'metadata'              : ckoHelper.getMetadataObject(cardData, args),
             'udf5'					: ckoHelper.getMetadataString(cardData, args)
@@ -132,10 +174,9 @@ var cardHelper = {
         return chargeData;
     },
     
-    /*
-     * Build Gateway Source Object
-     */
+    // Build Gateway Source Object
     getSourceObject: function (cardData, args) {
+    	
         // Source object
         var source = {
             type                : 'card',
@@ -151,20 +192,17 @@ var cardHelper = {
         return source;
     },
     
-    /*
-     * Build 3ds object
-     */
-    get3Ds: function () {
+    // Build 3ds object
+    get3Ds: function () { 	
         return {
             'enabled' : ckoHelper.getValue('cko3ds'),
             'attempt_n3d' : ckoHelper.getValue('ckoN3ds')
         }
     },
     
-    /*
-     * Build the Billing object
-     */
-    getBillingObject: function (args) {
+    // Build the Billing object
+    getBillingObject: function (args) { 
+    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -184,10 +222,9 @@ var cardHelper = {
         return billingDetails;
     },
     
-    /*
-     * Build the Shipping object
-     */
+    // Build the Shipping object
     getShippingObject: function (args) {
+    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -214,8 +251,5 @@ var cardHelper = {
     }
 }
 
-/*
-* Module exports
-*/
-
+// Module exports
 module.exports = cardHelper;

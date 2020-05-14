@@ -42,6 +42,9 @@ vertical-align: middle;
 	//width: 300px;
 }
 
+
+/* klarna Styles */
+
 .klarnaForm{
 	padding-top: 10px;
 	min-width: 280px; 
@@ -72,8 +75,16 @@ vertical-align: middle;
 	float: right;
 }
 
+#klarnaConfirmBtn{
+	width: 100%; 
+	margin-top: 30px; 
+	background: #EB6F93; 
+	border: #EB6F93; 
+	display: none;
+}
+
 .klarnaAproved{
-	color: #84bd00; 
+	color: #EB6F93; 
 	float: right; 
 	display: none;
 }
