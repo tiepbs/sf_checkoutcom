@@ -140,4 +140,4 @@
 	</fieldset>
 </div>
 	
-<input type="hidden" id="ckoApmFilterUrl" value="${URLUtils.https('CKOMain-GetApmFilter')}" />
+<input type="hidden" id="ckoApmFilterUrl" value="${URLUtils.url('CKOMain-GetApmFilter')}" />
