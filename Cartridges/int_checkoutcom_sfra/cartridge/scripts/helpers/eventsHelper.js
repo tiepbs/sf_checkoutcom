@@ -51,9 +51,9 @@ var eventsHelper = {
      * Payment captured event.
      */
     paymentCaptured: function (hook) {
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('capture test {0}', JSON.stringify(hook));
-    
+        // Get the  transaction amount
+        var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
+
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);
 
@@ -70,7 +70,7 @@ var eventsHelper = {
             parentTransaction.custom.ckoTransactionOpened = false;
 
             // Create the transaction
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
@@ -118,6 +118,9 @@ var eventsHelper = {
      * Payment refunded event.
      */
     paymentRefunded: function (hook) {
+        // Get the  transaction amount
+        var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
+
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', 'ORDER_STATUS_CANCELLED');
 
@@ -133,7 +136,7 @@ var eventsHelper = {
             var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Capture');
             parentTransaction.custom.ckoTransactionOpened = false;
             
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
@@ -149,6 +152,9 @@ var eventsHelper = {
      * Payment voided event.
      */
     paymentVoided: function (hook) {
+        // Get the  transaction amount
+        var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
+
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_CANCELLED');
 
@@ -165,7 +171,7 @@ var eventsHelper = {
             parentTransaction.custom.ckoTransactionOpened = false;
             
             // Create the transaction
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
