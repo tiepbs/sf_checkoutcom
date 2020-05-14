@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
  */
 function initApmAccordion()
 {
-    // Filter the available APM
-    filterApm();
-
     // List item radio click action
     $('.cko-apm-accordion input[type="radio"]').on('click touch', function(e) {
         e.stopPropagation();
@@ -93,6 +90,10 @@ function filterApm()
 }
 
 function initCheckoutcomApmValidation() {
+    // Filter the available APM
+    filterApm();
+
+    // Submit event
     $('button.submit-payment').off('click touch').one('click touch', function (e) {
         if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APM') {
             // Prevent the default button click behaviour
