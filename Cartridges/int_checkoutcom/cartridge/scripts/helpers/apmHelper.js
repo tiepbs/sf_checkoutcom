@@ -1,24 +1,21 @@
 "use strict"
 
-/* API Includes */
+// API Includes 
 var PaymentMgr = require('dw/order/PaymentMgr');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
 var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
 
-/* Utility */
+// Utility 
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
-/*
-* Utility functions for my cartridge integration.
-*/
+// Utility functions for my cartridge integration.
 var apmHelper = {
-    /*
-     * Creates Site Genesis Transaction Object
-     * @return object
-     */
+		
+    // Creates Site Genesis Transaction Object
     apmAuthorization: function (payObject, args) {
+    	
         // Preparing payment parameters
         var paymentInstrument = args.PaymentInstrument;
         var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
@@ -28,9 +25,7 @@ var apmHelper = {
         
         // Handle apm result
         if (apmRequest) {
-        	
             if (this.handleApmChargeResponse(apmRequest)) {
-            	
                 if (session.privacy.redirectUrl) {
                     
                     // Set the redirection template
@@ -51,24 +46,19 @@ var apmHelper = {
                 	
                     return {authorized: true};
                 }
-            	
-            	
             } else {
             	
                 return false;
             }
-            
-            
         } else {
         	
             return false
         }
     },
         
-    /*
-     * Handle APM charge Response from CKO API
-     */
+    // Handle APM charge Response from CKO API
     handleApmChargeResponse: function (gatewayResponse) {
+    	
         // clean the session
         session.privacy.redirectUrl = null;
         
@@ -90,16 +80,17 @@ var apmHelper = {
         // Add redirect URL to session if exists
         if (gatewayLinks.hasOwnProperty('redirect')) {
             session.privacy.redirectUrl = gatewayLinks.redirect.href;
+            
             return ckoHelper.paymentSuccess(gatewayResponse);
         } else {
+        	
             return ckoHelper.paymentSuccess(gatewayResponse);
         }  
     },
     
-    /*
-     * Apm Request
-     */
+    // Apm Request
     handleApmRequest: function (payObject, args) {
+    	
         // Gateway response
         var gatewayResponse = false;
         
@@ -111,6 +102,7 @@ var apmHelper = {
         
         // Test for SEPA
         if (payObject.type == "sepa") {
+        	
             // Prepare the charge data
             var chargeData = {
                 "customer"              : ckoHelper.getCustomer(args),
@@ -129,11 +121,11 @@ var apmHelper = {
             // Perform the request to the payment gateway
             gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.sources." + ckoHelper.getValue('ckoMode') + ".service", chargeData);
         } else {
+        	
             // Perform the request to the payment gateway
             gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
         }
-
-
+        
         // Logging
         ckoHelper.doLog('response', gatewayResponse);
         
@@ -141,8 +133,8 @@ var apmHelper = {
         if (gatewayResponse) {
         	
         	return gatewayResponse;
-        	
         } else {
+        	
             // Update the transaction
             Transaction.wrap(function () {
                 OrderMgr.failOrder(order, true);
@@ -150,10 +142,9 @@ var apmHelper = {
         }
     },
     
-    /*
-     * Return the APM request data
-     */
+    // Return the APM request data
     getApmRequest: function (payObject, args) {
+    	
         // Charge data
         var chargeData = false;
         
@@ -165,6 +156,7 @@ var apmHelper = {
         
         // Object APM is SEPA
         if (payObject.type == 'klarna') {
+        	
             // Prepare chargeData object
             chargeData = {
                 "customer"              : ckoHelper.getCustomer(args),
@@ -178,6 +170,7 @@ var apmHelper = {
                 "billing_descriptor"    : ckoHelper.getBillingDescriptorObject()
             };
         } else {
+        	
             // Prepare chargeData object
             chargeData = {
                 "customer"              : ckoHelper.getCustomer(args),
@@ -194,10 +187,9 @@ var apmHelper = {
         return chargeData;
     },
     
-    /*
-     * Sepa controller Request
-     */
+    // Sepa controller Request
     handleSepaControllerRequest: function (payObject, order) {
+    	
         // Gateway response
         var gatewayResponse = false;
         
@@ -213,6 +205,7 @@ var apmHelper = {
             return gatewayResponse;
             
         } else {
+        	
             // Update the transaction
             Transaction.wrap(function () {
                 OrderMgr.failOrder(order);
@@ -226,8 +219,5 @@ var apmHelper = {
     }
 }
 
-/*
-* Module exports
-*/
-
+// Module exports
 module.exports = apmHelper;

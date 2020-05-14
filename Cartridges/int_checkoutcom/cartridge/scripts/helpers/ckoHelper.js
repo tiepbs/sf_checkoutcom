@@ -702,7 +702,7 @@ var ckoHelper = {
     
     // Return AutoCapture
     getCapture: function () {
-    	return ckoHelper.getValue('ckoAutoCapture') && ckoHelper.getValue('ckoAutoCaptureTime') <= 0 ? ckoHelper.getValue('ckoAutoCapture') : true ;
+    	return ckoHelper.getValue('ckoAutoCapture');
     },
         
     // Return capture time

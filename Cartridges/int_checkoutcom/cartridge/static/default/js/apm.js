@@ -1,26 +1,18 @@
 "use strict";
 
-//                                                  //
-//  Alternative Payment Form decorator object;      //
-// 
+//  Alternative Payment Form decorator object;    
 
-/**
- * JQuery Ajax helpers on DOM ready.
- */
+// JQuery Ajax helpers on DOM ready.
 document.addEventListener('DOMContentLoaded', function () {
     alternativePaymentsFilter();
     initApmAccordion();
 }, false);
 
 
-/*
- * Accordion Function
- */
-function initApmAccordion(){
-
+// Accordion Function
+function initApmAccordion() {
 	var acc = document.getElementsByClassName('cko-apm-accordion');
 	var i;
-
 	for (i = 0; i < acc.length; i++) {
 	  acc[i].addEventListener('click', function() {
 		  
@@ -28,50 +20,34 @@ function initApmAccordion(){
         $('.cko-apm-accordion').removeClass('cko-apm-active');
         $('.cko-apm-panel').css('display', 'none');
         
-		  
 	    /* Toggle between adding and removing the "active" class,
 	    to highlight the button that controls the panel */
 	    this.classList.toggle('cko-apm-active');
 	    
-	    /* Toggle between hiding and showing the active panel */
+	    // Toggle between hiding and showing the active panel 
 	    var panel = this.nextElementSibling;
-	    
 	    var currentInput = this.querySelector('input[name="apm_list"');
-	    
 	    currentInput.checked = true;
 	    
         // Set alternative payment value
         var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
         apmSelect.val(currentInput.value);
-	    
-	    if(panel){
-	    	
+	    if (panel) {
 			if (panel.style.minHeight) {
-			
 				panel.style.minHeight = null;
 				panel.style.display = "block";
-			  
 			} else {
-				
 				panel.style.minHeight = panel.scrollHeight + "px";
 				panel.style.display = "block";
-			  
 			}
-			
 	    }
-	    
-	  });
-	  
+	  }); 
 	}
-
 }
 
 
-/*
- * Get the APMs filter
- */
-function alternativePaymentsFilter()
-{   
+// Get the APMs filter
+function alternativePaymentsFilter() {   
     	
 	// Retrieves the Apm Filter Url to controllerUrl variable
     var controllerUrl = $('#ckoApmFilterUrl').val();
@@ -120,11 +96,8 @@ function alternativePaymentsFilter()
 }
 
 
-/*
- * Get the Klarna controller
- */
-function callKlarnaController(controllerUrl)
-{    
+// Get the Klarna controller
+function callKlarnaController(controllerUrl) {    
     if (controllerUrl) {
     	
     	// Creates a new xmlhttp request object
@@ -152,13 +125,7 @@ function callKlarnaController(controllerUrl)
                 var addressInfo = JSON.parse(this.responseText).addressInfo;
             
                 // Initialize klarna payment form
-                Klarna.Payments.init(
-                // Options
-                    {
-                    	// Klarna Session token
-                        client_token: token
-                    }
-                );
+                Klarna.Payments.init({client_token: token});
             
                 // Klarna payment options button
                 var klarnaBox = $('#klarna-buttons');
@@ -189,11 +156,9 @@ function callKlarnaController(controllerUrl)
     }
 }
 
-/*
- * Loads Klarna Payments Widget
- */
-function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId)
-{
+// Loads Klarna Payments Widget
+function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId) {
+	
     // Converts request string to object
     var requestObject = JSON.parse(requestObject);
     
@@ -216,11 +181,8 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId)
     );
 }
 
-/*
- * Klarna Authorize button
- */
-function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject)
-{   
+// Klarna Authorize button
+function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject) {   
 	
     // Build Klarna authorization button   
     var authorizeBtn = $('#klarnaConfirmBtn');
@@ -230,11 +192,9 @@ function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billin
     });
 }
 
-/*
- * Klarna Authorize
- */
-function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, requestData)
-{
+// Klarna Authorize
+function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, requestData) {
+	
     // Converts request string to object
     var requestObject = JSON.parse(requestData);
     
@@ -286,8 +246,8 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, req
                 $('#dwfrm_alternativePaymentForm_klarna__token').val(response.authorization_token);
                 $('#dwfrm_alternativePaymentForm_klarna__approved').val(response.approved);
                 $('#dwfrm_alternativePaymentForm_klarna__finalize__required').val(response.finalize_required);
-            
             } 
+            
             // Authorization not Successful
             else {
             	

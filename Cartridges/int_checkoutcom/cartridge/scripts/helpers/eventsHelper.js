@@ -1,27 +1,26 @@
 'use strict';
 
-/* API Includes */
+// API Includes
 var OrderMgr = require('dw/order/OrderMgr');
 var Transaction = require('dw/system/Transaction');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
 var PaymentMgr = require('dw/order/PaymentMgr');
 
-/* Checkout.com Helper functions */
+// Checkout.com Helper functions
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper');
 
-/**
- * Gateway event functions for the Checkout.com cartridge integration.
- */
+// Gateway event functions for the Checkout.com cartridge integration.
 var eventsHelper = {
-    /**
-     * Adds the gateway webhook information to the newly created order.
-     */
+		
+    // Adds the gateway webhook information to the newly created order.
     addWebhookInfo: function (hook, paymentStatus, orderStatus) {
+    	
         // Load the order
         var order = OrderMgr.getOrder(hook.data.reference);
         if (order) {
+        	
             // Prepare the webhook info
             var details = '';
             details += ckoHelper._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
@@ -32,6 +31,7 @@ var eventsHelper = {
 
             // Process the transaction
             Transaction.wrap(function () {
+            	
                 // Add the details to the order
                 order.addNote(ckoHelper._('cko.webhook.info', 'cko'), details);
     
@@ -48,10 +48,9 @@ var eventsHelper = {
         }
     },
 
-    /**
-     * Payment captured event.
-     */
+    // Payment captured event
     paymentCaptured: function (hook) {
+    	
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);
 
@@ -60,15 +59,19 @@ var eventsHelper = {
 
         // Get the payment processor id
         var paymentProcessorId = hook.data.metadata.payment_processor;
+        
+        // Get the  transaction amount
+        var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
 
         // Create the captured transaction
         Transaction.wrap(function () {
+        	
             // Update the parent transaction state
             var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Authorization');
             parentTransaction.custom.ckoTransactionOpened = false;
 
             // Create the transaction
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
@@ -80,10 +83,9 @@ var eventsHelper = {
         });
     },
 
-    /**
-     * Payment authorized event.
-     */
+    // Payment authorized event
     paymentApproved: function (hook) {
+    	
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 
@@ -95,6 +97,7 @@ var eventsHelper = {
         var customerId = hook.data.metadata.customer_id;
         var processorId = hook.data.metadata.payment_processor;
         if (cardUuid != 'false' && customerId) {
+        	
             // Load the saved card
             var savedCard = cardHelper.getSavedCard(
                 cardUuid,
@@ -103,6 +106,7 @@ var eventsHelper = {
             );
 
             if (savedCard) {
+            	
                 // Add the card source
                 Transaction.wrap(function () {
                     savedCard.setCreditCardToken(hook.data.source.id);
@@ -111,31 +115,24 @@ var eventsHelper = {
         }
     },
 
-    /**
-     * Card verified event.
-     */
+    // Card verified event.
     cardVerified: function (hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
     },
 
-    /**
-     * Authorization failed event.
-     */
+    // Authorization failed event.
     paymentDeclined: function (hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
     },
 
-    /**
-     * Capture failed event.
-     */
+    // Capture failed event.
     paymentCapturedDeclined: function (hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
     },
 
-    /**
-     * Payment refunded event.
-     */
+    // Payment refunded event.
     paymentRefunded: function (hook) {
+    	
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', 'ORDER_STATUS_CANCELLED');
 
@@ -144,14 +141,19 @@ var eventsHelper = {
 
         // Get the payment processor id
         var paymentProcessorId = hook.data.metadata.payment_processor;
+        
+        // Get the  transaction amount
+        var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
  
         // Create the refunded transaction
         Transaction.wrap(function () {
-            // Update the parent transaction state
+            
+        	// Update the parent transaction state
             var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Capture');
             parentTransaction.custom.ckoTransactionOpened = false;
             
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            // Create the transaction
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
@@ -163,10 +165,9 @@ var eventsHelper = {
         });
     },
 
-    /**
-     * Payment voided event.
-     */
+    // Payment voided event.
     paymentVoided: function (hook) {
+    	
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_CANCELLED');
 
@@ -175,15 +176,19 @@ var eventsHelper = {
 
         // Get the payment processor id
         var paymentProcessorId = hook.data.metadata.payment_processor;
+        
+        // Get the  transaction amount
+        var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
                
         // Create the voided transaction
         Transaction.wrap(function () {
+        	
             // Update the parent transaction state
             var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Authorization');
             parentTransaction.custom.ckoTransactionOpened = false;
             
             // Create the transaction
-            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, order.totalGrossPrice);
+            var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
@@ -195,23 +200,16 @@ var eventsHelper = {
         });
     },
 
-    /**
-     * Refund failed event.
-     */
+    // Refund failed event.
     paymentRefundDeclined: function (hook) {
         this.addWebhookInfo(hook, null, null);
     },
 
-    /**
-     * Charge void failed event.
-     */
+    // Charge void failed event.
     paymentVoidDeclined: function (hook) {
         this.addWebhookInfo(hook, null, null);
     }
 };
 
-/*
- * Module exports
- */
-
+// Module exports
 module.exports = eventsHelper;
