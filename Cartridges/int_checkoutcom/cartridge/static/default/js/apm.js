@@ -211,12 +211,7 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId)
         }, function (res) {
         	
         	// Triggers Klarna Authorization
-            klarnaAuthorizeButton(
-            		
-            	// Klarna container id
-                '#klarna-payments-container',
-                sessionId, paymentMethod, addressInfo, requestObject
-            );
+            klarnaAuthorizeButton('#klarna-payments-container', sessionId, paymentMethod, addressInfo, requestObject);
         }
     );
 }
@@ -226,13 +221,13 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId)
  */
 function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject)
 {   
+	
     // Build Klarna authorization button   
-    var authorizeBtn = "<button type='button' style='width: 100%; margin-top: 30px;' onclick='klarnaAuthorize(`" + sessionId
-    + "`, `" + klarnaContainer + "`, `" + paymentMethod + "`, ` " + JSON.stringify(billingAddress) + " ` , ` " + JSON.stringify(requestObject) + " `)'>Klarna</button>";
-    var klarna = $(klarnaContainer);
-    
-    // Append klarna authorization button
-    klarna.append(authorizeBtn);
+    var authorizeBtn = $('#klarnaConfirmBtn');
+    authorizeBtn.show();
+    authorizeBtn.click(() => {
+    	klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, JSON.stringify(billingAddress), JSON.stringify(requestObject))
+    });
 }
 
 /*

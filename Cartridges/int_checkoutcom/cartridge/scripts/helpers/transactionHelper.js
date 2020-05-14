@@ -40,6 +40,7 @@ var transactionHelper = {
      * Create an authorization transaction
      */
     createAuthorization: function (hook) {
+    	
         // Get the transaction amount
         var transactionAmount = this.getHookTransactionAmount(hook);
 
@@ -50,6 +51,7 @@ var transactionHelper = {
         var paymentProcessorId = hook.data.metadata.payment_processor;
         
         Transaction.wrap(function () {
+        	
             // Create the payment instrument and processor
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();

@@ -220,7 +220,7 @@
             </attribute-definition>
             <attribute-definition attribute-id="ckoAutoCapture">
                 <display-name xml:lang="x-default">Auto capture</display-name>
-                <description xml:lang="x-default">If set to yes, the payment will be captured immediately. Otherwise, specify the capture below.</description>
+                <description xml:lang="x-default">Set to true if you want the payment to be captured automatically after the authorisation. Set to false if you want to manually capture your payments.</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -228,7 +228,7 @@
             </attribute-definition>
             <attribute-definition attribute-id="ckoAutoCaptureTime">
                 <display-name xml:lang="x-default">Auto capture time</display-name>
-                <description xml:lang="x-default">Auto capture time in minutes</description>
+                <description xml:lang="x-default">Only if autocapture is set to true, Sets the time after which the capture is triggered automatically, in minutes</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>

@@ -1,6 +1,6 @@
 'use strict';
 
-/* API Includes */
+// API Includes 
 var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 var app = require(siteControllerName + '/cartridge/scripts/app');
 var guard = require(siteControllerName + '/cartridge/scripts/guard');
@@ -8,20 +8,19 @@ var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
 
-/* Checkout.com Event functions */
+// Checkout.com Event functions 
 var eventsHelper = require('~/cartridge/scripts/helpers/eventsHelper');
 
-/** Utility **/
+// Utility
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
-/** Apm Filter Configuration file **/
+// Apm Filter Configuration file
 var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig');
 
-/**
- * Handles responses from the Checkout.com payment gateway.
- */
+// Handles responses from the Checkout.com payment gateway.
 function handleReturn()
 {
+	
     // Prepare some variables
     var gResponse = false;
     var mode = ckoHelper.getValue('ckoMode');
@@ -29,14 +28,17 @@ function handleReturn()
     
     // If there is a track id
     if (orderId) {
+    	
         // Load the order
         var order = OrderMgr.getOrder(orderId);
         if (order) {
+        	
             // Check the payment token if exists
             var sessionId = request.httpParameterMap.get('cko-session-id').stringValue;
             
             // If there is a payment session id available, verify
             if (sessionId) {
+            	
                 // Perform the request to the payment gateway
                 gVerify = ckoHelper.gatewayClientRequest(
                     'cko.verify.charges.' + mode + '.service',
@@ -49,15 +51,12 @@ function handleReturn()
                     
                     // Logging
                     ckoHelper.doLog('Redirect response', gVerify);
-                    
                     if (ckoHelper.paymentSuccess(gVerify)) {
-                    	
-                    	// Save the order transaction
-                    	ckoHelper.saveCKOTransaction(gVerify, order);
                     	
                         // Show order confirmation page
                         app.getController('COSummary').ShowConfirmation(order);
                     } else {
+                    	
                         // Restore the cart
                         ckoHelper.checkAndRestoreBasket(order);
 
@@ -65,7 +64,7 @@ function handleReturn()
                         ISML.renderTemplate('custom/common/response/failed.isml');
                     }
                 } else {
-                    //ckoHelper.handleFail(gVerify);
+                	
                     // Restore the cart
                     ckoHelper.checkAndRestoreBasket(order);
 
@@ -76,6 +75,7 @@ function handleReturn()
 
             // Else it's a normal transaction
             else {
+            	
                 // Get the response
                 gResponse = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
 
@@ -83,11 +83,9 @@ function handleReturn()
                 if (ckoHelper.paymentIsValid(gResponse)) {
                     app.getController('COSummary').ShowConfirmation(order);
                 } else {
-                	
                     ckoHelper.handleFail(gResponse);
                 }
             }
-            
         } else {
             ckoHelper.handleFail(null);
         }
@@ -96,11 +94,11 @@ function handleReturn()
     }
 }
 
-/**
- * Handles a failed payment from the Checkout.com payment gateway.
- */
+// Handles a failed payment from the Checkout.com payment gateway.
+
 function handleFail()
 {
+	
     // Load the order
     var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
@@ -111,14 +109,9 @@ function handleFail()
     ISML.renderTemplate('custom/common/response/failed.isml');
 }
 
-/**
- * Handles webhook responses from the Checkout.com payment gateway.
- */
+// Handles webhook responses from the Checkout.com payment gateway.
 function handleWebhook()
-{
-	var logger = require('dw/system/Logger').getLogger('ckodebug');
-	logger.debug('this is my test {0}', 'handleWebhook');
-	
+{	
     var isValidResponse = ckoHelper.isValidResponse();
     if (isValidResponse) {
     	
@@ -127,22 +120,23 @@ function handleWebhook()
 
         // Check the webhook event
         if (hook !== null && hook.hasOwnProperty('type')) {
+        	
             // Get a camel case function name from event type
             var func = '';
             var parts = hook.type.split('_');
             for (var i = 0; i < parts.length; i++) {
                 func += (i == 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
             }
-
-            // Call the event
-            eventsHelper[func](hook);
+            if (eventsHelper.hasOwnProperty(func)) {
+            	
+                // Call the event
+                eventsHelper[func](hook);
+            }
        }
     }
 }
 
-/**
- * Initializes the credit card list by determining the saved customer payment method.
- */
+// Initializes the credit card list by determining the saved customer payment method.
 function getCardsList()
 {
     var applicablePaymentCards;
@@ -173,9 +167,10 @@ function getCardsList()
     }
 }
 
-
+// Apms filter helper
 function getApmFilter()
 {
+	
     // Prepare some variables
     var basket = BasketMgr.getCurrentBasket();
     var currencyCode = basket.getCurrencyCode();
@@ -197,9 +192,7 @@ function getApmFilter()
     response.getWriter().println(JSON.stringify(responseObject));
 }
 
-/*
- * Module exports
- */
+// Module exports
 exports.HandleReturn = guard.ensure(['get','https'], handleReturn);
 exports.HandleFail = guard.ensure(['get','https'], handleFail);
 exports.HandleWebhook = guard.ensure(['post', 'https'], handleWebhook);
