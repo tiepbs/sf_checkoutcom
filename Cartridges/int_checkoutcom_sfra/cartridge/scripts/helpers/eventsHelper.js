@@ -8,7 +8,6 @@ var PaymentMgr = require('dw/order/PaymentMgr');
 
 /* Checkout.com Helper functions */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
-var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper');
 
 /**
@@ -52,6 +51,9 @@ var eventsHelper = {
      * Payment captured event.
      */
     paymentCaptured: function (hook) {
+        var logger = require('dw/system/Logger').getLogger('ckodebug');
+        logger.debug('capture test {0}', JSON.stringify(hook));
+    
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);
 
