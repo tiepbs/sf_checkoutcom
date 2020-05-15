@@ -44,7 +44,6 @@ function initApmAccordion()
         // Set the selected APM fields
         var apmId = $(this).parents('.apm-list-item').attr('id');
         $('input[name="dwfrm_billing_apmForm_ckoSelectedApm"]').val(apmId);
-        $('#' + apmId).find('input[type="radio"]').val(apmId);           
 
         // Open the sibling panel
         var panel = $(this).next();

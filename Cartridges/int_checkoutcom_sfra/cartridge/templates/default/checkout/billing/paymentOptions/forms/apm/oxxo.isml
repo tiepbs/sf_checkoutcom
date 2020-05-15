@@ -5,7 +5,7 @@
 </isscript>
 
 <button class="cko-apm-accordion">
-	<input id="oxxo_apm_radio_btn" type="radio" name="${apmFields.oxxo.htmlName}" value="">
+	<input id="oxxo_apm_radio_btn" type="radio">
 	<img alt="${Resource.msg('cko.oxxo.name','cko',null)}" id="oxxopay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/oxxo.png')}">
 	${Resource.msg('cko.oxxo.name','cko',null)}
 </button>
