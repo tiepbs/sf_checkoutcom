@@ -17,13 +17,13 @@
 		<div id="klarna-payments-container"></div>
 		
 		<!-- field for Klarna token -->
-		<input type="hidden" id="klarna_token" <isprint value="${apmFields.klarna_token.attributes}" encoding="off"/> value="">
+		<input type="hidden" id="klarna_token" name="${apmFields.klarna_token.htmlName}" value="">
 
 		<!-- field for Klarna approved -->
-		<input type="hidden" id="klarna_approved" <isprint value="${apmFields.klarna_approved.attributes}" encoding="off"/> value="">
+		<input type="hidden" id="klarna_approved" name="${apmFields.klarna_approved.htmlName}" value="">
 
 		<!-- field for Klarna finalize required -->
-		<input type="hidden" id="klarna_finalize_required" <isprint value="${apmFields.klarna_finalize_required.attributes}" encoding="off"/> value="">
+		<input type="hidden" id="klarna_finalize_required" name="${apmFields.klarna_finalize_required.htmlName}" value="">
 	</div>
 </div>
 
