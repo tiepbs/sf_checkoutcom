@@ -13,8 +13,8 @@
 
 <div class="cko-apm-panel">
 	<div id="boleto_pay_box">
-		${Resource.msg('cko.boleto.birthdate','cko',null)} <input id="boleto_birthDate" name="${apmFields.boleto_birthDate.htmlName}" type="text" placeholder="${Resource.msg('cko.boleto.dateformat','cko',null)}">
-		${Resource.msg('cko.boleto.cpfe','cko',null)} <input id="boleto_cpfe" name="${apmFields.boleto_cpfe.htmlName}" type="text">
+		${Resource.msg('cko.boleto.birthdate','cko',null)} <input id="boleto_birthDate" <isprint value="${apmFields.boleto_birthDate.attributes}" encoding="off"/> type="text" placeholder="${Resource.msg('cko.boleto.dateformat','cko',null)}">
+		${Resource.msg('cko.boleto.cpfe','cko',null)} <input id="boleto_cpfe" <isprint value="${apmFields.boleto_cpfe.attributes}" type="text">
 		<div class="invalid-field-message"></div>
 	</div>
 </div>
