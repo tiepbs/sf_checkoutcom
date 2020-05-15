@@ -349,10 +349,10 @@ var ckoApmConfig = {
      */
     alipayAuthorization: function (args) {
         // Build the payment object
-        var payObject = {
+        var payeObject = {
             'source': {
                 'type': 'alipay',
-                'country': ckoHelper.getBillingObject(args).country
+                'country': ckoHelper.getBilling(args).country
             },
             'type'          : 'alipay',
             'currency'      : args.order.getCurrencyCode()
