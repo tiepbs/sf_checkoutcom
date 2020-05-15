@@ -69,7 +69,7 @@ var apmHelper = {
      */
     handleResponse: function (gatewayResponse) {
         // Prepare the APM type
-        var type;
+        //var type;
 
         // Clean the session
         session.privacy.redirectUrl = null;
@@ -78,29 +78,31 @@ var apmHelper = {
         ckoHelper.updateCustomerData(gatewayResponse);
 
         // Get the response type
+        /*
         if (gatewayResponse.hasOwnProperty('type')) {
             type = gatewayResponse.type;
         }
+        */
         
         // Prepare the result
         var result = {
-            error: !ckoHelper.paymentSuccess(gatewayResponse),
+            error: false,
             redirectUrl: false
         }
 
         // Add redirect to sepa source reqeust
+        /*
         if (!result.error && type == 'Sepa') {
             result.error = false;
             session.privacy.redirectUrl = URLUtils.url('CKOSepa-Mandate').value;
             result.redirectUrl = URLUtils.url('CKOSepa-Mandate').value;
-            session.privacy.sepaResponseId = gatewayResponse.id;
         }
-        
+        */
+
         // Add redirect URL to session if exists
         if (!result.error && gatewayResponse.hasOwnProperty('_links')) {
             result.error = false;
             var gatewayLinks = gatewayResponse._links;
-            session.privacy.redirectUrl = gatewayLinks.redirect.href
             result.redirectUrl = gatewayLinks.redirect.href;
         }
         
