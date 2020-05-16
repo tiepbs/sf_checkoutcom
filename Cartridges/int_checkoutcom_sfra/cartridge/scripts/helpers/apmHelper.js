@@ -100,7 +100,7 @@ var apmHelper = {
         */
 
         // Add redirect URL to session if exists
-        if (!result.error && gatewayRespons && gatewayResponse.hasOwnProperty('_links')) {
+        if (!result.error && gatewayResponse && gatewayResponse.hasOwnProperty('_links')) {
             result.error = false;
             var gatewayLinks = gatewayResponse._links;
             result.redirectUrl = gatewayLinks.redirect.href;
