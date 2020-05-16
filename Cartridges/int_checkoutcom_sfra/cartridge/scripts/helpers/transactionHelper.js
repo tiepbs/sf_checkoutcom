@@ -15,16 +15,6 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
  */
 var transactionHelper = {
     /*
-     * Get order transaction amount
-     */
-    getOrderTransactionAmount : function (order) {
-        return new Money(
-            order.totalGrossPrice.value.toFixed(2),
-            order.getCurrencyCode()
-        );
-    },
-
-    /*
      * Get webhook transaction amount
      */
     getHookTransactionAmount : function (hook) {
