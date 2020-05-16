@@ -116,6 +116,15 @@ var transactionHelper = {
         }
         
         return null;
+    },
+
+    /**
+     * Get the Checkout.com transactions.
+     */
+    shouldCloseRefund: function (transactionAmount, order) {
+
+
+        return false;
     }
 };
 
