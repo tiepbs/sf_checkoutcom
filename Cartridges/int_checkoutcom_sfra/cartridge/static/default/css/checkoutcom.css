@@ -8,6 +8,9 @@
     border: solid 1px red;
 }
 
-.summary-section-label.payment-info-label, .summary-details .payment-details {
+.summary-section-label.payment-info-label,
+.summary-details .payment-details,
+.summary-details .payment-info-label
+{
     display: none !important;
 }
