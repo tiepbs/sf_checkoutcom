@@ -109,12 +109,10 @@ var transactionHelper = {
     },
 
     /**
-     * Get the Checkout.com transactions.
+     * Check if a capture transaction can allow refunds.
      */
     shouldCloseRefund: function (transactionAmount, order) {
 
-
-        return false;
     }
 };
 
