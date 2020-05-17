@@ -16,11 +16,9 @@ var eventsHelper = {
 		
     // Adds the gateway webhook information to the newly created order.
     addWebhookInfo: function (hook, paymentStatus, orderStatus) {
-    	
         // Load the order
         var order = OrderMgr.getOrder(hook.data.reference);
         if (order) {
-        	
             // Prepare the webhook info
             var details = '';
             details += ckoHelper._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
@@ -31,7 +29,6 @@ var eventsHelper = {
 
             // Process the transaction
             Transaction.wrap(function () {
-            	
                 // Add the details to the order
                 order.addNote(ckoHelper._('cko.webhook.info', 'cko'), details);
     
@@ -50,7 +47,6 @@ var eventsHelper = {
 
     // Payment captured event
     paymentCaptured: function (hook) {
-    	
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);
 
@@ -65,9 +61,8 @@ var eventsHelper = {
 
         // Create the captured transaction
         Transaction.wrap(function () {
-        	
             // Update the parent transaction state
-            var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Authorization');
+            var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Authorization');
             parentTransaction.custom.ckoTransactionOpened = false;
 
             // Create the transaction
@@ -85,7 +80,6 @@ var eventsHelper = {
 
     // Payment authorized event
     paymentApproved: function (hook) {
-    	
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 
@@ -97,7 +91,6 @@ var eventsHelper = {
         var customerId = hook.data.metadata.customer_id;
         var processorId = hook.data.metadata.payment_processor;
         if (cardUuid != 'false' && customerId) {
-        	
             // Load the saved card
             var savedCard = cardHelper.getSavedCard(
                 cardUuid,
@@ -106,7 +99,6 @@ var eventsHelper = {
             );
 
             if (savedCard) {
-            	
                 // Add the card source
                 Transaction.wrap(function () {
                     savedCard.setCreditCardToken(hook.data.source.id);
@@ -132,7 +124,6 @@ var eventsHelper = {
 
     // Payment refunded event.
     paymentRefunded: function (hook) {
-    	
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', 'ORDER_STATUS_CANCELLED');
 
@@ -147,9 +138,8 @@ var eventsHelper = {
  
         // Create the refunded transaction
         Transaction.wrap(function () {
-            
         	// Update the parent transaction state
-            var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Capture');
+            var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Capture');
             parentTransaction.custom.ckoTransactionOpened = false;
             
             // Create the transaction
@@ -167,7 +157,6 @@ var eventsHelper = {
 
     // Payment voided event.
     paymentVoided: function (hook) {
-    	
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_CANCELLED');
 
@@ -182,9 +171,8 @@ var eventsHelper = {
                
         // Create the voided transaction
         Transaction.wrap(function () {
-        	
             // Update the parent transaction state
-            var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Authorization');
+            var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Authorization');
             parentTransaction.custom.ckoTransactionOpened = false;
             
             // Create the transaction
