@@ -134,20 +134,6 @@ var ckoHelper = {
     },
     
     // Currency Conversion Ratio
-    getCKOFormatedValue: function (currency) {
-        if (ckoCurrencyConfig.x1.currencies.match(currency)) {
-        	
-            return ckoCurrencyConfig.x1.multiple;
-        } else if (ckoCurrencyConfig.x1000.currencies.match(currency)) {
-        	
-            return ckoCurrencyConfig.x1000.multiple;
-        } else {
-        	
-            return 100;
-        }
-    },
-    
-    // Currency Conversion Ratio
     getCkoFormatedValue: function (currency) {
         if (ckoCurrencyConfig.x1.currencies.match(currency)) {
             return ckoCurrencyConfig.x1.multiple;
