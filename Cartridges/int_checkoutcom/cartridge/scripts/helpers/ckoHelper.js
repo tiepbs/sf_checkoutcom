@@ -17,7 +17,6 @@ var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 
 // Utility functions for my cartridge integration.
 var ckoHelper = {
-		
     // Get the required value for each mode.
     getAppModeValue: function (sandboxValue, liveValue) {
         var appMode = this.getValue('ckoMode');
@@ -169,7 +168,6 @@ var ckoHelper = {
     
     // Get the Checkout.com orders.
     getOrders: function () {
-    	
         // Prepare the output array
         var data = [];
     
@@ -195,7 +193,6 @@ var ckoHelper = {
 
     // Get a parent transaction from a payment id
     getParentTransaction: function (paymentId, transactionType) {
-    	
         // Prepare the payload
         var mode = this.getValue('ckoMode');
         var ckoChargeData = {
@@ -246,7 +243,6 @@ var ckoHelper = {
 
     // Load a Checkout.com transaction by Id
     loadTransaction: function (transactionId) {
-    	
         // Query the orders
         var result  = this.getOrders();
 
@@ -472,7 +468,6 @@ var ckoHelper = {
     
     // Return tax object
     getTaxObject : function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         
@@ -521,7 +516,6 @@ var ckoHelper = {
     
     // Return Order Currency Code
     getCurrencyCode: function (args) {
-    	
         // Get the order
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -534,7 +528,6 @@ var ckoHelper = {
 
     // Get Product Names
     getProductNames : function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -553,7 +546,6 @@ var ckoHelper = {
 
     // Get Product price array
     getProductPrices : function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         
@@ -571,8 +563,7 @@ var ckoHelper = {
     },
     
     // Get Product IDs
-    getProductIds : function (args) {
-    	
+    getProductIds : function (args) {s
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         var it = order.productLineItems.iterator();
@@ -587,7 +578,6 @@ var ckoHelper = {
     
     // Get Each Product Quantity
     getProductQuantity : function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         
@@ -606,7 +596,6 @@ var ckoHelper = {
         
     // Get Each Product Quantity
     getProductQuantities : function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         
@@ -625,7 +614,6 @@ var ckoHelper = {
 
     // Get Host IP
     getHost: function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         var host = order.getRemoteHost()
@@ -642,7 +630,6 @@ var ckoHelper = {
     
     // Return phone object
     getPhoneObject: function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -660,7 +647,6 @@ var ckoHelper = {
     
     // Return Customer FullName
     getCustomerName: function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -673,7 +659,6 @@ var ckoHelper = {
     
     // Return Customer FirstName
     getCustomerFirstName: function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -686,7 +671,6 @@ var ckoHelper = {
     
     // Return Customer LastName
     getCustomerLastName: function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -704,7 +688,6 @@ var ckoHelper = {
         
     // Return capture time
     getCaptureTime: function () {
-    	
         // Get the current date/time in milliseconds
         var now = Date.now();
 
@@ -721,7 +704,6 @@ var ckoHelper = {
     
     // Build 3ds object
     get3Ds: function () {
-        
         // 3ds object
         var ds = {
             "enabled"               : this.getValue('cko3ds'),
@@ -733,7 +715,6 @@ var ckoHelper = {
     
     // Build metadata object
     getMetadataObject: function (data, args) {
-    	
         // Prepare the base metadata
         var meta = {
             integration_data    : this.getCartridgeMeta(),
@@ -756,8 +737,7 @@ var ckoHelper = {
     },
     
     // Build metadata object
-    getMetadataString: function (data, args) {
-    	
+    getMetadataString: function (data, args) {s
         // Prepare the base metadata
         var meta = 'integration_data' + this.getCartridgeMeta() + 'platform_data' + this.getValue('ckoPlatformData')
 
@@ -778,7 +758,6 @@ var ckoHelper = {
     
     // Build the Billing object
     getBillingObject: function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -800,7 +779,6 @@ var ckoHelper = {
     
     // Get Billing Country
     getBillingCountry: function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -813,7 +791,6 @@ var ckoHelper = {
     
     // Build the Shipping object
     getShippingObject: function (args) {
-    	
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -880,7 +857,6 @@ var ckoHelper = {
     
     // Return Basket Item object
     getOrderBasketObject: function (args) {
-    	
         // Prepare some variables
         var currency = this.getAppModeValue('GBP', this.getCurrencyCode(args));
         var order = OrderMgr.getOrder(args.OrderNo);
