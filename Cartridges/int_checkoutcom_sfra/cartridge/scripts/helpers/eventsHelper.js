@@ -134,7 +134,7 @@ var eventsHelper = {
         Transaction.wrap(function () {
             // Update the parent transaction state
             var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Capture');
-            parentTransaction.custom.ckoTransactionOpened = transactionHelper.shouldCloseRefund(transactionAmount, order);
+            parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(transactionAmount, order);
             
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
