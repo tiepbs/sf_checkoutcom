@@ -11,9 +11,6 @@ var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var PaymentMgr = require('dw/order/PaymentMgr');
-var PaymentTransaction = require('dw/order/PaymentTransaction');
-var Site = require('dw/system/Site');
-var CustomObjectMgr = require('dw/object/CustomObjectMgr');
 
 // Card Currency Config
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
