@@ -141,7 +141,7 @@ var transactionHelper = {
     },
 
     /**
-     * Load a Checkout.com transaction by Id.
+     * Load a transaction by Id.
      */
     loadTransaction: function (transactionId) {
         // Query the orders
@@ -174,7 +174,25 @@ var transactionHelper = {
      * Check if a capture transaction can allow refunds.
      */
     shouldCloseRefund: function (transactionAmount, order) {
+        // Prepare the total refunded
+        var totalRefunded = 0;
 
+        // Get the payment instruments
+        var paymentInstruments = order.getPaymentInstruments();
+
+        // Loop through the payment instruments
+        for each(var instrument in paymentInstruments) {
+            // Get the payment transaction
+            var paymentTransaction = instrument.getPaymentTransaction();
+
+            // Calculate the total refunds
+            if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CREDIT) {
+                totalRefunded += parseFloat(paymentTransaction.amount.value);
+            }
+        }
+   
+        // Check if a refund is possible
+        return (totalRefunded + parseFloat(transactionAmount)) >= parseFloat(order.totalGrossPrice.value.toFixed(2));
     }
 };
 
