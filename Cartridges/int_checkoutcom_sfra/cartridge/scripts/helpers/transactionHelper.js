@@ -108,6 +108,68 @@ var transactionHelper = {
         return null;
     },
 
+    /*
+     * Get a parent transaction from a payment id
+     */
+    getParentTransaction: function (paymentId, transactionType) {
+        // Prepare the payload
+        var mode = ckoHelper.getValue('ckoMode');
+        var ckoChargeData = {
+            chargeId: paymentId
+        }
+
+        // Get the payment actions
+        var paymentActions = ckoHelper.gatewayClientRequest(
+            'cko.payment.actions.' + mode + '.service',
+            ckoChargeData,
+            'GET'
+        );
+
+        // Convert the list to array
+        if (paymentActions) {
+            var paymentActionsArray = paymentActions.toArray();
+
+            // Return the requested transaction
+            for (var i = 0; i < paymentActionsArray.length; i++) {
+                if (paymentActionsArray[i].type == transactionType) {
+                    return this.loadTransaction(paymentActionsArray[i].id);
+                }
+            }
+        }
+        
+        return null;
+    },
+
+    /**
+     * Load a Checkout.com transaction by Id.
+     */
+    loadTransaction: function (transactionId) {
+        // Query the orders
+        var result  = ckoHelper.getOrders();
+
+        // Loop through the results
+        for each(var item in result) {
+            // Get the payment instruments
+            var paymentInstruments = item.getPaymentInstruments();
+            
+            // Loop through the payment instruments
+            for each(var instrument in paymentInstruments) {
+                // Get the payment transaction
+                var paymentTransaction = instrument.getPaymentTransaction();
+
+                // Prepare the filter condition
+                var isIdMatch = paymentTransaction.transactionID == transactionId;
+
+                // Add the payment transaction to the output
+                if (isIdMatch) {
+                    return paymentTransaction;
+                }
+            }
+        }
+        
+        return null;
+    },
+
     /**
      * Check if a capture transaction can allow refunds.
      */

@@ -66,7 +66,7 @@ var eventsHelper = {
         // Create the captured transaction
         Transaction.wrap(function () {
             // Update the parent transaction state
-            var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Authorization');
+            var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Authorization');
             parentTransaction.custom.ckoTransactionOpened = false;
 
             // Create the transaction
