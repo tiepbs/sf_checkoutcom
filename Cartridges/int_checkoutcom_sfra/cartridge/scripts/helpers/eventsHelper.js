@@ -133,7 +133,7 @@ var eventsHelper = {
         // Create the refunded transaction
         Transaction.wrap(function () {
             // Update the parent transaction state
-            var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Capture');
+            var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Capture');
             parentTransaction.custom.ckoTransactionOpened = transactionHelper.shouldCloseRefund(transactionAmount, order);
             
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
@@ -167,7 +167,7 @@ var eventsHelper = {
         // Create the voided transaction
         Transaction.wrap(function () {
             // Update the parent transaction state
-            var parentTransaction = ckoHelper.getParentTransaction(hook.data.id, 'Authorization');
+            var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Authorization');
             parentTransaction.custom.ckoTransactionOpened = false;
             
             // Create the transaction
