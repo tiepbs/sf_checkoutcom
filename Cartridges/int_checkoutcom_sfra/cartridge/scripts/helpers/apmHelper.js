@@ -10,6 +10,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /* APM Configuration */
 var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
+
 /*
 * Utility functions for my cartridge integration.
 */
@@ -23,9 +24,6 @@ var apmHelper = {
         
         // Create the payment request
         var gatewayRequest = this.getApmRequest(order, processorId, apmConfigData);
-
-        // Log the SEPA payment request data
-        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), chargeData);
 
         // Test SEPA
         if (apmConfigData.type == "sepa") {
@@ -42,6 +40,9 @@ var apmHelper = {
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
         } 
+
+        // Log the SEPA payment request data
+        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
 
         // Perform the request to the payment gateway
         gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
