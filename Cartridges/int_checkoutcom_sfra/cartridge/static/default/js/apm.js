@@ -98,7 +98,7 @@ function initCheckoutcomApmValidation() {
     $('button.submit-payment').off('click touch').one('click touch', function (e) {
         if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APM') {
             // Errors count
-            var result = {};
+            var errors = {};
 
             // Get the APM container id
             var apmId = $('.cko-apm-active').closest('.apm-list-item').attr('id');
@@ -109,6 +109,8 @@ function initCheckoutcomApmValidation() {
             // Run the form validation
             if (typeof window[func] === "function") {
                 errors = window[func]();
+                console.log(errors);
+
                 if (errors.length > 0) {
                     // Prevent the default button click behaviour
                     e.preventDefault();

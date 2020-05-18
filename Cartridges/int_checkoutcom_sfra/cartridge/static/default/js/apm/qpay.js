@@ -1,4 +1,4 @@
-function idealFormValidation() {
+function qpayFormValidation() {
     // Errors count
     var errors = [];
 
