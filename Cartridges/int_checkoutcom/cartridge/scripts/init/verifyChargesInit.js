@@ -1,12 +1,10 @@
-/* API Includes */
+// API Includes
 var svc = require('dw/svc');
 
-/* Utility */
+// Utility 
 var util = require('~/cartridge/scripts/helpers/ckoHelper');
 
-/**
- * Initialize HTTP service for the Checkout.com sandbox charges verification.
- */
+// Initialize HTTP service for the Checkout.com sandbox charges verification
 svc.ServiceRegistry.configure("cko.verify.charges.sandbox.service", {
     createRequest: function (svc, args) {
         var serviceUrl = svc.configuration.credential.URL + "/" + args.paymentToken;
@@ -20,15 +18,13 @@ svc.ServiceRegistry.configure("cko.verify.charges.sandbox.service", {
         
         return (args) ? JSON.stringify(args) : null;
     },
-
     parseResponse: function (svc, resp) {
+    	
         return JSON.parse(resp.text);
     }
 });
 
-/**
- * Initialize HTTP service for the Checkout.com sandbox charges verification.
- */
+// Initialize HTTP service for the Checkout.com sandbox charges verification
 svc.ServiceRegistry.configure("cko.verify.charges.live.service", {
     createRequest: function (svc, args) {
         var serviceUrl = svc.configuration.credential.URL + "/" + args.paymentToken;
@@ -42,8 +38,8 @@ svc.ServiceRegistry.configure("cko.verify.charges.live.service", {
         
         return (args) ? JSON.stringify(args) : null;
     },
-
     parseResponse: function (svc, resp) {
+    	
         return JSON.parse(resp.text);
     }
 });

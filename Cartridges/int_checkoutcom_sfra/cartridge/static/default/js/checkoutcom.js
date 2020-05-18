@@ -32,6 +32,11 @@ function initTabs() {
 			var methodId = $(this).parents('li').data('method-id');
 			$('input[name="dwfrm_billing_paymentMethod"]').val(methodId);
 
+			// Run the APM filter if relevant
+			if (methodId == 'CHECKOUTCOM_APM') {
+				filterApm();
+			}
+
 			// Initialize the form validation
 			initFormValidation();
 		}

@@ -1,8 +1,6 @@
 'use strict';
 
-/**
- * jQuery Ajax helpers on DOM ready.
- */
+// jQuery Ajax helpers on DOM ready.
 document.addEventListener('DOMContentLoaded', function () {
     launchGooglePay();
 }, false);
@@ -10,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function launchGooglePay()
 {
     jQuery('.cko-google-pay-button').click(function () {
+    	
         // Prepare the payment parameters
         var allowedPaymentMethods = ['CARD', 'TOKENIZED_CARD'];
         var allowedCardNetworks = ['VISA', 'MASTERCARD', 'AMEX', 'JCB', 'DISCOVER'];
@@ -25,9 +24,7 @@ function launchGooglePay()
         // Prepare the Google Pay client
         onGooglePayLoaded();
 
-        /**
-         * Show Google Pay chooser when Google Pay purchase button is clicked
-         */
+        // Show Google Pay chooser when Google Pay purchase button is clicked
         var paymentDataRequest = getGooglePaymentDataConfiguration();
         paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
 
@@ -35,6 +32,7 @@ function launchGooglePay()
         paymentsClient.loadPaymentData(paymentDataRequest)
         .then(
             function (paymentData) {
+            	
                 // handle the response
                 processPayment(paymentData);
             }
@@ -50,8 +48,7 @@ function launchGooglePay()
          *
          * @returns {google.payments.api.PaymentsClient} Google Pay API client
          */
-        function getGooglePaymentsClient()
-        {
+        function getGooglePaymentsClient() {
             return (new google.payments.api.PaymentsClient(
                 {
                     environment: jQuery('[id="ckoGooglePayEnvironment"]').val()
@@ -59,11 +56,8 @@ function launchGooglePay()
             ));
         }
 
-        /**
-         * Initialize Google PaymentsClient after Google-hosted JavaScript has loaded
-         */
-        function onGooglePayLoaded()
-        {
+        // Initialize Google PaymentsClient after Google-hosted JavaScript has loaded
+        function onGooglePayLoaded() {
             var paymentsClient = getGooglePaymentsClient();
             paymentsClient.isReadyToPay({ allowedPaymentMethods: allowedPaymentMethods })
             .then(
@@ -86,8 +80,7 @@ function launchGooglePay()
          * @see     {@link https://developers.google.com/pay/api/web/reference/object#PaymentDataRequest|PaymentDataRequest}
          * @returns {object} PaymentDataRequest fields
          */
-        function getGooglePaymentDataConfiguration()
-        {
+        function getGooglePaymentDataConfiguration() {
             return {
                 merchantId: jQuery('[id="ckoGooglePayMerchantId"]').val(),
                 paymentMethodTokenizationParameters: tokenizationParameters,
@@ -104,8 +97,7 @@ function launchGooglePay()
          * @see     {@link https://developers.google.com/pay/api/web/reference/object#TransactionInfo|TransactionInfo}
          * @returns {object} transaction info, suitable for use as transactionInfo property of PaymentDataRequest
          */
-        function getGoogleTransactionInfo()
-        {
+        function getGoogleTransactionInfo() {
             return {
                 currencyCode: jQuery('[id="ckoGooglePayCurrency"]').val(),
                 totalPriceStatus: 'FINAL',
@@ -113,11 +105,8 @@ function launchGooglePay()
             };
         }
 
-        /**
-         * Prefetch payment data to improve performance
-         */
-        function prefetchGooglePaymentData()
-        {
+        // Prefetch payment data to improve performance
+        function prefetchGooglePaymentData() {
             var paymentDataRequest = getGooglePaymentDataConfiguration();
 
             // TransactionInfo must be set but does not affect cache
@@ -136,8 +125,8 @@ function launchGooglePay()
          * @param {object} paymentData response from Google Pay API after shopper approves payment
          * @see   {@link https://developers.google.com/pay/api/web/reference/object#PaymentData|PaymentData object reference}
          */
-        function processPayment(paymentData)
-        {
+        function processPayment(paymentData) {
+        	
             // Prepare the payload
             var payload = {
                 signature: JSON.parse(paymentData.paymentMethodToken.token).signature,

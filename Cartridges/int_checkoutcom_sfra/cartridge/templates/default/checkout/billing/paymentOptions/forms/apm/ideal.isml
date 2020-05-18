@@ -5,7 +5,7 @@
 </isscript>
 
 <button class="cko-apm-accordion">
-	<input id="ideal_apm_radio_btn" name="${apmFields.ideal.htmlName}" type="radio" value="">
+	<input id="ideal_apm_radio_btn" type="radio">
 	<img alt="${Resource.msg('cko.ideal.name','cko',null)}" id="ideal_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/ideal.png')}">
 	${Resource.msg('cko.ideal.name','cko',null)} 
 </button>

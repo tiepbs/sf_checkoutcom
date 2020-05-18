@@ -18,7 +18,7 @@ function Handle(basket, billingData, processorId, req) {
     var currentBasket = basket;
     var fieldErrors = {};
     var serverErrors = [];
-    
+
     // Verify the payload
     if (!billingData.paymentInformation.ckoApm.value || billingData.paymentInformation.ckoApm.value.length == 0) {
         serverErrors.push(

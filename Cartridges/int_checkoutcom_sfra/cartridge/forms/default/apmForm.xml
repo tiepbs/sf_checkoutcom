@@ -3,6 +3,9 @@
 	<!-- Field for alternative payment chosen -->
     <field formid="ckoSelectedApm" type="string" mandatory="false" binding="ckoSelectedApm"/>
     
+    <!-- Field for Alipay -->
+    <field formid="alipay_identification" type="string" label="alipay.label.id" max-length="40" binding="alipay_identification"/>
+
     <!-- Field for Shop url -->
     <field formid="store_url" type="string" mandatory="false" binding="store_url"/>
 	
@@ -36,28 +39,28 @@
     <field formid="sofort" type="string" mandatory="false" binding="sofort"/>
     <field formid="sofort_purpose" type="string" mandatory="false" max-length="40" binding="sofort_purpose"/>
     
-    <!-- Field for Knet pay -->
+    <!-- Field for Knet -->
     <field formid="knet" type="string" mandatory="false" binding="knet"/>
     <field formid="knet_purpose" type="string" mandatory="false" max-length="40" binding="knet_purpose"/>
     
-    <!-- Field for Qpay pay -->
+    <!-- Field for Qpay -->
     <field formid="qpay" type="string" mandatory="false" binding="qpay"/>
     <field formid="qpay_national_id" type="string" mandatory="false" max-length="40" binding="qpay_national_id"/>
     
-    <!-- Field for Fawry pay -->
+    <!-- Field for Fawry -->
     <field formid="fawry" type="string" mandatory="false" binding="fawry"/>
     <field formid="fawry_purpose" type="string" mandatory="false" max-length="40" binding="fawry_purpose"/>
     
-    <!-- Field for Sepa pay -->
+    <!-- Field for Sepa -->
     <field formid="sepa" type="string" mandatory="false" binding="sepa"/>
     <field formid="sepa_iban" type="string" mandatory="false" max-length="40" binding="sepa_iban"/>
     <field formid="sepa_bic" type="string" mandatory="false" max-length="40" binding="sepa_bic"/>
     
-    <!-- Field for Klarna pay -->
+    <!-- Field for Klarna -->
     <field formid="klarna_token" type="string" max-length="40" binding="klarna_token"/>
     <field formid="klarna_approved" type="string" max-length="40" binding="klarna_approved"/>
     <field formid="klarna_finalize_required" type="string" max-length="40" binding="klarna_finalize_required"/>
     
-    <!-- Field for Oxxo pay -->
+    <!-- Field for Oxxo -->
     <field formid="oxxo_identification" type="string" max-length="40" binding="oxxo_identification"/>
 </form>

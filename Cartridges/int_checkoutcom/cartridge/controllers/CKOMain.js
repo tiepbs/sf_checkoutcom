@@ -18,8 +18,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig');
 
 // Handles responses from the Checkout.com payment gateway.
-function handleReturn()
-{
+function handleReturn() {
 	
     // Prepare some variables
     var gResponse = false;
@@ -94,10 +93,8 @@ function handleReturn()
     }
 }
 
-// Handles a failed payment from the Checkout.com payment gateway.
-
-function handleFail()
-{
+// Handles a failed payment from the Checkout.com payment gateway
+function handleFail() {
 	
     // Load the order
     var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
@@ -109,9 +106,8 @@ function handleFail()
     ISML.renderTemplate('custom/common/response/failed.isml');
 }
 
-// Handles webhook responses from the Checkout.com payment gateway.
-function handleWebhook()
-{	
+// Handles webhook responses from the Checkout.com payment gateway
+function handleWebhook() {	
     var isValidResponse = ckoHelper.isValidResponse();
     if (isValidResponse) {
     	
@@ -136,9 +132,8 @@ function handleWebhook()
     }
 }
 
-// Initializes the credit card list by determining the saved customer payment method.
-function getCardsList()
-{
+// Initializes the credit card list by determining the saved customer payment method
+function getCardsList() {
     var applicablePaymentCards;
     var data = [];
 
@@ -168,8 +163,7 @@ function getCardsList()
 }
 
 // Apms filter helper
-function getApmFilter()
-{
+function getApmFilter() {
 	
     // Prepare some variables
     var basket = BasketMgr.getCurrentBasket();

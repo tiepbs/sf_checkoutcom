@@ -1,26 +1,24 @@
 'use strict'
 
-/* Site controller */
+// Site controller
 var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 
-/* API Includes */
+// API Includes
 var OrderMgr = require('dw/order/OrderMgr');
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
-/* Business Name */
+// Business Name
 var businessName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBusinessName');
 
 // Get apms form
 var paymentForm = app.getForm('alternativePaymentForm');
 
-/* Utility */
+// Utility 
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 var ckoApmConfig = {
     
-    /*
-     * Ideal Pay Authorization
-     */
+    // Ideal Pay Authorization
     idealPayAuthorization: function (args) {
         
         // building ideal pay object
@@ -39,9 +37,7 @@ var ckoApmConfig = {
         return payObject;
     },
     
-    /*
-     * Boleto Pay Authorization
-     */
+    // Boleto Pay Authorization
     boletoPayAuthorization: function (args) {
         
         // Building pay object
@@ -60,10 +56,9 @@ var ckoApmConfig = {
         return payObject;
     },
 
-    /*
-     * Bancontact Pay Authorization
-     */
+    // Bancontact Pay Authorization
     bancontactPayAuthorization: function (args) {
+    	
         // Building pay object
         var payObject = {
             'source'        : {
@@ -80,10 +75,9 @@ var ckoApmConfig = {
         return payObject;
     },
     
-    /*
-     * Benefit Pay Authorization
-     */
+    // Benefit Pay Authorization
     benefitPayAuthorization: function (args) {
+    	
         // Process benefit pay
         var payObject = {
             'source' : {
@@ -98,10 +92,9 @@ var ckoApmConfig = {
         return payObject;
     },
 
-    /*
-     * Giro Pay Authorization
-     */
+    // Giro Pay Authorization
     giroPayAuthorization: function (args) {
+    	
         // Building pay object
         var payObject = {
             'source'        : {
@@ -116,10 +109,9 @@ var ckoApmConfig = {
         return payObject;
     },
     
-    /*
-     * Eps Pay Authorization
-     */
+    // Eps Pay Authorization
     epsPayAuthorization: function (args) {
+    	
         // Building pay object
         var payObject = {
             'source'    : {
@@ -134,10 +126,9 @@ var ckoApmConfig = {
         return payObject;
     },
     
-    /*
-     * Sofort Pay Authorization
-     */
+    // Sofort Pay Authorization
     sofortPayAuthorization: function (args) {
+    	
         // Building pay object
         var payObject = {
             'source'    : {
@@ -151,10 +142,9 @@ var ckoApmConfig = {
         return payObject;
     },
     
-    /*
-     * Knet Pay Authorization
-     */
+    // Knet Pay Authorization
     knetPayAuthorization: function (args) {
+    	
         // Building pay object
         var payObject = {
             'source'    :   {
@@ -169,10 +159,9 @@ var ckoApmConfig = {
         return payObject;
     },
 
-    /*
-     * Q Pay Authorization
-     */
+    // Q Pay Authorization
     qpayPayAuthorization: function (args) {
+    	
         // Building pay object
         var payObject = {
             'source'    : {
@@ -190,10 +179,9 @@ var ckoApmConfig = {
         return payObject;
     },
 
-    /*
-     * Fawry Pay Authorization
-     */
+    // Fawry Pay Authorization
     fawryPayAuthorization: function (args) {
+    	
         // Building pay object
         var payObject = {
             'source'    : {
@@ -211,10 +199,9 @@ var ckoApmConfig = {
         return payObject;
     },
     
-    /*
-     * Sepa Pay Authorization
-     */
+    // Sepa Pay Authorization
     sepaPayAuthorization: function (args) {
+    	
         // Building pay object
         var payObject = {
             'type'          : 'sepa',
@@ -231,10 +218,9 @@ var ckoApmConfig = {
         return payObject;
     },
     
-    /*
-     * Multibanco Pay Authorization
-     */
+    // Multibanco Pay Authorization
     multibancoPayAuthorization: function (args) {
+    	
         // Building pay object
         var payObject = {
             'type'      : 'multibanco',
@@ -250,10 +236,9 @@ var ckoApmConfig = {
         return payObject;
     },
     
-    /*
-     * Poli Pay Authorization
-     */
+    // Poli Pay Authorization
     poliPayAuthorization: function (args) {
+    	
         // Building pay object
         var payObject = {
             'type'      : 'poli',
@@ -266,10 +251,9 @@ var ckoApmConfig = {
         return payObject;
     },
 
-    /*
-     * P24 Pay Authorization
-     */
+    // P24 Pay Authorization
     p24PayAuthorization: function (args) {
+    	
         // Building pay object
         var payObject = {
             'type'          : 'p24',
@@ -286,10 +270,9 @@ var ckoApmConfig = {
         return payObject;
     },
 
-    /*
-     * Klarna Pay Authorization
-     */
+    // Klarna Pay Authorization
     klarnaPayAuthorization: function (args) {
+    	
         // Gdt the order
         var order = OrderMgr.getOrder(args.OrderNo);
         
@@ -297,6 +280,7 @@ var ckoApmConfig = {
         var klarna_approved = paymentForm.get('klarna_approved').value();
         
         if (klarna_approved) {
+        	
             // Build the payment object
             var payObject = {
                 'type'      : 'klarna',
@@ -316,14 +300,14 @@ var ckoApmConfig = {
              
             return payObject;
         } else {
+        	
             return {success: false};
         }
     },
 
-    /*
-     * Paypal Pay Authorization
-     */
+    // Paypal Pay Authorization
     paypalPayAuthorization: function (args) {
+    	
         // Build the payment object
         var payObject = {
             'type'          : 'paypal',
@@ -337,10 +321,9 @@ var ckoApmConfig = {
         return payObject;
     },
     
-    /*
-     * Oxxo Pay Object
-     */
+    // Oxxo Pay Object
     oxxoPayAuthorization: function (args) {
+    	
         // Build the payment object
         var payObject = {
             'source': {
@@ -360,10 +343,9 @@ var ckoApmConfig = {
         return payObject;
     },
     
-    /*
-     * Ali Pay Object
-     */
+    // Ali Pay Object
     aliPayAuthorization: function (args) {
+    	
         // Build the payment object
         var payObject = {
             'source': {
@@ -378,7 +360,5 @@ var ckoApmConfig = {
     }
 }
 
-/*
-* Module exports
-*/
+// Module exports
 module.exports = ckoApmConfig;

@@ -1,26 +1,22 @@
 'use strict';
 
-/**
- * jQuery Ajax helpers on DOM ready.
- */
+// jQuery Ajax helpers on DOM ready
 document.addEventListener('DOMContentLoaded', function () {
+	
     // Get the card lsit url
     var cardUrl = $('[id="ckoCardListUrl"]').val();
     
     // Retrieve the card list
     getCardsList(cardUrl);
-    
 }, false);
 
-/**
- * Get the user cards list.
- */
-function getCardsList(dataUrl)
-{
+// Get the user cards list.
+function getCardsList(dataUrl) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', dataUrl);
     xhr.onload = function () {
         if (this.status == 200) {
+        	
             // Cleanup the response
             var cards = JSON.parse(this.response.replace(/&quot;/g,'"'));
             
@@ -43,11 +39,9 @@ function getCardsList(dataUrl)
     xhr.send();
 }
 
-/**
- * Retrieves the card number from the form.
- */
-function getCardData(elt, dataUrl)
-{
+// Retrieves the card number from the form
+function getCardData(elt, dataUrl) {
+	
     // Get the selected card UUID
     var cardUUID = elt.options[elt.selectedIndex].value;
     if (cardUUID.length !== 0) {
@@ -80,14 +74,13 @@ function getCardData(elt, dataUrl)
     }
 }
 
-/**
- * Sets the card form fields from user card data.
- */
+// Sets the card form fields from user card data.
 function setFields(data)
 {
     var $creditCard = $('[data-method="CHECKOUTCOM_CARD"]');
     $creditCard.find('input[name$="_cardPaymentForm_owner"]').val(data.cardHolder).trigger('change');
     $creditCard.find('input[name$="_cardPaymentForm_number"]').val(data.cardNumber).trigger('change');
+    
     // enable card data formating
     setSchema('#dwfrm_cardPaymentForm_number');
     $creditCard.find('[name$="_month"]').val(data.expiryMonth).trigger('change');

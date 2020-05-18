@@ -1,25 +1,20 @@
-/**
- * Klarna controller.
- */
-
 'use strict';
 
-/* API Includes */
+// API Includes
 var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var BasketMgr = require('dw/order/BasketMgr');
 
-/** Utility **/
+// Utility
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
-/**
- * Initiate the Kalrna session.
- */
-function klarnaSession()
-{
+// Initiate the Kalrna session
+function klarnaSession() {
+	
     // Prepare the basket
     var basket = BasketMgr.getCurrentBasket();
     if (basket) {
+    	
         // Prepare the variables
         var countryCode = ckoHelper.getBasketCountyCode(basket);
         var currency = basket.getCurrencyCode();
@@ -59,7 +54,5 @@ function klarnaSession()
     }
 }
 
-/*
- * Module exports
- */
+// Module exports
 exports.KlarnaSession = guard.ensure(['get','https'], klarnaSession);
