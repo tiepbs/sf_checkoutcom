@@ -70,9 +70,6 @@ var apmHelper = {
     handleResponse: function (gatewayResponse) {
         // Prepare the APM type
         //var type;
-
-        // Clean the session
-        session.privacy.redirectUrl = null;
         
         // Update customer data
         ckoHelper.updateCustomerData(gatewayResponse);
