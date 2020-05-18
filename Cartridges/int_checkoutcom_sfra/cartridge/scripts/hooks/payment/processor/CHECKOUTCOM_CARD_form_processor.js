@@ -13,7 +13,7 @@ function processForm(paymentForm, viewFormData) {
     var viewData = viewFormData;
     var selectedCardUuid = paymentForm.savedCardForm.selectedCardUuid.value;
     var selectedCardCvv = paymentForm.savedCardForm.selectedCardCvv.value;
-    var creditCardErrors = {};
+    var fieldErrors = {};
 
     // Add the payment method info
     viewData.paymentMethod = {
@@ -24,10 +24,10 @@ function processForm(paymentForm, viewFormData) {
     // Process the card info
     if (!selectedCardUuid || !selectedCardCvv) { 
         // Verify credit card form data
-        creditCardErrors = COHelpers.validateCreditCard(paymentForm);
-        if (Object.keys(creditCardErrors).length) {
+        fieldErrors = COHelpers.validateCreditCard(paymentForm);
+        if (Object.keys(fieldErrors).length) {
             return {
-                fieldErrors: creditCardErrors,
+                fieldErrors: fieldErrors,
                 error: true
             };
         }

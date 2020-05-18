@@ -18,7 +18,10 @@ function Handle(basket, billingData, processorId, req) {
     var currentBasket = basket;
     var fieldErrors = {};
     var serverErrors = [];
-    
+
+    var logger = require('dw/system/Logger').getLogger('ckodebug');
+    logger.debug('apmbillingata {0}', JSON.stringify(billingData));
+
     // Verify the payload
     if (!billingData.paymentInformation.ckoApm.value || billingData.paymentInformation.ckoApm.value.length == 0) {
         serverErrors.push(

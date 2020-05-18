@@ -95,12 +95,8 @@ function filterApm()
 
 function initCheckoutcomApmValidation() {
     // Submit event
-    $('button.submit-payment').off('click touch').one('click touch', function (e) {
+    $('button.submit-payment').off('click touch').on('click touch', function (e) {
         if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APM') {
-            // Prevent the default button click behaviour
-            e.preventDefault();
-            e.stopImmediatePropagation();
-
             // Remove all previous errors
             $('.apm-list-item .is-invalid').removeClass('is-invalid');
             $('.apm-list-item .invalid-field-message').hide();
@@ -116,9 +112,12 @@ function initCheckoutcomApmValidation() {
             
             // Run the form validation
             if (typeof window[func] === "function") {
-                console.log(errors);
                 errors = window[func]();
                 if (errors.length > 0) {
+                    // Prevent the default button click behaviour
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+
                     // Add the invalid fileds invalid style
                     for (var i = 0; i < errors.length; i++) {
                         $(errors[i]).addClass('is-invalid');
@@ -136,10 +135,6 @@ function initCheckoutcomApmValidation() {
                     $('html, body').animate({
                         scrollTop: parseInt(scrollTarget.offset().top)
                     }, 500);
-                }
-                else 
-                {
-                    $(this).trigger('click');
                 }
             }
         }
