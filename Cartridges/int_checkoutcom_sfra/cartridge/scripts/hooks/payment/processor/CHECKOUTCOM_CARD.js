@@ -1,9 +1,6 @@
 'use strict';
 
-var collections = require('*/cartridge/scripts/util/collections');
 var Resource = require('dw/web/Resource');
-var Transaction = require('dw/system/Transaction');
-var ISML = require('dw/template/ISML');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
