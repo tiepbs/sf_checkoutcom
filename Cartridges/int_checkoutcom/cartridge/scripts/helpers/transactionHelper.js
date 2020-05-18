@@ -1,22 +1,18 @@
 'use strict';
 
-/* API Includes */
+// API Includes 
 var PaymentMgr = require('dw/order/PaymentMgr');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var Transaction = require('dw/system/Transaction');
 var Money = require('dw/value/Money');
 
-/* Utility */
+// Utility 
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
-/**
- * Transaction helper.
- */
+// Transaction helper.
 var transactionHelper = {
-    /*
-     * Get order transaction amount
-     */
+    // Get order transaction amount
     getOrderTransactionAmount : function (order) {
         return new Money(
             order.totalGrossPrice.value.toFixed(2),
@@ -24,9 +20,7 @@ var transactionHelper = {
         );
     },
 
-    /*
-     * Get webhook transaction amount
-     */
+    // Get webhook transaction amount
     getHookTransactionAmount : function (hook) {
         var divider = ckoHelper.getCkoFormatedValue(hook.data.currency);
         var amount = parseInt(hook.data.amount) / divider;
@@ -36,11 +30,8 @@ var transactionHelper = {
         );
     },
 
-    /*
-     * Create an authorization transaction
-     */
+    // Create an authorization transaction
     createAuthorization: function (hook) {
-    	
         // Get the transaction amount
         var transactionAmount = this.getHookTransactionAmount(hook);
 
@@ -67,9 +58,7 @@ var transactionHelper = {
         });
     },
 
-    /**
-     * Get the Checkout.com orders.
-     */
+    // Get the Checkout.com orders.
     getCkoOrders: function () {
         // Prepare the output array
         var data = [];
@@ -79,12 +68,13 @@ var transactionHelper = {
         
         // Loop through the results
         for each(var item in result) {
+        	
             // Get the payment instruments
             var paymentInstruments = item.getPaymentInstruments();
             
             // Loop through the payment instruments
             for each(var instrument in paymentInstruments) {
-                if (this.isCkoItem(instrument.paymentMethod) && !this.containsObject(item, data)) {
+                if (ckoHelper.isCkoItem(instrument.paymentMethod) && !this.containsObject(item, data)) {
                     data.push(item);
                 }
             }
@@ -93,20 +83,20 @@ var transactionHelper = {
         return data;
     },
 
-    /**
-     * Get the Checkout.com transactions.
-     */
+    // Get the Checkout.com transactions.
     loadTransactionById: function (transactionId) {
         // Query the orders
-        var result  = this.getCkoOrders();
+        var result  = ckoHelper.getCkoOrders();
 
         // Loop through the results
         for each(var item in result) {
+        	
             // Get the payment instruments
             var paymentInstruments = item.getPaymentInstruments();
             
             // Loop through the payment instruments
             for each(var instrument in paymentInstruments) {
+            	
                 // Get the payment transaction
                 var paymentTransaction = instrument.getPaymentTransaction();
 
@@ -118,11 +108,95 @@ var transactionHelper = {
         }
         
         return null;
+    },
+
+    /*
+     * Get a parent transaction from a payment id
+     */
+    getParentTransaction: function (paymentId, transactionType) {
+        // Prepare the payload
+        var mode = ckoHelper.getValue('ckoMode');
+        var ckoChargeData = {
+            chargeId: paymentId
+        }
+
+        // Get the payment actions
+        var paymentActions = ckoHelper.gatewayClientRequest(
+            'cko.payment.actions.' + mode + '.service',
+            ckoChargeData,
+            'GET'
+        );
+
+        // Convert the list to array
+        if (paymentActions) {
+            var paymentActionsArray = paymentActions.toArray();
+
+            // Return the requested transaction
+            for (var i = 0; i < paymentActionsArray.length; i++) {
+                if (paymentActionsArray[i].type == transactionType) {
+                    return this.loadTransaction(paymentActionsArray[i].id);
+                }
+            }
+        }
+        
+        return null;
+    },
+
+    /**
+     * Load a transaction by Id.
+     */
+    loadTransaction: function (transactionId) {
+        // Query the orders
+        var result  = ckoHelper.getOrders();
+
+        // Loop through the results
+        for each(var item in result) {
+            // Get the payment instruments
+            var paymentInstruments = item.getPaymentInstruments();
+            
+            // Loop through the payment instruments
+            for each(var instrument in paymentInstruments) {
+                // Get the payment transaction
+                var paymentTransaction = instrument.getPaymentTransaction();
+
+                // Prepare the filter condition
+                var isIdMatch = paymentTransaction.transactionID == transactionId;
+
+                // Add the payment transaction to the output
+                if (isIdMatch) {
+                    return paymentTransaction;
+                }
+            }
+        }
+        
+        return null;
+    },
+
+    /**
+     * Check if a capture transaction can allow refunds.
+     */
+    shouldCloseRefund: function (transactionAmount, order) {
+        // Prepare the total refunded
+        var totalRefunded = 0;
+
+        // Get the payment instruments
+        var paymentInstruments = order.getPaymentInstruments();
+
+        // Loop through the payment instruments
+        for each(var instrument in paymentInstruments) {
+            // Get the payment transaction
+            var paymentTransaction = instrument.getPaymentTransaction();
+
+            // Calculate the total refunds
+            if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CREDIT) {
+                totalRefunded += parseFloat(paymentTransaction.amount.value);
+            }
+        }
+   
+        // Check if a refund is possible
+        return (totalRefunded + parseFloat(transactionAmount)) >= parseFloat(order.totalGrossPrice.value.toFixed(2));
     }
 };
 
-/*
- * Module exports
- */
-
+// Module exports
 module.exports = transactionHelper;

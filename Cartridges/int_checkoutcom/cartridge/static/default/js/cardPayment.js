@@ -5,6 +5,7 @@ var isSetId = document.getElementById('default_thumb');
 
 // set event on page load
 document.addEventListener('DOMContentLoaded', function () {
+	
     // Set schema box
     setBox();
     
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Sets schema box
 var setBox = function () {
+	
     // Card number input styling
     $('#dwfrm_cardPaymentForm_number').css("padding", '0');
     $('#dwfrm_cardPaymentForm_number').css("padding-left", '40px');
@@ -31,6 +33,7 @@ var setBox = function () {
 
 // Sets the expiration years in the form
 var setExpirationYears = function() {
+	
     // Get the current year
     var d = new Date();
     var currentYear = d.getFullYear();
@@ -48,13 +51,16 @@ var setExpirationYears = function() {
 
 // Sets schema image in box
 var setSchema = function (inputId) {
+	
     // Format user input with cleave.js
     var cleaveCreditCard = new Cleave(inputId, {
         creditCard: true,
         onCreditCardTypeChanged: function (type) {
+        	
             // Sets the schema id
             var imageId = getImageId(type);            
             if (imageId) {
+            	
                 // Set the schema image exist
                 isSet = true;
                 
@@ -69,6 +75,7 @@ var setSchema = function (inputId) {
                 // Set card shema image
                 setImage(imageId);
             } else {
+            	
                 // Is mada enabled by shop
                 var mada = document.getElementById('dwfrm_cardPaymentForm_mada');
                 
@@ -110,6 +117,7 @@ var setMada = function () {
                 // Set card schema image
                 setImage(imageId);
             } else {
+            	
                 // If there is an active schema image don't change
                 if (!isSet) {
                     setImage('default_thumb');
@@ -125,6 +133,7 @@ var setMada = function () {
 
 // Set schema card image
 var setImage = function (element) {
+	
     // If image is already set
     if (isSetId) {
         isSetId.style.display = "none";
@@ -166,6 +175,7 @@ var getImageId  = function (schema) {
 }
 
 var Mada = {
+		
     // MADA BINs
     cards: {
         four: [
@@ -185,6 +195,7 @@ var Mada = {
 
     // Compare card
     compare: function (cardNumber) {
+    	
         // Get first number
         var fNumber = this.firstNumber(cardNumber);
         var number = cardNumber.substr(0, 6);
@@ -194,38 +205,45 @@ var Mada = {
                 case '4':
                     var result = this.cards.four.includes(number);
                     if (result) {
+                    	
                         return "mada";
                     }
                     break;
                 case '5':
                     var result = this.cards.five.includes(number);
                     if (result) {
+                    	
                         return "mada";
                     }
                     break;
                 case '6':
                     var result = this.cards.six.includes(number);
                     if (result) {
+                    	
                         return "mada";
                     }
                     break;
                 case '9':
                     var result = this.cards.nine.includes(number);
                     if (result) {
+                    	
                         return "mada";
                     }
                     break;
                 default:
+                	
                     return false;
             }
         }
         else {
+        	
             return "error";
         }
     },
 
     // Returns the first number of the card
     firstNumber: function (cardNumber) {
+    	
         // Get first number
         return cardNumber.charAt(0);
     }

@@ -1,21 +1,19 @@
 "use strict"
 
 
-/* API Includes */
+// API Includes 
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 
-/** Utility **/
+// Utility
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
-/*
-* Utility functions for my cartridge integration.
-*/
+// Utility functions for my cartridge integration
 var applePayHelper = {
-    /*
-     * Handle full charge Request to CKO API
-     */
+		
+    // Handle full charge Request to CKO API
     handleRequest: function (args) {
+    	
         // load the order information
         var order = OrderMgr.getOrder(args.OrderNo);
         var paymentInstrument = args.PaymentInstrument;
@@ -62,6 +60,7 @@ var applePayHelper = {
 
             return false;
         } else {
+        	
             // update the transaction
             Transaction.wrap(function () {
                 OrderMgr.failOrder(order);
@@ -74,10 +73,9 @@ var applePayHelper = {
         }
     },
     
-    /*
-     * Handle full Google Pay response from CKO API
-     */
+    // Handle full Google Pay response from CKO API
     handleResponse: function (gatewayResponse) {
+    	
         // Logging
         ckoHelper.doLog('response', gatewayResponse);
         
@@ -85,10 +83,9 @@ var applePayHelper = {
         ckoHelper.updateCustomerData(gatewayResponse);
     },
     
-    /*
-     * Build Gateway Source Object
-     */
+    // Build Gateway Source Object
     getSourceObject: function (tokenData) {
+    	
         // source object
         var source = {
             type: "token",
@@ -99,8 +96,5 @@ var applePayHelper = {
     }
 }
 
-/*
-* Module exports
-*/
-
+// Module exports
 module.exports = applePayHelper;

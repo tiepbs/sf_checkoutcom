@@ -1,6 +1,6 @@
 "use strict"
 
-/* API Includes */
+// API Includes
 var PaymentMgr = require('dw/order/PaymentMgr');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
@@ -8,7 +8,7 @@ var OrderMgr = require('dw/order/OrderMgr');
 var ISML = require('dw/template/ISML');
 var URLUtils = require('dw/web/URLUtils');
 
-/** Utility **/
+// Utility
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 // Utility functions for my cartridge integration
@@ -26,7 +26,6 @@ var cardHelper = {
         
         // Handle apm result
         if (cardRequest) {
-            	
             if (session.privacy.redirectUrl) {
                 
                 // 3ds redirection
@@ -35,16 +34,13 @@ var cardHelper = {
                 });
 
                 return {authorized: true, redirected: true};
-
             } else {
             	
                 // Load the card and order information
                 var order = OrderMgr.getOrder(args.OrderNo);
             	
                 return {authorized: true};
-            }
-            
-            
+            }    
         } else {
         	
             return false
@@ -77,11 +73,13 @@ var cardHelper = {
             	
                 // Handle the response
                 if (this.handleFullChargeResponse(gatewayResponse)) {
+                	
                     return gatewayResponse;
                 }
 
                 return false;
             } else {
+            	
                 // Fail the order
                 Transaction.wrap(function () {
                     OrderMgr.failOrder(order);
@@ -194,6 +192,7 @@ var cardHelper = {
     
     // Build 3ds object
     get3Ds: function () { 	
+   
         return {
             'enabled' : ckoHelper.getValue('cko3ds'),
             'attempt_n3d' : ckoHelper.getValue('ckoN3ds')

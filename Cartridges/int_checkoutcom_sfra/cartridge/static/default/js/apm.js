@@ -44,7 +44,9 @@ function initApmAccordion()
         // Set the selected APM fields
         var apmId = $(this).parents('.apm-list-item').attr('id');
         $('input[name="dwfrm_billing_apmForm_ckoSelectedApm"]').val(apmId);
-        $('#' + apmId).find('input[type="radio"]').val(apmId);           
+
+        // Run the validation event
+        initCheckoutcomApmValidation();
 
         // Open the sibling panel
         var panel = $(this).next();
@@ -77,10 +79,12 @@ function filterApm()
 
             // Display only the allowed APM for the user
             var dataArray = apmList.ckoApmFilterConfig;
-            for (var item in dataArray) {                    
-                if (dataArray[item].countries.includes(userData.country.toUpperCase()) && dataArray[item].currencies.includes(userData.currency)) {
+            for (var item in dataArray) {            
+                var condition1 = dataArray[item].countries.includes(userData.country.toUpperCase()) && dataArray[item].currencies.includes(userData.currency);
+                var condition2 = dataArray[item].countries.includes('*') && dataArray[item].currencies.includes('*');
+                //if (condition1 || condition2) {
                     $('#'+ item).css('display', 'block');
-                }
+                //}
             }
         }
     };
@@ -90,36 +94,48 @@ function filterApm()
 }
 
 function initCheckoutcomApmValidation() {
-    // Filter the available APM
-    filterApm();
-
     // Submit event
-    $('button.submit-payment').off('click touch').one('click touch', function (e) {
+    $('button.submit-payment').off('click touch').on('click touch', function (e) {
         if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APM') {
-            // Prevent the default button click behaviour
-            e.preventDefault();
-            e.stopImmediatePropagation();
+            // Remove all previous errors
+            $('.apm-list-item .is-invalid').removeClass('is-invalid');
+            $('.apm-list-item .invalid-field-message').hide();
 
             // Errors count
-            var errors = 0;
+            var errors = [];
 
             // Get the APM container id
-            var apmId = $('.cko-apm-active').closest('.apm-list-item').attr('id');
+            var apmId = $('.cko-apm-active').parents('.apm-list-item').attr('id');
 
             // Build the form validation function name
             var func = apmId + 'FormValidation';
-
+            
             // Run the form validation
             if (typeof window[func] === "function") {
                 errors = window[func]();
-                if (errors > 0) {
+                if (errors.length > 0) {
+                    // Prevent the default button click behaviour
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+
+                    // Add the invalid fileds invalid style
+                    for (var i = 0; i < errors.length; i++) {
+                        $(errors[i]).addClass('is-invalid');
+                    }
+
+                    // Show the invalid fields error message
+                    var invalidFieldMessage = $(errors[0]).parents('.apm-list-item').find('.invalid-field-message');
+                    invalidFieldMessage.show();
+                    invalidFieldMessage.text(
+                        window.ckoLang.apmFieldInvalid
+                    );
+
+                    // Scroll back to the error
+                    var scrollTarget = $(errors[0]).parents('.apm-list-item');
                     $('html, body').animate({
-                        scrollTop: parseInt($('#' + apmId).offset().top)
+                        scrollTop: parseInt(scrollTarget.offset().top)
                     }, 500);
                 }
-            }
-            else {
-                $(this).trigger('click');
             }
         }
     }); 

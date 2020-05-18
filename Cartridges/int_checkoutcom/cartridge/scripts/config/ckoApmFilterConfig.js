@@ -72,8 +72,5 @@ var ckoApmFilterConfig = {
 }
 
 
-/*
-* Module exports
-*/
-
+// Module exports
 module.exports = ckoApmFilterConfig;

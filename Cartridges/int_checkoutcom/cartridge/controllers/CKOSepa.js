@@ -1,6 +1,6 @@
 'use strict';
 
-/* Script Modules */
+// Script Modules
 var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 var app = require(siteControllerName + '/cartridge/scripts/app');
 var guard = require(siteControllerName + '/cartridge/scripts/guard');
@@ -9,13 +9,13 @@ var URLUtils = require('dw/web/URLUtils');
 var OrderMgr = require('dw/order/OrderMgr');
 
 
-/** Utility **/
+// Utility
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 
 // Initiate the mandate session
-function mandate()
-{
+function mandate() {
+	
     // Prepare the varirables
     var url = session.privacy.redirectUrl;
     var orderId = ckoHelper.getOrderId();
@@ -24,6 +24,7 @@ function mandate()
     // Process the URL
     if (url) {
         app.getView({
+        	
             // Prepare the view parameters
             creditAmount: order.totalGrossPrice.value.toFixed(2),
             formatedAmount: ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
@@ -44,22 +45,24 @@ function mandate()
             ContinueURL: URLUtils.https('CKOSepa-HandleMandate')
         }).render('sepaForm');
     } else {
+    	
         // Print out a message
         response.getWriter().println(ckoHelper._('cko.sepa.error', 'cko'));
     }
 }
 
-function handleMandate()
-{
+function handleMandate() {
 	
     var orderId = ckoHelper.getOrderId();
     
     app.getForm('sepaForm').handleAction({
         cancel: function () {
+        	
             // Clear form
             app.getForm('sepaForm').clear();
             
             if (orderId) {
+            	
                 // Load the order
                 var order = OrderMgr.getOrder(orderId);
                 ckoHelper.checkAndRestoreBasket(order);
@@ -73,6 +76,7 @@ function handleMandate()
             
             // If mandate is true
             if (mandateValue) {
+            	
                 // Clear form
                 app.getForm('sepaForm').clear();
                 
@@ -83,6 +87,7 @@ function handleMandate()
                 var responseObjectId = session.privacy.sepaResponseId;
                 if (responseObjectId) {
                     if (orderId) {
+                    	
                         // Load the order
                         var order = OrderMgr.getOrder(orderId);
                         
@@ -107,15 +112,18 @@ function handleMandate()
                             // Show the confirmation screen
                             app.getController('COSummary').ShowConfirmation(order);
                         }else{
+                        	
                         	// Return to the billing start page
                         	app.getController('COBilling').Start();
                         }
                         
                     } else {
+                    	
                     	// Return to the billing start page
                         app.getController('COBilling').Start();
                     }
                 } else {
+                	
                     // Restore the cart
                     ckoHelper.checkAndRestoreBasket(order);
 
@@ -123,6 +131,7 @@ function handleMandate()
                     ISML.renderTemplate('custom/common/response/failed.isml');
                 }
             } else {
+            	
                 //load the mandate form 
             	mandate();
             }
@@ -130,8 +139,6 @@ function handleMandate()
     });
 }
 
-/*
- * Module exports
- */
+// Module exports
 exports.Mandate = guard.ensure(['get', 'https'], mandate);
 exports.HandleMandate = guard.ensure(['post', 'https'], handleMandate);

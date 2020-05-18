@@ -13,8 +13,7 @@ function processForm(paymentForm, viewFormData) {
     var result = {
         error: false,
         viewData: viewData
-    };
-
+    };    
     if (ckoSelectedApm.htmlValue.length > 0) {
         viewData.paymentInformation = {
             ckoApm: {
