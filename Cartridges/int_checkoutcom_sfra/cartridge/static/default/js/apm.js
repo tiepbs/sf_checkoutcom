@@ -97,30 +97,35 @@ function initCheckoutcomApmValidation() {
     // Submit event
     $('button.submit-payment').off('click touch').one('click touch', function (e) {
         if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APM') {
-            // Prevent the default button click behaviour
-            e.preventDefault();
-            e.stopImmediatePropagation();
-
             // Errors count
-            var errors = 0;
+            var result = {};
 
             // Get the APM container id
             var apmId = $('.cko-apm-active').closest('.apm-list-item').attr('id');
 
             // Build the form validation function name
             var func = apmId + 'FormValidation';
-
+            
             // Run the form validation
             if (typeof window[func] === "function") {
                 errors = window[func]();
-                if (errors > 0) {
+                if (errors.length > 0) {
+                    // Prevent the default button click behaviour
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+
+                    // Add the invalid UI elements
+                    $(errors[0]).addClass('is-invalid');
+                    $(errors[0]).next('.invalid-field-message').show();
+                    $(errors[0]).next('.invalid-field-message').text(
+                        window.ckoLang.apmFieldInvalid
+                    );
+
+                    // Scroll back to the error
                     $('html, body').animate({
-                        scrollTop: parseInt($('#' + apmId).offset().top)
+                        scrollTop: parseInt($(errors[0]).offset().top)
                     }, 500);
                 }
-            }
-            else {
-                $(this).trigger('click');
             }
         }
     }); 

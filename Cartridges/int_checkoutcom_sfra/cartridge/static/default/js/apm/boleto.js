@@ -9,26 +9,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function boletoFormValidation() {
     // Errors count
-    var errors = 0;
+    var errors = [];
 
     // Field 1 validation
-    var field1 = $('#boleto_birthDate');
-    if (field1.val() == '') {
-        $('#boleto_pay_box .invalid-field-message').text(
-            window.ckoLang.apmFieldInvalid
-        );
-        field1.addClass('is-invalid');
-        errors++;
+    var field1 = '#boleto_birthDate';
+    if ($(field1).val() == '') {
+        errors.push(field1);
     }
 
     // Field 2 validation
-    var field2 = $('#boleto_cpfe');
-    if (field2.val() == '') {
-        $('#boleto_pay_box .invalid-field-message').text(
-            window.ckoLang.apmFieldInvalid
-        );
-        field2.addClass('is-invalid');
-        errors++;
+    var field2 = '#boleto_cpfe';
+    if ($(field2).val() == '') {
+        errors.push(field2);
     }
 
     return errors;
