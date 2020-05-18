@@ -67,8 +67,9 @@ var eventsHelper = {
         Transaction.wrap(function () {
             // Update the parent transaction state
             var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Authorization');
-            parentTransaction.custom.ckoTransactionOpened = false;
-
+            if (parentTransaction) {
+                parentTransaction.custom.ckoTransactionOpened = false;
+            }
             // Create the transaction
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
@@ -134,8 +135,9 @@ var eventsHelper = {
         Transaction.wrap(function () {
             // Update the parent transaction state
             var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Capture');
-            parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(transactionAmount, order);
-            
+            if (parentTransaction) {
+                parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(transactionAmount, order);
+            }
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
@@ -168,8 +170,9 @@ var eventsHelper = {
         Transaction.wrap(function () {
             // Update the parent transaction state
             var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Authorization');
-            parentTransaction.custom.ckoTransactionOpened = false;
-            
+            if (parentTransaction) {
+                parentTransaction.custom.ckoTransactionOpened = false;
+            }            
             // Create the transaction
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
