@@ -114,15 +114,19 @@ function initCheckoutcomApmValidation() {
                     e.preventDefault();
                     e.stopImmediatePropagation();
 
-                    // Add the invalid UI elements
-                    $(errors[0]).addClass('is-invalid');
+                    // Add the invalid fileds invalid style
+                    for (var i = 0; i < errors.length; i++) {
+                        $(errors[i]).addClass('is-invalid');
+                    }
+
+                    // Show the invalid fields error message
                     $(errors[0]).next('.invalid-field-message').show();
                     $(errors[0]).next('.invalid-field-message').text(
                         window.ckoLang.apmFieldInvalid
                     );
 
                     // Scroll back to the error
-                    var scrollTarget = $(errors[0]).parent().closest('div');
+                    var scrollTarget = $(errors[0]).parents('.apm-list-item');
                     $('html, body').animate({
                         scrollTop: parseInt(scrollTarget.offset().top)
                     }, 500);
