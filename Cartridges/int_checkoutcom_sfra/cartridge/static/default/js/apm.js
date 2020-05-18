@@ -120,8 +120,9 @@ function initCheckoutcomApmValidation() {
                     }
 
                     // Show the invalid fields error message
-                    $(errors[0]).next('.invalid-field-message').show();
-                    $(errors[0]).next('.invalid-field-message').text(
+                    var invalidFieldMessage = $(errors[0]).parents('.apm-list-item').find('.invalid-field-message');
+                    invalidFieldMessage.show();
+                    invalidFieldMessage.text(
                         window.ckoLang.apmFieldInvalid
                     );
 
