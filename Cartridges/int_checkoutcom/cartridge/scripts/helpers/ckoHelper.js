@@ -146,7 +146,7 @@ var ckoHelper = {
     
     // Format price for cko gateway
     getFormattedPrice: function (price, currency) {
-        var ckoFormateBy = this.getCKOFormatedValue(currency);
+        var ckoFormateBy = this.getCkoFormatedValue(currency);
         var orderTotalFormated = price * ckoFormateBy;
         
         return orderTotalFormated.toFixed();
