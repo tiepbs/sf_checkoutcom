@@ -45,6 +45,9 @@ function initApmAccordion()
         var apmId = $(this).parents('.apm-list-item').attr('id');
         $('input[name="dwfrm_billing_apmForm_ckoSelectedApm"]').val(apmId);
 
+        // Run the validation event
+        initCheckoutcomApmValidation();
+
         // Open the sibling panel
         var panel = $(this).next();
         panel.addClass('cko-apm-panel-opened');
@@ -91,9 +94,6 @@ function filterApm()
 }
 
 function initCheckoutcomApmValidation() {
-    // Filter the available APM
-    filterApm();
-
     // Submit event
     $('button.submit-payment').off('click touch').one('click touch', function (e) {
         if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APM') {
@@ -101,7 +101,7 @@ function initCheckoutcomApmValidation() {
             var errors = {};
 
             // Get the APM container id
-            var apmId = $('.cko-apm-active').closest('.apm-list-item').attr('id');
+            var apmId = $('.cko-apm-active').parents('.apm-list-item').attr('id');
 
             // Build the form validation function name
             var func = apmId + 'FormValidation';
@@ -109,8 +109,6 @@ function initCheckoutcomApmValidation() {
             // Run the form validation
             if (typeof window[func] === "function") {
                 errors = window[func]();
-                console.log(errors);
-
                 if (errors.length > 0) {
                     // Prevent the default button click behaviour
                     e.preventDefault();
@@ -124,8 +122,9 @@ function initCheckoutcomApmValidation() {
                     );
 
                     // Scroll back to the error
+                    var scrollTarget = $(errors[0]).parent().closest('div');
                     $('html, body').animate({
-                        scrollTop: parseInt($(errors[0]).offset().top)
+                        scrollTop: parseInt(scrollTarget.offset().top)
                     }, 500);
                 }
             }
