@@ -24,10 +24,13 @@ var apmHelper = {
         // Create the payment request
         var gatewayRequest = this.getApmRequest(order, processorId, apmConfigData);
 
+        // Log the SEPA payment request data
+        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), chargeData);
+
         // Test SEPA
         if (apmConfigData.type == "sepa") {
             // Prepare the charge data
-            var chargeData = {
+            gatewayRequest = {
                 "customer"              : ckoHelper.getCustomer(order),
                 "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
                 "type"                  : apmConfigData.type,
@@ -38,26 +41,16 @@ var apmHelper = {
                 "metadata"              : ckoHelper.getMetadata({}, processorId),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
-            
-            // Log the SEPA payment request data
-            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), chargeData);
+        } 
 
-            // Perform the request to the payment gateway
-            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.sources." + ckoHelper.getValue('ckoMode') + ".service", chargeData);
-        } else {
-            // Log the APM payment request data
-            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
-
-            // Perform the request to the payment gateway
-            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
-        }
-
+        // Perform the request to the payment gateway
+        gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
+ 
         // Log the SEPA payment response data
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
 
         // Process the response
         return this.handleResponse(gatewayResponse);
-
     },
     
     /*
@@ -79,7 +72,7 @@ var apmHelper = {
         
         // Prepare the result
         var result = {
-            error: false,
+            error: true,
             redirectUrl: false
         }
 
