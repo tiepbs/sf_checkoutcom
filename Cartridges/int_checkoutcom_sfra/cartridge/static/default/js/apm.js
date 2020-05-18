@@ -106,7 +106,7 @@ function initCheckoutcomApmValidation() {
             $('.apm-list-item .invalid-field-message').hide();
 
             // Errors count
-            var errors = {};
+            var errors = [];
 
             // Get the APM container id
             var apmId = $('.cko-apm-active').parents('.apm-list-item').attr('id');
@@ -116,6 +116,7 @@ function initCheckoutcomApmValidation() {
             
             // Run the form validation
             if (typeof window[func] === "function") {
+                console.log(errors);
                 errors = window[func]();
                 if (errors.length > 0) {
                     // Add the invalid fileds invalid style
