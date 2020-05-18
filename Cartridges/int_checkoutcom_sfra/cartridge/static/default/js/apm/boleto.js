@@ -18,7 +18,7 @@ function boletoFormValidation() {
     }
 
     // Field 2 validation
-    var field2 = '#boleto_cpfe';
+    var field2 = '#boleto_cpf';
     if ($(field2).val() == '') {
         errors.push(field2);
     }
