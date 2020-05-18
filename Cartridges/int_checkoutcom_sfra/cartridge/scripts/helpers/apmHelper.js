@@ -44,20 +44,16 @@ var apmHelper = {
 
             // Perform the request to the payment gateway
             gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.sources." + ckoHelper.getValue('ckoMode') + ".service", chargeData);
-
-            // Log the SEPA payment response data
-            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
-
         } else {
             // Log the APM payment request data
             ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
 
             // Perform the request to the payment gateway
             gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
-
-            // Log the APM payment response data
-            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
         }
+
+        // Log the SEPA payment response data
+        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
 
         // Process the response
         return this.handleResponse(gatewayResponse);
@@ -97,7 +93,7 @@ var apmHelper = {
         */
 
         // Add redirect URL to session if exists
-        if (!result.error && gatewayResponse && gatewayResponse.hasOwnProperty('_links')) {
+        if (gatewayResponse && gatewayResponse.hasOwnProperty('_links')) {
             result.error = false;
             var gatewayLinks = gatewayResponse._links;
             result.redirectUrl = gatewayLinks.redirect.href;
