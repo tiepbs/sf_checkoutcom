@@ -161,6 +161,7 @@ function launchApplePay() {
                         session.completePayment(status);
 
                         if (success) {
+                            
                             // Redirect to success page
                             jQuery('[id="dwfrm_applePayForm_data"]').val(JSON.stringify(payload));
                         }

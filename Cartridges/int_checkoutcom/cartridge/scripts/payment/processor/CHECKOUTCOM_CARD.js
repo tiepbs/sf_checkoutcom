@@ -1,19 +1,19 @@
 'use strict';
 
-/* API Includes */
+// API Includes 
 var PaymentMgr = require('dw/order/PaymentMgr');
 var Transaction = require('dw/system/Transaction');
 
-/* Site controller */
+// Site controller 
 var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 
-/* Shopper cart */
+// Shopper cart 
 var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
 
-/* App */
+// App 
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
-/* Utility */
+// Utility 
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
@@ -21,8 +21,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
  * Verifies a credit card against a valid card number and expiration date and possibly invalidates invalid form fields.
  * If the verification was successful a credit card payment instrument is created.
  */
-function Handle(args)
-{
+function Handle(args) {
     var cart = Cart.get(args.Basket);
     var paymentMethod = args.PaymentMethodID;
 
@@ -89,8 +88,8 @@ function Handle(args)
  * only and setting the order no as the transaction ID. Customisations may use other processors and custom
  * logic to authorise credit card payment.
  */
-function Authorize(args)
-{
+function Authorize(args) {
+
     // Preparing payment parameters
     var paymentInstrument = args.PaymentInstrument;
 
@@ -117,8 +116,6 @@ function Authorize(args)
     }
 }
 
-/*
- * Module exports
- */
+// Module exports
 exports.Handle = Handle;
 exports.Authorize = Authorize;

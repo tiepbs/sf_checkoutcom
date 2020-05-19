@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
     getCardsList(cardUrl);
 }, false);
 
-// Get the user cards list.
+/**
+ * Get the user cards list
+ */
 function getCardsList(dataUrl) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', dataUrl);
@@ -39,7 +41,9 @@ function getCardsList(dataUrl) {
     xhr.send();
 }
 
-// Retrieves the card number from the form
+/**
+ * Retrieves the card number from the form
+ */
 function getCardData(elt, dataUrl) {
 	
     // Get the selected card UUID
@@ -74,7 +78,9 @@ function getCardData(elt, dataUrl) {
     }
 }
 
-// Sets the card form fields from user card data.
+/**
+ * Sets the card form fields from user card data
+ */
 function setFields(data)
 {
     var $creditCard = $('[data-method="CHECKOUTCOM_CARD"]');

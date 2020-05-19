@@ -4,7 +4,9 @@ var svc = require('dw/svc');
 // Utility 
 var util = require('~/cartridge/scripts/helpers/ckoHelper');
 
-// Initialize HTTP service for the Checkout.com sandbox full card capture
+/**
+ * Initialize HTTP service for the Checkout.com sandbox full card capture
+ */
 svc.ServiceRegistry.configure("cko.transaction.capture.sandbox.service", {
     createRequest: function (svc, args) {
     	
@@ -21,7 +23,9 @@ svc.ServiceRegistry.configure("cko.transaction.capture.sandbox.service", {
     }
 });
 
-// Initialize HTTP service for the Checkout.com live full card capture
+/**
+ * Initialize HTTP service for the Checkout.com live full card capture
+ */
 svc.ServiceRegistry.configure("cko.transaction.capture.live.service", {
     createRequest: function (svc, args) {
     	
@@ -38,7 +42,9 @@ svc.ServiceRegistry.configure("cko.transaction.capture.live.service", {
     }
 });
 
-// Initialize HTTP service for the Checkout.com sandbox full card refund
+/**
+ * Initialize HTTP service for the Checkout.com sandbox full card refund
+ */
 svc.ServiceRegistry.configure("cko.transaction.refund.sandbox.service", {
     createRequest: function (svc, args) {
     	
@@ -55,7 +61,9 @@ svc.ServiceRegistry.configure("cko.transaction.refund.sandbox.service", {
     }
 });
 
-// Initialize HTTP service for the Checkout.com live full card refund
+/**
+ * Initialize HTTP service for the Checkout.com live full card refund
+ */
 svc.ServiceRegistry.configure("cko.transaction.refund.live.service", {
     createRequest: function (svc, args) {
     	
@@ -72,7 +80,9 @@ svc.ServiceRegistry.configure("cko.transaction.refund.live.service", {
     }
 });
 
-// Initialize HTTP service for the Checkout.com sandbox full card void
+/**
+ * Initialize HTTP service for the Checkout.com sandbox full card void
+ */
 svc.ServiceRegistry.configure("cko.transaction.void.sandbox.service", {
     createRequest: function (svc, args) {
     	
@@ -89,7 +99,9 @@ svc.ServiceRegistry.configure("cko.transaction.void.sandbox.service", {
     }
 });
 
-// Initialize HTTP service for the Checkout.com live full card void
+/**
+ * Initialize HTTP service for the Checkout.com live full card void
+ */
 svc.ServiceRegistry.configure("cko.transaction.void.live.service", {
     createRequest: function (svc, args) {
     	

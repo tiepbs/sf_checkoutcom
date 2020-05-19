@@ -11,7 +11,9 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 // Utility functions for my cartridge integration
 var applePayHelper = {
 		
-    // Handle full charge Request to CKO API
+    /**
+     * Handle full charge Request to CKO API
+     */
     handleRequest: function (args) {
     	
         // load the order information
@@ -73,7 +75,9 @@ var applePayHelper = {
         }
     },
     
-    // Handle full Google Pay response from CKO API
+    /**
+     * Handle full Google Pay response from CKO API
+     */
     handleResponse: function (gatewayResponse) {
     	
         // Logging
@@ -83,7 +87,9 @@ var applePayHelper = {
         ckoHelper.updateCustomerData(gatewayResponse);
     },
     
-    // Build Gateway Source Object
+    /**
+     * Build Gateway Source Object
+     */
     getSourceObject: function (tokenData) {
     	
         // source object
