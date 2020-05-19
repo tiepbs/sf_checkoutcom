@@ -158,7 +158,10 @@ var cardHelper = {
                 order.getCustomerNo(),
                 processorId
             );
-            
+           
+            var logger = require('dw/system/Logger').getLogger('ckodebug');
+            logger.debug('this is my test savedCard {0}', JSON.stringify(savedCard.getCreditCardNumber()));
+
             cardSource = {
                 type: 'id',
                 id: savedCard.getCreditCardToken(),
