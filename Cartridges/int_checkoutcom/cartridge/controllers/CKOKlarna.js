@@ -1,6 +1,6 @@
 'use strict';
 
-// API Includes
+//  API Includes
 var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var BasketMgr = require('dw/order/BasketMgr');
@@ -8,7 +8,9 @@ var BasketMgr = require('dw/order/BasketMgr');
 // Utility
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
-// Initiate the Kalrna session
+/**
+ * Initiate the Kalrna session
+ */
 function klarnaSession() {
 	
     // Prepare the basket

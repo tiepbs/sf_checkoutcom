@@ -1,15 +1,17 @@
 "use strict";
 
-//  Alternative Payment Form decorator object;    
+//  Alternative Payment Form decorator object 
 
-// JQuery Ajax helpers on DOM ready.
+// JQuery Ajax helpers on DOM ready
 document.addEventListener('DOMContentLoaded', function () {
     alternativePaymentsFilter();
     initApmAccordion();
 }, false);
 
 
-// Accordion Function
+/**
+ * Accordion Function
+ */
 function initApmAccordion() {
 	var acc = document.getElementsByClassName('cko-apm-accordion');
 	var i;
@@ -46,7 +48,9 @@ function initApmAccordion() {
 }
 
 
-// Get the APMs filter
+/**
+ * Get the APMs filter
+ */
 function alternativePaymentsFilter() {   
     	
 	// Retrieves the Apm Filter Url to controllerUrl variable
@@ -96,7 +100,9 @@ function alternativePaymentsFilter() {
 }
 
 
-// Get the Klarna controller
+/**
+ * Get the Klarna controller
+ */
 function callKlarnaController(controllerUrl) {    
     if (controllerUrl) {
     	
@@ -156,7 +162,9 @@ function callKlarnaController(controllerUrl) {
     }
 }
 
-// Loads Klarna Payments Widget
+/**
+ * Loads Klarna Payments Widget
+ */
 function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId) {
 	
     // Converts request string to object
@@ -181,7 +189,9 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId) {
     );
 }
 
-// Klarna Authorize button
+/**
+ * Klarna Authorize button
+ */
 function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject) {   
 	
     // Build Klarna authorization button   
@@ -192,7 +202,9 @@ function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billin
     });
 }
 
-// Klarna Authorize
+/**
+ * Klarna Authorize
+ */
 function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, requestData) {
 	
     // Converts request string to object
@@ -209,6 +221,7 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, req
     
     // Authorize the Klarna charge
     Klarna.Payments.authorize(
+
         // Options
         {
             instance_id         : sessionId,
@@ -224,6 +237,7 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, req
             order_tax_amount          : requestObject.tax_amount,
             order_lines               : requestObject.products
         },
+        
         // Callback
         function (response) {  
         	

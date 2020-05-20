@@ -14,7 +14,9 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 // Utility functions for my cartridge integration
 var cardHelper = {
 	
-    // Creates Site Genesis Transaction Object
+    /**
+     * Creates Site Genesis Transaction Object
+     */
     cardAuthorization: function (payObject, args) {
     	
         // Preparing payment parameters
@@ -47,7 +49,9 @@ var cardHelper = {
         }
     },
 		
-    // Handle full charge Request to CKO API
+    /**
+     * Handle full charge Request to CKO API
+     */
     handleCardRequest: function (cardData, args) {
     	
         // Load the card and order information
@@ -92,7 +96,9 @@ var cardHelper = {
         return false;
     },
     
-    // Handle full charge Response from CKO API
+    /**
+     * Handle full charge Response from CKO API
+     */
     handleFullChargeResponse: function (gatewayResponse) {
     	
         // Clean the session
@@ -120,7 +126,9 @@ var cardHelper = {
         }
     },
     
-    // Pre_Authorize card with zero value
+    /**
+     * Pre_Authorize card with zero value
+     */
     preAuthorizeCard: function (requestData) {
     	
         // Clone the request data
@@ -143,7 +151,9 @@ var cardHelper = {
         return ckoHelper.paymentSuccess(authResponse);
     },
     
-    // Build the gateway request
+    /**
+     * Build the gateway request
+     */
     getCardRequest: function (cardData, args) {
     	
         // Load the card and order information
@@ -172,7 +182,9 @@ var cardHelper = {
         return chargeData;
     },
     
-    // Build Gateway Source Object
+    /**
+     * Build Gateway Source Object
+     */
     getSourceObject: function (cardData, args) {
     	
         // Source object
@@ -190,7 +202,9 @@ var cardHelper = {
         return source;
     },
     
-    // Build 3ds object
+    /**
+     * Build 3ds object
+     */
     get3Ds: function () { 	
    
         return {
@@ -199,7 +213,9 @@ var cardHelper = {
         }
     },
     
-    // Build the Billing object
+    /**
+     * Build the Billing object
+     */
     getBillingObject: function (args) { 
     	
         // Load the card and order information
@@ -221,7 +237,9 @@ var cardHelper = {
         return billingDetails;
     },
     
-    // Build the Shipping object
+    /**
+     * Build the Shipping object
+     */
     getShippingObject: function (args) {
     	
         // Load the card and order information

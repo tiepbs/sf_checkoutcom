@@ -8,7 +8,7 @@ var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
 
-// Checkout.com Event functions 
+// Checkout.com Event functions
 var eventsHelper = require('~/cartridge/scripts/helpers/eventsHelper');
 
 // Utility
@@ -17,7 +17,9 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 // Apm Filter Configuration file
 var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig');
 
-// Handles responses from the Checkout.com payment gateway.
+/**
+ * Handles responses from the Checkout.com payment gateway
+ */
 function handleReturn() {
 	
     // Prepare some variables
@@ -93,7 +95,9 @@ function handleReturn() {
     }
 }
 
-// Handles a failed payment from the Checkout.com payment gateway
+/**
+ * Handles a failed payment from the Checkout.com payment gateway
+ */
 function handleFail() {
 	
     // Load the order
@@ -106,7 +110,9 @@ function handleFail() {
     ISML.renderTemplate('custom/common/response/failed.isml');
 }
 
-// Handles webhook responses from the Checkout.com payment gateway
+/**
+ * Handles webhook responses from the Checkout.com payment gateway
+ */
 function handleWebhook() {	
     var isValidResponse = ckoHelper.isValidResponse();
     if (isValidResponse) {
@@ -132,7 +138,9 @@ function handleWebhook() {
     }
 }
 
-// Initializes the credit card list by determining the saved customer payment method
+/**
+ * Initializes the credit card list by determining the saved customer payment method
+ */
 function getCardsList() {
     var applicablePaymentCards;
     var data = [];
@@ -162,7 +170,9 @@ function getCardsList() {
     }
 }
 
-// Apms filter helper
+/**
+ * Apms filter helper
+ */
 function getApmFilter() {
 	
     // Prepare some variables

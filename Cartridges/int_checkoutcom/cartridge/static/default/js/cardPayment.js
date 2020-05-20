@@ -16,7 +16,9 @@ document.addEventListener('DOMContentLoaded', function () {
     setExpirationYears();
 });
 
-// Sets schema box
+/**
+ * Sets schema box
+ */
 var setBox = function () {
 	
     // Card number input styling
@@ -31,7 +33,9 @@ var setBox = function () {
     }
 }
 
-// Sets the expiration years in the form
+/**
+ * Sets the expiration years in the form
+ */
 var setExpirationYears = function() {
 	
     // Get the current year
@@ -49,7 +53,9 @@ var setExpirationYears = function() {
     }
 }
 
-// Sets schema image in box
+/**
+ * Sets schema image in box
+ */
 var setSchema = function (inputId) {
 	
     // Format user input with cleave.js
@@ -90,7 +96,9 @@ var setSchema = function (inputId) {
     });
 }
 
-// Sets mada image in box
+/**
+ * Sets mada image in box
+ */
 var setMada = function () {
     var input = document.getElementById('dwfrm_cardPaymentForm_number');
     input.addEventListener('keyup', function () {
@@ -131,7 +139,9 @@ var setMada = function () {
     });
 }
 
-// Set schema card image
+/**
+ * Set schema card image
+ */
 var setImage = function (element) {
 	
     // If image is already set
@@ -147,7 +157,9 @@ var setImage = function (element) {
     }
 }
 
-// Get image id
+/**
+ * Get image id
+ */
 var getImageId  = function (schema) {
     switch (schema) {
         case 'visa':
@@ -193,7 +205,9 @@ var Mada = {
         nine: [ "968201", "968203", "968205", "968202", "968204", "968209", "968211", "968208", "968210", "968206", "968207" ]
     },
 
-    // Compare card
+    /**
+     * Compare card
+     */
     compare: function (cardNumber) {
     	
         // Get first number
@@ -241,7 +255,9 @@ var Mada = {
         }
     },
 
-    // Returns the first number of the card
+    /**
+     * Returns the first number of the card
+     */
     firstNumber: function (cardNumber) {
     	
         // Get first number

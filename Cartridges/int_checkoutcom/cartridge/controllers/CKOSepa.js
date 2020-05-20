@@ -13,7 +13,9 @@ var OrderMgr = require('dw/order/OrderMgr');
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 
-// Initiate the mandate session
+/**
+ * Initiate the mandate session
+ */
 function mandate() {
 	
     // Prepare the varirables
@@ -51,6 +53,9 @@ function mandate() {
     }
 }
 
+/**
+ * Confirms the mandate
+ */
 function handleMandate() {
 	
     var orderId = ckoHelper.getOrderId();

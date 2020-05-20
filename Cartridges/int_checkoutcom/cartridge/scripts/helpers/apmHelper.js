@@ -13,7 +13,9 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 // Utility functions for my cartridge integration.
 var apmHelper = {
 		
-    // Creates Site Genesis Transaction Object
+    /**
+     * Creates Site Genesis Transaction Object
+     */
     apmAuthorization: function (payObject, args) {
     	
         // Preparing payment parameters
@@ -56,7 +58,9 @@ var apmHelper = {
         }
     },
         
-    // Handle APM charge Response from CKO API
+    /**
+     * Handle APM charge Response from CKO API
+     */
     handleApmChargeResponse: function (gatewayResponse) {
     	
         // clean the session
@@ -88,7 +92,9 @@ var apmHelper = {
         }  
     },
     
-    // Apm Request
+    /**
+     * Apm Request
+     */
     handleApmRequest: function (payObject, args) {
     	
         // Gateway response
@@ -142,7 +148,9 @@ var apmHelper = {
         }
     },
     
-    // Return the APM request data
+    /**
+     * Return the APM request data
+     */
     getApmRequest: function (payObject, args) {
     	
         // Charge data
@@ -187,7 +195,9 @@ var apmHelper = {
         return chargeData;
     },
     
-    // Sepa controller Request
+    /**
+     * Sepa controller Request
+     */
     handleSepaControllerRequest: function (payObject, order) {
     	
         // Gateway response
