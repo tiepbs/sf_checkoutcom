@@ -1,7 +1,6 @@
 
 <!--- selected card --->
 <isloop items="${pdict.customer.customerPaymentInstruments}" var="paymentInstrument" status="loopState">
-    <isif condition="${(paymentInstrument.creditCardToken) && paymentInstrument.creditCardToken.indexOf('src_') == 0}">
         <div class="row saved-payment-instrument" data-uuid="${paymentInstrument.UUID}">
             <div class="form-group required saved-security-code col-6 col-md-3">
                 <img class="card-image ${loopState.first ? 'checkout-hidden' : ''}"
@@ -44,5 +43,4 @@
                 </div>
             </div>
         </div>
-    </isif>
 </isloop>
