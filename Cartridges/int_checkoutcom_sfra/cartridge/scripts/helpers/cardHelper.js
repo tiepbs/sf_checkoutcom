@@ -42,23 +42,24 @@ var cardHelper = {
      * Handle the payment response
      */
     handleResponse: function (gatewayResponse) {
-        // Update customer data
-        ckoHelper.updateCustomerData(gatewayResponse);
-        
-        // Get the gateway links
-        var gatewayLinks = gatewayResponse._links;
-        
         // Prepare the result
         var result = {
             error: !ckoHelper.paymentSuccess(gatewayResponse),
             redirectUrl: false
         }
 
-        // Add 3DS redirect URL to session if exists
-        if (gatewayLinks.hasOwnProperty('redirect')) {
-            result.error = false;
-            result.redirectUrl = gatewayLinks.redirect.href;
-        } 
+        // Update customer data
+        if (gatewayResponse) {
+            ckoHelper.updateCustomerData(gatewayResponse);
+
+            // Add 3DS redirect URL to session if exists
+            var condition1 = gatewayResponse.hasOwnProperty('_links');
+            var condition2 = condition1 && gatewayResponse._links.hasOwnProperty('redirect');
+            if (condition1 && condition2) {
+                result.error = false;
+                result.redirectUrl = gatewayResponse._links.redirect.href;
+            }
+        }
         
         return result;
     },
@@ -159,10 +160,20 @@ var cardHelper = {
                 processorId
             );
            
+            /*
             cardSource = {
                 type: 'id',
                 id: savedCard.getCreditCardToken(),
                 cvv: selectedCardCvv
+            };
+            */
+
+            cardSource = {
+                type                : 'card',
+                number              : ckoHelper.getFormattedNumber(savedCard.getCreditCardNumber()),
+                expiry_month        : savedCard.getCreditCardExpirationMonth(),
+                expiry_year         : savedCard.getCreditCardExpirationYear(),
+                cvv                 : paymentData.savedCardForm.selectedCardCvv.value.toString()
             };
         }
         else {
