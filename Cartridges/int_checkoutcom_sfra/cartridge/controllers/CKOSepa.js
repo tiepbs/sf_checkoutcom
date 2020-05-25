@@ -25,7 +25,10 @@ server.get('Mandate', server.middleware.https, function (req, res, next) {
         res.render('sepaForm/ajax/output', {
             // Prepare the view parameters
             creditAmount: order.totalGrossPrice.value.toFixed(2),
-            formatedAmount: ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
+            formatedAmount: ckoHelper.getFormattedPrice(
+                order.totalGrossPrice.value.toFixed(2),
+                order.getCurrencyCode()
+            ),
             debtor: order.defaultShipment.shippingAddress.firstName + " " + order.defaultShipment.shippingAddress.lastName,
             debtorAddress1: order.billingAddress.address1,
             debtorAddress2: order.billingAddress.address2,
@@ -88,8 +91,11 @@ server.get('HandleMandate', server.middleware.https, function (req, res, next) {
                                 "type": "id",
                                 "id": responseObjectId
                             },
-                            "amount": ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
-                            "currency": ckoHelper.getCurrency(),
+                            "amount": ckoHelper.getFormattedPrice(
+                                order.totalGrossPrice.value.toFixed(2),
+                                order.getCurrencyCode()
+                            ),
+                            "currency": order.getCurrencyCode(),
                             "reference": orderId
                         };
                         

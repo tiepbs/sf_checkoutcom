@@ -232,17 +232,6 @@ var ckoHelper = {
     },
 
     /*
-     * Get order currency
-     */
-    getCurrency : function() {
-        var orderId = this.getOrderId();
-        var order = OrderMgr.getOrder(orderId);
-        var currency = order.getCurrencyCode();
-        
-        return currency;
-    },
-
-    /*
      * Return the customer data
      */
     getCustomer: function(order) {        
@@ -440,7 +429,10 @@ var ckoHelper = {
             var product = {
                 "product_id"    : pli.productID,
                 "quantity"      : pli.quantityValue,
-                "price"         : this.getFormattedPrice(pli.adjustedPrice.value.toFixed(2), this.getCurrency()),
+                "price"         : this.getFormattedPrice(
+                    pli.adjustedPrice.value.toFixed(2),
+                    args.order.getCurrencyCode()
+                ),
                 "description"   : pli.productName
             }
             
@@ -470,7 +462,10 @@ var ckoHelper = {
         var tax = {
             "product_id"    : args.orderNo,
             "quantity"      : 1,
-            "price"         : this.getFormattedPrice(order.getTotalTax().valueOf().toFixed(2), this.getCurrency()),
+            "price"         : this.getFormattedPrice(
+                order.getTotalTax().valueOf().toFixed(2),
+                args.order.getCurrencyCode()
+            ),
             "description"   : "Order Tax"
         }
         
@@ -779,8 +774,8 @@ var ckoHelper = {
      */
     getOrderBasketObject: function (args) {
         // Prepare some variables
-        var currency = this.getAppModeValue('GBP', this.getCurrencyCode(args));
         var order = OrderMgr.getOrder(args.orderNo);
+        var currency = this.getAppModeValue('GBP', order.getCurrencyCode());
         var it = order.productLineItems.iterator();
         var products_quantites = [];
         

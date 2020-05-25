@@ -30,7 +30,10 @@ var apmHelper = {
             // Prepare the charge data
             gatewayRequest = {
                 "customer"              : ckoHelper.getCustomer(order),
-                "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
+                "amount"                : ckoHelper.getFormattedPrice(
+                    order.totalGrossPrice.value.toFixed(2),
+                    order.getCurrencyCode()
+                ),
                 "type"                  : apmConfigData.type,
                 "currency"              : order.getCurrencyCode(),
                 "billing_address"       : ckoHelper.getBilling(order),
@@ -104,7 +107,10 @@ var apmHelper = {
         var chargeData;
         
         // Get the order amount
-        var amount = ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode());
+        var amount = ckoHelper.getFormattedPrice(
+            order.totalGrossPrice.value.toFixed(2),
+            order.getCurrencyCode()
+        );
         
         // Prepare the charge data
         chargeData = {

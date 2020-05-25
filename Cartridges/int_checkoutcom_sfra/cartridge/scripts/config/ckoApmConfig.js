@@ -205,7 +205,7 @@ var ckoApmConfig = {
         // Building pay object
         var params = {
             'type'          : 'sepa',
-            'currency'      : ckoHelper.getCurrency(args),
+            'currency'      : args.order.getCurrencyCode(),
             'source_data'   : {
                 'first_name'            : ckoHelper.getCustomerFirstName(args),
                 'last_name'             : ckoHelper.getCustomerLastName(args),
@@ -284,7 +284,10 @@ var ckoApmConfig = {
             // Build the payment object
             var params = {
                 'type'      : 'klarna',
-                'amount'    : ckoHelper.getFormattedPrice(args.order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency(args)),
+                'amount'    : ckoHelper.getFormattedPrice(
+                    args.order.totalGrossPrice.value.toFixed(2),
+                    args.order.getCurrencyCode()
+                ),
                 'currency'  : args.order.getCurrencyCode(),
                 'capture'   : false,
                 'source'    : {
@@ -292,7 +295,10 @@ var ckoApmConfig = {
                     'authorization_token'   : args.klarna_token.value.toString(),
                     'locale'                : ckoHelper.getLanguage(),
                     'purchase_country'      : ckoHelper.getBilling(args).country,
-                    'tax_amount'            : ckoHelper.getFormattedPrice(args.order.totalTax.value, ckoHelper.getCurrency(args)),
+                    'tax_amount'            : ckoHelper.getFormattedPrice(
+                        args.order.totalTax.value,
+                        args.order.getCurrencyCode()
+                    ),
                     'billing_address'       : ckoHelper.getOrderBasketAddress(args),
                     'products'              : ckoHelper.getOrderBasketObject(args)
                 }
