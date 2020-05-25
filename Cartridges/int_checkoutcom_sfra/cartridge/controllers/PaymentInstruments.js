@@ -27,7 +27,7 @@ server.replace('SavePayment', csrfProtection.validateAjaxRequest, function (req,
                 req.currentCustomer.profile.customerNo
             );
             var wallet = customer.getProfile().getWallet();
-            var processorid = 'CHECKOUTCOM_CARD';
+            var processorId = 'CHECKOUTCOM_CARD';
 
             // Prepare the payment data
             var paymentData = {
@@ -43,7 +43,8 @@ server.replace('SavePayment', csrfProtection.validateAjaxRequest, function (req,
 
             var logger = require('dw/system/Logger').getLogger('ckodebug');
             logger.debug('formInfox {0}', JSON.stringify(formInfo));
-        
+            logger.debug('reqx {0}', JSON.stringify(req));
+
             // Handle the 0$ authorization
             var success = cardHelper.preAuthorizeCard(
                 paymentData,
