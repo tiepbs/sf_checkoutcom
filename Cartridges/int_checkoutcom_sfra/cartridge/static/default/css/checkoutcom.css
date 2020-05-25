@@ -7,3 +7,7 @@
 .is-invalid {
     border: solid 1px red;
 }
+
+.summary-details .payment-info-label {
+    display: none !important;
+}
