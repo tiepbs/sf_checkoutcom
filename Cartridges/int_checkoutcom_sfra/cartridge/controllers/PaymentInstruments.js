@@ -8,9 +8,8 @@ var csrfProtection = require('*/cartridge/scripts/middleware/csrf');
 /** Utility **/
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 
-server.post('SavePayment', csrfProtection.validateAjaxRequest, function (req, res, next) {
+server.replace('SavePayment', csrfProtection.validateAjaxRequest, function (req, res, next) {
     var formErrors = require('*/cartridge/scripts/formErrors');
-    var dwOrderPaymentInstrument = require('dw/order/PaymentInstrument');
     var accountHelpers = require('*/cartridge/scripts/helpers/accountHelpers');
 
     var paymentForm = server.forms.getForm('creditCard');
