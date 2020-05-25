@@ -15,7 +15,7 @@ server.replace('SavePayment', csrfProtection.validateAjaxRequest, function (req,
     var paymentForm = server.forms.getForm('creditCard');
     var result = getDetailsObject(paymentForm);
 
-    if (paymentForm.valid && !verifyCard(req, result, paymentForm)) {
+    if (paymentForm.valid) {
         res.setViewData(result);
         this.on('route:BeforeComplete', function (req, res) {
             var URLUtils = require('dw/web/URLUtils');
@@ -30,20 +30,23 @@ server.replace('SavePayment', csrfProtection.validateAjaxRequest, function (req,
             var processorid = 'CHECKOUTCOM_CARD';
 
             // Prepare the payment data
-            var paymentData = {};
-            paymentData.savedCardForm.selectedCardUuid.value = '';
-            paymentData.savedCardForm.selectedCardCvv.value = '';
-            paymentData.paymentInformation.cardNumber.value = formInfo.cardNumber;
-            paymentData.paymentInformation.expirationMonth.value = formInfo.expirationMonth;
-            paymentData.paymentInformation.expirationYear.value = formInfo.expirationYear;
-            paymentData.paymentInformation.securityCode.value = 100;
+            var paymentData = {
+                savedCardForm: {},
+                paymentInformation: {}
+            };
+            paymentData.savedCardForm['selectedCardUuid'] = {'value': ''};
+            paymentData.savedCardForm['selectedCardCvv'] = {'value': ''};
+            paymentData.paymentInformation['cardNumber'] = {'value': formInfo.cardNumber};
+            paymentData.paymentInformation['expirationMonth'] = {'value': formInfo.expirationMonth};
+            paymentData.paymentInformation['expirationYear'] = {'value': formInfo.expirationMonth};
+            paymentData.paymentInformation['securityCode'] = {'value': 100};
 
             var logger = require('dw/system/Logger').getLogger('ckodebug');
             logger.debug('formInfox {0}', JSON.stringify(formInfo));
         
             // Handle the 0$ authorization
             var success = cardHelper.preAuthorizeCard(
-                billingData,
+                paymentData,
                 customerNo,
                 processorId
             );
