@@ -121,7 +121,10 @@ var cardHelper = {
     /*
      * Build the gateway request
      */
-    buildRequest: function (order, paymentData, processorId) {           
+    buildRequest: function (paymentData, processorId, orderNumber) {
+        //  Load the order
+        var order = OrderMgr.getOrder(orderNumber);
+      
         // Prepare the charge data
         var chargeData = {
             'source'                : this.getCardSource(paymentData, order, processorId),

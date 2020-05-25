@@ -8,102 +8,8 @@ var csrfProtection = require('*/cartridge/scripts/middleware/csrf');
 /** Utility **/
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 
-/**
- * Checks if a credit card is valid or not
- * @param {Object} req - request object
- * @param {Object} card - plain object with card details
- * @param {Object} form - form object
- * @returns {boolean} a boolean representing card validation
- */
-function verifyCard(req, card, form) {
-    var collections = require('*/cartridge/scripts/util/collections');
-    var Resource = require('dw/web/Resource');
-    var PaymentMgr = require('dw/order/PaymentMgr');
-    var PaymentStatusCodes = require('dw/order/PaymentStatusCodes');
-    var PaymentInstrument = require('dw/order/PaymentInstrument');
-
-    var currentCustomer = req.currentCustomer.raw;
-    var countryCode = req.geolocation.countryCode;
-    var creditCardPaymentMethod = PaymentMgr.getPaymentMethod(PaymentInstrument.METHOD_CREDIT_CARD);
-    var paymentCard = PaymentMgr.getPaymentCard(card.cardType);
-    var error = false;
-
-    var applicablePaymentCards = creditCardPaymentMethod.getApplicablePaymentCards(
-        currentCustomer,
-        countryCode,
-        null
-    );
-
-    var cardNumber = card.cardNumber;
-    var creditCardStatus;
-    var formCardNumber = form.cardNumber;
-
-    if (paymentCard) {
-        if (applicablePaymentCards.contains(paymentCard)) {
-            creditCardStatus = paymentCard.verify(
-                card.expirationMonth,
-                card.expirationYear,
-                cardNumber
-            );
-        } else {
-            // Invalid Payment Instrument
-            formCardNumber.valid = false;
-            formCardNumber.error = Resource.msg('error.payment.not.valid', 'checkout', null);
-            error = true;
-        }
-    } else {
-        formCardNumber.valid = false;
-        formCardNumber.error = Resource.msg('error.message.creditnumber.invalid', 'forms', null);
-        error = true;
-    }
-
-    if (creditCardStatus && creditCardStatus.error) {
-        collections.forEach(creditCardStatus.items, function (item) {
-            switch (item.code) {
-                case PaymentStatusCodes.CREDITCARD_INVALID_CARD_NUMBER:
-                    formCardNumber.valid = false;
-                    formCardNumber.error =
-                        Resource.msg('error.message.creditnumber.invalid', 'forms', null);
-                    error = true;
-                    break;
-
-                case PaymentStatusCodes.CREDITCARD_INVALID_EXPIRATION_DATE:
-                    var expirationMonth = form.expirationMonth;
-                    var expirationYear = form.expirationYear;
-                    expirationMonth.valid = false;
-                    expirationMonth.error =
-                        Resource.msg('error.message.creditexpiration.expired', 'forms', null);
-                    expirationYear.valid = false;
-                    error = true;
-                    break;
-                default:
-                    error = true;
-            }
-        });
-    }
-    return error;
-}
-
-/**
- * Creates an object from form values
- * @param {Object} paymentForm - form object
- * @returns {Object} a plain object of payment instrument
- */
-function getDetailsObject(paymentForm) {
-    return {
-        name: paymentForm.cardOwner.value,
-        cardNumber: paymentForm.cardNumber.value,
-        cardType: paymentForm.cardType.value,
-        expirationMonth: paymentForm.expirationMonth.value,
-        expirationYear: paymentForm.expirationYear.value,
-        paymentForm: paymentForm
-    };
-}
-
 server.post('SavePayment', csrfProtection.validateAjaxRequest, function (req, res, next) {
     var formErrors = require('*/cartridge/scripts/formErrors');
-    var HookMgr = require('dw/system/HookMgr');
-    var PaymentMgr = require('dw/order/PaymentMgr');
     var dwOrderPaymentInstrument = require('dw/order/PaymentInstrument');
     var accountHelpers = require('*/cartridge/scripts/helpers/accountHelpers');
 
@@ -112,7 +18,7 @@ server.post('SavePayment', csrfProtection.validateAjaxRequest, function (req, re
 
     if (paymentForm.valid && !verifyCard(req, result, paymentForm)) {
         res.setViewData(result);
-        this.on('route:BeforeComplete', function (req, res) { // eslint-disable-line no-shadow
+        this.on('route:BeforeComplete', function (req, res) {
             var URLUtils = require('dw/web/URLUtils');
             var CustomerMgr = require('dw/customer/CustomerMgr');
             var Transaction = require('dw/system/Transaction');
@@ -122,30 +28,51 @@ server.post('SavePayment', csrfProtection.validateAjaxRequest, function (req, re
                 req.currentCustomer.profile.customerNo
             );
             var wallet = customer.getProfile().getWallet();
+            var processorid = 'CHECKOUTCOM_CARD';
 
-            Transaction.wrap(function () {
-                var paymentInstrument = wallet.createPaymentInstrument(dwOrderPaymentInstrument.METHOD_CREDIT_CARD);
-                paymentInstrument.setCreditCardHolder(formInfo.name);
-                paymentInstrument.setCreditCardNumber(formInfo.cardNumber);
-                paymentInstrument.setCreditCardType(formInfo.cardType);
-                paymentInstrument.setCreditCardExpirationMonth(formInfo.expirationMonth);
-                paymentInstrument.setCreditCardExpirationYear(formInfo.expirationYear);
+            // Prepare the payment data
+            var paymentData = {};
+            paymentData.savedCardForm.selectedCardUuid.value = '';
+            paymentData.savedCardForm.selectedCardCvv.value = '';
+            paymentData.creditCardFields.cardNumber.value = formInfo.cardNumber;
+            paymentData.creditCardFields.expirationMonth.value = formInfo.expirationMonth;
+            paymentData.creditCardFields.expirationYear.value = formInfo.expirationYear;
+            paymentData.creditCardFields.securityCode.value = 100;
 
-                var processor = PaymentMgr.getPaymentMethod(dwOrderPaymentInstrument.METHOD_CREDIT_CARD).getPaymentProcessor();
-                var token = HookMgr.callHook(
-                    'app.payment.processor.' + processor.ID.toLowerCase(),
-                    'createToken'
-                );
+            var logger = require('dw/system/Logger').getLogger('ckodebug');
+            logger.debug('formInfox {0}', JSON.stringify(formInfo));
+        
+            // Handle the 0$ authorization
+            var result = cardHelper.handleRequest(
+                paymentData,
+                processorId,
+                null
+            );
 
-                paymentInstrument.setCreditCardToken(token);
-            });
+            if (!result.error) {
+                Transaction.wrap(function () {
+                    var paymentInstrument = wallet.createPaymentInstrument(processorid);
+                    paymentInstrument.setCreditCardHolder(formInfo.name);
+                    paymentInstrument.setCreditCardNumber(formInfo.cardNumber);
+                    paymentInstrument.setCreditCardType(formInfo.cardType);
+                    paymentInstrument.setCreditCardExpirationMonth(formInfo.expirationMonth);
+                    paymentInstrument.setCreditCardExpirationYear(formInfo.expirationYear);
+                });
+                
+                // Send account edited email
+                accountHelpers.sendAccountEditedEmail(customer.profile);
 
-            // Send account edited email
-            accountHelpers.sendAccountEditedEmail(customer.profile);
+                // Return success
+                res.json({
+                    success: true,
+                    redirectUrl: URLUtils.url('PaymentInstruments-List').toString()
+                });
+            }
 
+            // Handle errors
             res.json({
-                success: true,
-                redirectUrl: URLUtils.url('PaymentInstruments-List').toString()
+                success: false,
+                fields: formErrors.getFormErrors(paymentForm)
             });
         });
     } else {
