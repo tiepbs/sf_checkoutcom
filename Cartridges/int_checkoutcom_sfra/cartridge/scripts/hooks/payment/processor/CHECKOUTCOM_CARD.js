@@ -29,9 +29,9 @@ function Handle(basket, billingData, processorId, req) {
         // Send the request
         success = cardHelper.preAuthorizeCard(
             billingData,
-            currentBasket,
             customerNo,
-            processorId
+            processorId,
+            currentBasket
         );
     }
 

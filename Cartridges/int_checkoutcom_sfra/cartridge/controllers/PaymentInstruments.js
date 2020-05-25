@@ -34,22 +34,22 @@ server.post('SavePayment', csrfProtection.validateAjaxRequest, function (req, re
             var paymentData = {};
             paymentData.savedCardForm.selectedCardUuid.value = '';
             paymentData.savedCardForm.selectedCardCvv.value = '';
-            paymentData.creditCardFields.cardNumber.value = formInfo.cardNumber;
-            paymentData.creditCardFields.expirationMonth.value = formInfo.expirationMonth;
-            paymentData.creditCardFields.expirationYear.value = formInfo.expirationYear;
-            paymentData.creditCardFields.securityCode.value = 100;
+            paymentData.paymentInformation.cardNumber.value = formInfo.cardNumber;
+            paymentData.paymentInformation.expirationMonth.value = formInfo.expirationMonth;
+            paymentData.paymentInformation.expirationYear.value = formInfo.expirationYear;
+            paymentData.paymentInformation.securityCode.value = 100;
 
             var logger = require('dw/system/Logger').getLogger('ckodebug');
             logger.debug('formInfox {0}', JSON.stringify(formInfo));
         
             // Handle the 0$ authorization
-            var result = cardHelper.handleRequest(
-                paymentData,
-                processorId,
-                null
+            var success = cardHelper.preAuthorizeCard(
+                billingData,
+                customerNo,
+                processorId
             );
 
-            if (!result.error) {
+            if (success) {
                 Transaction.wrap(function () {
                     var paymentInstrument = wallet.createPaymentInstrument(processorid);
                     paymentInstrument.setCreditCardHolder(formInfo.name);

@@ -67,7 +67,11 @@ var cardHelper = {
     /*
      * Pre authorize card with zero value
      */
-    preAuthorizeCard: function(billingData, currentBasket, customerNo, processorId) {
+    preAuthorizeCard: function(billingData, customerNo, processorId, currentBasket) {
+        // Handle the basket state
+        currentBasket =  currentBasket || null;
+
+        // Prepare the charge data
         var chargeData = {
             'source'                : {
                 type                : 'card',
@@ -79,14 +83,18 @@ var cardHelper = {
             'amount'                : 0,
             'currency'              : 'USD',
             'capture'               : false,
-            'customer'              : {
-                email: currentBasket.getCustomerEmail(),
-                name: currentBasket.getBillingAddress().getFullName()
-            },
             'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
             '3ds'                   : {enabled: false},
             'risk'                  : {enabled: true}
         };
+
+        // Add customer information if available
+        if (currentBasket) {
+            chargeData.customer = {
+                email: currentBasket.getCustomerEmail(),
+                name: currentBasket.getBillingAddress().getFullName()
+            };
+        }
      
         // Log the payment authorization request data
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.verification.request.data', 'cko'), chargeData);
