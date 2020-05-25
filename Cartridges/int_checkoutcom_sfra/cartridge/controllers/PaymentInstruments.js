@@ -83,4 +83,20 @@ server.replace('SavePayment', csrfProtection.validateAjaxRequest, function (req,
     return next();
 });
 
+/**
+ * Creates an object from form values
+ * @param {Object} paymentForm - form object
+ * @returns {Object} a plain object of payment instrument
+ */
+function getDetailsObject(paymentForm) {
+    return {
+        name: paymentForm.cardOwner.value,
+        cardNumber: paymentForm.cardNumber.value,
+        cardType: paymentForm.cardType.value,
+        expirationMonth: paymentForm.expirationMonth.value,
+        expirationYear: paymentForm.expirationYear.value,
+        paymentForm: paymentForm
+    };
+}
+
 module.exports = server.exports();
