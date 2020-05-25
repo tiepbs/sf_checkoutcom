@@ -61,9 +61,9 @@ function Authorize(orderNumber, billingForm, processorId) {
 
     // Payment request
     var success = applePayHelper.handleRequest(
-        orderNumber, 
         billingForm.applePayForm.ckoApplePayData.htmlValue,
-        processorId
+        processorId,
+        orderNumber
     );
 
     // Handle errors

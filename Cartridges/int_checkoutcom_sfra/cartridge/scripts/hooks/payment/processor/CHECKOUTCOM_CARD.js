@@ -61,9 +61,9 @@ function Authorize(orderNumber, billingForm, processorId) {
 
     // Payment request
     result = cardHelper.handleRequest(
-        orderNumber,
         billingForm,
-        processorId
+        processorId,
+        orderNumber
     );
     
     // Handle errors

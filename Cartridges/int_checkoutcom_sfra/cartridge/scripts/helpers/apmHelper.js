@@ -18,7 +18,7 @@ var apmHelper = {
     /*
      * Apm Request
      */
-    handleRequest: function (orderNumber, processorId, apmConfigData) {
+    handleRequest: function (apmConfigData, processorId, orderNumber) {
         // Load the order
         var order = OrderMgr.getOrder(orderNumber);
         

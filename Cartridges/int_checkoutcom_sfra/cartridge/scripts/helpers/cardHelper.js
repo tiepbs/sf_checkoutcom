@@ -15,12 +15,12 @@ var cardHelper = {
     /*
      * Handle the payment request.
      */
-    handleRequest: function (orderNumber, paymentData, processorId) {      
-        // Load the order information
-        var order = OrderMgr.getOrder(orderNumber);
+    handleRequest: function (paymentData, processorId, orderNumber) {  
+        // Check for 0$ auth
+        orderNumber = orderNumber || null;
 
         // Build the request data
-        var gatewayRequest = this.buildRequest(order, paymentData, processorId);
+        var gatewayRequest = this.buildRequest(paymentData, processorId, orderNumber);
 
         // Log the payment request data
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);

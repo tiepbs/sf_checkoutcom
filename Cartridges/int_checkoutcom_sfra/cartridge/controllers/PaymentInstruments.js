@@ -5,6 +5,9 @@ server.extend(module.superModule);
 
 var csrfProtection = require('*/cartridge/scripts/middleware/csrf');
 
+/** Utility **/
+var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
+
 /**
  * Checks if a credit card is valid or not
  * @param {Object} req - request object

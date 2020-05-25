@@ -61,9 +61,9 @@ function Authorize(orderNumber, billingForm, processorId) {
 
     // Payment request
     var success = googlePayHelper.handleRequest(
-        orderNumber, 
         billingForm.googlePayForm.ckoGooglePayData.htmlValue,
-        processorId
+        processorId,
+        orderNumber
     );
 
     // Handle errors
