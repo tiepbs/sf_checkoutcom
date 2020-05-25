@@ -60,7 +60,7 @@ var cardHelper = {
                 result.redirectUrl = gatewayResponse._links.redirect.href;
             }
         }
-        
+
         return result;
     },
     
@@ -148,11 +148,13 @@ var cardHelper = {
     getCardSource: function (paymentData, order, processorId) {              
         // Replace selectedCardUuid by get saved card token from selectedCardUuid
         var cardSource;
-        var selectedCardUuid = paymentData.savedCardForm.selectedCardUuid.htmlValue;
-        var selectedCardCvv = paymentData.savedCardForm.selectedCardCvv.htmlValue;
+        var selectedCardUuid = paymentData.savedCardForm.selectedCardUuid.value.toString();
+        var selectedCardCvv = paymentData.savedCardForm.selectedCardCvv.value.toString();
 
         // If the saved card data is valid
-        if (selectedCardCvv.length > 0 && selectedCardUuid.length > 0) {
+        var condition1 = selectedCardCvv && selectedCardCvv.length > 0;
+        var condition2 = selectedCardUuid && selectedCardUuid.length > 0;
+        if (condition1 && condition2) {
             // Get the saved card
             var savedCard = this.getSavedCard(
                 selectedCardUuid,
@@ -160,20 +162,10 @@ var cardHelper = {
                 processorId
             );
            
-            /*
             cardSource = {
                 type: 'id',
                 id: savedCard.getCreditCardToken(),
                 cvv: selectedCardCvv
-            };
-            */
-
-            cardSource = {
-                type                : 'card',
-                number              : ckoHelper.getFormattedNumber(savedCard.getCreditCardNumber()),
-                expiry_month        : savedCard.getCreditCardExpirationMonth(),
-                expiry_year         : savedCard.getCreditCardExpirationYear(),
-                cvv                 : paymentData.savedCardForm.selectedCardCvv.value.toString()
             };
         }
         else {
