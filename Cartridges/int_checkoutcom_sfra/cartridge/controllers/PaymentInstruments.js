@@ -47,7 +47,7 @@ server.replace('SavePayment', csrfProtection.validateAjaxRequest, function (req,
             // Handle the 0$ authorization
             var success = cardHelper.preAuthorizeCard(
                 paymentData,
-                customerNo,
+                req.currentCustomer.profile.customerNo,
                 processorId
             );
 
