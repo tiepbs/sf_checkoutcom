@@ -41,10 +41,6 @@ server.replace('SavePayment', csrfProtection.validateAjaxRequest, function (req,
             paymentData.paymentInformation['expirationYear'] = {'value': formInfo.expirationMonth};
             paymentData.paymentInformation['securityCode'] = {'value': 100};
 
-            var logger = require('dw/system/Logger').getLogger('ckodebug');
-            logger.debug('formInfox {0}', JSON.stringify(formInfo));
-            logger.debug('reqx {0}', JSON.stringify(req));
-
             // Handle the 0$ authorization
             var success = cardHelper.preAuthorizeCard(
                 paymentData,
