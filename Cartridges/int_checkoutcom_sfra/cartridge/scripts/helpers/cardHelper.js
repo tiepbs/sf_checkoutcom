@@ -219,11 +219,17 @@ var cardHelper = {
      * Save a card in customer account
      */
     saveCard: function (paymentInformation, currentBasket, customerNo, authResponse, processorId) {
-        // Get the customer
-        var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
+        // Check if the basket exists
+        currentBasket = currentBasket || null;
+
+        // Get the customer profile
+        var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
+
+        // Build the customer full name
+        var fullName = this.getCustomerFullName(customerProfile, currentBasket); 
 
         // Get the customer wallet
-        var wallet = customer.getProfile().getWallet();
+        var wallet = customerProfile.getWallet();
 
         // Get the existing payment instruments
         var paymentInstruments = wallet.getPaymentInstruments(processorId);
@@ -242,7 +248,7 @@ var cardHelper = {
         if (!cardExists) {
             Transaction.wrap(function () {
                 var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
-                storedPaymentInstrument.setCreditCardHolder(currentBasket.billingAddress.fullName);
+                storedPaymentInstrument.setCreditCardHolder(fullName);
                 storedPaymentInstrument.setCreditCardNumber(paymentInformation.cardNumber.value);
                 storedPaymentInstrument.setCreditCardType(authResponse.source.scheme.toLowerCase());
                 storedPaymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
@@ -250,6 +256,24 @@ var cardHelper = {
                 storedPaymentInstrument.setCreditCardToken(authResponse.source.id);
             });
         }
+    },
+
+    getCustomerFullName: function(customerProfile, currentBasket) { 
+        // Check if the basket exists
+        currentBasket = currentBasket || null;
+
+        // Build the customer full name
+        var customerName = '';
+        if (currentBasket.billingAddress.fullName) {
+            customerName = currentBasket.billingAddress.fullName;
+        }
+        else {
+            customerName += customerProfile.firstName;
+            customerName += customerProfile.secondName.length > 0 ? customerProfile.secondName : '';
+            customerName += ' ' + customerProfile.lastName;
+        }
+        
+        return customerName;
     }
 }
 
