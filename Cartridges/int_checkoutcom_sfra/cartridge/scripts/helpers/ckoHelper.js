@@ -633,34 +633,6 @@ var ckoHelper = {
         
         return fullname;
     },
-    
-    /*
-     * Return Customer FirstName
-     */
-    getCustomerFirstName: function (args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
-
-        // Get billing address information
-        var billingAddress = order.getBillingAddress();
-        var firstname = billingAddress.getFirstName();
-        
-        return firstname;
-    },
-    
-    /*
-     * Return Customer LastName
-     */
-    getCustomerLastName: function (args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
-
-        // Get billing address information
-        var billingAddress = order.getBillingAddress();
-        var lastname = billingAddress.getLastName();
-        
-        return lastname;
-    },
         
     /*
      * Return capture time
