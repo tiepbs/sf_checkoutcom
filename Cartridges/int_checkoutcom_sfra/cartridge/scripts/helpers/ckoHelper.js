@@ -158,7 +158,7 @@ var ckoHelper = {
         // Call the service
         var resp = serv.call(requestData);
 
-        return resp.object;
+        return resp.hasOwnProperty('object') ? resp.object : {};
     },
     
     /*
