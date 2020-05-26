@@ -8,11 +8,8 @@ var URLUtils = require('dw/web/URLUtils');
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
-/* APM Configuration */
-var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
-
 /*
-* Utility functions for my cartridge integration.
+* Utility functions APM.
 */
 var apmHelper = {            
     /*
