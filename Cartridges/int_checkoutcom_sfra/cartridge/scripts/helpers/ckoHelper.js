@@ -699,6 +699,25 @@ var ckoHelper = {
         
         return country;
     },
+
+    // Build the Billing object
+    getBilling: function (args) {
+
+        // Get billing address information
+        var billingAddress = args.order.getBillingAddress();
+        
+        // Creating billing address object
+        var billingDetails = {
+            address_line1       : billingAddress.getAddress1(),
+            address_line2       : billingAddress.getAddress2(),
+            city                : billingAddress.getCity(),
+            state               : billingAddress.getStateCode(),
+            zip                 : billingAddress.getPostalCode(),
+            country             : billingAddress.getCountryCode().value
+        };
+        
+        return billingDetails;
+    },
     
     /*
      * Return Basket Item object

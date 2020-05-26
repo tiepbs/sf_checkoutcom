@@ -36,7 +36,7 @@ var apmHelper = {
                 ),
                 "type"                  : apmConfigData.type,
                 "currency"              : order.getCurrencyCode(),
-                "billing_address"       : ckoHelper.getBilling(order),
+                "billing_address"       : ckoHelper.getBilling({order: order}),
                 "source_data"           : apmConfigData.source_data,
                 "reference"             : order.orderNo,
                 "metadata"              : ckoHelper.getMetadata({}, processorId),
