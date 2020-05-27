@@ -158,7 +158,7 @@ var ckoHelper = {
         // Call the service
         var resp = serv.call(requestData);
 
-        return resp.hasOwnProperty('object') ? resp.object : {};
+        return resp.hasOwnProperty('object') ? resp.object : resp;
     },
     
     /*
@@ -288,10 +288,13 @@ var ckoHelper = {
      * Confirm is a payment is valid from API response code
      */
     paymentSuccess: function (gatewayResponse) {
-        return gatewayResponse 
-        && (gatewayResponse.response_code == "10000" 
-        || gatewayResponse.response_code == '10100'
-        || gatewayResponse.response_code == '10200');
+        if (gatewayResponse && gatewayResponse.hasOwnProperty('response_code')) {
+            return gatewayResponse.response_code == "10000" 
+            || gatewayResponse.response_code == '10100'
+            || gatewayResponse.response_code == '10200';
+        }
+
+        return false;
     },
     
     /*
