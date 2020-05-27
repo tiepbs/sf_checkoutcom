@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 // Site controller
 var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
@@ -395,7 +395,7 @@ var ckoApmConfig = {
         
         return payObject;
     }
-}
+};
 
 // Module exports
 module.exports = ckoApmConfig;

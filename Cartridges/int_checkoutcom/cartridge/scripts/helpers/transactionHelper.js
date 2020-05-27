@@ -135,7 +135,7 @@ var transactionHelper = {
         var mode = ckoHelper.getValue('ckoMode');
         var ckoChargeData = {
             chargeId: paymentId
-        }
+        };
 
         // Get the payment actions
         var paymentActions = ckoHelper.gatewayClientRequest(
