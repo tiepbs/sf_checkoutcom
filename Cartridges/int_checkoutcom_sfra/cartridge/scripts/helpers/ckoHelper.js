@@ -144,7 +144,7 @@ var ckoHelper = {
     gatewayClientRequest: function (serviceId, requestData, method) {
         var method = method || 'POST';
         var serv = ServiceRegistry.get(serviceId);
-        
+      
         // Prepare the request URL and data
         if (requestData.hasOwnProperty('chargeId')) {
             var requestUrl = serv.getURL().replace('chargeId', requestData.chargeId);
@@ -154,7 +154,7 @@ var ckoHelper = {
 
         // Set the request method
         serv.setRequestMethod(method);
-        
+             
         // Call the service
         var resp = serv.call(requestData);
 
