@@ -757,7 +757,7 @@ var ckoHelper = {
     /**
      * Build metadata object
      */
-    getMetadataString: function (data, args) {s
+    getMetadataString: function (data, args) {
         // Prepare the base metadata
         var meta = 'integration_data' + this.getCartridgeMeta() + 'platform_data' + this.getValue('ckoPlatformData')
 
