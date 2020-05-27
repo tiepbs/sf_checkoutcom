@@ -63,68 +63,6 @@ var cardHelper = {
 
         return result;
     },
-    
-    /*
-     * Pre authorize card with zero value
-     */
-    preAuthorizeCard: function(billingData, customerNo, processorId, currentBasket) {
-        // Handle the basket state
-        currentBasket =  currentBasket || null;
-
-        // Prepare the charge data
-        var chargeData = {
-            'source'                : {
-                type                : 'card',
-                number              : ckoHelper.getFormattedNumber(billingData.paymentInformation.cardNumber.value),
-                expiry_month        : billingData.paymentInformation.expirationMonth.value,
-                expiry_year         : billingData.paymentInformation.expirationYear.value,
-                cvv                 : billingData.paymentInformation.securityCode.value
-            },
-            'amount'                : 0,
-            'currency'              : 'USD',
-            'capture'               : false,
-            'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
-            '3ds'                   : {enabled: false},
-            'risk'                  : {enabled: true}
-        };
-
-        // Add customer information if available
-        if (currentBasket) {
-            chargeData.customer = {
-                email: currentBasket.getCustomerEmail(),
-                name: currentBasket.getBillingAddress().getFullName()
-            };
-        }
-     
-        // Log the payment authorization request data
-        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.verification.request.data', 'cko'), chargeData);
-
-        // Send the request
-        var authResponse = ckoHelper.gatewayClientRequest(
-            'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
-            chargeData
-        );
-
-        // Log the payment authorization response data
-        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.verification.response.data', 'cko'), authResponse);
-
-        // Return the response
-        var success = ckoHelper.paymentSuccess(authResponse);
-
-        // If the payment is successful
-        if (success && billingData.saveCard) {
-            // Save the card
-            this.saveCard(
-                billingData.paymentInformation,
-                currentBasket,
-                customerNo,
-                authResponse,
-                processorId
-            );
-        }
-
-        return success;
-    },
 
     /*
      * Build the gateway request

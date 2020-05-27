@@ -25,26 +25,12 @@ function Handle(basket, billingData, processorId, req) {
         if (condition) {
             customerNo = req.currentCustomer.profile.customerNo;
         }
-
-        // Send the request
-        success = cardHelper.preAuthorizeCard(
-            billingData,
-            customerNo,
-            processorId,
-            currentBasket
-        );
-    }
-
-    if (!success) {
-        serverErrors.push(
-            Resource.msg('error.card.information.error', 'creditCard', null)
-        );
     }
 
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
-        error: !success
+        error: false
     };
 }
 
