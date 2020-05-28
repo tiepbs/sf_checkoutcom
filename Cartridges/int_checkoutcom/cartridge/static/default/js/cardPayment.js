@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 var isSet = true;
 var isSetId = document.getElementById('default_thumb');
@@ -31,7 +31,7 @@ var setBox = function () {
     if (input) {
         $(input.parentNode).prepend(box);
     }
-}
+};
 
 /**
  * Sets the expiration years in the form
@@ -51,7 +51,7 @@ var setExpirationYears = function() {
             )
         );
     }
-}
+};
 
 /**
  * Sets schema image in box
@@ -94,7 +94,7 @@ var setSchema = function (inputId) {
             }
         }
     });
-}
+};
 
 /**
  * Sets mada image in box
@@ -137,25 +137,25 @@ var setMada = function () {
             }
         }
     });
-}
+};
 
 /**
  * Set schema card image
  */
 var setImage = function (element) {
-	
+		var id = "";
     // If image is already set
     if (isSetId) {
         isSetId.style.display = "none";
-        var id = document.getElementById(element);
+        id = document.getElementById(element);
         id.style.display = "block";
         isSetId = id;
     } else {
-        var id = document.getElementById(element);
+        id = document.getElementById(element);
         id.style.display = "block";
         isSetId = id;
     }
-}
+};
 
 /**
  * Get image id
@@ -164,19 +164,14 @@ var getImageId  = function (schema) {
     switch (schema) {
         case 'visa':
             return "visacard_thumb";
-            break;
         case 'mastercard':
             return "mastercard_thumb";
-            break;
         case 'amex':
             return "amexcard_thumb";
-            break;
         case 'discover':
             return "discovercard_thumb";
-            break;
         case 'jcb':
             return "jcbcard_thumb";
-            break;
         case 'diners':
             return "dinersclub_thumb";
         case 'mada':
@@ -184,7 +179,7 @@ var getImageId  = function (schema) {
         default:
             return false;
     }
-}
+};
 
 var Mada = {
 		
@@ -213,32 +208,33 @@ var Mada = {
         // Get first number
         var fNumber = this.firstNumber(cardNumber);
         var number = cardNumber.substr(0, 6);
+      	var result = "";
 
         if (fNumber) {
             switch (fNumber) {
                 case '4':
-                    var result = this.cards.four.includes(number);
+                    result = this.cards.four.includes(number);
                     if (result) {
                     	
                         return "mada";
                     }
                     break;
                 case '5':
-                    var result = this.cards.five.includes(number);
+                    result = this.cards.five.includes(number);
                     if (result) {
                     	
                         return "mada";
                     }
                     break;
                 case '6':
-                    var result = this.cards.six.includes(number);
+                    result = this.cards.six.includes(number);
                     if (result) {
                     	
                         return "mada";
                     }
                     break;
                 case '9':
-                    var result = this.cards.nine.includes(number);
+                    result = this.cards.nine.includes(number);
                     if (result) {
                     	
                         return "mada";
@@ -263,4 +259,4 @@ var Mada = {
         // Get first number
         return cardNumber.charAt(0);
     }
-}
+};

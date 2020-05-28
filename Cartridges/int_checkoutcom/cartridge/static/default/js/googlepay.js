@@ -19,7 +19,7 @@ function launchGooglePay()
                 'gateway': 'checkoutltd',
                 'gatewayMerchantId': jQuery('[id="ckoGatewayMerchantId"]').val()
             }
-        }
+        };
 
         // Prepare the Google Pay client
         onGooglePayLoaded();

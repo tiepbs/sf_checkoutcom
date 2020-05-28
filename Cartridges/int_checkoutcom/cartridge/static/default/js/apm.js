@@ -168,10 +168,10 @@ function callKlarnaController(controllerUrl) {
 function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId) {
 	
     // Converts request string to object
-    var requestObject = JSON.parse(requestObject);
+    requestObject = JSON.parse(requestObject);
     
     // Converts address string to object
-    var addressInfo = JSON.parse(addressInfo);
+    addressInfo = JSON.parse(addressInfo);
     
     // Empty the Klarna container
     $('#klarna-payments-container').empty();
@@ -198,7 +198,7 @@ function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billin
     var authorizeBtn = $('#klarnaConfirmBtn');
     authorizeBtn.show();
     authorizeBtn.click(() => {
-    	klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, JSON.stringify(billingAddress), JSON.stringify(requestObject))
+    	klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, JSON.stringify(billingAddress), JSON.stringify(requestObject));
     });
 }
 
