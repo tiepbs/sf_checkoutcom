@@ -4,27 +4,26 @@ var svc = require('dw/svc');
 /* Utililty module */
 var util = require('~/cartridge/scripts/helpers/ckoHelper');
 
-var cardSources = { 
+var wrapper = { 
     /**
      * Initialize HTTP service for the Checkout.com sandbox full card charge.
      */
     sandbox: function() {
-    return svc.LocalServiceRegistry.createService("cko.card.sources.sandbox.service", {
-        createRequest: function (svc, args) {
-            // Prepare the http service
-            svc.addHeader("Authorization", util.getAccountKeys().secretKey);
-            svc.addHeader("User-Agent", util.getCartridgeMeta());
-            svc.addHeader("Content-Type", 'application/json;charset=UTF-8');
-            
-            return (args) ? JSON.stringify(args) : null;
-        },
+        return svc.LocalServiceRegistry.createService("cko.card.sources.sandbox.service", {
+            createRequest: function (svc, args) {
+                // Prepare the http service
+                svc.addHeader("Authorization", util.getAccountKeys().secretKey);
+                svc.addHeader("User-Agent", util.getCartridgeMeta());
+                svc.addHeader("Content-Type", 'application/json;charset=UTF-8');
+                
+                return (args) ? JSON.stringify(args) : null;
+            },
 
-        parseResponse: function (svc, resp) {
-            return JSON.parse(resp.text);
-        }
-    });
+            parseResponse: function (svc, resp) {
+                return JSON.parse(resp.text);
+            }
+        });
     },
-
 
     /**
      * Initialize HTTP service for the Checkout.com live full card charge.
@@ -50,4 +49,4 @@ var cardSources = {
 /*
 * Module exports
 */
-module.exports = cardSources;
+module.exports = wrapper;

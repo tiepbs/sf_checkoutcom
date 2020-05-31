@@ -4,7 +4,7 @@ var svc = require('dw/svc');
 /* Utility */
 var util = require('~/cartridge/scripts/helpers/ckoHelper');
 
-var verifyCharges = {  
+var wrapper = {  
     /**
      * Initialize HTTP service for the Checkout.com sandbox charges verification.
      */
@@ -57,4 +57,4 @@ var verifyCharges = {
 /*
 * Module exports
 */
-module.exports = verifyCharges;
+module.exports = wrapper;

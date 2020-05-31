@@ -4,7 +4,7 @@ var svc = require('dw/svc');
 /* Utility */
 var util = require('~/cartridge/scripts/helpers/ckoHelper');
 
-var networkToken = {  
+var wrapper = {  
     /**
      * Initialize HTTP service for the Checkout.com sandbox network token.
      */
@@ -49,4 +49,4 @@ var networkToken = {
 /*
 * Module exports
 */
-module.exports = networkToken;
+module.exports = wrapper;

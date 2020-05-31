@@ -4,7 +4,7 @@ var svc = require('dw/svc');
 /* Utility */
 var util = require('~/cartridge/scripts/helpers/ckoHelper');
 
-var transactionCapture = { 
+var wrapper = { 
     /**
      * Initialize HTTP service for the Checkout.com sandbox full card capture.
      */ 
@@ -49,4 +49,4 @@ var transactionCapture = {
 /*
 * Module exports
 */
-module.exports = transactionCapture;
+module.exports = wrapper;
