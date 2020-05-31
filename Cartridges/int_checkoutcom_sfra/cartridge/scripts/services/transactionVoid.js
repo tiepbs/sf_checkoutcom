@@ -4,7 +4,7 @@ var svc = require('dw/svc');
 /* Utility */
 var util = require('~/cartridge/scripts/helpers/ckoHelper');
 
-var cardCharge = {  
+var transactionVoid = {  
     /**
      * Initialize HTTP service for the Checkout.com sandbox full card void.
      */
@@ -49,4 +49,4 @@ var cardCharge = {
 /*
 * Module exports
 */
-module.exports = cardCharge;
+module.exports = transactionVoid;
