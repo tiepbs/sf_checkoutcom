@@ -8,7 +8,6 @@ var Logger = require('dw/system/Logger');
 var BasketMgr = require('dw/order/BasketMgr');
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
-var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var Site = require('dw/system/Site');
 
 /* Card Currency Config */
@@ -159,6 +158,11 @@ var ckoHelper = {
         var resp = serv.call(requestData);
 
         return resp.hasOwnProperty('object') ? resp.object : resp;
+    },
+
+    getService: function (serviceId) {
+
+        return serviceInstance;
     },
     
     /*
