@@ -142,7 +142,7 @@ var ckoHelper = {
      */
     gatewayClientRequest: function (serviceId, requestData, method) {
         var method = method || 'POST';
-        var serv = ServiceRegistry.get(serviceId);
+        var serv = this.getService(serviceId);
       
         // Prepare the request URL and data
         if (requestData.hasOwnProperty('chargeId')) {
@@ -161,8 +161,11 @@ var ckoHelper = {
     },
 
     getService: function (serviceId) {
+        var parts  =  serviceId.split('.');
+        var svcFile = parts[1] + parts[2].charAt(0).toUpperCase() + parts[2].slice(1);
+        var svcClass = require('~/cartridge/scripts/services/' + svcFile);
 
-        return serviceInstance;
+        return svcClass[parts[3]]();
     },
     
     /*
