@@ -201,10 +201,7 @@ var ckoApmConfig = {
     /*
      * Sepa authorization
      */
-    sepaAuthorization: function (args) {
-        var logger = require('dw/system/Logger').getLogger('ckodebug');
-        logger.debug('sepaAuthorizationx {0}', JSON.stringify(args));
-    
+    sepaAuthorization: function (args) {    
         // Building pay object
         var params = {
             'type'          : 'sepa',
