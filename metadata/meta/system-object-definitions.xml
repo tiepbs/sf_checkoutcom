@@ -244,7 +244,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoIdealEnabled">
-                <display-name xml:lang="x-default">Enable iDEAL PAY </display-name>
+                <display-name xml:lang="x-default">Enable iDEAL</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Ideal Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -252,7 +252,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoBoletoEnabled">
-                <display-name xml:lang="x-default">Enable BOLETO BANCARIO PAY </display-name>
+                <display-name xml:lang="x-default">Enable BOLETO BANCARIO</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Boleto Bancario Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -260,7 +260,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoBancontactEnabled">
-                <display-name xml:lang="x-default">Enable BANCANTACT PAY </display-name>
+                <display-name xml:lang="x-default">Enable BANCANTACT</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Bancontact Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -268,7 +268,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoBenefitEnabled">
-                <display-name xml:lang="x-default">Enable BENEFIT PAY </display-name>
+                <display-name xml:lang="x-default">Enable BENEFIT</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Benefit Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -276,7 +276,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoGiroEnabled">
-                <display-name xml:lang="x-default">Enable GIRO PAY </display-name>
+                <display-name xml:lang="x-default">Enable GIRO</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Giro Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -284,7 +284,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoEpsEnabled">
-                <display-name xml:lang="x-default">Enable EPS PAY </display-name>
+                <display-name xml:lang="x-default">Enable EPS</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Eps Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -300,7 +300,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoSofortEnabled">
-                <display-name xml:lang="x-default">Enable SOFORT PAY </display-name>
+                <display-name xml:lang="x-default">Enable SOFORT</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Sofort Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -308,7 +308,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoKnetEnabled">
-                <display-name xml:lang="x-default">Enable KNET PAY </display-name>
+                <display-name xml:lang="x-default">Enable KNET</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Knet Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -324,7 +324,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoFawryEnabled">
-                <display-name xml:lang="x-default">Enable FAWRY PAY </display-name>
+                <display-name xml:lang="x-default">Enable FAWRY</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Fawry Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -332,7 +332,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoSepaEnabled">
-                <display-name xml:lang="x-default">Enable SEPA PAY </display-name>
+                <display-name xml:lang="x-default">Enable SEPA</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Sepa Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -340,7 +340,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoMultibancoEnabled">
-                <display-name xml:lang="x-default">Enable MULTIBANCO PAY </display-name>
+                <display-name xml:lang="x-default">Enable MULTIBANCO</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Multibanco Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -348,7 +348,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoPoliEnabled">
-                <display-name xml:lang="x-default">Enable POLI PAY </display-name>
+                <display-name xml:lang="x-default">Enable POLI</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Poli Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -356,7 +356,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoP24Enabled">
-                <display-name xml:lang="x-default">Enable P24 PAY </display-name>
+                <display-name xml:lang="x-default">Enable P24</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with P24 Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -364,7 +364,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoKlarnaEnabled">
-                <display-name xml:lang="x-default">Enable KLARNA PAY </display-name>
+                <display-name xml:lang="x-default">Enable KLARNA</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Karna Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -372,7 +372,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoPaypalEnabled">
-                <display-name xml:lang="x-default">Enable PAYPAL PAY </display-name>
+                <display-name xml:lang="x-default">Enable PAYPAL</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Paypal Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
@@ -380,7 +380,7 @@
                 <default-value>false</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoOxxoEnabled">
-                <display-name xml:lang="x-default">Enable OXXO PAY </display-name>
+                <display-name xml:lang="x-default">Enable OXXO</display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Oxxo Pay</description>
                 <type>boolean</type>
                 <mandatory-flag>true</mandatory-flag>
