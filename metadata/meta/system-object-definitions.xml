@@ -291,6 +291,14 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>false</default-value>
             </attribute-definition>
+            <attribute-definition attribute-id="ckoAlipayEnabled">
+                <display-name xml:lang="x-default">Enable Alipay</display-name>
+                <description xml:lang="x-default">Enable to accept payments from customers with Eps Pay</description>
+                <type>boolean</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
             <attribute-definition attribute-id="ckoSofortEnabled">
                 <display-name xml:lang="x-default">Enable SOFORT PAY </display-name>
                 <description xml:lang="x-default">Enable to accept payments from customers with Sofort Pay</description>
@@ -549,6 +557,7 @@
                 <attribute attribute-id="ckoBenefitEnabled"/>
                 <attribute attribute-id="ckoGiroEnabled"/>
                 <attribute attribute-id="ckoEpsEnabled"/>
+                <attribute attribute-id="ckoAlipayEnabled"/>
                 <attribute attribute-id="ckoSofortEnabled"/>
                 <attribute attribute-id="ckoKnetEnabled"/>
                 <attribute attribute-id="ckoQpayEnabled"/>
