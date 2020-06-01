@@ -8,7 +8,7 @@
 <isscript>
     var hasCkoCards = false;
     var paymentInstruments = pdict.customer.customerPaymentInstruments;
-    foreach (var paymentInstrument in paymentInstruments) {
+    for (var paymentInstrument in paymentInstruments) {
         if (paymentInstrument.paymentMethod == 'CHECKOUTCOM_COM') {
             hasCkoCards = true;
             break;
