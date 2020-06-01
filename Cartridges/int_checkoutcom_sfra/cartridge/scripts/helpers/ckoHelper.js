@@ -1,6 +1,5 @@
 "use strict"
 
-
 /* API Includes */
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
@@ -8,7 +7,6 @@ var Logger = require('dw/system/Logger');
 var BasketMgr = require('dw/order/BasketMgr');
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
-var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var Site = require('dw/system/Site');
 
 /* Card Currency Config */
@@ -143,7 +141,7 @@ var ckoHelper = {
      */
     gatewayClientRequest: function (serviceId, requestData, method) {
         var method = method || 'POST';
-        var serv = ServiceRegistry.get(serviceId);
+        var serv = this.getService(serviceId);
       
         // Prepare the request URL and data
         if (requestData.hasOwnProperty('chargeId')) {
@@ -157,8 +155,19 @@ var ckoHelper = {
              
         // Call the service
         var resp = serv.call(requestData);
+        if (resp.status != 'OK') {
+            return resp.error;
+        }
 
-        return resp.hasOwnProperty('object') ? resp.object : resp;
+        return resp.object;
+    },
+
+    getService: function (serviceId) {
+        var parts  =  serviceId.split('.');
+        var svcFile = parts[1] + parts[2].charAt(0).toUpperCase() + parts[2].slice(1);
+        var svcClass = require('~/cartridge/scripts/services/' + svcFile);
+
+        return svcClass[parts[3]]();
     },
     
     /*
