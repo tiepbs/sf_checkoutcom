@@ -3,7 +3,6 @@
 /* API Includes */
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
-var URLUtils = require('dw/web/URLUtils');
 
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -26,7 +25,7 @@ var apmHelper = {
         if (apmConfigData.type == "sepa") {
             // Prepare the charge data
             gatewayRequest = {
-                "customer"              : ckoHelper.getCustomer(order),
+                //"customer"              : ckoHelper.getCustomer(order),
                 "amount"                : ckoHelper.getFormattedPrice(
                     order.totalGrossPrice.value.toFixed(2),
                     order.getCurrencyCode()
