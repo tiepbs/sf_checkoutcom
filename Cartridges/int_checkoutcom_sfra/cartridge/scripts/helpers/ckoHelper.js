@@ -1,6 +1,5 @@
 "use strict"
 
-
 /* API Includes */
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
@@ -156,8 +155,11 @@ var ckoHelper = {
              
         // Call the service
         var resp = serv.call(requestData);
+        if (resp.status != 'OK') {
+            return resp.error;
+        }
 
-        return resp.hasOwnProperty('object') ? resp.object : resp;
+        return resp.object;
     },
 
     getService: function (serviceId) {
