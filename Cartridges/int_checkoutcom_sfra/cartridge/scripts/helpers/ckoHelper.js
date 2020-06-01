@@ -164,10 +164,13 @@ var ckoHelper = {
 
     getService: function (serviceId) {
         var parts  =  serviceId.split('.');
-        var svcFile = parts[1] + parts[2].charAt(0).toUpperCase() + parts[2].slice(1);
+        var entity = parts[1];
+        var action = parts[2];
+        var mode = parts[3];
+        var svcFile = entity + action.charAt(0).toUpperCase() + action.slice(1);
         var svcClass = require('~/cartridge/scripts/services/' + svcFile);
 
-        return svcClass[parts[3]]();
+        return svcClass[mode]();
     },
     
     /*
