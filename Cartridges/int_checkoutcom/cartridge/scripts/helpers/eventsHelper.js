@@ -139,7 +139,7 @@ var eventsHelper = {
     /**
      * Capture failed event
      */
-    paymentCapturedDeclined: function (hook) {
+    paymentCaptureDeclined: function (hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
     },
 
