@@ -17,28 +17,28 @@
 
 		<fieldset>
 			<div id="apmsBox">
-				<!-- This to include the ideal pay apm form -->
+				<!-- This to include the ideal apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoIdealEnabled'))}">
 					<div id="ideal" class="apm-list-item">
 						<isinclude template="checkout/billing/paymentOptions/forms/apm/ideal.isml"/>
 					</div>
 				</isif>	
 					
-				<!-- This to include the boleto pay apm form -->
+				<!-- This to include the boleto apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBoletoEnabled'))}">
 					<div id="boleto" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/forms/apm/boleto.isml"/>
 					</div>
 				</isif>
 				
-				<!-- This to include the bancontact pay apm form -->
+				<!-- This to include the bancontact apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBancontactEnabled'))}">
 					<div id="bancontact" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/forms/apm/bancontact.isml"/>
 					</div>
 				</isif>
 				
-				<!-- This to include the benefit pay apm form -->
+				<!-- This to include the benefit apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBenefitEnabled'))}">
 					<div id="benefitpay" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/forms/apm/benefitpay.isml"/>
@@ -51,22 +51,29 @@
 						<isinclude template="checkout/billing/paymentOptions/forms/apm/giropay.isml"/>
 					</div>
 				</isif>
-				
-				<!-- This to include the eps pay apm form -->
+
+				<!-- This to include the eps apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEpsEnabled'))}">
 					<div id="eps" class="apm-list-item">	
 						<isinclude template="checkout/billing/paymentOptions/forms/apm/eps.isml"/>
 					</div>
 				</isif>
+
+				<!-- This to include the aplipay apm form -->
+				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoAlipayEnabled'))}">
+					<div id="alipay" class="apm-list-item">	
+						<isinclude template="checkout/billing/paymentOptions/forms/apm/alipay.isml"/>
+					</div>
+				</isif>
 				
-				<!-- This to include the sofort pay apm form -->
+				<!-- This to include the sofort apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSofortEnabled'))}">
 					<div id="sofort" class="apm-list-item">		
 						<isinclude template="checkout/billing/paymentOptions/forms/apm/sofort.isml"/>
 					</div>
 				</isif>
 				
-				<!-- This to include the knet pay apm form -->
+				<!-- This to include the knet apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoKnetEnabled'))}">
 					<div id="knet" class="apm-list-item">
 						<isinclude template="checkout/billing/paymentOptions/forms/apm/knet.isml"/>
