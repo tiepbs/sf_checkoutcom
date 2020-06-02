@@ -19,7 +19,7 @@
     </type-extension>
     <type-extension type-id="CustomerPaymentInstrument">
         <custom-attribute-definitions>
-            <attribute-definition attribute-id="processorId">
+            <attribute-definition attribute-id="ckoProcessorId">
                 <display-name xml:lang="x-default">Checkout.com Payment Processor ID</display-name>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
