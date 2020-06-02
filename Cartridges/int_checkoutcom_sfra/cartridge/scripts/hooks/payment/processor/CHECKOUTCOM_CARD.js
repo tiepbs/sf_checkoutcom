@@ -35,7 +35,7 @@ function Handle(basket, billingData, processorId, req) {
 /**
  * Authorizes a payment using card details
  */
-function Authorize(orderNumber, billingForm, processorId) {
+function Authorize(orderNumber, billingForm, processorId, req) {
     var serverErrors = [];
     var fieldErrors = {};
     var result = {
@@ -47,7 +47,8 @@ function Authorize(orderNumber, billingForm, processorId) {
     result = cardHelper.handleRequest(
         billingForm,
         processorId,
-        orderNumber
+        orderNumber,
+        req
     );
     
     // Handle errors

@@ -58,7 +58,7 @@ function Handle(basket, billingData, processorId, req) {
 /**
  * Authorizes a payment
  */
-function Authorize(orderNumber, billingForm, processorId) {
+function Authorize(orderNumber, billingForm, processorId, req) {
     var serverErrors = [];
     var fieldErrors = {};
     var result = {

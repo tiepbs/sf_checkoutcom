@@ -443,7 +443,8 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
             'Authorize',
             order.orderNo,
             billingForm,
-            processor.ID
+            processor.ID,
+            req
         );
     } else {
         handlePaymentResult = HookMgr.callHook(
