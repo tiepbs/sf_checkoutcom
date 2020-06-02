@@ -4,9 +4,6 @@ var server = require('server');
 server.extend(module.superModule);
 var csrfProtection = require('*/cartridge/scripts/middleware/csrf');
 
-/* Utility */
-var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
-
 server.replace('Get', server.middleware.https, function (req, res, next) {
     var BasketMgr = require('dw/order/BasketMgr');
     var AccountModel = require('*/cartridge/models/account');
@@ -303,7 +300,7 @@ server.replace(
             );
 
             var accountModel = new AccountModel(req.currentCustomer);
-            var renderedStoredPaymentInstrument = cardHelper.getRenderedPaymentInstruments(
+            var renderedStoredPaymentInstrument = COHelpers.getRenderedPaymentInstruments(
                 req,
                 accountModel
             );
