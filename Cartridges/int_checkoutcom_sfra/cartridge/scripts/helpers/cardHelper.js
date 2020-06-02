@@ -182,7 +182,7 @@ var cardHelper = {
      * Get all customer saved cards
      */
     getSavedCards: function (customerNo, methodId) {
-        var processorId = methodId || 'CHECKOUTCOM_CARD';
+        var processorId = methodId || null;
 
         // Get the customer
         var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
@@ -193,6 +193,15 @@ var cardHelper = {
         // Get the existing payment instruments
         var paymentInstruments = wallet.getPaymentInstruments(processorId);
         
+        // Match the saved cards
+        for (var i = 0; i < paymentInstruments.length; i++) {
+            var card = paymentInstruments[i];
+            var condition = (processorId) ? card.paymentMethod == processorId : true;
+            if (condition) {
+                return card;
+            }
+        } 
+
         return paymentInstruments;
     },
 
