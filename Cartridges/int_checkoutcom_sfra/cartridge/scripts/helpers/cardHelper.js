@@ -93,8 +93,7 @@ var cardHelper = {
             // Save the card
             var uuid = this.saveCard(
                 paymentData,
-                req,
-                processorId
+                req
             );
 
             // Update the metadata
@@ -182,10 +181,11 @@ var cardHelper = {
     /*
      * Save a card in customer account
      */
-    saveCard: function (paymentData, req, processorId) {
+    saveCard: function (paymentData, req) {
         // Get the customer profile
         var customerNo = req.currentCustomer.profile.customerNo;
         var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
+        var processorId = paymentData.paymentMethod.value;
     
         // Build the customer full name
         var fullName = this.getCustomerFullName(customerProfile); 
@@ -199,6 +199,7 @@ var cardHelper = {
         // Create a stored payment instrument
         Transaction.wrap(function () {
             var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
+            storedPaymentInstrument.custom.processorId = processorId;
             storedPaymentInstrument.setCreditCardHolder(fullName);
             storedPaymentInstrument.setCreditCardNumber(paymentData.creditCardFields.cardNumber.value);
             storedPaymentInstrument.setCreditCardExpirationMonth(paymentData.creditCardFields.expirationMonth.value);

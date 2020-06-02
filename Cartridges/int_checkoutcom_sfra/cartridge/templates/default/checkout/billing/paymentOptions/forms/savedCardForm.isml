@@ -1,6 +1,6 @@
 <!--- selected card --->
 <isloop items="${pdict.customer.customerPaymentInstruments}" var="paymentInstrument" status="loopState">
-    <isif condition="${paymentInstrument.paymentMethod == 'CHECKOUTCOM_CARD'}">
+    <isif condition="${paymentInstrument.custom.processorId == 'CHECKOUTCOM_CARD'}">
         <div class="row saved-payment-instrument" data-uuid="${paymentInstrument.UUID}">
             <div class="form-group required saved-security-code col-6 col-md-3">
                 <img class="card-image ${loopState.first ? 'checkout-hidden' : ''}"
