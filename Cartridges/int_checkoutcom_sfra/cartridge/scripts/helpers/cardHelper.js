@@ -182,20 +182,20 @@ var cardHelper = {
     /*
      * Save a card in customer account
      */
-    saveCard: function (paymentInformation, req, authResponse, processorId) {
+    saveCard: function (paymentData, req, authResponse, processorId) {
         // Get the customer profile
         var customerNo = req.currentCustomer.profile.customerNo;
         var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
-
+    
         // Build the customer full name
         var fullName = this.getCustomerFullName(customerProfile); 
-
+    
         // Get the customer wallet
         var wallet = customerProfile.getWallet();
-
+    
         // Get the existing payment instruments
         var paymentInstruments = wallet.getPaymentInstruments(processorId);
-
+    
         // Check for duplicates
         var cardExists = false;
         for (var i = 0; i < paymentInstruments.length; i++) {
@@ -205,16 +205,16 @@ var cardHelper = {
                 break;
             }
         }       
-
+    
         // Create a stored payment instrument
         if (!cardExists) {
             Transaction.wrap(function () {
                 var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
                 storedPaymentInstrument.setCreditCardHolder(fullName);
-                storedPaymentInstrument.setCreditCardNumber(paymentInformation.cardNumber.value);
+                storedPaymentInstrument.setCreditCardNumber(paymentData.creditCardFields.cardNumber.value);
                 storedPaymentInstrument.setCreditCardType(authResponse.source.scheme.toLowerCase());
-                storedPaymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
-                storedPaymentInstrument.setCreditCardExpirationYear(paymentInformation.expirationYear.value);
+                storedPaymentInstrument.setCreditCardExpirationMonth(paymentData.creditCardFields.expirationMonth.value);
+                storedPaymentInstrument.setCreditCardExpirationYear(paymentData.creditCardFields.expirationYear.value);
                 storedPaymentInstrument.setCreditCardToken(authResponse.source.id);
             });
         }
