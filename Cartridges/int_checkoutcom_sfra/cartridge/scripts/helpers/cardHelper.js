@@ -52,19 +52,6 @@ var cardHelper = {
         if (gatewayResponse) {
             // Update customer data
             ckoHelper.updateCustomerData(gatewayResponse);
-
-            // Handle the save card request
-            var condition1 = paymentData.creditCardFields.saveCard.value;
-            var condition2 = ckoHelper.paymentSuccess(gatewayResponse);
-            if (condition1 && condition2) {
-                // Save the card
-                this.saveCard(
-                    paymentData,
-                    req,
-                    gatewayResponse,
-                    processorId
-                );
-            }
         
             // Add 3DS redirect URL to session if exists
             var condition3 = gatewayResponse.hasOwnProperty('_links');
@@ -101,6 +88,20 @@ var cardHelper = {
             'metadata'              : ckoHelper.getMetadata({}, processorId)
         };   
     
+        // Handle the save card request
+        if (paymentData.creditCardFields.saveCard.value) {
+            // Save the card
+            var uuid = this.saveCard(
+                paymentData,
+                req,
+                processorId
+            );
+
+            // Update the metadata
+            chargeData.metadata.card_uuid = uuid;
+            chargeData.metadata.customer_id = req.currentCustomer.profile.customerNo;
+        }
+
         return chargeData;
     },
 
@@ -181,7 +182,7 @@ var cardHelper = {
     /*
      * Save a card in customer account
      */
-    saveCard: function (paymentData, req, authResponse, processorId) {
+    saveCard: function (paymentData, req, processorId) {
         // Get the customer profile
         var customerNo = req.currentCustomer.profile.customerNo;
         var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
@@ -191,32 +192,21 @@ var cardHelper = {
     
         // Get the customer wallet
         var wallet = customerProfile.getWallet();
-    
-        // Get the existing payment instruments
-        var paymentInstruments = wallet.getPaymentInstruments(processorId);
-    
-        // Check for duplicates
-        var cardExists = false;
-        for (var i = 0; i < paymentInstruments.length; i++) {
-            var card = paymentInstruments[i];
-            if (card.getCreditCardToken() == authResponse.source.id) {
-                cardExists = true;
-                break;
-            }
-        }       
-    
+
+        // The return value
+        var uuid;
+        
         // Create a stored payment instrument
-        if (!cardExists) {
-            Transaction.wrap(function () {
-                var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
-                storedPaymentInstrument.setCreditCardHolder(fullName);
-                storedPaymentInstrument.setCreditCardNumber(paymentData.creditCardFields.cardNumber.value);
-                storedPaymentInstrument.setCreditCardType(authResponse.source.scheme.toLowerCase());
-                storedPaymentInstrument.setCreditCardExpirationMonth(paymentData.creditCardFields.expirationMonth.value);
-                storedPaymentInstrument.setCreditCardExpirationYear(paymentData.creditCardFields.expirationYear.value);
-                storedPaymentInstrument.setCreditCardToken(authResponse.source.id);
-            });
-        }
+        Transaction.wrap(function () {
+            var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
+            storedPaymentInstrument.setCreditCardHolder(fullName);
+            storedPaymentInstrument.setCreditCardNumber(paymentData.creditCardFields.cardNumber.value);
+            storedPaymentInstrument.setCreditCardExpirationMonth(paymentData.creditCardFields.expirationMonth.value);
+            storedPaymentInstrument.setCreditCardExpirationYear(paymentData.creditCardFields.expirationYear.value);
+            uuid = storedPaymentInstrument.getUUID();
+        });
+
+        return uuid;
     },
 
     getCustomerFullName: function(customerProfile) { 
