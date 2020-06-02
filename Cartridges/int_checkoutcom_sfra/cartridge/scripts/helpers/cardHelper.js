@@ -213,38 +213,49 @@ var cardHelper = {
      * Update a card in customer account
      */
     updateSavedCard: function (hook) {
-        // Get the customer profile
-        var customerNo = hook.data.metadata.customer_id;
-        var processorId = hook.data.metadata.payment_processor;
-        var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
-    
-        // Build the customer full name
-        var fullName = this.getCustomerFullName(customerProfile); 
-    
-        // Get the customer wallet
-        var wallet = customerProfile.getWallet();
-    
-        // Get the existing payment instruments
-        var paymentInstruments = wallet.getPaymentInstruments(processorId);
-    
-        // Check for duplicates
-        var cardExists = false;
-        for (var i = 0; i < paymentInstruments.length; i++) {
-            var card = paymentInstruments[i];
-            if (card.getCreditCardToken() == hook.data.source.id) {
-                cardExists = true;
-                break;
+        var condition1 = hook.data.metadata.hasOwnProperty('card_uuid');
+        var condition2 = hook.data.metadata.hasOwnProperty('customer_id');
+        if (condition1 && condition2) {
+            // Get the customer profile
+            var customerNo = hook.data.metadata.customer_id;
+            var processorId = hook.data.metadata.payment_processor;
+            var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
+        
+            // Build the customer full name
+            var fullName = this.getCustomerFullName(customerProfile); 
+        
+            // Get the customer wallet
+            var wallet = customerProfile.getWallet();
+        
+            // Get the existing payment instruments
+            var paymentInstruments = wallet.getPaymentInstruments(processorId);
+        
+            // Check for duplicates
+            var cardExists = false;
+            for (var i = 0; i < paymentInstruments.length; i++) {
+                var card = paymentInstruments[i];
+                if (card.getCreditCardToken() == hook.data.source.id) {
+                    cardExists = true;
+                    break;
+                }
+            }       
+            
+            // Get the card
+            var card = this.getSavedCard(
+                hook.data.metadata.card_uuid,
+                hook.data.metadata.customer_id,
+                hook.data.metadata.payment_processor
+            );
+        
+            // Create a stored payment instrument
+            if (card && !cardExists) {
+                Transaction.wrap(function () {
+                    var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
+                    storedPaymentInstrument.setCreditCardHolder(fullName);
+                    storedPaymentInstrument.setCreditCardType(hook.data.source.scheme.toLowerCase());
+                    storedPaymentInstrument.setCreditCardToken(hook.data.source.id);
+                });
             }
-        }       
-    
-        // Create a stored payment instrument
-        if (!cardExists) {
-            Transaction.wrap(function () {
-                var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
-                storedPaymentInstrument.setCreditCardHolder(fullName);
-                storedPaymentInstrument.setCreditCardType(hook.data.source.scheme.toLowerCase());
-                storedPaymentInstrument.setCreditCardToken(hook.data.source.id);
-            });
         }
     },
 
