@@ -4,6 +4,7 @@
 var OrderMgr = require('dw/order/OrderMgr');
 var Transaction = require('dw/system/Transaction');
 var CustomerMgr = require('dw/customer/CustomerMgr');
+var URLUtils = require('dw/web/URLUtils');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -202,7 +203,8 @@ var cardHelper = {
             var paymentInstrument = paymentInstruments[i];
             var condition = (processorId) ? paymentInstrument.paymentMethod == processorId : true;
             if (condition) {
-                cards.push({
+                // Card data
+                var card = {
                     creditCardHolder: paymentInstrument.creditCardHolder,
                     maskedCreditCardNumber: paymentInstrument.maskedCreditCardNumber,
                     creditCardType: paymentInstrument.creditCardType,
@@ -210,7 +212,17 @@ var cardHelper = {
                     creditCardExpirationYear: paymentInstrument.creditCardExpirationYear,
                     UUID: paymentInstrument.UUID,
                     paymentMethod: paymentInstrument.paymentMethod
-                });
+                };
+
+                // Card image
+                card.cardTypeImage = {
+                    src: URLUtils.staticURL('/images/' +
+                    paymentInstrument.creditCardType.toLowerCase().replace(/\s/g, '') +
+                        '-dark.svg'),
+                    alt: paymentInstrument.creditCardType
+                };
+
+                cards.push(card);
             }
         } 
 
