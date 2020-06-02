@@ -183,15 +183,12 @@ var cardHelper = {
      * Save a card in customer account
      */
     saveCard: function (paymentInformation, req, authResponse, processorId) {
-        // Check if the basket exists
-        var currentBasket = BasketMgr.getCurrentBasket();
-
         // Get the customer profile
         var customerNo = req.currentCustomer.profile.customerNo;
         var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
 
         // Build the customer full name
-        var fullName = this.getCustomerFullName(customerProfile, currentBasket); 
+        var fullName = this.getCustomerFullName(customerProfile); 
 
         // Get the customer wallet
         var wallet = customerProfile.getWallet();
@@ -223,20 +220,10 @@ var cardHelper = {
         }
     },
 
-    getCustomerFullName: function(customerProfile, currentBasket) { 
-        // Check if the basket exists
-        currentBasket = currentBasket || null;
-
-        // Build the customer full name
+    getCustomerFullName: function(customerProfile) { 
         var customerName = '';
-        if (currentBasket.billingAddress.fullName) {
-            customerName = currentBasket.billingAddress.fullName;
-        }
-        else {
-            customerName += customerProfile.firstName;
-            customerName += customerProfile.secondName.length > 0 ? customerProfile.secondName : '';
-            customerName += ' ' + customerProfile.lastName;
-        }
+        customerName += customerProfile.firstName;
+        customerName += ' ' + customerProfile.lastName;
         
         return customerName;
     }
