@@ -182,6 +182,7 @@ var cardHelper = {
      * Get all customer saved cards
      */
     getSavedCards: function (customerNo, methodId) {
+        // Prepare the processor id
         var processorId = methodId || null;
 
         // Get the customer
@@ -193,16 +194,27 @@ var cardHelper = {
         // Get the existing payment instruments
         var paymentInstruments = wallet.getPaymentInstruments(processorId);
         
+        // Prepare the return value
+        var cards = [];
+
         // Match the saved cards
         for (var i = 0; i < paymentInstruments.length; i++) {
-            var card = paymentInstruments[i];
-            var condition = (processorId) ? card.paymentMethod == processorId : true;
+            var paymentInstrument = paymentInstruments[i];
+            var condition = (processorId) ? paymentInstrument.paymentMethod == processorId : true;
             if (condition) {
-                return card;
+                cards.push({
+                    creditCardHolder: paymentInstrument.creditCardHolder,
+                    maskedCreditCardNumber: paymentInstrument.maskedCreditCardNumber,
+                    creditCardType: paymentInstrument.creditCardType,
+                    creditCardExpirationMonth: paymentInstrument.creditCardExpirationMonth,
+                    creditCardExpirationYear: paymentInstrument.creditCardExpirationYear,
+                    UUID: paymentInstrument.UUID,
+                    paymentMethod: paymentInstrument.paymentMethod
+                });
             }
         } 
 
-        return paymentInstruments;
+        return cards;
     },
 
     /*
