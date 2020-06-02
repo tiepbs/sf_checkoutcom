@@ -1,23 +1,34 @@
-<!--- Hidden input for selected saved card --->
-<div class="tab-pane saved-card-content" id="saved-card-content" role="tabpanel">
-    <fieldset class="payment-form-fields">
-		<input type="hidden" class="form-control"
-				name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-				value=""
-		>
-        <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
-        <isset name="savedCardFields" value="${pdict.forms.billingForm.savedCardForm}" scope="page"/>
-        <input type="hidden" id="selectedCardUuid" <isprint value=${savedCardFields.selectedCardUuid.attributes} encoding="off"/> value="">
-        <input type="hidden" id="selectedCardCvv" <isprint value=${savedCardFields.selectedCardCvv.attributes} encoding="off"/> value="">
+<isscript>
+    // Customer cards
+    var hasCkoCards = 0;
+    var paymentInstruments = pdict.customer.customerPaymentInstruments;
+    for (var paymentInstrument in paymentInstruments) {
+        if (paymentInstrument.paymentMethod == 'CHECKOUTCOM_CARD') {
+            hasCkoCards++;
+        }
+    }
+</isscript>
 
-        <!--- register/authenticated user --->
-        <isif condition="${pdict.customer.registeredUser}">
+<!--- Hidden input for selected saved card --->
+<isif condition="${hasCkoCards > 0}">
+    <div class="tab-pane saved-card-content" id="saved-card-content" role="tabpanel">
+        <fieldset class="payment-form-fields">
+            <input type="hidden" class="form-control"
+                    name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+                    value=""
+            >
+            <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
+            <isset name="savedCardFields" value="${pdict.forms.billingForm.savedCardForm}" scope="page"/>
+            <input type="hidden" id="selectedCardUuid" <isprint value=${savedCardFields.selectedCardUuid.attributes} encoding="off"/> value="">
+            <input type="hidden" id="selectedCardCvv" <isprint value=${savedCardFields.selectedCardCvv.attributes} encoding="off"/> value="">
+
+            <!--- register/authenticated user --->
             <div class="user-payment-instruments container">
                 <!--- Stored user payments --->
                 <div class="stored-payments">
                     <isinclude template="checkout/billing/paymentOptions/forms/storedPaymentInstruments" />
                 </div>
             </div>
-        </isif>
-    </fieldset>
-</div>
+        </fieldset>
+    </div>
+</isif>

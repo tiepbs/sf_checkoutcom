@@ -20,7 +20,7 @@ var cardHelper = {
         orderNumber = orderNumber || null;
 
         // Build the request data
-        var gatewayRequest = this.buildRequest(paymentData, processorId, orderNumber);
+        var gatewayRequest = this.buildRequest(paymentData, processorId, orderNumber, req);
 
         // Log the payment request data
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
@@ -35,13 +35,13 @@ var cardHelper = {
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
 
         // Process the response
-        return this.handleResponse(gatewayResponse, paymentData, processorId, req);
+        return this.handleResponse(gatewayResponse);
     },
 
     /*
      * Handle the payment response
      */
-    handleResponse: function (gatewayResponse, paymentData, processorId, req) {
+    handleResponse: function (gatewayResponse) {
         // Prepare the result
         var result = {
             error: !ckoHelper.paymentSuccess(gatewayResponse),
@@ -54,9 +54,9 @@ var cardHelper = {
             ckoHelper.updateCustomerData(gatewayResponse);
         
             // Add 3DS redirect URL to session if exists
-            var condition3 = gatewayResponse.hasOwnProperty('_links');
-            var condition4 = condition1 && gatewayResponse._links.hasOwnProperty('redirect');
-            if (condition3 && condition4) {
+            var condition1 = gatewayResponse.hasOwnProperty('_links');
+            var condition2 = condition1 && gatewayResponse._links.hasOwnProperty('redirect');
+            if (condition1 && condition2) {
                 result.error = false;
                 result.redirectUrl = gatewayResponse._links.redirect.href;
             }
@@ -68,7 +68,7 @@ var cardHelper = {
     /*
      * Build the gateway request
      */
-    buildRequest: function (paymentData, processorId, orderNumber) {
+    buildRequest: function (paymentData, processorId, orderNumber, req) {
         //  Load the order
         var order = OrderMgr.getOrder(orderNumber);
       
@@ -203,6 +203,7 @@ var cardHelper = {
             storedPaymentInstrument.setCreditCardNumber(paymentData.creditCardFields.cardNumber.value);
             storedPaymentInstrument.setCreditCardExpirationMonth(paymentData.creditCardFields.expirationMonth.value);
             storedPaymentInstrument.setCreditCardExpirationYear(paymentData.creditCardFields.expirationYear.value);
+            storedPaymentInstrument.setCreditCardType(paymentData.creditCardFields.cardType.value.toLowerCase());
             uuid = storedPaymentInstrument.getUUID();
         });
 
@@ -215,31 +216,7 @@ var cardHelper = {
     updateSavedCard: function (hook) {
         var condition1 = hook.data.metadata.hasOwnProperty('card_uuid');
         var condition2 = hook.data.metadata.hasOwnProperty('customer_id');
-        if (condition1 && condition2) {
-            // Get the customer profile
-            var customerNo = hook.data.metadata.customer_id;
-            var processorId = hook.data.metadata.payment_processor;
-            var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
-        
-            // Build the customer full name
-            var fullName = this.getCustomerFullName(customerProfile); 
-        
-            // Get the customer wallet
-            var wallet = customerProfile.getWallet();
-        
-            // Get the existing payment instruments
-            var paymentInstruments = wallet.getPaymentInstruments(processorId);
-        
-            // Check for duplicates
-            var cardExists = false;
-            for (var i = 0; i < paymentInstruments.length; i++) {
-                var card = paymentInstruments[i];
-                if (card.getCreditCardToken() == hook.data.source.id) {
-                    cardExists = true;
-                    break;
-                }
-            }       
-            
+        if (condition1 && condition2) {                
             // Get the card
             var card = this.getSavedCard(
                 hook.data.metadata.card_uuid,
@@ -248,12 +225,9 @@ var cardHelper = {
             );
         
             // Create a stored payment instrument
-            if (card && !cardExists) {
+            if (card) {
                 Transaction.wrap(function () {
-                    var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
-                    storedPaymentInstrument.setCreditCardHolder(fullName);
-                    storedPaymentInstrument.setCreditCardType(hook.data.source.scheme.toLowerCase());
-                    storedPaymentInstrument.setCreditCardToken(hook.data.source.id);
+                    card.setCreditCardToken(hook.data.source.id);
                 });
             }
         }
