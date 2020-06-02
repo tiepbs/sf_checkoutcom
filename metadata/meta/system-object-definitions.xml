@@ -17,7 +17,7 @@
             </attribute-group>
         </group-definitions>
     </type-extension>
-    <type-extension type-id="paymentInstrument">
+    <type-extension type-id="CustomerPaymentInstrument">
         <custom-attribute-definitions>
             <attribute-definition attribute-id="ckoProcessorId">
                 <display-name xml:lang="x-default">Checkout.com Payment Processor ID</display-name>
