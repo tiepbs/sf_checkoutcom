@@ -55,7 +55,8 @@ var cardHelper = {
 
             // Handle the save card request
             var condition1 = paymentData.creditCardFields.saveCard.value;
-            if (condition1) {
+            var condition2 = ckoHelper.paymentSuccess(gatewayResponse);
+            if (condition1 && condition2) {
                 // Save the card
                 this.saveCard(
                     paymentData,
