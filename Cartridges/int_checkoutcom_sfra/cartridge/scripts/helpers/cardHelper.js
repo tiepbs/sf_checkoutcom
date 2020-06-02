@@ -226,7 +226,7 @@ var cardHelper = {
             );
         
             // Create a stored payment instrument
-            if (card) {
+            if (card) {     
                 Transaction.wrap(function () {
                     card.setCreditCardToken(hook.data.source.id);
                 });
