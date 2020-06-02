@@ -1,5 +1,5 @@
 <isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="paymentOption">
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_CARD' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+    <isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
         <isinclude template="checkout/billing/paymentOptions/tabs/cardTab"/>
         <isinclude template="checkout/billing/paymentOptions/tabs/savedCardTab"/>
     </isif>

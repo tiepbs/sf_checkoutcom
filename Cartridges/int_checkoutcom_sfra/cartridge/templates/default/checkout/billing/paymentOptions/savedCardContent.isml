@@ -1,16 +1,5 @@
-<isscript>
-    // Customer cards
-    var hasCkoCards = 0;
-    var paymentInstruments = pdict.customer.customerPaymentInstruments;
-    for (var paymentInstrument in paymentInstruments) {
-        if (paymentInstrument.paymentMethod == 'CHECKOUTCOM_CARD') {
-            hasCkoCards++;
-        }
-    }
-</isscript>
-
 <!--- Hidden input for selected saved card --->
-<isif condition="${hasCkoCards > 0}">
+<isif condition=${pdict.customer.customerPaymentInstruments.length > 0}">
     <div class="tab-pane saved-card-content" id="saved-card-content" role="tabpanel">
         <fieldset class="payment-form-fields">
             <input type="hidden" class="form-control"
