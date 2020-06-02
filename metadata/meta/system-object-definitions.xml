@@ -17,23 +17,6 @@
             </attribute-group>
         </group-definitions>
     </type-extension>
-    <type-extension type-id="CustomerPaymentInstrument">
-        <custom-attribute-definitions>
-            <attribute-definition attribute-id="ckoProcessorId">
-                <display-name xml:lang="x-default">Checkout.com Payment Processor ID</display-name>
-                <type>string</type>
-                <mandatory-flag>false</mandatory-flag>
-                <externally-managed-flag>false</externally-managed-flag>
-                <min-length>0</min-length>
-            </attribute-definition>
-        </custom-attribute-definitions>
-        <group-definitions>
-            <attribute-group group-id="Checkout.com">
-                <display-name xml:lang="x-default">Checkout.com</display-name>
-                <attribute attribute-id="ckoProcessorId"/>
-            </attribute-group>
-        </group-definitions>
-    </type-extension>
     <type-extension type-id="PaymentTransaction">
         <custom-attribute-definitions>
             <attribute-definition attribute-id="ckoPaymentId">

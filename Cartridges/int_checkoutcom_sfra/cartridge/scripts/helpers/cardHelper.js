@@ -199,7 +199,6 @@ var cardHelper = {
         // Create a stored payment instrument
         Transaction.wrap(function () {
             var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
-            storedPaymentInstrument.custom.ckoProcessorId = processorId;
             storedPaymentInstrument.setCreditCardHolder(fullName);
             storedPaymentInstrument.setCreditCardNumber(paymentData.creditCardFields.cardNumber.value);
             storedPaymentInstrument.setCreditCardExpirationMonth(paymentData.creditCardFields.expirationMonth.value);
