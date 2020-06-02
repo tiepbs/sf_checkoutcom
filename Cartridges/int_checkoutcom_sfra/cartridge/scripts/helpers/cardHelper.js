@@ -179,6 +179,24 @@ var cardHelper = {
     },
 
     /*
+     * Get all customer saved cards
+     */
+    getSavedCards: function (customerNo, methodId) {
+        var processorId = methodId || 'CHECKOUTCOM_CARD';
+
+        // Get the customer
+        var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
+
+        // Get the customer wallet
+        var wallet = customer.getProfile().getWallet();
+
+        // Get the existing payment instruments
+        var paymentInstruments = wallet.getPaymentInstruments(processorId);
+        
+        return paymentInstruments;
+    },
+
+    /*
      * Save a card in customer account
      */
     saveCard: function (paymentData, req) {
