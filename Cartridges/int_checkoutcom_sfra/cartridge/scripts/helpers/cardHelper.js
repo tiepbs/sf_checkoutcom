@@ -42,7 +42,7 @@ var cardHelper = {
     /*
      * Handle the payment response
      */
-    handleResponse: function (gatewayResponse, paymentData, processorId) {
+    handleResponse: function (gatewayResponse, paymentData, processorId, req) {
         // Prepare the result
         var result = {
             error: !ckoHelper.paymentSuccess(gatewayResponse),
