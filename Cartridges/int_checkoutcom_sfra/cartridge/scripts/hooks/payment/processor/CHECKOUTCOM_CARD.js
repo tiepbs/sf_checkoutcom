@@ -10,10 +10,8 @@ var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
  * Verifies that the payment data is valid.
  */
 function Handle(basket, billingData, processorId, req) {
-    var currentBasket = basket;
     var fieldErrors = {};
     var serverErrors = [];
-    var success = true; 
     var customerNo = null;
 
     // Pre authorize the card

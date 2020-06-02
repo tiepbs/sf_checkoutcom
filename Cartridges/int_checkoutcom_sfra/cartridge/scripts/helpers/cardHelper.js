@@ -4,6 +4,7 @@
 var OrderMgr = require('dw/order/OrderMgr');
 var Transaction = require('dw/system/Transaction');
 var CustomerMgr = require('dw/customer/CustomerMgr');
+var BasketMgr = require('dw/order/BasketMgr');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -35,27 +36,41 @@ var cardHelper = {
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
 
         // Process the response
-        return this.handleResponse(gatewayResponse);
+        return this.handleResponse(gatewayResponse, paymentData, processorId);
     },
 
     /*
      * Handle the payment response
      */
-    handleResponse: function (gatewayResponse) {
+    handleResponse: function (gatewayResponse, paymentData, processorId) {
         // Prepare the result
         var result = {
             error: !ckoHelper.paymentSuccess(gatewayResponse),
             redirectUrl: false
         }
 
-        // Update customer data
+        // Handle the response
         if (gatewayResponse) {
+            // Update customer data
             ckoHelper.updateCustomerData(gatewayResponse);
 
-            // Add 3DS redirect URL to session if exists
-            var condition1 = gatewayResponse.hasOwnProperty('_links');
-            var condition2 = condition1 && gatewayResponse._links.hasOwnProperty('redirect');
+            // Handle the save card request
+            var condition1 = paymentData.creditCardFields.saveCard.value;
+            var condition2 = ckoHelper.paymentSuccess(gatewayResponse);
             if (condition1 && condition2) {
+                // Save the card
+                this.saveCard(
+                    paymentData,
+                    customerNo,
+                    gatewayResponse,
+                    processorId
+                );
+            }
+        
+            // Add 3DS redirect URL to session if exists
+            var condition3 = gatewayResponse.hasOwnProperty('_links');
+            var condition4 = condition1 && gatewayResponse._links.hasOwnProperty('redirect');
+            if (condition3 && condition4) {
                 result.error = false;
                 result.redirectUrl = gatewayResponse._links.redirect.href;
             }
@@ -167,9 +182,9 @@ var cardHelper = {
     /*
      * Save a card in customer account
      */
-    saveCard: function (paymentInformation, currentBasket, customerNo, authResponse, processorId) {
+    saveCard: function (paymentInformation, customerNo, authResponse, processorId) {
         // Check if the basket exists
-        currentBasket = currentBasket || null;
+        var currentBasket = BasketMgr.getCurrentBasket();
 
         // Get the customer profile
         var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
