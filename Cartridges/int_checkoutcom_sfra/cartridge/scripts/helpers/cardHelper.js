@@ -209,6 +209,45 @@ var cardHelper = {
         return uuid;
     },
 
+    /*
+     * Update a card in customer account
+     */
+    updateSavedCard: function (hook) {
+        // Get the customer profile
+        var customerNo = hook.data.metadata.customer_id;
+        var processorId = hook.data.metadata.payment_processor;
+        var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
+    
+        // Build the customer full name
+        var fullName = this.getCustomerFullName(customerProfile); 
+    
+        // Get the customer wallet
+        var wallet = customerProfile.getWallet();
+    
+        // Get the existing payment instruments
+        var paymentInstruments = wallet.getPaymentInstruments(processorId);
+    
+        // Check for duplicates
+        var cardExists = false;
+        for (var i = 0; i < paymentInstruments.length; i++) {
+            var card = paymentInstruments[i];
+            if (card.getCreditCardToken() == hook.data.source.id) {
+                cardExists = true;
+                break;
+            }
+        }       
+    
+        // Create a stored payment instrument
+        if (!cardExists) {
+            Transaction.wrap(function () {
+                var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
+                storedPaymentInstrument.setCreditCardHolder(fullName);
+                storedPaymentInstrument.setCreditCardType(hook.data.source.scheme.toLowerCase());
+                storedPaymentInstrument.setCreditCardToken(hook.data.source.id);
+            });
+        }
+    },
+
     getCustomerFullName: function(customerProfile) { 
         var customerName = '';
         customerName += customerProfile.firstName;
