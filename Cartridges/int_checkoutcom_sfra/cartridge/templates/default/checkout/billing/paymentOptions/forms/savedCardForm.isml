@@ -1,6 +1,6 @@
 <!--- selected card --->
 <isloop iterator="${pdict.customer.customerPaymentInstruments}" alias="paymentInstrument">
-    <isif condition="${paymentInstrument.paymentMethod == 'CHECKOUTCOM_CARD'}">
+    <isprint value="${JSON.stringify(paymentInstrument)}" />
         <div class="row saved-payment-instrument" data-uuid="${paymentInstrument.UUID}">
             <div class="form-group required saved-security-code col-6 col-md-3">
                 <img class="card-image ${loopState.first ? 'checkout-hidden' : ''}"
@@ -43,5 +43,4 @@
                 </div>
             </div>
         </div>
-    </isif>
 </isloop>
