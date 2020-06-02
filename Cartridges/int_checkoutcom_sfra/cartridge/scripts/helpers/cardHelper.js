@@ -4,7 +4,6 @@
 var OrderMgr = require('dw/order/OrderMgr');
 var Transaction = require('dw/system/Transaction');
 var CustomerMgr = require('dw/customer/CustomerMgr');
-var BasketMgr = require('dw/order/BasketMgr');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -56,8 +55,7 @@ var cardHelper = {
 
             // Handle the save card request
             var condition1 = paymentData.creditCardFields.saveCard.value;
-            var condition2 = ckoHelper.paymentSuccess(gatewayResponse);
-            if (condition1 && condition2) {
+            if (condition1) {
                 // Save the card
                 this.saveCard(
                     paymentData,
