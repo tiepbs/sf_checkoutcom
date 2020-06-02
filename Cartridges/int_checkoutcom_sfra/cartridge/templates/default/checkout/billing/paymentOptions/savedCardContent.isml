@@ -1,5 +1,5 @@
 <!--- Hidden input for selected saved card --->
-<isif condition=${pdict.customer.customerPaymentInstruments.length > 0}">
+<isif condition="${pdict.customer.customerPaymentInstruments.length > 0}">
     <div class="tab-pane saved-card-content" id="saved-card-content" role="tabpanel">
         <fieldset class="payment-form-fields">
             <input type="hidden" class="form-control"
