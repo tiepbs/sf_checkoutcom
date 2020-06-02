@@ -158,7 +158,7 @@ var cardHelper = {
     /*
      * Get a customer saved card
      */
-    getSavedCard: function (cardUuid, customerNo, processorId) {
+    getSavedCard: function (cardUuid, customerNo, methodId) {
         // Get the customer
         var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
 
@@ -166,7 +166,7 @@ var cardHelper = {
         var wallet = customer.getProfile().getWallet();
 
         // Get the existing payment instruments
-        var paymentInstruments = wallet.getPaymentInstruments(processorId);
+        var paymentInstruments = wallet.getPaymentInstruments(methodId);
 
         // Match the saved card
         for (var i = 0; i < paymentInstruments.length; i++) {

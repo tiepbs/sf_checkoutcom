@@ -1,6 +1,16 @@
 <!--- selected card --->
-<isloop iterator="${pdict.customer.customerPaymentInstruments}" alias="paymentInstrument">
-    <isprint value="${JSON.stringify(paymentInstrument)}" />
+<isscript>
+    var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
+</isscript>
+
+<isloop iterator="${pdict.customer.customerPaymentInstruments}" alias="savedCard">
+        <isscript>
+            var paymentInstrument = cardHelper.getSavedCard(
+                savedCard.UUID,
+                customerNo,
+                paymentOption.ID
+            )
+        </isscript>
         <div class="row saved-payment-instrument" data-uuid="${paymentInstrument.UUID}">
             <div class="form-group required saved-security-code col-6 col-md-3">
                 <img class="card-image ${loopState.first ? 'checkout-hidden' : ''}"
