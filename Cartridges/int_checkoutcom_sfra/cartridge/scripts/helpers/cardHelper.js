@@ -16,8 +16,8 @@ var cardHelper = {
     /*
      * Handle the payment request.
      */
-    handleRequest: function (paymentData, processorId, orderNumber) {  
-        // Check for 0$ auth
+    handleRequest: function (paymentData, processorId, orderNumber, req) {  
+        // Order number
         orderNumber = orderNumber || null;
 
         // Build the request data
@@ -36,7 +36,7 @@ var cardHelper = {
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
 
         // Process the response
-        return this.handleResponse(gatewayResponse, paymentData, processorId);
+        return this.handleResponse(gatewayResponse, paymentData, processorId, req);
     },
 
     /*
@@ -61,7 +61,7 @@ var cardHelper = {
                 // Save the card
                 this.saveCard(
                     paymentData,
-                    customerNo,
+                    req,
                     gatewayResponse,
                     processorId
                 );
@@ -182,11 +182,12 @@ var cardHelper = {
     /*
      * Save a card in customer account
      */
-    saveCard: function (paymentInformation, customerNo, authResponse, processorId) {
+    saveCard: function (paymentInformation, req, authResponse, processorId) {
         // Check if the basket exists
         var currentBasket = BasketMgr.getCurrentBasket();
 
         // Get the customer profile
+        var customerNo = req.currentCustomer.profile.customerNo;
         var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
 
         // Build the customer full name
