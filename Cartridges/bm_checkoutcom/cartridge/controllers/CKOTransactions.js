@@ -1,8 +1,6 @@
 'use strict';
 
 /* API Includes */
-var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
-var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var ISML = require('dw/template/ISML');
 
 /* Checkout.com Helper functions */
@@ -62,6 +60,11 @@ function remoteCall()
 /*
 * Web exposed methods
 */
-exports.ListTransactions = guard.ensure(['https'], listTransactions);
-exports.GetTransactionsData = guard.ensure(['https'], getTransactionsData);
-exports.RemoteCall = guard.ensure(['https'], remoteCall);
+
+listTransactions.public = true;
+getTransactionsData.public = true;
+remoteCall.public = true;
+
+exports.ListTransactions = listTransactions;
+exports.GetTransactionsData = getTransactionsData;
+exports.RemoteCall = remoteCall;
