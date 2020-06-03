@@ -1,12 +1,12 @@
 <!--- selected card --->
 <isscript>
     var BasketMgr = require('dw/order/BasketMgr');
-    var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
+    var savedCardHelper = require('~/cartridge/scripts/helpers/savedCardHelper');
 </isscript>
 <isloop items="${pdict.customer.customerPaymentInstruments}" var="paymentInstrument" status="loopState">
     <isscript>
         // Get the saved card
-        var card = cardHelper.getSavedCard(
+        var card = savedCardHelper.getSavedCard(
             paymentInstrument.UUID,
             BasketMgr.currentBasket.getCustomerNo(),
             paymentOption.ID
