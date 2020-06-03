@@ -136,6 +136,13 @@ var savedCardHelper = {
                 });
             }
         }
+    },
+
+    /*
+     * Delete a card in customer account
+     */
+    deleteSavedCard: function (hook) {
+
     }
 }
 
