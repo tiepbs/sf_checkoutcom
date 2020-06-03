@@ -284,26 +284,6 @@ var cardHelper = {
         }
     },
 
-    getRenderedPaymentInstruments: function (req, accountModel) {
-        var result;
-    
-        if (req.currentCustomer.raw.authenticated
-            && req.currentCustomer.raw.registered
-            && req.currentCustomer.raw.profile.wallet.paymentInstruments.getLength()
-        ) {
-            var context;
-            var template = 'checkout/billing/paymentOptions/forms/savedCardForm';
-    
-            context = { customer: accountModel };
-            result = renderTemplateHelper.getRenderedHtml(
-                context,
-                template
-            );
-        }
-    
-        return result || null;
-    },
-
     getCustomerFullName: function(customerProfile) { 
         var customerName = '';
         customerName += customerProfile.firstName;
