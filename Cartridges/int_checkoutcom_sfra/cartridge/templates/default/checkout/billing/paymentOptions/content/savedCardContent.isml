@@ -1,23 +1,21 @@
 <!--- Hidden input for selected saved card --->
 <div class="tab-pane saved-card-content" id="saved-card-content" role="tabpanel">
     <fieldset class="payment-form-fields">
-		<input type="hidden" class="form-control"
-				name="${pdict.forms.billingForm.paymentMethod.htmlName}"
-				value=""
-		>
+        <input type="hidden" class="form-control"
+                name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+                value=""
+        >
         <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
         <isset name="savedCardFields" value="${pdict.forms.billingForm.savedCardForm}" scope="page"/>
         <input type="hidden" id="selectedCardUuid" <isprint value=${savedCardFields.selectedCardUuid.attributes} encoding="off"/> value="">
         <input type="hidden" id="selectedCardCvv" <isprint value=${savedCardFields.selectedCardCvv.attributes} encoding="off"/> value="">
 
         <!--- register/authenticated user --->
-        <isif condition="${pdict.customer.registeredUser}">
-            <div class="user-payment-instruments container">
-                <!--- Stored user payments --->
-                <div class="stored-payments">
-                    <isinclude template="checkout/billing/paymentOptions/forms/storedPaymentInstruments" />
-                </div>
+        <div class="user-payment-instruments container">
+            <!--- Stored user payments --->
+            <div class="stored-payments">
+                <isinclude template="checkout/billing/paymentOptions/forms/savedCardForm" />
             </div>
-        </isif>
+        </div>
     </fieldset>
 </div>

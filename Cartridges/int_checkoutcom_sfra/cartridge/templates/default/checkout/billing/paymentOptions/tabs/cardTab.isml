@@ -3,23 +3,3 @@
         ${paymentOption.name}
     </a>
 </li>
-
-
-<isscript>
-    var hasCkoCards = false;
-    var paymentInstruments = pdict.customer.customerPaymentInstruments;
-    for (var paymentInstrument in paymentInstruments) {
-        if (paymentInstrument.paymentMethod == 'CHECKOUTCOM_COM') {
-            hasCkoCards = true;
-            break;
-        }
-    }
-</isscript>
-
-<isif condition="${(pdict.customer.registeredUser && hasCkoCards)}">
-    <li class="nav-item" data-method-id="${paymentOption.ID}">
-        <a class="nav-link saved-card-tab" data-toggle="tab" href="#saved-card-content" role="tab">
-            ${Resource.msg('cko.savedcard.title', 'cko', null)}
-        </a>
-    </li>
-</isif>
