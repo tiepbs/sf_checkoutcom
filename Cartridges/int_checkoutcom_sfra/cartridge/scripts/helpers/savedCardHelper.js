@@ -5,9 +5,12 @@ var Transaction = require('dw/system/Transaction');
 var CustomerMgr = require('dw/customer/CustomerMgr');
 var URLUtils = require('dw/web/URLUtils');
 
-/*
-* Utility functions for my cartridge integration.
-*/
+/** Utility **/
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
+/**
+  * Saved card functions for the Checkout.com cartridge integration.
+  */
+
 var savedCardHelper = {
     /*
      * Get a customer saved card
@@ -93,7 +96,7 @@ var savedCardHelper = {
         var processorId = paymentData.paymentMethod.value;
     
         // Build the customer full name
-        var fullName = this.getCustomerFullName(customerProfile); 
+        var fullName = ckoHelper.getCustomerFullName(customerProfile); 
     
         // Get the customer wallet
         var wallet = customerProfile.getWallet();

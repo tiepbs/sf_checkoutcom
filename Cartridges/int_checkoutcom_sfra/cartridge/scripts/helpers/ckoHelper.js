@@ -121,7 +121,18 @@ var ckoHelper = {
     getCartridgeMeta: function () {
         return this.getValue("ckoUserAgent") + ' ' + this.getValue("ckoVersion");
     },
-    
+   
+    /*
+     * Get a customer full name
+     */
+    getCustomerFullName: function(customerProfile) { 
+        var customerName = '';
+        customerName += customerProfile.firstName;
+        customerName += ' ' + customerProfile.lastName;
+        
+        return customerName;
+    },
+
     /*
      * Get Account API Keys
      */
