@@ -1,6 +1,6 @@
 <!--- selected card --->
 <isloop iterator="${pdict.customer.customerPaymentInstruments}" alias="paymentInstrument">
-    <isprint value="${JSON.stringify(paymentInstrument.UUID)}" />
+    <isprint value="${JSON.stringify(paymentInstrument)}" />
 
         <div class="row saved-payment-instrument" data-uuid="${paymentInstrument.UUID}">
             <div class="form-group required saved-security-code col-6 col-md-3">
