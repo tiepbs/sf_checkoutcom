@@ -111,6 +111,9 @@ var eventsHelper = {
      */
     paymentDeclined: function (hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
+
+        // Delete the card if needed
+        savedCardHelper.updateSavedCardhook();
     },
 
     /**

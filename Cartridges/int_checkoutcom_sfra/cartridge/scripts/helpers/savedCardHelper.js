@@ -136,13 +136,41 @@ var savedCardHelper = {
                 });
             }
         }
+        else {
+            this.deleteSavedCard();
+        }
     },
 
     /*
      * Delete a card in customer account
      */
     deleteSavedCard: function (hook) {
+        var condition1 = hook.data.metadata.hasOwnProperty('card_uuid');
+        var condition2 = hook.data.metadata.hasOwnProperty('customer_id');
+        if (condition1 && condition2) {           
+            // Set the customer and card uuiid
+            var customerId = hook.data.metadata.hasOwnProperty('customer_id');
+            var cardUuid = hook.data.metadata.hasOwnProperty('card_uuid');
 
+            // Get the customer
+            var customer = CustomerMgr.getCustomerByCustomerNumber(customerId);
+
+            // Get the customer wallet
+            var wallet = customer.getProfile().getWallet();
+
+            // Get the existing payment instruments
+            var paymentInstruments = wallet.getPaymentInstruments();
+
+            // Remove  the relevand payment instruments
+            Transaction.wrap(function () { 
+                for (var i = 0; i < paymentInstruments.length; i++) {
+                    var card = paymentInstruments[i];
+                    if (card.getUUID() == cardUuid) {
+                        wallet.removePaymentInstrument(card);
+                    }
+                }     
+            });
+        }
     }
 }
 
