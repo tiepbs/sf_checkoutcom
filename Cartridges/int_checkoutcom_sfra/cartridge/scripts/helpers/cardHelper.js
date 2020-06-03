@@ -151,14 +151,6 @@ var cardHelper = {
             'enabled' : ckoHelper.getValue('cko3ds'),
             'attempt_n3d' : ckoHelper.getValue('ckoN3ds')
         }
-    },
-
-    getCustomerFullName: function(customerProfile) { 
-        var customerName = '';
-        customerName += customerProfile.firstName;
-        customerName += ' ' + customerProfile.lastName;
-        
-        return customerName;
     }
 }
 
