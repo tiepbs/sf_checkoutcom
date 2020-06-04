@@ -1,0 +1,23 @@
+.ckoModal h1 {
+    font-size: 25px;
+}
+
+.ckoModal .label {
+    color: black !important;
+    padding-left: 0px !important;
+    font-size: 15px !important;
+}
+
+.ckoModal .input-row {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.ckoErrorMessage {
+    margin-top: 20px;
+    display: none;
+}
+
+.ckoErrorMessage .msg {
+    display: inline;
+}
