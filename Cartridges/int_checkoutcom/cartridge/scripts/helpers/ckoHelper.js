@@ -134,31 +134,41 @@ var ckoHelper = {
         return keys;
     },
     
-    /**
+    /*
      * Create an HTTP client to handle request to gateway
      */
     gatewayClientRequest: function (serviceId, requestData, method) {
-        method = method || 'POST';
-        var responseData = false;
-        var serv = ServiceRegistry.get(serviceId);
-        
+        var method = method || 'POST';
+        var serv = this.getService(serviceId);
+      
         // Prepare the request URL and data
         if (requestData.hasOwnProperty('chargeId')) {
             var requestUrl = serv.getURL().replace('chargeId', requestData.chargeId);
             serv.setURL(requestUrl);
-            delete requestData.chargeId;
+            delete requestData['chargeId'];
         }
 
         // Set the request method
         serv.setRequestMethod(method);
-        
+             
         // Call the service
         var resp = serv.call(requestData);
-        if (resp.status == 'OK') {
-            responseData = resp.object;
+        if (resp.status != 'OK') {
+            return resp.error;
         }
-        
-        return responseData;
+
+        return resp.object;
+    },
+
+    getService: function (serviceId) {
+        var parts  =  serviceId.split('.');
+        var entity = parts[1];
+        var action = parts[2];
+        var mode = parts[3];
+        var svcFile = entity + action.charAt(0).toUpperCase() + action.slice(1);
+        var svcClass = require('~/cartridge/scripts/services/' + svcFile);
+
+        return svcClass[mode]();
     },
     
     /**
