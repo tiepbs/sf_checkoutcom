@@ -1,6 +1,0 @@
-<!-- Bancontact APM Option -->
-<div class="cko-apm-accordion">
-	<input id="bancontact_apm_radio_btn" type="radio" name="apm_list" value="bancontact">
-	<img alt="${Resource.msg('cko.bancontact.name','cko',null)}" id="bancontactpay_thumb" src="${URLUtils.staticURL('/images/apm-icons/bancontactPay.png')}">
-	${Resource.msg('cko.bancontact.name','cko',null)}
-</div>
