@@ -436,10 +436,6 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
     var billingForm = server.forms.getForm('billing');    
     var paymentMethodID = billingForm.paymentMethod.value;
 
-    var logger = require('dw/system/Logger').getLogger('ckodebug');
-	logger.debug('billingFormy {0}', JSON.stringify(billingForm));
-
-
     var processor = PaymentMgr.getPaymentMethod(paymentMethodID).getPaymentProcessor();
     if (HookMgr.hasHook('app.payment.processor.' + processor.ID.toLowerCase())) {
         handlePaymentResult = HookMgr.callHook(
@@ -447,7 +443,8 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
             'Authorize',
             order.orderNo,
             billingForm,
-            processor.ID
+            processor.ID,
+            req
         );
     } else {
         handlePaymentResult = HookMgr.callHook(

@@ -1,8 +1,6 @@
-"use strict"
+"use strict";
 
 // API Includes 
-var PaymentMgr = require('dw/order/PaymentMgr');
-var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
 var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
@@ -13,12 +11,10 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 // Utility functions for my cartridge integration.
 var apmHelper = {
 		
-    // Creates Site Genesis Transaction Object
+    /**
+     * Creates Site Genesis Transaction Object
+     */
     apmAuthorization: function (payObject, args) {
-    	
-        // Preparing payment parameters
-        var paymentInstrument = args.PaymentInstrument;
-        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
         
         // perform the charge
         var apmRequest = this.handleApmRequest(payObject, args);
@@ -52,11 +48,13 @@ var apmHelper = {
             }
         } else {
         	
-            return false
+            return false;
         }
     },
         
-    // Handle APM charge Response from CKO API
+    /**
+     * Handle APM charge Response from CKO API
+     */
     handleApmChargeResponse: function (gatewayResponse) {
     	
         // clean the session
@@ -88,7 +86,9 @@ var apmHelper = {
         }  
     },
     
-    // Apm Request
+    /**
+     * Apm Request
+     */
     handleApmRequest: function (payObject, args) {
     	
         // Gateway response
@@ -142,7 +142,9 @@ var apmHelper = {
         }
     },
     
-    // Return the APM request data
+    /**
+     * Return the APM request data
+     */
     getApmRequest: function (payObject, args) {
     	
         // Charge data
@@ -187,7 +189,9 @@ var apmHelper = {
         return chargeData;
     },
     
-    // Sepa controller Request
+    /**
+     * Sepa controller Request
+     */
     handleSepaControllerRequest: function (payObject, order) {
     	
         // Gateway response
@@ -217,7 +221,7 @@ var apmHelper = {
             return false;
         }
     }
-}
+};
 
 // Module exports
 module.exports = apmHelper;

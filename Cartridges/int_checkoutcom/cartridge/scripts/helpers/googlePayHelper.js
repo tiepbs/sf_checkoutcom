@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 
 // API Includes
@@ -11,7 +11,9 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 // Utility functions for my cartridge integration
 var googlePayHelper = {
 		
-    // Handle full charge Request to CKO API
+    /**
+     * Handle full charge Request to CKO API
+     */
     handleRequest: function (args) {
     	
         // load the order information
@@ -55,6 +57,7 @@ var googlePayHelper = {
 
             // Validate the response
             if (ckoHelper.paymentSuccess(gatewayResponse)) {
+
                 return gatewayResponse;
             }
 
@@ -73,7 +76,9 @@ var googlePayHelper = {
         }
     },
     
-    // Handle full Google Pay response from CKO API
+    /**
+     * Handle full Google Pay response from CKO API
+     */
     handleResponse: function (gatewayResponse) {
     	
         // Logging
@@ -83,18 +88,20 @@ var googlePayHelper = {
         ckoHelper.updateCustomerData(gatewayResponse);
     },
     
-    // Build Gateway Source Object
+    /**
+     * Build Gateway Source Object
+     */
     getSourceObject: function (tokenData) {
     	
         // Source object
         var source = {
             type: "token",
             token: tokenData.token
-        }
+        };
         
         return source;
     }
-}
+};
 
 // Module exports
 module.exports = googlePayHelper;

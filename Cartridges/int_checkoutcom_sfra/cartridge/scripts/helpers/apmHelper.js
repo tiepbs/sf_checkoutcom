@@ -3,22 +3,18 @@
 /* API Includes */
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
-var URLUtils = require('dw/web/URLUtils');
 
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
-/* APM Configuration */
-var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
-
 /*
-* Utility functions for my cartridge integration.
+* Utility functions APM.
 */
 var apmHelper = {            
     /*
      * Apm Request
      */
-    handleRequest: function (orderNumber, processorId, apmConfigData) {
+    handleRequest: function (apmConfigData, processorId, orderNumber) {
         // Load the order
         var order = OrderMgr.getOrder(orderNumber);
         
@@ -29,11 +25,14 @@ var apmHelper = {
         if (apmConfigData.type == "sepa") {
             // Prepare the charge data
             gatewayRequest = {
-                "customer"              : ckoHelper.getCustomer(order),
-                "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
+                //"customer"              : ckoHelper.getCustomer(order),
+                "amount"                : ckoHelper.getFormattedPrice(
+                    order.totalGrossPrice.value.toFixed(2),
+                    order.getCurrencyCode()
+                ),
                 "type"                  : apmConfigData.type,
                 "currency"              : order.getCurrencyCode(),
-                "billing_address"       : ckoHelper.getBilling(order),
+                "billing_address"       : ckoHelper.getBilling({order: order}),
                 "source_data"           : apmConfigData.source_data,
                 "reference"             : order.orderNo,
                 "metadata"              : ckoHelper.getMetadata({}, processorId),
@@ -104,7 +103,10 @@ var apmHelper = {
         var chargeData;
         
         // Get the order amount
-        var amount = ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode());
+        var amount = ckoHelper.getFormattedPrice(
+            order.totalGrossPrice.value.toFixed(2),
+            order.getCurrencyCode()
+        );
         
         // Prepare the charge data
         chargeData = {

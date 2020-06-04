@@ -12,26 +12,36 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 // Transaction helper.
 var transactionHelper = {
-    // Get order transaction amount
+
+    /**
+     * Get order transaction amount
+     */
     getOrderTransactionAmount : function (order) {
+
         return new Money(
             order.totalGrossPrice.value.toFixed(2),
             order.getCurrencyCode()
         );
     },
 
-    // Get webhook transaction amount
+    /**
+     * Get webhook transaction amount
+     */
     getHookTransactionAmount : function (hook) {
         var divider = ckoHelper.getCkoFormatedValue(hook.data.currency);
         var amount = parseInt(hook.data.amount) / divider;
+
         return new Money(
             amount,
             hook.data.currency
         );
     },
 
-    // Create an authorization transaction
+    /**
+     * Create an authorization transaction
+     */
     createAuthorization: function (hook) {
+
         // Get the transaction amount
         var transactionAmount = this.getHookTransactionAmount(hook);
 
@@ -58,8 +68,11 @@ var transactionHelper = {
         });
     },
 
-    // Get the Checkout.com orders.
+    /**
+     * Get the Checkout.com orders
+     */
     getCkoOrders: function () {
+
         // Prepare the output array
         var data = [];
     
@@ -83,8 +96,11 @@ var transactionHelper = {
         return data;
     },
 
-    // Get the Checkout.com transactions.
+    /**
+     * Get the Checkout.com transactions
+     */
     loadTransactionById: function (transactionId) {
+
         // Query the orders
         var result  = ckoHelper.getCkoOrders();
 
@@ -114,11 +130,12 @@ var transactionHelper = {
      * Get a parent transaction from a payment id
      */
     getParentTransaction: function (paymentId, transactionType) {
+
         // Prepare the payload
         var mode = ckoHelper.getValue('ckoMode');
         var ckoChargeData = {
             chargeId: paymentId
-        }
+        };
 
         // Get the payment actions
         var paymentActions = ckoHelper.gatewayClientRequest(
@@ -143,19 +160,22 @@ var transactionHelper = {
     },
 
     /**
-     * Load a transaction by Id.
+     * Load a transaction by Id
      */
     loadTransaction: function (transactionId) {
+
         // Query the orders
         var result  = ckoHelper.getOrders();
 
         // Loop through the results
         for each(var item in result) {
+
             // Get the payment instruments
             var paymentInstruments = item.getPaymentInstruments();
             
             // Loop through the payment instruments
             for each(var instrument in paymentInstruments) {
+
                 // Get the payment transaction
                 var paymentTransaction = instrument.getPaymentTransaction();
 
@@ -164,6 +184,7 @@ var transactionHelper = {
 
                 // Add the payment transaction to the output
                 if (isIdMatch) {
+
                     return paymentTransaction;
                 }
             }
@@ -175,7 +196,7 @@ var transactionHelper = {
     /**
      * Check if a capture transaction can allow refunds.
      */
-    shouldCloseRefund: function (transactionAmount, order) {
+    shouldCloseRefund: function (order) {
         // Prepare the total refunded
         var totalRefunded = 0;
 
@@ -192,9 +213,9 @@ var transactionHelper = {
                 totalRefunded += parseFloat(paymentTransaction.amount.value);
             }
         }
-   
+      
         // Check if a refund is possible
-        return (totalRefunded + parseFloat(transactionAmount)) >= parseFloat(order.totalGrossPrice.value.toFixed(2));
+        return totalRefunded >= parseFloat(order.totalGrossPrice.value.toFixed(2));
     }
 };
 

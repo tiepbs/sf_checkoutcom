@@ -10,10 +10,8 @@ var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
  * Verifies that the payment data is valid.
  */
 function Handle(basket, billingData, processorId, req) {
-    var currentBasket = basket;
     var fieldErrors = {};
     var serverErrors = [];
-    var success = true; 
     var customerNo = null;
 
     // Pre authorize the card
@@ -25,33 +23,19 @@ function Handle(basket, billingData, processorId, req) {
         if (condition) {
             customerNo = req.currentCustomer.profile.customerNo;
         }
-
-        // Send the request
-        success = cardHelper.preAuthorizeCard(
-            billingData,
-            currentBasket,
-            customerNo,
-            processorId
-        );
-    }
-
-    if (!success) {
-        serverErrors.push(
-            Resource.msg('error.card.information.error', 'creditCard', null)
-        );
     }
 
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
-        error: !success
+        error: false
     };
 }
 
 /**
  * Authorizes a payment using card details
  */
-function Authorize(orderNumber, billingForm, processorId) {
+function Authorize(orderNumber, billingForm, processorId, req) {
     var serverErrors = [];
     var fieldErrors = {};
     var result = {
@@ -61,9 +45,10 @@ function Authorize(orderNumber, billingForm, processorId) {
 
     // Payment request
     result = cardHelper.handleRequest(
-        orderNumber,
         billingForm,
-        processorId
+        processorId,
+        orderNumber,
+        req
     );
     
     // Handle errors

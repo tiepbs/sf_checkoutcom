@@ -104,7 +104,7 @@ function launchApplePay() {
                         console.log(error);
                     }
                 );
-            }
+            };
 
             // Shipping contact
             session.onshippingcontactselected = function (event) {
@@ -118,7 +118,7 @@ function launchApplePay() {
                     amount: runningTotal
                 };
                 session.completeShippingContactSelection(status, shippingOptions, newTotal, getLineItems());
-            }
+            };
 
             // Shipping method selection
             session.onshippingmethodselected = function (event) {
@@ -129,7 +129,7 @@ function launchApplePay() {
                     amount: runningTotal
                 };
                 session.completeShippingMethodSelection(status, newTotal, getLineItems());
-            }
+            };
 
             // Payment method selection
             session.onpaymentmethodselected = function (event) {
@@ -139,7 +139,7 @@ function launchApplePay() {
                     amount: runningTotal
                 };
                 session.completePaymentMethodSelection(newTotal, getLineItems());
-            }
+            };
 
             // Payment method authorization
             session.onpaymentauthorized = function (event) {
@@ -161,6 +161,7 @@ function launchApplePay() {
                         session.completePayment(status);
 
                         if (success) {
+                            
                             // Redirect to success page
                             jQuery('[id="dwfrm_applePayForm_data"]').val(JSON.stringify(payload));
                         }
@@ -170,12 +171,12 @@ function launchApplePay() {
                         console.log(error);
                     }
                 );
-            }
+            };
 
             // Session cancellation
             session.oncancel = function (event) {
                 console.log(event);
-            }
+            };
 
             // Begin session
             session.begin();

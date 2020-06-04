@@ -19,7 +19,7 @@ function launchGooglePay()
                 'gateway': 'checkoutltd',
                 'gatewayMerchantId': jQuery('[id="ckoGatewayMerchantId"]').val()
             }
-        }
+        };
 
         // Prepare the Google Pay client
         onGooglePayLoaded();
@@ -56,7 +56,9 @@ function launchGooglePay()
             ));
         }
 
-        // Initialize Google PaymentsClient after Google-hosted JavaScript has loaded
+        /**
+         * Initialize Google PaymentsClient after Google-hosted JavaScript has loaded
+         */
         function onGooglePayLoaded() {
             var paymentsClient = getGooglePaymentsClient();
             paymentsClient.isReadyToPay({ allowedPaymentMethods: allowedPaymentMethods })
@@ -105,7 +107,9 @@ function launchGooglePay()
             };
         }
 
-        // Prefetch payment data to improve performance
+        /**
+         * Prefetch payment data to improve performance
+         */
         function prefetchGooglePaymentData() {
             var paymentDataRequest = getGooglePaymentDataConfiguration();
 

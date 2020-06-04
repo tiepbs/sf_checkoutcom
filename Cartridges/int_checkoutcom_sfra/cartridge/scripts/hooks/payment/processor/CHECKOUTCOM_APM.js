@@ -58,7 +58,7 @@ function Handle(basket, billingData, processorId, req) {
 /**
  * Authorizes a payment
  */
-function Authorize(orderNumber, billingForm, processorId) {
+function Authorize(orderNumber, billingForm, processorId, req) {
     var serverErrors = [];
     var fieldErrors = {};
     var result = {
@@ -81,7 +81,11 @@ function Authorize(orderNumber, billingForm, processorId) {
     var apmConfigData = apmConfig[func](args);
 
     // Payment request
-    var result = apmHelper.handleRequest(orderNumber, processorId, apmConfigData);
+    var result = apmHelper.handleRequest(
+        apmConfigData,
+        processorId,
+        orderNumber
+    );
 
     // Handle errors
     if (result.error) {

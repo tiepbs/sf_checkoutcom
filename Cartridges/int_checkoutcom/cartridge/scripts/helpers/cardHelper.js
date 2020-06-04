@@ -1,8 +1,6 @@
-"use strict"
+"use strict";
 
 // API Includes
-var PaymentMgr = require('dw/order/PaymentMgr');
-var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var ISML = require('dw/template/ISML');
@@ -14,12 +12,10 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 // Utility functions for my cartridge integration
 var cardHelper = {
 	
-    // Creates Site Genesis Transaction Object
+    /**
+     * Creates Site Genesis Transaction Object
+     */
     cardAuthorization: function (payObject, args) {
-    	
-        // Preparing payment parameters
-        var paymentInstrument = args.PaymentInstrument;
-        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
         
         // perform the charge
         var cardRequest = this.handleCardRequest(payObject, args);
@@ -36,18 +32,17 @@ var cardHelper = {
                 return {authorized: true, redirected: true};
             } else {
             	
-                // Load the card and order information
-                var order = OrderMgr.getOrder(args.OrderNo);
-            	
                 return {authorized: true};
             }    
         } else {
         	
-            return false
+            return false;
         }
     },
 		
-    // Handle full charge Request to CKO API
+    /**
+     * Handle full charge Request to CKO API
+     */
     handleCardRequest: function (cardData, args) {
     	
         // Load the card and order information
@@ -92,7 +87,9 @@ var cardHelper = {
         return false;
     },
     
-    // Handle full charge Response from CKO API
+    /**
+     * Handle full charge Response from CKO API
+     */
     handleFullChargeResponse: function (gatewayResponse) {
     	
         // Clean the session
@@ -120,7 +117,9 @@ var cardHelper = {
         }
     },
     
-    // Pre_Authorize card with zero value
+    /**
+     * Pre_Authorize card with zero value
+     */
     preAuthorizeCard: function (requestData) {
     	
         // Clone the request data
@@ -143,7 +142,9 @@ var cardHelper = {
         return ckoHelper.paymentSuccess(authResponse);
     },
     
-    // Build the gateway request
+    /**
+     * Build the gateway request
+     */
     getCardRequest: function (cardData, args) {
     	
         // Load the card and order information
@@ -172,7 +173,9 @@ var cardHelper = {
         return chargeData;
     },
     
-    // Build Gateway Source Object
+    /**
+     * Build Gateway Source Object
+     */
     getSourceObject: function (cardData, args) {
     	
         // Source object
@@ -185,21 +188,25 @@ var cardHelper = {
             cvv                 : cardData.cvv,
             billing_address     : this.getBillingObject(args),
             phone               : ckoHelper.getPhoneObject(args)
-        }
+        };
         
         return source;
     },
     
-    // Build 3ds object
+    /**
+     * Build 3ds object
+     */
     get3Ds: function () { 	
    
         return {
             'enabled' : ckoHelper.getValue('cko3ds'),
             'attempt_n3d' : ckoHelper.getValue('ckoN3ds')
-        }
+        };
     },
     
-    // Build the Billing object
+    /**
+     * Build the Billing object
+     */
     getBillingObject: function (args) { 
     	
         // Load the card and order information
@@ -221,7 +228,9 @@ var cardHelper = {
         return billingDetails;
     },
     
-    // Build the Shipping object
+    /**
+     * Build the Shipping object
+     */
     getShippingObject: function (args) {
     	
         // Load the card and order information
@@ -248,7 +257,7 @@ var cardHelper = {
         
         return shipping;
     }
-}
+};
 
 // Module exports
 module.exports = cardHelper;

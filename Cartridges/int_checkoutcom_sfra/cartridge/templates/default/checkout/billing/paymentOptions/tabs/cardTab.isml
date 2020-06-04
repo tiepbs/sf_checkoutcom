@@ -3,11 +3,3 @@
         ${paymentOption.name}
     </a>
 </li>
-
-<isif condition="${pdict.customer.registeredUser}">
-    <li class="nav-item" data-method-id="${paymentOption.ID}">
-        <a class="nav-link saved-card-tab" data-toggle="tab" href="#saved-card-content" role="tab">
-            ${Resource.msg('cko.savedcard.title', 'cko', null)}
-        </a>
-    </li>
-</isif>

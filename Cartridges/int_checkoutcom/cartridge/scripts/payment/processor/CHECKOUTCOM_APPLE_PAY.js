@@ -1,28 +1,27 @@
 'use strict';
 
-/* API Includes */
+// API Includes 
 var PaymentMgr = require('dw/order/PaymentMgr');
 var Transaction = require('dw/system/Transaction');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
 
-/* Site controller */
+// Site controller 
 var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
 
-/* Shopper cart */
+// Shopper cart 
 var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
 
-/* App */
+// App 
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
-/* Utility */
+// Utility 
 var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
 
 /**
  * Verifies a credit card against a valid card number and expiration date and possibly invalidates invalid form fields.
  * If the verification was successful a credit card payment instrument is created.
  */
-function Handle(args)
-{
+function Handle(args) {
     var cart = Cart.get(args.Basket);
     var paymentMethod = args.PaymentMethodID;
     
@@ -44,8 +43,8 @@ function Handle(args)
  * only and setting the order no as the transaction ID. Customisations may use other processors and custom
  * logic to authorise credit card payment.
  */
-function Authorize(args)
-{
+function Authorize(args) {
+
     // Preparing payment parameters
     var paymentInstrument = args.PaymentInstrument;
     var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
@@ -56,6 +55,7 @@ function Authorize(args)
     // Make the charge request
     var chargeResponse = applePayHelper.handleRequest(args);
     if (chargeResponse) {
+
         // Create the authorization transaction
         Transaction.wrap(function () {
             paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
@@ -69,12 +69,11 @@ function Authorize(args)
         
         return {authorized: true};
     } else {
+
         return {error: true};
     }
 }
 
-/*
- * Module exports
- */
+// Module exports
 exports.Handle = Handle;
 exports.Authorize = Authorize;

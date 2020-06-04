@@ -4,7 +4,9 @@ var svc = require('dw/svc');
 // Utility 
 var util = require('~/cartridge/scripts/helpers/ckoHelper');
 
-// Initialize HTTP service for the Checkout.com sandbox network token
+/**
+ * Initialize HTTP service for the Checkout.com sandbox network token
+ */
 svc.ServiceRegistry.configure("cko.network.token.sandbox.service", {
     createRequest: function (svc, args) {
     	
@@ -21,7 +23,9 @@ svc.ServiceRegistry.configure("cko.network.token.sandbox.service", {
     }
 });
 
-// Initialize HTTP service for the Checkout.com live network token
+/**
+ * Initialize HTTP service for the Checkout.com live network token
+ */
 svc.ServiceRegistry.configure("cko.network.token.live.service", {
     createRequest: function (svc, args) {
     	

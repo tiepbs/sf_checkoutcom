@@ -201,15 +201,16 @@ var ckoApmConfig = {
     /*
      * Sepa authorization
      */
-    sepaAuthorization: function (args) {
+    sepaAuthorization: function (args) {    
         // Building pay object
         var params = {
             'type'          : 'sepa',
-            'currency'      : ckoHelper.getCurrency(args),
+            'currency'      : args.order.getCurrencyCode(),
             'source_data'   : {
-                'first_name'            : ckoHelper.getCustomerFirstName(args),
-                'last_name'             : ckoHelper.getCustomerLastName(args),
-                'account_iban'          : args.paymentData.sepa_iban.value.toString() + args.sepa_bic.value.toString(),
+                'first_name'            : args.order.billingAddress.firstName,
+                'last_name'             : args.order.billingAddress.lastName,
+                'account_iban'          : args.paymentData.sepa_iban.value.toString(),
+                'bic'                   : args.paymentData.sepa_bic.value.toString(),
                 'billing_descriptor'    : businessName,
                 'mandate_type'          : 'single'
             }
@@ -278,21 +279,27 @@ var ckoApmConfig = {
      */
     klarnaAuthorization: function (args) {        
         // Klarna Form Inputs
-        var klarna_approved = args.klarna_approved.value.toString();
+        var klarna_approved = args.paymentData.klarna_approved.value.toString();
         
         if (klarna_approved) {
             // Build the payment object
             var params = {
                 'type'      : 'klarna',
-                'amount'    : ckoHelper.getFormattedPrice(args.order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency(args)),
+                'amount'    : ckoHelper.getFormattedPrice(
+                    args.order.totalGrossPrice.value.toFixed(2),
+                    args.order.getCurrencyCode()
+                ),
                 'currency'  : args.order.getCurrencyCode(),
                 'capture'   : false,
                 'source'    : {
                     'type'                  : 'klarna',
-                    'authorization_token'   : args.klarna_token.value.toString(),
+                    'authorization_token'   : args.paymentData.klarna_token.value.toString(),
                     'locale'                : ckoHelper.getLanguage(),
                     'purchase_country'      : ckoHelper.getBilling(args).country,
-                    'tax_amount'            : ckoHelper.getFormattedPrice(args.order.totalTax.value, ckoHelper.getCurrency(args)),
+                    'tax_amount'            : ckoHelper.getFormattedPrice(
+                        args.order.totalTax.value,
+                        args.order.getCurrencyCode()
+                    ),
                     'billing_address'       : ckoHelper.getOrderBasketAddress(args),
                     'products'              : ckoHelper.getOrderBasketObject(args)
                 }

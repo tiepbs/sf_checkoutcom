@@ -1,6 +1,5 @@
 "use strict"
 
-
 /* API Includes */
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
@@ -8,7 +7,6 @@ var Logger = require('dw/system/Logger');
 var BasketMgr = require('dw/order/BasketMgr');
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
-var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var Site = require('dw/system/Site');
 
 /* Card Currency Config */
@@ -123,7 +121,18 @@ var ckoHelper = {
     getCartridgeMeta: function () {
         return this.getValue("ckoUserAgent") + ' ' + this.getValue("ckoVersion");
     },
-    
+   
+    /*
+     * Get a customer full name
+     */
+    getCustomerFullName: function(customerProfile) { 
+        var customerName = '';
+        customerName += customerProfile.firstName;
+        customerName += ' ' + customerProfile.lastName;
+        
+        return customerName;
+    },
+
     /*
      * Get Account API Keys
      */
@@ -143,8 +152,8 @@ var ckoHelper = {
      */
     gatewayClientRequest: function (serviceId, requestData, method) {
         var method = method || 'POST';
-        var serv = ServiceRegistry.get(serviceId);
-        
+        var serv = this.getService(serviceId);
+      
         // Prepare the request URL and data
         if (requestData.hasOwnProperty('chargeId')) {
             var requestUrl = serv.getURL().replace('chargeId', requestData.chargeId);
@@ -154,11 +163,25 @@ var ckoHelper = {
 
         // Set the request method
         serv.setRequestMethod(method);
-        
+             
         // Call the service
         var resp = serv.call(requestData);
+        if (resp.status != 'OK') {
+            return resp.error;
+        }
 
         return resp.object;
+    },
+
+    getService: function (serviceId) {
+        var parts  =  serviceId.split('.');
+        var entity = parts[1];
+        var action = parts[2];
+        var mode = parts[3];
+        var svcFile = entity + action.charAt(0).toUpperCase() + action.slice(1);
+        var svcClass = require('~/cartridge/scripts/services/' + svcFile);
+
+        return svcClass[mode]();
     },
     
     /*
@@ -232,17 +255,6 @@ var ckoHelper = {
     },
 
     /*
-     * Get order currency
-     */
-    getCurrency : function() {
-        var orderId = this.getOrderId();
-        var order = OrderMgr.getOrder(orderId);
-        var currency = order.getCurrencyCode();
-        
-        return currency;
-    },
-
-    /*
      * Return the customer data
      */
     getCustomer: function(order) {        
@@ -299,10 +311,13 @@ var ckoHelper = {
      * Confirm is a payment is valid from API response code
      */
     paymentSuccess: function (gatewayResponse) {
-        return gatewayResponse 
-        && (gatewayResponse.response_code == "10000" 
-        || gatewayResponse.response_code == '10100'
-        || gatewayResponse.response_code == '10200');
+        if (gatewayResponse && gatewayResponse.hasOwnProperty('response_code')) {
+            return gatewayResponse.response_code == "10000" 
+            || gatewayResponse.response_code == '10100'
+            || gatewayResponse.response_code == '10200';
+        }
+
+        return false;
     },
     
     /*
@@ -440,7 +455,10 @@ var ckoHelper = {
             var product = {
                 "product_id"    : pli.productID,
                 "quantity"      : pli.quantityValue,
-                "price"         : this.getFormattedPrice(pli.adjustedPrice.value.toFixed(2), this.getCurrency()),
+                "price"         : this.getFormattedPrice(
+                    pli.adjustedPrice.value.toFixed(2),
+                    args.order.getCurrencyCode()
+                ),
                 "description"   : pli.productName
             }
             
@@ -470,7 +488,10 @@ var ckoHelper = {
         var tax = {
             "product_id"    : args.orderNo,
             "quantity"      : 1,
-            "price"         : this.getFormattedPrice(order.getTotalTax().valueOf().toFixed(2), this.getCurrency()),
+            "price"         : this.getFormattedPrice(
+                order.getTotalTax().valueOf().toFixed(2),
+                args.order.getCurrencyCode()
+            ),
             "description"   : "Order Tax"
         }
         
@@ -638,34 +659,6 @@ var ckoHelper = {
         
         return fullname;
     },
-    
-    /*
-     * Return Customer FirstName
-     */
-    getCustomerFirstName: function (args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
-
-        // Get billing address information
-        var billingAddress = order.getBillingAddress();
-        var firstname = billingAddress.getFirstName();
-        
-        return firstname;
-    },
-    
-    /*
-     * Return Customer LastName
-     */
-    getCustomerLastName: function (args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
-
-        // Get billing address information
-        var billingAddress = order.getBillingAddress();
-        var lastname = billingAddress.getLastName();
-        
-        return lastname;
-    },
         
     /*
      * Return capture time
@@ -732,6 +725,25 @@ var ckoHelper = {
         
         return country;
     },
+
+    // Build the Billing object
+    getBilling: function (args) {
+
+        // Get billing address information
+        var billingAddress = args.order.getBillingAddress();
+        
+        // Creating billing address object
+        var billingDetails = {
+            address_line1       : billingAddress.getAddress1(),
+            address_line2       : billingAddress.getAddress2(),
+            city                : billingAddress.getCity(),
+            state               : billingAddress.getStateCode(),
+            zip                 : billingAddress.getPostalCode(),
+            country             : billingAddress.getCountryCode().value
+        };
+        
+        return billingDetails;
+    },
     
     /*
      * Return Basket Item object
@@ -779,8 +791,8 @@ var ckoHelper = {
      */
     getOrderBasketObject: function (args) {
         // Prepare some variables
-        var currency = this.getAppModeValue('GBP', this.getCurrencyCode(args));
         var order = OrderMgr.getOrder(args.orderNo);
+        var currency = this.getAppModeValue('GBP', order.getCurrencyCode());
         var it = order.productLineItems.iterator();
         var products_quantites = [];
         

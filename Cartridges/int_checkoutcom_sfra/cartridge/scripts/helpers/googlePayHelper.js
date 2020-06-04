@@ -13,7 +13,7 @@ var googlePayHelper = {
     /*
      * Handle the payment request
      */
-    handleRequest: function (orderNumber, paymentData, processorId) {    
+    handleRequest: function (paymentData, processorId, orderNumber) {    
         // Load the order information
         var order = OrderMgr.getOrder(orderNumber);
 

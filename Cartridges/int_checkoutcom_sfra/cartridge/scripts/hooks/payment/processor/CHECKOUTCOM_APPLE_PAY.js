@@ -55,15 +55,15 @@ function Handle(basket, billingData, processorId, req) {
 /**
  * Authorizes a payment
  */
-function Authorize(orderNumber, billingForm, processorId) {
+function Authorize(orderNumber, billingForm, processorId, req) {
     var serverErrors = [];
     var fieldErrors = {};
 
     // Payment request
     var success = applePayHelper.handleRequest(
-        orderNumber, 
         billingForm.applePayForm.ckoApplePayData.htmlValue,
-        processorId
+        processorId,
+        orderNumber
     );
 
     // Handle errors

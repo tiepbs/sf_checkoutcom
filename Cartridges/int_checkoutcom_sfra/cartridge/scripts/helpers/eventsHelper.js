@@ -8,6 +8,7 @@ var PaymentMgr = require('dw/order/PaymentMgr');
 
 /* Checkout.com Helper functions */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
+var savedCardHelper = require('~/cartridge/scripts/helpers/savedCardHelper');
 var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper');
 
 /**
@@ -93,6 +94,9 @@ var eventsHelper = {
 
         // Create the authorized transaction
         transactionHelper.createAuthorization(hook);
+
+        // Save the card if needed
+        savedCardHelper.updateSavedCard(hook);
     },
 
     /**
@@ -107,12 +111,15 @@ var eventsHelper = {
      */
     paymentDeclined: function (hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
+
+        // Delete the card if needed
+        savedCardHelper.updateSavedCardhook();
     },
 
     /**
      * Capture failed event.
      */
-    paymentCapturedDeclined: function (hook) {
+    paymentCaptureDeclined: function (hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
     },
 
@@ -146,7 +153,7 @@ var eventsHelper = {
             // Update the parent transaction state
             var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Capture');
             if (parentTransaction) {
-                parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(transactionAmount, order);
+                parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(order);
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
             }
         });

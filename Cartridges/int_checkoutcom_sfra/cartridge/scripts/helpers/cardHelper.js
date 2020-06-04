@@ -2,11 +2,10 @@
 
 /* API Includes */
 var OrderMgr = require('dw/order/OrderMgr');
-var Transaction = require('dw/system/Transaction');
-var CustomerMgr = require('dw/customer/CustomerMgr');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
+var savedCardHelper = require('~/cartridge/scripts/helpers/savedCardHelper');
 
 /*
 * Utility functions for my cartridge integration.
@@ -15,12 +14,12 @@ var cardHelper = {
     /*
      * Handle the payment request.
      */
-    handleRequest: function (orderNumber, paymentData, processorId) {      
-        // Load the order information
-        var order = OrderMgr.getOrder(orderNumber);
+    handleRequest: function (paymentData, processorId, orderNumber, req) {  
+        // Order number
+        orderNumber = orderNumber || null;
 
         // Build the request data
-        var gatewayRequest = this.buildRequest(order, paymentData, processorId);
+        var gatewayRequest = this.buildRequest(paymentData, processorId, orderNumber, req);
 
         // Log the payment request data
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
@@ -42,85 +41,36 @@ var cardHelper = {
      * Handle the payment response
      */
     handleResponse: function (gatewayResponse) {
-        // Update customer data
-        ckoHelper.updateCustomerData(gatewayResponse);
-        
-        // Get the gateway links
-        var gatewayLinks = gatewayResponse._links;
-        
         // Prepare the result
         var result = {
             error: !ckoHelper.paymentSuccess(gatewayResponse),
             redirectUrl: false
         }
 
-        // Add 3DS redirect URL to session if exists
-        if (gatewayLinks.hasOwnProperty('redirect')) {
-            result.error = false;
-            result.redirectUrl = gatewayLinks.redirect.href;
-        } 
+        // Handle the response
+        if (gatewayResponse) {
+            // Update customer data
+            ckoHelper.updateCustomerData(gatewayResponse);
         
-        return result;
-    },
-    
-    /*
-     * Pre authorize card with zero value
-     */
-    preAuthorizeCard: function(billingData, currentBasket, customerNo, processorId) {
-        var chargeData = {
-            'source'                : {
-                type                : 'card',
-                number              : ckoHelper.getFormattedNumber(billingData.paymentInformation.cardNumber.value),
-                expiry_month        : billingData.paymentInformation.expirationMonth.value,
-                expiry_year         : billingData.paymentInformation.expirationYear.value,
-                cvv                 : billingData.paymentInformation.securityCode.value
-            },
-            'amount'                : 0,
-            'currency'              : 'USD',
-            'capture'               : false,
-            'customer'              : {
-                email: currentBasket.getCustomerEmail(),
-                name: currentBasket.getBillingAddress().getFullName()
-            },
-            'billing_descriptor'    : ckoHelper.getBillingDescriptor(),
-            '3ds'                   : {enabled: false},
-            'risk'                  : {enabled: true}
-        };
-     
-        // Log the payment authorization request data
-        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.verification.request.data', 'cko'), chargeData);
-
-        // Send the request
-        var authResponse = ckoHelper.gatewayClientRequest(
-            'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
-            chargeData
-        );
-
-        // Log the payment authorization response data
-        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.verification.response.data', 'cko'), authResponse);
-
-        // Return the response
-        var success = ckoHelper.paymentSuccess(authResponse);
-
-        // If the payment is successful
-        if (success && billingData.saveCard) {
-            // Save the card
-            this.saveCard(
-                billingData.paymentInformation,
-                currentBasket,
-                customerNo,
-                authResponse,
-                processorId
-            );
+            // Add 3DS redirect URL to session if exists
+            var condition1 = gatewayResponse.hasOwnProperty('_links');
+            var condition2 = condition1 && gatewayResponse._links.hasOwnProperty('redirect');
+            if (condition1 && condition2) {
+                result.error = false;
+                result.redirectUrl = gatewayResponse._links.redirect.href;
+            }
         }
 
-        return success;
+        return result;
     },
 
     /*
      * Build the gateway request
      */
-    buildRequest: function (order, paymentData, processorId) {           
+    buildRequest: function (paymentData, processorId, orderNumber, req) {
+        //  Load the order
+        var order = OrderMgr.getOrder(orderNumber);
+      
         // Prepare the charge data
         var chargeData = {
             'source'                : this.getCardSource(paymentData, order, processorId),
@@ -137,6 +87,19 @@ var cardHelper = {
             'metadata'              : ckoHelper.getMetadata({}, processorId)
         };   
     
+        // Handle the save card request
+        if (paymentData.creditCardFields.saveCard.value) {
+            // Save the card
+            var uuid = savedCardHelper.saveCard(
+                paymentData,
+                req
+            );
+
+            // Update the metadata
+            chargeData.metadata.card_uuid = uuid;
+            chargeData.metadata.customer_id = req.currentCustomer.profile.customerNo;
+        }
+
         return chargeData;
     },
 
@@ -147,22 +110,24 @@ var cardHelper = {
     getCardSource: function (paymentData, order, processorId) {              
         // Replace selectedCardUuid by get saved card token from selectedCardUuid
         var cardSource;
-        var selectedCardUuid = paymentData.savedCardForm.selectedCardUuid.htmlValue;
-        var selectedCardCvv = paymentData.savedCardForm.selectedCardCvv.htmlValue;
+        var selectedCardUuid = paymentData.savedCardForm.selectedCardUuid.value;
+        var selectedCardCvv = paymentData.savedCardForm.selectedCardCvv.value;
 
         // If the saved card data is valid
-        if (selectedCardCvv.length > 0 && selectedCardUuid.length > 0) {
+        var condition1 = selectedCardCvv && selectedCardCvv.length > 0;
+        var condition2 = selectedCardUuid && selectedCardUuid.length > 0;
+        if (condition1 && condition2) {
             // Get the saved card
-            var savedCard = this.getSavedCard(
-                selectedCardUuid,
+            var savedCard = savedCardHelper.getSavedCard(
+                selectedCardUuid.toString(),
                 order.getCustomerNo(),
                 processorId
             );
-            
+           
             cardSource = {
                 type: 'id',
                 id: savedCard.getCreditCardToken(),
-                cvv: selectedCardCvv
+                cvv: selectedCardCvv.toString()
             };
         }
         else {
@@ -185,67 +150,6 @@ var cardHelper = {
         return {
             'enabled' : ckoHelper.getValue('cko3ds'),
             'attempt_n3d' : ckoHelper.getValue('ckoN3ds')
-        }
-    },
-
-    /*
-     * Get a customer saved card
-     */
-    getSavedCard: function (cardUuid, customerNo, processorId) {
-        // Get the customer
-        var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
-
-        // Get the customer wallet
-        var wallet = customer.getProfile().getWallet();
-
-        // Get the existing payment instruments
-        var paymentInstruments = wallet.getPaymentInstruments(processorId);
-
-        // Match the saved card
-        for (var i = 0; i < paymentInstruments.length; i++) {
-            var card = paymentInstruments[i];
-            if (card.getUUID() == cardUuid) {
-                return card;
-            }
-        } 
-        
-        return null;
-    },
-
-    /*
-     * Save a card in customer account
-     */
-    saveCard: function (paymentInformation, currentBasket, customerNo, authResponse, processorId) {
-        // Get the customer
-        var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
-
-        // Get the customer wallet
-        var wallet = customer.getProfile().getWallet();
-
-        // Get the existing payment instruments
-        var paymentInstruments = wallet.getPaymentInstruments(processorId);
-
-        // Check for duplicates
-        var cardExists = false;
-        for (var i = 0; i < paymentInstruments.length; i++) {
-            var card = paymentInstruments[i];
-            if (card.getCreditCardToken() == authResponse.source.id) {
-                cardExists = true;
-                break;
-            }
-        }       
-
-        // Create a stored payment instrument
-        if (!cardExists) {
-            Transaction.wrap(function () {
-                var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
-                storedPaymentInstrument.setCreditCardHolder(currentBasket.billingAddress.fullName);
-                storedPaymentInstrument.setCreditCardNumber(paymentInformation.cardNumber.value);
-                storedPaymentInstrument.setCreditCardType(authResponse.source.scheme.toLowerCase());
-                storedPaymentInstrument.setCreditCardExpirationMonth(paymentInformation.expirationMonth.value);
-                storedPaymentInstrument.setCreditCardExpirationYear(paymentInformation.expirationYear.value);
-                storedPaymentInstrument.setCreditCardToken(authResponse.source.id);
-            });
         }
     }
 }
