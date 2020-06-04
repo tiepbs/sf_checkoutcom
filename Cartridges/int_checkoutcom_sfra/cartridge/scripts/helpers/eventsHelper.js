@@ -153,7 +153,7 @@ var eventsHelper = {
             // Update the parent transaction state
             var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Capture');
             if (parentTransaction) {
-                parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(transactionAmount, order);
+                parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(order);
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
             }
         });
