@@ -1,0 +1,6 @@
+<!-- P24 APM Option -->
+<div class="cko-apm-accordion">
+	<input id="p24Pay_apm_radio_btn" type="radio" name="apm_list" value="p24">
+	<img alt="${Resource.msg('cko.p24.name','cko',null)}" id="p24Pay_thumb" src="${URLUtils.staticURL('/images/apm-icons/p24.png')}">
+	${Resource.msg('cko.p24.name','cko',null)}
+</div>

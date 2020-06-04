@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19"> 	
+	<!-- Field for payment method -->
+    <field formid="payment_method" type="string" mandatory="false" max-length="40" default-value="card" binding="payment_method" />
+	
+	<!-- Field for Payment Option -->
+    <!-- <field formid="cardPayment" type="boolean" label="PAY WITH CARD" mandatory="false" binding="cardPayment" /> -->
+	 
+	<group formid="expiration"> 
+		<!-- Field for credit card expiration month -->
+	    <field formid="month" label="resource.month" type="integer" mandatory="true" binding="creditCardExpirationMonth"
+	      	missing-error="creditcard.monthmissingerror" value-error="creditcard.yearvalueerror">
+	        <options>
+	            <option label="month.january" 	value="01"/>
+	            <option label="month.february" 	value="02"/>
+	            <option label="month.march" 	value="03"/>
+	            <option label="month.april" 	value="04"/>
+	            <option label="month.may" 		value="05"/>
+	            <option label="month.june" 		value="06"/>
+	            <option label="month.july" 		value="07"/>
+	            <option label="month.august" 	value="08"/>
+	            <option label="month.september" value="09"/>
+	            <option label="month.october"   value="10"/>
+	            <option label="month.november"  value="11"/>
+	            <option label="month.december"  value="12"/>
+	        </options>
+	    </field>
+	
+		<!-- Field for credit card expiration year -->
+	    <field formid="year" label="resource.year" type="integer" mandatory="true" binding="creditCardExpirationYear"
+	      	missing-error="creditcard.yearmissingerror">
+	    </field>
+	</group>
+
+	<!-- Field for credit card owner -->
+    <field formid="owner" label="creditcard.ownerlabel" type="string" mandatory="true" max-length="40" binding="creditCardHolder"
+     	missing-error="creditcard.ownermissingerror"/>
+     	
+	<!-- Field for credit card type -->
+    <field formid="type" type="string" mandatory="false" max-length="40" binding="creditCardType" />
+     	
+	<!-- Field for credit card type -->
+    <field formid="mada" type="string" mandatory="false" max-length="40" binding="mada" />
+    
+   	<!-- Field for cko currency -->
+    <field formid="ckoCurrency" type="string" mandatory="false" max-length="40" binding="ckoCurrency" />
+     	
+	<!-- Field for credit card number -->
+    <field formid="number" label="creditcard.number" type="string" mandatory="true" masked="0"
+	    description="creditcard.numberexample" binding="creditCardNumber"
+	    missing-error="creditcard.numbermissingerror" value-error="creditcard.numbervalueerror"/>
+	    
+	<!-- Field for credit card security code -->
+    <field formid="cvn" label="creditcard.cvnlabel" type="string" mandatory="true" masked="0"
+     	missing-error="creditcard.cvnmissingerror" value-error="creditcard.cvnrangeerror"/>
+ 
+	<!-- Optional flags -->
+	<field formid="saveCard" label="creditcard.savecard" type="boolean" mandatory="false" default-value="false" />
+
+	<!-- Confirm action -->
+    <action formid="confirm" valid-form="true"/>
+</form>

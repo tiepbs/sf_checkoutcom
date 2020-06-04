@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
+	<!-- Field for the mandate data -->          
+    <field formid="mandate" type="boolean" mandatory="false" binding="mandate" />
+
+	<!-- Confirm action -->
+	<action formid="submit" valid-form="true"/>
+
+	<!-- Cancel action -->
+	<action formid="cancel" valid-form="false"/>
+</form>
