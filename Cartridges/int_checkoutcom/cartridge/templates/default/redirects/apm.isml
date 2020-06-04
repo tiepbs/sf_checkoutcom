@@ -1,0 +1,2 @@
+<!--- TEMPLATENAME: APM.isml --->
+<isredirect location="${pdict.redirectUrl}" permanent="false">
