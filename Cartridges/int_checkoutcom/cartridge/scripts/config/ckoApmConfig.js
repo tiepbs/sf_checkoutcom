@@ -386,11 +386,10 @@ var ckoApmConfig = {
         // Build the payment object
         var payObject = {
             'source': {
-                'type': 'alipay',
-                'country': ckoHelper.getBillingObject(args).country
+                'type': 'alipay'
             },
             'type'          : 'alipay',
-            'currency'      : ckoHelper.getCurrency(args)
+            'currency'      : 'USD'
         };
         
         return payObject;
