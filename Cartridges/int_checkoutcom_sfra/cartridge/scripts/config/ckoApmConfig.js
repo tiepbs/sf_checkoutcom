@@ -10,7 +10,7 @@ var ckoApmConfig = {
     /*
      * Ideal authorization
      */
-    idealAuthorization: function (args) {       
+    idealAuthorization: function (args) {
         // Building ideal pay object
         var params = {
             'source'    : {
@@ -23,10 +23,10 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : args.order.getCurrencyCode()
         };
-     
+
         return params;
     },
-    
+
     /*
      * Boleto authorization
      */
@@ -43,7 +43,7 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : args.order.getCurrencyCode()
         };
-        
+
         return params;
     },
 
@@ -63,10 +63,10 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : args.order.getCurrencyCode()
         };
-        
+
         return params;
     },
-    
+
     /*
      * Benefit Pay authorization
      */
@@ -81,7 +81,7 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : args.order.getCurrencyCode()
         };
-        
+
         return params;
     },
 
@@ -99,10 +99,10 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : args.order.getCurrencyCode()
         };
-        
+
         return params;
     },
-    
+
     /*
      * Eps authorization
      */
@@ -117,10 +117,10 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : args.order.getCurrencyCode()
         };
-        
+
         return params;
     },
-    
+
     /*
      * Sofort authorization
      */
@@ -134,10 +134,10 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : args.order.getCurrencyCode()
         };
-        
+
         return params;
     },
-    
+
     /*
      * Knet authorization
      */
@@ -152,7 +152,7 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : args.order.getCurrencyCode()
         };
-        
+
         return params;
     },
 
@@ -173,7 +173,7 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : args.order.getCurrencyCode()
         };
-        
+
         return params;
     },
 
@@ -194,14 +194,14 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : args.order.getCurrencyCode()
         };
-        
+
         return params;
     },
-    
+
     /*
      * Sepa authorization
      */
-    sepaAuthorization: function (args) {    
+    sepaAuthorization: function (args) {
         // Building pay object
         var params = {
             'type'          : 'sepa',
@@ -210,15 +210,16 @@ var ckoApmConfig = {
                 'first_name'            : args.order.billingAddress.firstName,
                 'last_name'             : args.order.billingAddress.lastName,
                 'account_iban'          : args.paymentData.sepa_iban.value.toString(),
-                'bic'                   : args.paymentData.sepa_bic.value.toString(),
+                'bic'                   : ckoHelper.getValue('ckoMode') == 'sandbox' ? 'PBNKDEFFXXX'
+                                            : args.paymentData.sepa_bic.value.toString(),
                 'billing_descriptor'    : businessName,
                 'mandate_type'          : 'single'
             }
         };
-        
+
         return params;
     },
-    
+
     /*
      * Multibanco authorization
      */
@@ -234,10 +235,10 @@ var ckoApmConfig = {
                 'billing_descriptor'    : businessName
             }
         };
-        
+
         return params;
     },
-    
+
     /*
      * Poli authorization
      */
@@ -250,7 +251,7 @@ var ckoApmConfig = {
                 'type'      : 'poli'
             }
         };
-        
+
         return params;
     },
 
@@ -270,17 +271,17 @@ var ckoApmConfig = {
                 'billing_descriptor'    : businessName
             }
         };
-    
+
         return params;
     },
 
     /*
      * Klarna authorization
      */
-    klarnaAuthorization: function (args) {        
+    klarnaAuthorization: function (args) {
         // Klarna Form Inputs
         var klarna_approved = args.paymentData.klarna_approved.value.toString();
-        
+
         if (klarna_approved) {
             // Build the payment object
             var params = {
@@ -304,7 +305,7 @@ var ckoApmConfig = {
                     'products'              : ckoHelper.getOrderBasketObject(args)
                 }
             };
-             
+
             return params;
         } else {
             return {success: false};
@@ -327,7 +328,7 @@ var ckoApmConfig = {
 
         return params;
     },
-    
+
     /*
      * Oxxo authorization
      */
@@ -347,7 +348,7 @@ var ckoApmConfig = {
             'type'          : 'oxxo',
             'currency'      : args.order.getCurrencyCode(),
         };
-        
+
         return params;
     },
 
@@ -358,13 +359,12 @@ var ckoApmConfig = {
         // Build the payment object
         var params = {
             'source': {
-                'type': 'alipay',
-                'country': ckoHelper.getBilling(args).country
+                'type': 'alipay'
             },
             'type'          : 'alipay',
             'currency'      : args.order.getCurrencyCode()
         };
-        
+
         return params;
     }
 }
