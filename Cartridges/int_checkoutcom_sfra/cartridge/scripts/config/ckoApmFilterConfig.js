@@ -66,7 +66,7 @@ var ckoApmFilterConfig = {
         currencies  : "MXN"
     },
     alipay: {
-    	countries	: "CN",
+    	countries	: ["CN" ,"US"],
     	currencies	: ["USD", "CNY"]
     },
     paypal: {
