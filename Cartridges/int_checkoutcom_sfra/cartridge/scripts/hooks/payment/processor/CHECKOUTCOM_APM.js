@@ -15,38 +15,26 @@ var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
  * Verifies that the payment data is valid.
  */
 function Handle(basket, billingData, processorId, req) {
-    var currentBasket = basket;
     var fieldErrors = {};
     var serverErrors = [];
 
+    // Conditions
+    var condition1 = billingData.paymentInformation.hasOwnProperty('ckoApm');
+    var condition2 = condition1 && billingData.paymentInformation.ckoApm.value;
+    var condition3 = condition2 && billingData.paymentInformation.ckoApm.value.length > 0;
+ 
     // Verify the payload
-    if (!billingData.paymentInformation.ckoApm.value || billingData.paymentInformation.ckoApm.value.length == 0) {
+    if (!condition3) {
         serverErrors.push(
             Resource.msg('cko.apm.error', 'cko', null)
         );
 
         return {
-            fieldErrors: [fieldErrors],
+            fieldErrors: fieldErrors,
             serverErrors: serverErrors,
             error: true
         };
     }
-
-    Transaction.wrap(function () {
-        // Remove existing payment instruments
-        var paymentInstruments = currentBasket.getPaymentInstruments(
-            processorId
-        );
-
-        collections.forEach(paymentInstruments, function (item) {
-            currentBasket.removePaymentInstrument(item);
-        });
-
-        // Create a new payment instrument
-        var paymentInstrument = currentBasket.createPaymentInstrument(
-            processorId, currentBasket.totalGrossPrice
-        );
-    });
 
     return {
         fieldErrors: fieldErrors,
