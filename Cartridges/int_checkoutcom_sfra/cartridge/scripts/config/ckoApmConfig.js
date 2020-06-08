@@ -360,7 +360,6 @@ var ckoApmConfig = {
             'source': {
                 'type': 'alipay'
             },
-            'type'          : 'alipay',
             'currency'      : args.order.getCurrencyCode()
         };
         

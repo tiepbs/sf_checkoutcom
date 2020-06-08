@@ -40,7 +40,7 @@ var apmHelper = {
             };
         } 
 
-        // Log the SEPA payment request data
+        // Log payment request data
         ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
 
         // Perform the request to the payment gateway
