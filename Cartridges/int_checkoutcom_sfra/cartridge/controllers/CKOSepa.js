@@ -15,7 +15,6 @@ var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
 
 // Initiate the mandate session
 server.get('Mandate', server.middleware.https, function (req, res, next) {
-
     // Prepare the variables
     var orderId = ckoHelper.getOrderId();
     var order = OrderMgr.getOrder(orderId);
@@ -61,11 +60,10 @@ server.get('Mandate', server.middleware.https, function (req, res, next) {
 });
 
 server.post('HandleMandate', server.middleware.https, function (req, res, next) {
-
+    // Get the order id
     var orderId = ckoHelper.getOrderId();
 
     // Get the form
-   // var sepaForm = server.forms.getForm('sepaForm');
     var sepaForm = req.form;
 
     // Validation
@@ -73,7 +71,6 @@ server.post('HandleMandate', server.middleware.https, function (req, res, next) 
         var sepa = sepaForm;
         var mandate = sepa.mandate;
         this.on('route:BeforeComplete', function () {
-
             // Mandate is true
             if (mandate) {
                 var mandateForm = server.forms.getForm('sepaForm'); //gets the mandate form object

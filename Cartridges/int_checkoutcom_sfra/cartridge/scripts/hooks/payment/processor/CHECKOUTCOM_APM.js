@@ -54,9 +54,6 @@ function Authorize(orderNumber, billingForm, processorId, req) {
         redirectUrl: false
     };
 
-    var logger = require('dw/system/Logger').getLogger('ckodebug');
-	logger.debug('Authorize - billingForm {0}', JSON.stringify(billingForm));
-
     // Get the order
     var order = OrderMgr.getOrder(orderNumber);
 

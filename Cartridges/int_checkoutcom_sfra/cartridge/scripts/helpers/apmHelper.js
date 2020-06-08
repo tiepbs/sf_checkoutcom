@@ -16,11 +16,8 @@ var apmHelper = {
      * Apm Request
      */
     handleRequest: function (apmConfigData, processorId, orderNumber) {
-        session.privacy.ckoOrderId = '';
         // Load the order
         var order = OrderMgr.getOrder(orderNumber);
-
-        session.privacy.ckoOrderId = order.orderNo;
 
         // Create the payment request
         var gatewayRequest = this.getApmRequest(order, processorId, apmConfigData);
@@ -58,9 +55,6 @@ var apmHelper = {
      * Handle the payment response
      */
     handleResponse: function (gatewayResponse) {
-        // Prepare the APM type
-        var type = '';
-
         // Prepare the result
         var result = {
             error: true,
@@ -72,6 +66,7 @@ var apmHelper = {
 
         // Add redirect to sepa source reqeust
         if (gatewayResponse.hasOwnProperty('type') && gatewayResponse.type == 'Sepa') {
+            session.privacy.sepaResponseId = gatewayResponse.id;
             result.error = false;
             result.redirectUrl = URLUtils.url('CKOSepa-Mandate').toString();
         }
