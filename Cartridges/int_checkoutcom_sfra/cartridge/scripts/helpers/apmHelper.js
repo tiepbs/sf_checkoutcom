@@ -42,19 +42,8 @@ var apmHelper = {
                 "metadata"              : ckoHelper.getMetadata({}, processorId),
                 "billing_descriptor"    : ckoHelper.getBillingDescriptor()
             };
-
-            // Perform the request to the payment gateway
-            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.sources." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
-
-            session.privacy.sepaResponseId = gatewayResponse.id;
-
-            // Log the SEPA payment response data
-            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
-
-            // Process the response
-            return this.handleResponse(gatewayResponse);
         }
-
+      
         // Perform the request to the payment gateway
         gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
 
