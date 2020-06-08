@@ -210,8 +210,6 @@ var ckoApmConfig = {
                 'first_name'            : args.order.billingAddress.firstName,
                 'last_name'             : args.order.billingAddress.lastName,
                 'account_iban'          : args.paymentData.sepa_iban.value.toString(),
-                'bic'                   : ckoHelper.getValue('ckoMode') == 'sandbox' ? 'PBNKDEFFXXX'
-                                            : args.paymentData.sepa_bic.value.toString(),
                 'billing_descriptor'    : businessName,
                 'mandate_type'          : 'single'
             }
