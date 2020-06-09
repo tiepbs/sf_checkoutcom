@@ -223,6 +223,13 @@ var eventsHelper = {
     },
 
     /**
+     * Payment pending event.
+     */
+    paymentPending: function (hook) {
+        this.addWebhookInfo(hook, null, null);
+    },
+    
+    /**
      * Refund failed event
      */
     paymentRefundDeclined: function (hook) {
