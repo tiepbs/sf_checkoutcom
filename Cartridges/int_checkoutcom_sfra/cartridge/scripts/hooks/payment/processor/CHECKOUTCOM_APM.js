@@ -1,9 +1,6 @@
 'use strict';
 
-var collections = require('*/cartridge/scripts/util/collections');
 var Resource = require('dw/web/Resource');
-var Transaction = require('dw/system/Transaction');
-
 var OrderMgr = require('dw/order/OrderMgr');
 
 /** Utility **/
@@ -66,12 +63,7 @@ function Authorize(orderNumber, billingForm, processorId, req) {
 
     // Get the selected APM request data
     var func = billingForm.apmForm.ckoSelectedApm.value.toString() + 'Authorization';
-
-    logger.debug('Authorize - func {0}', JSON.stringify(func));
-
     var apmConfigData = apmConfig[func](args);
-
-    logger.debug('Authorize - func {0}', JSON.stringify(apmConfigData));
 
     // Payment request
     var result = apmHelper.handleRequest(
@@ -79,8 +71,6 @@ function Authorize(orderNumber, billingForm, processorId, req) {
         processorId,
         orderNumber
     );
-
-    logger.debug('Authorize - result {0}', JSON.stringify(result));
 
     // Handle errors
     if (result.error) {
