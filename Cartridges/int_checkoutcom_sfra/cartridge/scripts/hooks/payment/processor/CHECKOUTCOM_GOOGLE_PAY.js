@@ -1,8 +1,6 @@
 'use strict';
 
-var collections = require('*/cartridge/scripts/util/collections');
 var Resource = require('dw/web/Resource');
-var Transaction = require('dw/system/Transaction');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -28,22 +26,6 @@ function Handle(basket, billingData, processorId, req) {
             error: true
         };
     }
-
-    Transaction.wrap(function () {
-        // Remove existing payment instruments
-        var paymentInstruments = currentBasket.getPaymentInstruments(
-            processorId
-        );
-
-        collections.forEach(paymentInstruments, function (item) {
-            currentBasket.removePaymentInstrument(item);
-        });
-
-        // Create a new payment instrument
-        var paymentInstrument = currentBasket.createPaymentInstrument(
-            processorId, currentBasket.totalGrossPrice
-        );
-    });
 
     return {
         fieldErrors: cardErrors,
