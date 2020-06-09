@@ -203,7 +203,6 @@ var eventsHelper = {
         this.addWebhookInfo(hook, null, null);
     },
 
-
     /**
      * Refund failed event.
      */
