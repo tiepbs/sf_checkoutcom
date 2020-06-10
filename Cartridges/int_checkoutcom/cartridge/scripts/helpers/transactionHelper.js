@@ -135,7 +135,7 @@ var transactionHelper = {
         var mode = ckoHelper.getValue('ckoMode');
         var ckoChargeData = {
             chargeId: paymentId
-        };
+        }
 
         // Get the payment actions
         var paymentActions = ckoHelper.gatewayClientRequest(
@@ -194,9 +194,10 @@ var transactionHelper = {
     },
 
     /**
-     * Check if a capture transaction can allow refunds.
+     * Check if a capture transaction can allow refunds
      */
-    shouldCloseRefund: function (order) {
+    shouldCloseRefund: function (transactionAmount, order) {
+        
         // Prepare the total refunded
         var totalRefunded = 0;
 
@@ -213,9 +214,9 @@ var transactionHelper = {
                 totalRefunded += parseFloat(paymentTransaction.amount.value);
             }
         }
-      
+   
         // Check if a refund is possible
-        return totalRefunded >= parseFloat(order.totalGrossPrice.value.toFixed(2));
+        return (totalRefunded + parseFloat(transactionAmount)) >= parseFloat(order.totalGrossPrice.value.toFixed(2));
     }
 };
 

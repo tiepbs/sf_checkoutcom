@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 // Site controller
 var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
@@ -13,17 +13,17 @@ var businessName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBusi
 // Get apms form
 var paymentForm = app.getForm('alternativePaymentForm');
 
-// Utility
+// Utility 
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 // All apm config objects
 var ckoApmConfig = {
-
+    
     /**
      * Ideal Pay Authorization
      */
     idealPayAuthorization: function (args) {
-
+        
         // building ideal pay object
         var payObject = {
             'source'    : {
@@ -36,15 +36,15 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
-
+        
         return payObject;
     },
-
+    
     /**
      * Boleto Pay Authorization
      */
     boletoPayAuthorization: function (args) {
-
+        
         // Building pay object
         var payObject = {
             'source'        : {
@@ -57,7 +57,7 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
-
+        
         return payObject;
     },
 
@@ -65,7 +65,7 @@ var ckoApmConfig = {
      * Bancontact Pay Authorization
      */
     bancontactPayAuthorization: function (args) {
-
+    	
         // Building pay object
         var payObject = {
             'source'        : {
@@ -78,15 +78,15 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
-
+        
         return payObject;
     },
-
+    
     /**
      * Benefit Pay Authorization
      */
     benefitPayAuthorization: function (args) {
-
+    	
         // Process benefit pay
         var payObject = {
             'source' : {
@@ -97,7 +97,7 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
-
+        
         return payObject;
     },
 
@@ -105,7 +105,7 @@ var ckoApmConfig = {
      * Giro Pay Authorization
      */
     giroPayAuthorization: function (args) {
-
+    	
         // Building pay object
         var payObject = {
             'source'        : {
@@ -116,15 +116,15 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
-
+        
         return payObject;
     },
-
+    
     /**
      * Eps Pay Authorization
      */
     epsPayAuthorization: function (args) {
-
+    	
         // Building pay object
         var payObject = {
             'source'    : {
@@ -135,15 +135,15 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
-
+        
         return payObject;
     },
-
+    
     /**
      * Sofort Pay Authorization
      */
     sofortPayAuthorization: function (args) {
-
+    	
         // Building pay object
         var payObject = {
             'source'    : {
@@ -153,15 +153,15 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
-
+        
         return payObject;
     },
-
+    
     /**
      * Knet Pay Authorization
      */
     knetPayAuthorization: function (args) {
-
+    	
         // Building pay object
         var payObject = {
             'source'    :   {
@@ -172,7 +172,7 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
-
+        
         return payObject;
     },
 
@@ -180,7 +180,7 @@ var ckoApmConfig = {
      * Q Pay Authorization
      */
     qpayPayAuthorization: function (args) {
-
+    	
         // Building pay object
         var payObject = {
             'source'    : {
@@ -194,7 +194,7 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
-
+        
         return payObject;
     },
 
@@ -202,7 +202,7 @@ var ckoApmConfig = {
      * Fawry Pay Authorization
      */
     fawryPayAuthorization: function (args) {
-
+    	
         // Building pay object
         var payObject = {
             'source'    : {
@@ -216,15 +216,15 @@ var ckoApmConfig = {
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
-
+        
         return payObject;
     },
-
+    
     /**
      * Sepa Pay Authorization
      */
     sepaPayAuthorization: function (args) {
-
+    	
         // Building pay object
         var payObject = {
             'type'          : 'sepa',
@@ -237,15 +237,15 @@ var ckoApmConfig = {
                 'mandate_type'          : 'single'
             }
         };
-
+        
         return payObject;
     },
-
+    
     /**
      * Multibanco Pay Authorization
      */
     multibancoPayAuthorization: function (args) {
-
+    	
         // Building pay object
         var payObject = {
             'type'      : 'multibanco',
@@ -257,15 +257,15 @@ var ckoApmConfig = {
                 'billing_descriptor'    : businessName
             }
         };
-
+        
         return payObject;
     },
-
+    
     /**
      * Poli Pay Authorization
      */
     poliPayAuthorization: function (args) {
-
+    	
         // Building pay object
         var payObject = {
             'type'      : 'poli',
@@ -274,7 +274,7 @@ var ckoApmConfig = {
                 'type'      : 'poli'
             }
         };
-
+        
         return payObject;
     },
 
@@ -282,7 +282,7 @@ var ckoApmConfig = {
      * P24 Pay Authorization
      */
     p24PayAuthorization: function (args) {
-
+    	
         // Building pay object
         var payObject = {
             'type'          : 'p24',
@@ -295,7 +295,7 @@ var ckoApmConfig = {
                 'billing_descriptor'    : businessName
             }
         };
-
+    
         return payObject;
     },
 
@@ -303,15 +303,15 @@ var ckoApmConfig = {
      * Klarna Pay Authorization
      */
     klarnaPayAuthorization: function (args) {
-
+    	
         // Gdt the order
         var order = OrderMgr.getOrder(args.OrderNo);
-
+        
         // Klarna Form Inputs
         var klarna_approved = paymentForm.get('klarna_approved').value();
-
+        
         if (klarna_approved) {
-
+        	
             // Build the payment object
             var payObject = {
                 'type'      : 'klarna',
@@ -328,10 +328,10 @@ var ckoApmConfig = {
                     'products'              : ckoHelper.getOrderBasketObject(args)
                 }
             };
-
+             
             return payObject;
         } else {
-
+        	
             return {success: false};
         }
     },
@@ -340,7 +340,7 @@ var ckoApmConfig = {
      * Paypal Pay Authorization
      */
     paypalPayAuthorization: function (args) {
-
+    	
         // Build the payment object
         var payObject = {
             'type'          : 'paypal',
@@ -353,12 +353,12 @@ var ckoApmConfig = {
 
         return payObject;
     },
-
+    
     /**
      * Oxxo Pay Object
      */
     oxxoPayAuthorization: function (args) {
-
+    	
         // Build the payment object
         var payObject = {
             'source': {
@@ -374,15 +374,15 @@ var ckoApmConfig = {
             'type'          : 'oxxo',
             'currency'      : ckoHelper.getCurrency(args)
         };
-
+        
         return payObject;
     },
-
+    
     /**
      * Ali Pay Object
      */
     aliPayAuthorization: function (args) {
-
+    	
         // Build the payment object
         var payObject = {
             'source': {
@@ -391,10 +391,10 @@ var ckoApmConfig = {
             'type'          : 'alipay',
             'currency'      : ckoHelper.getCurrency(args)
         };
-
+        
         return payObject;
     }
-};
+}
 
 // Module exports
 module.exports = ckoApmConfig;

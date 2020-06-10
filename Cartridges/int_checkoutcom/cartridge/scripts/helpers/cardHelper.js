@@ -1,6 +1,8 @@
-"use strict";
+"use strict"
 
 // API Includes
+var PaymentMgr = require('dw/order/PaymentMgr');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var ISML = require('dw/template/ISML');
@@ -16,6 +18,10 @@ var cardHelper = {
      * Creates Site Genesis Transaction Object
      */
     cardAuthorization: function (payObject, args) {
+    	
+        // Preparing payment parameters
+        var paymentInstrument = args.PaymentInstrument;
+        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
         
         // perform the charge
         var cardRequest = this.handleCardRequest(payObject, args);
@@ -32,11 +38,14 @@ var cardHelper = {
                 return {authorized: true, redirected: true};
             } else {
             	
+                // Load the card and order information
+                var order = OrderMgr.getOrder(args.OrderNo);
+            	
                 return {authorized: true};
             }    
         } else {
         	
-            return false;
+            return false
         }
     },
 		
@@ -188,7 +197,7 @@ var cardHelper = {
             cvv                 : cardData.cvv,
             billing_address     : this.getBillingObject(args),
             phone               : ckoHelper.getPhoneObject(args)
-        };
+        }
         
         return source;
     },
@@ -201,7 +210,7 @@ var cardHelper = {
         return {
             'enabled' : ckoHelper.getValue('cko3ds'),
             'attempt_n3d' : ckoHelper.getValue('ckoN3ds')
-        };
+        }
     },
     
     /**
@@ -257,7 +266,7 @@ var cardHelper = {
         
         return shipping;
     }
-};
+}
 
 // Module exports
 module.exports = cardHelper;

@@ -139,7 +139,7 @@ var eventsHelper = {
     /**
      * Capture failed event
      */
-    paymentCaptureDeclined: function (hook) {
+    paymentCapturedDeclined: function (hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
     },
 
@@ -177,7 +177,7 @@ var eventsHelper = {
             var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Authorization');
             if (parentTransaction) {
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
-                parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(order);
+                parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(transactionAmount, order);
             }
         });
     },
@@ -222,13 +222,6 @@ var eventsHelper = {
         });
     },
 
-    /**
-     * Payment pending event.
-     */
-    paymentPending: function (hook) {
-        this.addWebhookInfo(hook, null, null);
-    },
-    
     /**
      * Refund failed event
      */

@@ -1,4 +1,4 @@
-"use strict";
+"use strict"
 
 var ckoApmFilterConfig = {
     ideal: {
@@ -69,7 +69,7 @@ var ckoApmFilterConfig = {
     	countries	: "CN",
     	currencies	: ["USD", "CNY"]
     }
-};
+}
 
 
 // Module exports

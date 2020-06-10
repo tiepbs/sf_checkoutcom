@@ -85,7 +85,7 @@ function alternativePaymentsFilter() {
             	 * the list of apms match the current country-code and currency-code
             	 */
                 if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmsFilterObject[apms].currencies.includes(filterObject.currency)) {
-                	
+             
                 	// Show Apm in template
                 	$('#'+ apms).show();
                 	
@@ -168,10 +168,10 @@ function callKlarnaController(controllerUrl) {
 function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId) {
 	
     // Converts request string to object
-    requestObject = JSON.parse(requestObject);
+    var requestObject = JSON.parse(requestObject);
     
     // Converts address string to object
-    addressInfo = JSON.parse(addressInfo);
+    var addressInfo = JSON.parse(addressInfo);
     
     // Empty the Klarna container
     $('#klarna-payments-container').empty();
@@ -198,7 +198,7 @@ function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billin
     var authorizeBtn = $('#klarnaConfirmBtn');
     authorizeBtn.show();
     authorizeBtn.click(() => {
-    	klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, JSON.stringify(billingAddress), JSON.stringify(requestObject));
+    	klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, JSON.stringify(billingAddress), JSON.stringify(requestObject))
     });
 }
 

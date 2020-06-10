@@ -1,6 +1,8 @@
-"use strict";
+"use strict"
 
 // API Includes 
+var PaymentMgr = require('dw/order/PaymentMgr');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
 var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
@@ -15,6 +17,10 @@ var apmHelper = {
      * Creates Site Genesis Transaction Object
      */
     apmAuthorization: function (payObject, args) {
+    	
+        // Preparing payment parameters
+        var paymentInstrument = args.PaymentInstrument;
+        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
         
         // perform the charge
         var apmRequest = this.handleApmRequest(payObject, args);
@@ -48,7 +54,7 @@ var apmHelper = {
             }
         } else {
         	
-            return false;
+            return false
         }
     },
         
@@ -221,7 +227,7 @@ var apmHelper = {
             return false;
         }
     }
-};
+}
 
 // Module exports
 module.exports = apmHelper;

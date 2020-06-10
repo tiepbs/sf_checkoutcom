@@ -60,7 +60,6 @@
 	 		
 	 		</div>
 	 		
-	 		
 	 		<div class="cko-sepa-tandc">
 					<isinputfield formfield="${pdict.CurrentForms.sepaForm.mandate}" type="checkbox"/>
 					${Resource.msg('cko.sepa.tandc','cko',null)}
