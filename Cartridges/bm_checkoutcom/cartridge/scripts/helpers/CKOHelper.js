@@ -5,7 +5,6 @@ var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var OrderMgr = require('dw/order/OrderMgr');
 var PaymentMgr = require('dw/order/PaymentMgr');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
-var URLUtils = require('dw/web/URLUtils');
 
 /**
  * Helper functions for the Checkout.com cartridge integration.
