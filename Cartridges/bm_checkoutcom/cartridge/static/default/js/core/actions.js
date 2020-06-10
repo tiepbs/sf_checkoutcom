@@ -37,7 +37,7 @@ function initButtons()
     });
 }
 
-function openModal(elt, rowIndex)
+function openModal(elt)
 {
     // Prepare the origin element id members
     var members = elt.id.split('-');
