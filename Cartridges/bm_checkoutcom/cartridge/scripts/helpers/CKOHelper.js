@@ -28,12 +28,12 @@ var CKOHelper = {
         var result  = SystemObjectMgr.querySystemObjects('Order', '', 'creationDate desc');
         
         // Loop through the results
-        for each(var order in result) {
+        for (var order in result) {
             // Get the payment instruments
             var paymentInstruments = order.getPaymentInstruments();
             
             // Loop through the payment instruments
-            for each(var instrument in paymentInstruments) {
+            for (var instrument in paymentInstruments) {
                 if (this.isCkoItem(instrument.paymentMethod) && !this.containsObject(item, data)) {
                     data.push(order);
                 }
@@ -55,12 +55,12 @@ var CKOHelper = {
 
         // Loop through the orders
         var i = 1;
-        for each(var order in result) {
+        for (var order in result) {
             // Get the payment instruments
             var paymentInstruments = order.getPaymentInstruments();
             
             // Loop through the payment instruments
-            for each(var instrument in paymentInstruments) {
+            for (var instrument in paymentInstruments) {
                 // Get the payment transaction
                 var paymentTransaction = instrument.getPaymentTransaction();
 
@@ -155,7 +155,7 @@ var CKOHelper = {
         var paymentInstruments = order.getPaymentInstruments();
 
         // Loop through the payment instruments
-        for each(var instrument in paymentInstruments) {
+        for (var instrument in paymentInstruments) {
             // Get the payment transaction
             var paymentTransaction = instrument.getPaymentTransaction();
 
@@ -165,7 +165,6 @@ var CKOHelper = {
             }
         }
       
-        // Check if a refund is possible
         return totalRefunded;
     },
 
