@@ -77,9 +77,17 @@ var CKOHelper = {
                         currency: paymentTransaction.amount.currencyCode,
                         creation_date: paymentTransaction.getCreationDate().toDateString(),
                         type: paymentTransaction.type.displayValue,
-                        processor: this.getProcessorId(instrument)
+                        processor: this.getProcessorId(instrument),
+                        refundableAmount: 0
                     };
                     
+                    // Calculate the total refunds
+                    if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CREDIT) {
+                        row.refundableAmount = this.getRefundableAmount(order, paymentInstruments);
+                    }
+
+                    // Add the refundable amount to the transaction data
+
                     // Add the transaction
                     data.push(row);
                     i++;
@@ -88,6 +96,27 @@ var CKOHelper = {
         }
         
         return data;
+    },
+
+    /**
+     * Get the total amount refundable for an order.
+     */
+    getRefundableAmount: function (order, paymentInstruments) {
+        // Prepare the total refunded
+        var amount = 0;
+
+        // Loop through the payment instruments
+        for (var instrument in paymentInstruments) {
+            // Get the payment transaction
+            var paymentTransaction = instrument.getPaymentTransaction();
+
+            // Calculate the total refunds
+            if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CREDIT) {
+                amount += parseFloat(paymentTransaction.amount.value);
+            }
+        }
+      
+        return order.totalGrossPrice.value.toFixed(2) - amount;
     },
 
     /**
@@ -142,30 +171,6 @@ var CKOHelper = {
         }
 
         return false;
-    },
-
-    /**
-     * Get the total amount refunded for an order.
-     */
-    getTotalRefunded: function (order) {
-        // Prepare the total refunded
-        var totalRefunded = 0;
-
-        // Get the payment instruments
-        var paymentInstruments = order.getPaymentInstruments();
-
-        // Loop through the payment instruments
-        for (var instrument in paymentInstruments) {
-            // Get the payment transaction
-            var paymentTransaction = instrument.getPaymentTransaction();
-
-            // Calculate the total refunds
-            if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CREDIT) {
-                totalRefunded += parseFloat(paymentTransaction.amount.value);
-            }
-        }
-      
-        return totalRefunded;
     },
 
     /**
