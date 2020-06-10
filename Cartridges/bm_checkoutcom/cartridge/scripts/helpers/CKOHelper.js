@@ -28,14 +28,14 @@ var CKOHelper = {
         var result  = SystemObjectMgr.querySystemObjects('Order', '', 'creationDate desc');
         
         // Loop through the results
-        for each(var item in result) {
+        for each(var order in result) {
             // Get the payment instruments
-            var paymentInstruments = item.getPaymentInstruments();
+            var paymentInstruments = order.getPaymentInstruments();
             
             // Loop through the payment instruments
             for each(var instrument in paymentInstruments) {
                 if (this.isCkoItem(instrument.paymentMethod) && !this.containsObject(item, data)) {
-                    data.push(item);
+                    data.push(order);
                 }
             }
         }
@@ -53,11 +53,11 @@ var CKOHelper = {
         // Query the orders
         var result  = this.getCkoOrders();
 
-        // Loop through the results
+        // Loop through the orders
         var i = 1;
-        for each(var item in result) {
+        for each(var order in result) {
             // Get the payment instruments
-            var paymentInstruments = item.getPaymentInstruments();
+            var paymentInstruments = order.getPaymentInstruments();
             
             // Loop through the payment instruments
             for each(var instrument in paymentInstruments) {
@@ -69,7 +69,7 @@ var CKOHelper = {
                     // Build the row data
                     var row = {
                         id: i,
-                        order_no: item.orderNo,
+                        order_no: order.orderNo,
                         transaction_id: paymentTransaction.transactionID,
                         payment_id: paymentTransaction.custom.ckoPaymentId,
                         opened: paymentTransaction.custom.ckoTransactionOpened,
