@@ -84,7 +84,9 @@ var CKOHelper = {
                     };
 
                     // Calculate the refundable amount
-                    if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CAPTURE) {
+                    var condition1 = row.data_type == PaymentTransaction.TYPE_CAPTURE;
+                    var condition2 = row.opened !== false;
+                    if (condition1 && condition2) {
                         row.refundable_amount = this.getRefundableAmount(item, paymentInstruments);
                     }
 

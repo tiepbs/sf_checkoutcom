@@ -82,10 +82,12 @@ function getTransactionData(members)
             var field4Id = '[id="' + task + '_payment_id"]';
             var field5Id = '[id="' + task + '_full_amount"]';
             var field6Id = '[id="' + task + '_order_no"]';
+            var field7Id = '[id="' + task + '_refundable_amount"]';
 
             // Handle the capture case transation amount value
             if (transaction.data_type == 'CAPTURE') {
                 jQuery(field1Id).val(transaction.refundable_amount);
+                jQuery(field7Id).append(transaction.refundable_amount + ' ' + transaction.currency);
             }
             else {
                 jQuery(field1Id).val(transaction.amount);
