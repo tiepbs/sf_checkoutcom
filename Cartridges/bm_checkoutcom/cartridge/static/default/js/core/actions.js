@@ -40,23 +40,8 @@ function initButtons()
         // Get the transaction task
         var task = members[0];
 
-        // Trigger the action
-        if (task == 'refund') {
-            // Get the the transaction amounts
-            var field1Id = '[id="' + task + '_full_amount"]';
-            var field2Id = '[id="' + task + '_refundable_amount"]';
-
-            // Check the refundable amount
-            var fullAmount = parseFloat(jQuery(field1Id).val());
-            var refundableAmount = parseFloat(jQuery(field2Id).val());
-            if (refundableAmount > fullAmount) {
-                showErrorMessage('ckoInvalidAmount');
-                return false;
-            }
-        }
-        else {
-            performAction(task);
-        }
+        // Perform the requested action
+        performAction(task);               
     });
 }
 
