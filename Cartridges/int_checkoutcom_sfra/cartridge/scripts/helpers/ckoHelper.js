@@ -37,6 +37,15 @@ var ckoHelper = {
     },
 
     /*
+     * Get a failed order error message
+     */
+    getOrderFailureMessage: function () {
+        return Resource.msg('cko.transaction.failedMessage1', 'cko', null)
+        + '. ' + Resource.msg('cko.transaction.failedMessage3', 'cko', null);
+    },
+
+
+    /*
      * Get user language
      */
     getLanguage: function () {

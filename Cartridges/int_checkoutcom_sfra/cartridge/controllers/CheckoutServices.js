@@ -334,7 +334,6 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
     var validationHelpers = require('*/cartridge/scripts/helpers/basketValidationHelpers');
     var addressHelpers = require('*/cartridge/scripts/helpers/addressHelpers');
     var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
-
     var currentBasket = BasketMgr.getCurrentBasket();
 
     if (!currentBasket) {
@@ -426,7 +425,7 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
     if (!order) {
         res.json({
             error: true,
-            errorMessage: Resource.msg('error.technical', 'checkout', null)
+            errorMessage: ckoHelper.getOrderFailureMessage()
         });
         return next();
     }
@@ -464,7 +463,7 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
 
         res.json({
             error: true,
-            errorMessage: Resource.msg('error.technical', 'checkout', null)
+            errorMessage: ckoHelper.getPaymentFailureMessage()
         });
 
         return next();
