@@ -75,6 +75,8 @@ function getTransactionData(members)
             // Get the data
             var transaction = JSON.parse(data)[0];
 
+            console.log(transaction);
+
             // Set the transation data field ids
             var field1Id = '[id="' + task + '_value"]';
             var field2Id = '[id="' + task + '_currency"]';
