@@ -87,7 +87,7 @@ var CKOHelper = {
                     var condition1 = row.data_type == PaymentTransaction.TYPE_CAPTURE;
                     var condition2 = row.opened !== false;
                     if (condition1 && condition2) {
-                        row.refundable_amount = this.getRefundableAmount(item, paymentInstruments);
+                        row.refundable_amount = this.getRefundableAmount(item, paymentInstruments).toFixed(2);
                     }
 
                     // Add the transaction
@@ -118,7 +118,7 @@ var CKOHelper = {
             }
         }
       
-        return parseFloat(order.totalGrossPrice.value.toFixed(2)) - totalRefunded;
+        return parseFloat(order.totalGrossPrice.value) - totalRefunded;
     },
 
     /**
