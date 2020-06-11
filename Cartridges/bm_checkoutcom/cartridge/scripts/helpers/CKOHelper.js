@@ -78,12 +78,14 @@ var CKOHelper = {
                         currency: paymentTransaction.amount.currencyCode,
                         creation_date: paymentTransaction.getCreationDate().toDateString(),
                         type: paymentTransaction.type.displayValue,
-                        processor: this.getProcessorId(instrument)
+                        processor: this.getProcessorId(instrument),
+                        refundable_amount: 0,
+                        data_type: paymentTransaction.type.toString()
                     };
 
                     // Calculate the refundable amount
                     if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CAPTURE) {
-                        row.refundableAmount = this.getRefundableAmount(item, paymentInstruments);
+                        row.refundable_amount = this.getRefundableAmount(item, paymentInstruments);
                     }
 
                     // Add the transaction
@@ -114,7 +116,6 @@ var CKOHelper = {
             }
         }
       
-        // Check if a refund is possible
         return parseFloat(order.totalGrossPrice.value.toFixed(2)) - totalRefunded;
     },
 

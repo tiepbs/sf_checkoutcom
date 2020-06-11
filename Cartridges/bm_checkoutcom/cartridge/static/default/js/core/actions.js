@@ -75,8 +75,6 @@ function getTransactionData(members)
             // Get the data
             var transaction = JSON.parse(data)[0];
 
-            console.log(transaction);
-
             // Set the transation data field ids
             var field1Id = '[id="' + task + '_value"]';
             var field2Id = '[id="' + task + '_currency"]';
@@ -85,8 +83,15 @@ function getTransactionData(members)
             var field5Id = '[id="' + task + '_full_amount"]';
             var field6Id = '[id="' + task + '_order_no"]';
 
-            // Add the transation data to the fields
-            jQuery(field1Id).val(transaction.amount);
+            // Handle the capture case transation amount value
+            if (transaction.data_type == 'TYPE_CAPTURE') {
+                jQuery(field1Id).val(transaction.refundable_amount);
+            }
+            else {
+                jQuery(field1Id).val(transaction.amount);
+            }
+
+            // Add the remaining values
             jQuery(field2Id).append(transaction.currency);
             jQuery(field3Id).append(transaction.transaction_id);
             jQuery(field4Id).append(transaction.payment_id);
