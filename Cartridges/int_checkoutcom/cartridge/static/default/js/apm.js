@@ -197,8 +197,9 @@ function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billin
     // Build Klarna authorization button   
     var authorizeBtn = $('#klarnaConfirmBtn');
     authorizeBtn.show();
-    authorizeBtn.click(() => {
-    	klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, JSON.stringify(billingAddress), JSON.stringify(requestObject))
+    authorizeBtn.click(function () {
+    	klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, JSON.stringify(billingAddress), JSON.stringify(requestObject));
+    	$(this).hide();
     });
 }
 
