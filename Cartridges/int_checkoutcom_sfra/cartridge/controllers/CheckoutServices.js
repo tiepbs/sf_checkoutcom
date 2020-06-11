@@ -502,16 +502,6 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
         return next();
     }
 
-    // Places the order
-    var placeOrderResult = COHelpers.placeOrder(order, fraudDetectionStatus);
-    if (placeOrderResult.error) {
-        res.json({
-            error: true,
-            errorMessage: Resource.msg('error.technical', 'checkout', null)
-        });
-        return next();
-    }
-
     if (req.currentCustomer.addressBook) {
         // save all used shipping addresses to address book of the logged in customer
         var allAddresses = addressHelpers.gatherShippingAddresses(order);
