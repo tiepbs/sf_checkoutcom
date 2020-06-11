@@ -161,8 +161,8 @@ function performAction(task)
                 // Close the modal window
                 jQuery('.ckoModal .modal-content .close').trigger('click');
 
-                // Reload the table data (getTransactions(reloadTable))
-                window.location.reload();
+                // Reload the table data
+                getTransactions(reloadTable);
             }
         },
         error: function (request, status, error) {
