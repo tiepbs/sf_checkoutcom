@@ -78,9 +78,13 @@ var CKOHelper = {
                         currency: paymentTransaction.amount.currencyCode,
                         creation_date: paymentTransaction.getCreationDate().toDateString(),
                         type: paymentTransaction.type.displayValue,
-                        processor: this.getProcessorId(instrument),
-                        refundableAmount: this.shouldCloseRefund(item)
+                        processor: this.getProcessorId(instrument)
                     };
+
+                    // Calculate the refundable amount
+                    if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CAPTURE) {
+                        row.refundableAmount = this.getRefundableAmount(item, paymentInstruments);
+                    }
 
                     // Add the transaction
                     data.push(row);
@@ -95,12 +99,9 @@ var CKOHelper = {
     /**
      * Check if a capture transaction can allow refunds.
      */
-    shouldCloseRefund: function (order) {
+    getRefundableAmount: function (order, paymentInstruments) {
         // Prepare the total refunded
         var totalRefunded = 0;
-
-        // Get the payment instruments
-        var paymentInstruments = order.getPaymentInstruments();
 
         // Loop through the payment instruments
         for each(var instrument in paymentInstruments) {
@@ -114,7 +115,7 @@ var CKOHelper = {
         }
       
         // Check if a refund is possible
-        return totalRefunded >= parseFloat(order.totalGrossPrice.value.toFixed(2));
+        return parseFloat(order.totalGrossPrice.value.toFixed(2)) - totalRefunded;
     },
 
     /**
