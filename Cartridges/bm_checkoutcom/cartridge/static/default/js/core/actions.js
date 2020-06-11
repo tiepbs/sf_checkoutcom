@@ -33,7 +33,30 @@ function initButtons()
     
     // Submit the action request
     jQuery('.ckoModal .modal-content .submit').click(function () {
-        performAction(jQuery(this).closest('.modal-content').find('input'));
+        // Prepare the origin element id members
+        var elt = jQuery(this).closest('.modal-content').find('input');
+        var members = elt.attr('id').split('_');
+
+        // Get the transaction task
+        var task = members[0];
+
+        // Trigger the action
+        if (task == 'refund') {
+            // Get the the transaction amounts
+            var field1Id = '[id="' + task + '_full_amount"]';
+            var field2Id = '[id="' + task + '_refundable_amount"]';
+
+            // Check the refundable amount
+            var fullAmount = parseFloat(jQuery(field1Id).val());
+            var refundableAmount = parseFloat(jQuery(field2Id).val());
+            if (refundableAmount > fullAmount) {
+                showErrorMessage('ckoInvalidAmount');
+                return false;
+            }
+        }
+        else {
+            performAction(task);
+        }
     });
 }
 
@@ -109,29 +132,23 @@ function getTransactionData(members)
     });
 }
 
-function showErrorMessage()
+function showErrorMessage(selector)
 {
     // Show the error message
-    jQuery('.ckoErrorMessage').show(
+    jQuery('.' + selector).show(
         'fast',
         function () {
             setTimeout(function () {
-                jQuery('.ckoErrorMessage').hide('fast');
+                jQuery('.' + selector).hide();
             }, 7000);
         }
     );
 }
 
-function performAction(elt)
+function performAction(task)
 {
     // Prepare the action URL
     var actionUrl = jQuery('[id="actionControllerUrl"]').val();
-
-    // Prepare the origin element id members
-    var members = elt.attr('id').split('_');
-
-    // Get the transaction task
-    var task = members[0];
     
     // Set the transaction id
     var paymentId = jQuery('[id="' + task + '_payment_id"]').text();
@@ -154,7 +171,7 @@ function performAction(elt)
         success: function (res) {
             var success = JSON.parse(res);
             if (!success) {
-                showErrorMessage();
+                showErrorMessage('ckoErrorMessage');
             } else {
                 // Close the modal window
                 jQuery('.ckoModal .modal-content .close').trigger('click');
