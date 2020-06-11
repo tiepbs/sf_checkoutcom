@@ -84,7 +84,7 @@ function getTransactionData(members)
             var field6Id = '[id="' + task + '_order_no"]';
 
             // Handle the capture case transation amount value
-            if (transaction.data_type == 'TYPE_CAPTURE') {
+            if (transaction.data_type == 'CAPTURE') {
                 jQuery(field1Id).val(transaction.refundable_amount);
             }
             else {
