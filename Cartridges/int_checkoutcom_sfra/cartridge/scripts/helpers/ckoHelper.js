@@ -33,7 +33,7 @@ var ckoHelper = {
      */
     getPaymentFailureMessage: function () {
         return Resource.msg('cko.transaction.failedMessage1', 'cko', null)
-        + '. ' + Resource.msg('cko.transaction.failedMessage2', 'cko', null);
+        + ' ' + Resource.msg('cko.transaction.failedMessage2', 'cko', null);
     },
 
     /*
@@ -41,7 +41,7 @@ var ckoHelper = {
      */
     getOrderFailureMessage: function () {
         return Resource.msg('cko.transaction.failedMessage1', 'cko', null)
-        + '. ' + Resource.msg('cko.transaction.failedMessage3', 'cko', null);
+        + ' ' + Resource.msg('cko.transaction.failedMessage3', 'cko', null);
     },
 
 
