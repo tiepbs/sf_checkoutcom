@@ -49,9 +49,13 @@ var ckoApmConfig = {
         var payObject = {
             'source'        : {
                 'type'  : 'boleto',
-                'birthDate' : paymentForm.get('boleto_birthDate').value(),
-                'cpf'       : paymentForm.get('boleto_cpf').value(),
-                'customerName' : ckoHelper.getCustomerName(args)
+                'integration_type': 'redirect',
+                'country': ckoHelper.getBillingCountry(args),
+                'payer': {
+                    'name' : ckoHelper.getCustomerName(args),
+                	'email': ckoHelper.getCustomer(args).email,
+                    'document'       : paymentForm.get('boleto_cpf').value()
+                }
             },
             'type'      : 'boleto',
             'purpose'   : businessName,
