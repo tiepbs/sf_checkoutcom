@@ -63,7 +63,7 @@ var ckoApmFilterConfig = {
     },
     oxxo: {
         countries   : ["MX"],
-        currencies  : ["MXN"
+        currencies  : ["MXN"]
     },
     alipay: {
     	countries	: ["CN"],
