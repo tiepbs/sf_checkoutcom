@@ -457,9 +457,6 @@ var ckoHelper = {
         if (this.getShippingValue(args)) {
             products.push(this.getShippingValue(args));
         }
-        if (this.getTaxObject(args)) {
-            products.push(this.getTaxObject(args));
-        }
         
         return products;
     },
