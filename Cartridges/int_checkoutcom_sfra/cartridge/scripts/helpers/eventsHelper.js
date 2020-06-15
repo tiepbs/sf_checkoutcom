@@ -204,6 +204,13 @@ var eventsHelper = {
     },
 
     /**
+     * Payment expired event.
+     */
+    paymentExpired: function (hook) {
+        this.addWebhookInfo(hook, null, null);
+    },
+
+    /**
      * Refund failed event.
      */
     paymentRefundDeclined: function (hook) {
