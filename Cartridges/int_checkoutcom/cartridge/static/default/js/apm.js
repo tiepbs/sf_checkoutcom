@@ -79,10 +79,20 @@ function alternativePaymentsFilter() {
 
             // Loops through the apmfilterObject
             for (var apms in apmsFilterObject) {
+            	
+            	/*
+            	 * If the current apm country-code is empty and currency-code in
+            	 * the list of apms, match the current country-code and currency-code
+            	 */
+            	if (apmsFilterObject[apms].countries == '' && apmsFilterObject[apms].currencies.includes(filterObject.currency)) {
+
+                	// Show Apm in template
+                	$('#'+ apms).show();
+            	}
 
             	/*
             	 * If the current apm country-code and currency-code in
-            	 * the list of apms match the current country-code and currency-code
+            	 * the list of apms, match the current country-code and currency-code
             	 */
                 if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmsFilterObject[apms].currencies.includes(filterObject.currency)) {
 
