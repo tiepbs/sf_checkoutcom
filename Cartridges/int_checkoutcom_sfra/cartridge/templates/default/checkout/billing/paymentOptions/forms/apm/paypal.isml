@@ -1,6 +1,0 @@
-<!-- Paypal APM option -->
-<button class="cko-apm-accordion">
-	<input id="paypal_apm_radio_btn" type="radio">
-	<img alt="${Resource.msg('cko.paypal.name','cko',null)}" id="paypal_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/paypal.jpg')}"/>
-	${Resource.msg('cko.paypal.name','cko',null)}
-</button>
