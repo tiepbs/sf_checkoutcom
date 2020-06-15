@@ -50,7 +50,7 @@ function Authorize(orderNumber, billingForm, processorId, req) {
         error: false,
         redirectUrl: false
     };
-
+    
     // Get the order
     var order = OrderMgr.getOrder(orderNumber);
 
