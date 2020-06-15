@@ -1,5 +1,0 @@
-<li class="nav-item" data-method-id="${paymentOption.ID}">
-    <a class="nav-link google-pay-tab" data-toggle="tab" href="#google-pay-content" role="tab">
-        ${paymentOption.name}
-    </a>
-</li>
