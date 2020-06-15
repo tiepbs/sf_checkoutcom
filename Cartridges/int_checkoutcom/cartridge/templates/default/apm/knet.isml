@@ -1,6 +1,0 @@
-<!-- Knet pay APM Option -->
-<div class="cko-apm-accordion">
-	<input id="knet_apm_radio_btn" type="radio" name="apm_list" value="knet">
-	<img alt="${Resource.msg('cko.knet.name','cko',null)}" id="knet_thumb" src="${URLUtils.staticURL('/images/apm-icons/knet.jpg')}">
-	${Resource.msg('cko.knet.name','cko',null)}
-</div>
