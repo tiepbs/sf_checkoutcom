@@ -26,7 +26,7 @@ var CKOHelper = {
         var data = [];
     
         // Query the orders
-        var result  = SystemObjectMgr.querySystemObjects('Order', '', 'creationDate desc');
+        var result = SystemObjectMgr.querySystemObjects('Order', '', 'creationDate desc');
         
         // Loop through the results
         for each(var item in result) {
