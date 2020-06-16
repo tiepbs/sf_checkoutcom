@@ -79,12 +79,15 @@ function alternativePaymentsFilter() {
 
             // Loops through the apmfilterObject
             for (var apms in apmsFilterObject) {
-
+            	var condition1 = apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase());
+            	var condition2 = apmsFilterObject[apms].countries.includes('*');
+            	var condition3 = apmsFilterObject[apms].currencies.includes(filterObject.currency);
+            	
             	/*
             	 * If the current apm country-code and currency-code in
-            	 * the list of apms match the current country-code and currency-code
+            	 * the list of apms, match the current country-code and currency-code
             	 */
-                if (apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase()) && apmsFilterObject[apms].currencies.includes(filterObject.currency)) {
+                if ((condition1 || condition2) && condition3) {
 
                 	// Show Apm in template
                 	$('#'+ apms).show();

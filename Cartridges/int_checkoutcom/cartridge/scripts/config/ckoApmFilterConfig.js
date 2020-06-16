@@ -68,6 +68,10 @@ var ckoApmFilterConfig = {
     alipay: {
     	countries	: ["CN"],
     	currencies	: ["USD", "CNY"]
+    },
+    paypal: {
+    	countries	: ["*"],
+    	currencies	: ["AUD", "BRL", "CAD", "CZK", "DKK", "EUR", "HKD", "HUF", "INR", "ILS", "JPY", "MYR", "MXN", "TWD", "NZD", "NOK", "PHP", "PLN", "GBP", "RUB", "SGD", "SEK", "CHF", "THB", "USD"]
     }
 }
 
