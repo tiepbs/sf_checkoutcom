@@ -315,7 +315,7 @@ var ckoApmConfig = {
     /*
      * Oxxo authorization
      */
-    oxxoAuthorization: function (args) {
+    oxxoAuthorization: function (args) {    
         // Build the payment object
         var params = {
             'source': {
