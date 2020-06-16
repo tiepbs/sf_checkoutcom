@@ -64,7 +64,7 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     // Get the selected APM request data
     var func = billingForm.apmForm.ckoSelectedApm.value.toString() + 'Authorization';
     var apmConfigData = apmConfig[func](args);
-
+    
     // Payment request
     var result = apmHelper.handleRequest(
         apmConfigData,
