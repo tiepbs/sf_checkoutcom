@@ -239,8 +239,8 @@ var eventsHelper = {
     /**
     * Payment pending event.
     */
-    paymentPending: function (hook) {
-    	this.addWebhookInfo(hook, null, null);
+    paymentExpired: function (hook) {
+        this.addWebhookInfo(hook, null, null);
     }
 };
 
