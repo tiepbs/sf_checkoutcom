@@ -106,6 +106,7 @@ var CKOHelper = {
     getRefundableAmount: function (order, paymentInstruments) {
         // Prepare the total refunded
         var totalRefunded = 0;
+        var totalCaptured = 0;
 
         // Loop through the payment instruments
         for each(var instrument in paymentInstruments) {
@@ -116,9 +117,14 @@ var CKOHelper = {
             if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CREDIT) {
                 totalRefunded += parseFloat(paymentTransaction.amount.value);
             }
+
+            // Calculate the total captures
+            if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CAPTURE) {
+                totalCaptured += parseFloat(paymentTransaction.amount.value);
+            }
         }
       
-        return parseFloat(order.totalGrossPrice.value) - totalRefunded;
+        return totalCaptured - totalRefunded;
     },
 
     /**
