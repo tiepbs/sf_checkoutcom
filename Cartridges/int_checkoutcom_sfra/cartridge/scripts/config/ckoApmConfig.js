@@ -313,28 +313,6 @@ var ckoApmConfig = {
     },
 
     /*
-     * Oxxo authorization
-     */
-    oxxoAuthorization: function (args) {    
-        // Build the payment object
-        var params = {
-            'source': {
-                'type': 'oxxo',
-                'integration_type': 'redirect',
-                'country': ckoHelper.getBilling(args).country,
-                'payer': {
-                    'name': ckoHelper.getCustomerName(args),
-                    'email': ckoHelper.getCustomer(args).email,
-                    'document': args.paymentData.oxxo_identification.value.toString()
-                }
-            },
-            'currency'      : args.order.getCurrencyCode(),
-        };
-
-        return params;
-    },
-
-    /*
      * Alipay authorization
      */
     alipayAuthorization: function (args) {
