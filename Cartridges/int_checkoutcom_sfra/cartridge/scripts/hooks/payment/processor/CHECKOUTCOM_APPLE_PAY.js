@@ -29,22 +29,6 @@ function Handle(basket, billingData, processorId, req) {
         };
     }
 
-    Transaction.wrap(function () {
-        // Remove existing payment instruments
-        var paymentInstruments = currentBasket.getPaymentInstruments(
-            processorId
-        );
-
-        collections.forEach(paymentInstruments, function (item) {
-            currentBasket.removePaymentInstrument(item);
-        });
-
-        // Create a new payment instrument
-        var paymentInstrument = currentBasket.createPaymentInstrument(
-            processorId, currentBasket.totalGrossPrice
-        );
-    });
-
     return {
         fieldErrors: cardErrors,
         serverErrors: serverErrors,

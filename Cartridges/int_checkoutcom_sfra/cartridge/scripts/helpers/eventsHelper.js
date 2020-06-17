@@ -197,6 +197,20 @@ var eventsHelper = {
     },
 
     /**
+     * Payment pending event.
+     */
+    paymentPending: function (hook) {
+        this.addWebhookInfo(hook, null, null);
+    },
+
+    /**
+     * Payment expired event.
+     */
+    paymentExpired: function (hook) {
+        this.addWebhookInfo(hook, null, null);
+    },
+
+    /**
      * Refund failed event.
      */
     paymentRefundDeclined: function (hook) {

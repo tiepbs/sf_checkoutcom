@@ -80,9 +80,10 @@ function filterApm()
             // Display only the allowed APM for the user
             var dataArray = apmList.ckoApmFilterConfig;
             for (var item in dataArray) {            
-                var condition1 = dataArray[item].countries.includes(userData.country.toUpperCase()) && dataArray[item].currencies.includes(userData.currency);
-                var condition2 = dataArray[item].countries.includes('*') && dataArray[item].currencies.includes('*');
-                if (condition1 || condition2) {
+                var condition1 = dataArray[item].countries.includes(userData.country.toUpperCase());
+                var condition2 = dataArray[item].countries.includes('*');
+                var condition3 = dataArray[item].currencies.includes(userData.currency);
+                if ((condition1 || condition2) && condition3) {
                     $('#'+ item).css('display', 'block');
                 }
             }

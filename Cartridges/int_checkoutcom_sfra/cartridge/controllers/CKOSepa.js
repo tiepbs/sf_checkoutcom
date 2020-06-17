@@ -16,13 +16,12 @@ var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
 // Initiate the mandate session
 server.get('Mandate', server.middleware.https, function (req, res, next) {
     // Prepare the variables
-    var url = session.privacy.redirectUrl;
     var orderId = ckoHelper.getOrderId();
     var order = OrderMgr.getOrder(orderId);
-    
+
     // Process the URL
-    if (url) {
-        res.render('sepaForm/ajax/output', {
+    if (order) {
+        res.render('sepaForm', {
             // Prepare the view parameters
             creditAmount: order.totalGrossPrice.value.toFixed(2),
             formatedAmount: ckoHelper.getFormattedPrice(
@@ -36,7 +35,7 @@ server.get('Mandate', server.middleware.https, function (req, res, next) {
             debtorPostCode: order.billingAddress.postalCode,
             debtorStateCode: order.billingAddress.stateCode,
             debtorCountryCode: order.billingAddress.countryCode,
-            
+
             // Prepare the creditor information
             creditor: ckoHelper.getValue('ckoBusinessName'),
             creditorAddress1: ckoHelper.getValue('ckoBusinessAddressLine1'),
@@ -60,31 +59,30 @@ server.get('Mandate', server.middleware.https, function (req, res, next) {
     next();
 });
 
-server.get('HandleMandate', server.middleware.https, function (req, res, next) {
-    // Set session redirect url to null
-    session.privacy.redirectUrl = null;
+server.post('HandleMandate', server.middleware.https, function (req, res, next) {
+    // Get the order id
     var orderId = ckoHelper.getOrderId();
-    
-    // Get the form
-    var sepaForm = server.forms.getForm('sepaForm');
 
-    // Cancel validation
-    if (sepaForm.valid) {
-        var sepa = app.getForm('sepaForm');
-        var mandate = sepa.get('mandate').value();
+    // Get the form
+    var sepaForm = req.form;
+
+    // Validation
+    if (sepaForm) {
+        var sepa = sepaForm;
+        var mandate = sepa.mandate;
         this.on('route:BeforeComplete', function () {
             // Mandate is true
             if (mandate) {
-                // Clear form
-                app.getForm('sepaForm').clear();
-                
+                var mandateForm = server.forms.getForm('sepaForm'); //gets the mandate form object
+                mandateForm.clear();
+
                 // Get the response object from session
                 var responseObjectId = session.privacy.sepaResponseId;
                 if (responseObjectId) {
                     if (orderId) {
                         // Load the order
                         var order = OrderMgr.getOrder(orderId);
-                        
+
                         // Prepare the payment object
                         var payObject = {
                             "source": {
@@ -98,13 +96,13 @@ server.get('HandleMandate', server.middleware.https, function (req, res, next) {
                             "currency": order.getCurrencyCode(),
                             "reference": orderId
                         };
-                        
+
                         // Reset the response in session
                         session.privacy.sepaResponseId = null;
-                        
+
                         // Handle the SEPA request
                         apmHelper.handleSepaRequest(payObject, order);
-                        
+
                         // Show the confirmation screen
                         paymentHelper.getConfirmationPageRedirect(res, order);
                     } else {
@@ -122,8 +120,7 @@ server.get('HandleMandate', server.middleware.https, function (req, res, next) {
                     );
                 }
             } else {
-                res.render('sepaForm');
-                next();
+                res.redirect(URLUtils.url('CKOSepa-Mandate'));
             }
         });
     }
