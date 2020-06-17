@@ -61,10 +61,6 @@ var ckoApmFilterConfig = {
         countries   : ["AT", "DK", "FI", "DE", "NL", "NO", "SE", "UK", "GB"],
         currencies  : ["EUR", "DKK", "GBP", "NOK", "SEK"]
     },
-    oxxo: {
-        countries   : ["MX"],
-        currencies  : ["MXN"]
-    },
     alipay: {
     	countries	: ["CN" ,"US"],
     	currencies	: ["USD", "CNY"]

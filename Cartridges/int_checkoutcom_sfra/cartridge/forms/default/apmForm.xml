@@ -57,7 +57,4 @@
     <field formid="klarna_token" type="string" max-length="40" binding="klarna_token"/>
     <field formid="klarna_approved" type="string" max-length="40" binding="klarna_approved"/>
     <field formid="klarna_finalize_required" type="string" max-length="40" binding="klarna_finalize_required"/>
-    
-    <!-- Field for Oxxo -->
-    <field formid="oxxo_identification" type="string" max-length="40" binding="oxxo_identification"/>
 </form>
