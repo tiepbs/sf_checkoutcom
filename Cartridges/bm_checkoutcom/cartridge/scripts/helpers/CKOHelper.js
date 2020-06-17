@@ -5,7 +5,7 @@ var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var OrderMgr = require('dw/order/OrderMgr');
 var PaymentMgr = require('dw/order/PaymentMgr');
 var ServiceRegistry = require('dw/svc/ServiceRegistry');
-var URLUtils = require('dw/web/URLUtils');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 
 /**
  * Helper functions for the Checkout.com cartridge integration.
@@ -26,7 +26,7 @@ var CKOHelper = {
         var data = [];
     
         // Query the orders
-        var result  = SystemObjectMgr.querySystemObjects('Order', '', 'creationDate desc');
+        var result = SystemObjectMgr.querySystemObjects('Order', '', 'creationDate desc');
         
         // Loop through the results
         for each(var item in result) {
@@ -78,9 +78,18 @@ var CKOHelper = {
                         currency: paymentTransaction.amount.currencyCode,
                         creation_date: paymentTransaction.getCreationDate().toDateString(),
                         type: paymentTransaction.type.displayValue,
-                        processor: this.getProcessorId(instrument)
+                        processor: this.getProcessorId(instrument),
+                        refundable_amount: 0,
+                        data_type: paymentTransaction.type.toString()
                     };
-                    
+
+                    // Calculate the refundable amount
+                    var condition1 = row.data_type == PaymentTransaction.TYPE_CAPTURE;
+                    var condition2 = row.opened !== false;
+                    if (condition1 && condition2) {
+                        row.refundable_amount = this.getRefundableAmount(paymentInstruments);
+                    }
+
                     // Add the transaction
                     data.push(row);
                     i++;
@@ -89,6 +98,35 @@ var CKOHelper = {
         }
         
         return data;
+    },
+
+    /**
+     * Check if a capture transaction can allow refunds.
+     */
+    getRefundableAmount: function (paymentInstruments) {
+        // Prepare the totals
+        var totalRefunded = 0;
+        var totalCaptured = 0;
+
+        // Loop through the payment instruments
+        for each(var instrument in paymentInstruments) {
+            // Get the payment transaction
+            var paymentTransaction = instrument.getPaymentTransaction();
+
+            // Calculate the total refunds
+            if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CREDIT) {
+                totalRefunded += parseFloat(paymentTransaction.amount.value);
+            }
+
+            // Calculate the total captures
+            if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CAPTURE) {
+                totalCaptured += parseFloat(paymentTransaction.amount.value);
+            }
+        }
+    
+        // Return the final amount
+        var finalAmount = totalCaptured - totalRefunded;
+        return finalAmount.toFixed(2);
     },
 
     /**
@@ -136,7 +174,7 @@ var CKOHelper = {
      */
     containsObject: function (obj, list) {
         var i;
-        for (i = 0; i < list.length; i++) {
+        for each(i = 0; i < list.length; i++) {
             if (list[i] === obj) {
                 return true;
             }
