@@ -28,7 +28,8 @@
 }
 
 .cko-apm-panel {
-    padding: 0 18px;
+    padding: 0px 18px 0px 18px;
+    width: 100%;
     background-color: white;
     max-height: 0;
     overflow: hidden;
