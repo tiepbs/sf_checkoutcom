@@ -1,4 +1,4 @@
-"use strict";
+"use strict"
 
 // CKO Card Currency Conversion Object
 var ckoCurrencyConfig = {
@@ -11,7 +11,7 @@ var ckoCurrencyConfig = {
         currencies  : 'BHD LYD JOD KWD OMR TND',
         multiple    : '1000'
     }
-};
+}
 
 // Module exports
 module.exports = ckoCurrencyConfig;

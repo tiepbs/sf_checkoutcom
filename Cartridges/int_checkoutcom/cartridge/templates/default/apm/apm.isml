@@ -143,7 +143,7 @@
 	
 	<!-- This to include the Paypal apm form -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoPaypalEnabled'))}">
-		<div id="paypal" class="apmBox">	
+		<div id="paypal" class="hideApm apmBox">	
 			<isinclude template="apm/payPal.isml"/>
 		</div>
 	</isif>

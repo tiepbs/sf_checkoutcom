@@ -1,6 +1,7 @@
 'use strict';
 
 // API Includes 
+var PaymentMgr = require('dw/order/PaymentMgr');
 var Transaction = require('dw/system/Transaction');
 
 // Site controller 

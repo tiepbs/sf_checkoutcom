@@ -1,6 +1,8 @@
-"use strict";
+"use strict"
 
 // API Includes
+var PaymentMgr = require('dw/order/PaymentMgr');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var ISML = require('dw/template/ISML');
@@ -16,6 +18,10 @@ var cardHelper = {
      * Creates Site Genesis Transaction Object
      */
     cardAuthorization: function (payObject, args) {
+    	
+        // Preparing payment parameters
+        var paymentInstrument = args.PaymentInstrument;
+        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
         
         // perform the charge
         var cardRequest = this.handleCardRequest(payObject, args);
@@ -32,11 +38,14 @@ var cardHelper = {
                 return {authorized: true, redirected: true};
             } else {
             	
+                // Load the card and order information
+                var order = OrderMgr.getOrder(args.OrderNo);
+            	
                 return {authorized: true};
             }    
         } else {
         	
-            return false;
+            return false
         }
     },
 		
@@ -50,41 +59,36 @@ var cardHelper = {
         
         // Create billing address object
         var gatewayRequest = this.getCardRequest(cardData, args);
-        
-        // Pre authorize the card
-        if (this.preAuthorizeCard(gatewayRequest)) {
         	
-            // Perform the request to the payment gateway
-            var gatewayResponse = ckoHelper.gatewayClientRequest(
-                "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
-                gatewayRequest
-            );
+        // Perform the request to the payment gateway
+        var gatewayResponse = ckoHelper.gatewayClientRequest(
+            "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
+            gatewayRequest
+        );
 
-            // If the charge is valid, process the response
-            if (gatewayResponse) {    
+        // If the charge is valid, process the response
+        if (gatewayResponse) {    
+        	
+            // Logging
+            ckoHelper.doLog('response', gatewayResponse);
+        	
+            // Handle the response
+            if (this.handleFullChargeResponse(gatewayResponse)) {
             	
-                // Logging
-                ckoHelper.doLog('response', gatewayResponse);
-            	
-                // Handle the response
-                if (this.handleFullChargeResponse(gatewayResponse)) {
-                	
-                    return gatewayResponse;
-                }
-
-                return false;
-            } else {
-            	
-                // Fail the order
-                Transaction.wrap(function () {
-                    OrderMgr.failOrder(order);
-                });
-
-                return false;
+                return gatewayResponse;
             }
+
+            return false;
+        } else {
+        	
+            // Fail the order
+            Transaction.wrap(function () {
+                OrderMgr.failOrder(order);
+            });
+
+            return false;
         }
             
-        return false;
     },
     
     /**
@@ -115,31 +119,6 @@ var cardHelper = {
         	// Check if its a valid response
             return ckoHelper.paymentSuccess(gatewayResponse);
         }
-    },
-    
-    /**
-     * Pre_Authorize card with zero value
-     */
-    preAuthorizeCard: function (requestData) {
-    	
-        // Clone the request data
-        var authData = JSON.parse(JSON.stringify(requestData));
-
-        // Prepare the pre authorization charge
-        authData['3ds'].enabled = false;
-        authData.amount = 0;
-        authData.currency = 'USD';
-        authData.capture = false;
-        delete authData['capture_on'];
-        
-        // Send the request
-        var authResponse = ckoHelper.gatewayClientRequest(
-            'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
-            authData
-        );
-        
-        // Return the response
-        return ckoHelper.paymentSuccess(authResponse);
     },
     
     /**
@@ -188,7 +167,7 @@ var cardHelper = {
             cvv                 : cardData.cvv,
             billing_address     : this.getBillingObject(args),
             phone               : ckoHelper.getPhoneObject(args)
-        };
+        }
         
         return source;
     },
@@ -201,7 +180,7 @@ var cardHelper = {
         return {
             'enabled' : ckoHelper.getValue('cko3ds'),
             'attempt_n3d' : ckoHelper.getValue('ckoN3ds')
-        };
+        }
     },
     
     /**
@@ -257,7 +236,7 @@ var cardHelper = {
         
         return shipping;
     }
-};
+}
 
 // Module exports
 module.exports = cardHelper;

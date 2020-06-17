@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 // Site controller
 var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
@@ -32,7 +32,6 @@ var ckoApmConfig = {
                 'description'   : args.OrderNo,
                 'language'      : ckoHelper.getLanguage()
             },
-            'type'      : 'ideal',
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
@@ -49,11 +48,14 @@ var ckoApmConfig = {
         var payObject = {
             'source'        : {
                 'type'  : 'boleto',
-                'birthDate' : paymentForm.get('boleto_birthDate').value(),
-                'cpf'       : paymentForm.get('boleto_cpf').value(),
-                'customerName' : ckoHelper.getCustomerName(args)
+                'integration_type': 'redirect',
+                'country': ckoHelper.getBillingCountry(args),
+                'payer': {
+                    'name' : ckoHelper.getCustomerName(args),
+                	'email': ckoHelper.getCustomer(args).email,
+                    'document'       : paymentForm.get('boleto_cpf').value()
+                }
             },
-            'type'      : 'boleto',
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
@@ -74,7 +76,6 @@ var ckoApmConfig = {
                 'account_holder_name'   : ckoHelper.getCustomerName(args),
                 'billing_descriptor'    : businessName
             },
-            'type'      : 'bancontact',
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
@@ -93,7 +94,6 @@ var ckoApmConfig = {
                 'type'              : 'benefitpay',
                 'integration_type'  : 'web'
             },
-            'type'      : 'benefit',
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
@@ -112,7 +112,6 @@ var ckoApmConfig = {
                 'type'          : 'giropay',
                 'purpose'       : businessName
             },
-            'type'      : 'giropay',
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
@@ -131,7 +130,6 @@ var ckoApmConfig = {
                 'type'      : 'eps',
                 'purpose'   : businessName
             },
-            'type'      : 'eps',
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
@@ -149,7 +147,6 @@ var ckoApmConfig = {
             'source'    : {
                 'type'  : 'sofort'
             },
-            'type'      : 'sofort',
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
@@ -168,7 +165,6 @@ var ckoApmConfig = {
                 'type'          : 'knet',
                 'language'      : ckoHelper.getLanguage().substr(0, 2)
             },
-            'type'      : 'knet',
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
@@ -190,7 +186,6 @@ var ckoApmConfig = {
                 'quantity'      : ckoHelper.getProductQuantity(args),
                 'national_id'   : paymentForm.get('qpay_national_id').value()
             },
-            'type'      : 'qpay',
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
@@ -212,7 +207,6 @@ var ckoApmConfig = {
                 'customer_email'    : ckoHelper.getCustomer(args).email,
                 'products'          : ckoHelper.getProductInformation(args)
             },
-            'type'      : 'fawry',
             'purpose'   : businessName,
             'currency'  : ckoHelper.getCurrency(args)
         };
@@ -248,7 +242,6 @@ var ckoApmConfig = {
     	
         // Building pay object
         var payObject = {
-            'type'      : 'multibanco',
             'currency'  : ckoHelper.getCurrency(args),
             'source'    : {
                 'type'                  : 'multibanco',
@@ -268,7 +261,6 @@ var ckoApmConfig = {
     	
         // Building pay object
         var payObject = {
-            'type'      : 'poli',
             'currency'  : ckoHelper.getCurrency(args),
             'source'    : {
                 'type'      : 'poli'
@@ -285,7 +277,6 @@ var ckoApmConfig = {
     	
         // Building pay object
         var payObject = {
-            'type'          : 'p24',
             'currency'      : ckoHelper.getCurrency(args),
             'source'        : {
                 'type'                  : 'p24',
@@ -314,7 +305,6 @@ var ckoApmConfig = {
         	
             // Build the payment object
             var payObject = {
-                'type'      : 'klarna',
                 'amount'    : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency(args)),
                 'currency'  : ckoHelper.getCurrency(args),
                 'capture'   : false,
@@ -343,7 +333,6 @@ var ckoApmConfig = {
     	
         // Build the payment object
         var payObject = {
-            'type'          : 'paypal',
             'currency'      : ckoHelper.getCurrency(args),
             'source'        : {
                 'type'              : 'paypal',
@@ -371,7 +360,6 @@ var ckoApmConfig = {
                     'document': paymentForm.get('oxxo_identification').value()
                 }
             },
-            'type'          : 'oxxo',
             'currency'      : ckoHelper.getCurrency(args)
         };
         
@@ -386,16 +374,14 @@ var ckoApmConfig = {
         // Build the payment object
         var payObject = {
             'source': {
-                'type': 'alipay',
-                'country': ckoHelper.getBillingObject(args).country
+                'type': 'alipay'
             },
-            'type'          : 'alipay',
             'currency'      : ckoHelper.getCurrency(args)
         };
         
         return payObject;
     }
-};
+}
 
 // Module exports
 module.exports = ckoApmConfig;
