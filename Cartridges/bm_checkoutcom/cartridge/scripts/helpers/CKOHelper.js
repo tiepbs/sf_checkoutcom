@@ -104,7 +104,7 @@ var CKOHelper = {
      * Check if a capture transaction can allow refunds.
      */
     getRefundableAmount: function (order, paymentInstruments) {
-        // Prepare the total refunded
+        // Prepare the totals
         var totalRefunded = 0;
         var totalCaptured = 0;
 
@@ -124,7 +124,9 @@ var CKOHelper = {
             }
         }
       
-        return totalCaptured - totalRefunded;
+        // Check if a refund is possible
+        var finalAmount = totalCaptured - totalRefunded;
+        return finalAmount.toFixed(2);
     },
 
     /**
