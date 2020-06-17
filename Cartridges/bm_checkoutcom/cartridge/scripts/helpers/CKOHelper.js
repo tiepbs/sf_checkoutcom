@@ -124,9 +124,7 @@ var CKOHelper = {
             }
         }
       
-        // Check if a refund is possible
-        var finalAmount = totalCaptured - totalRefunded;
-        return finalAmount.toFixed(2);
+        return totalCaptured - totalRefunded;
     },
 
     /**
