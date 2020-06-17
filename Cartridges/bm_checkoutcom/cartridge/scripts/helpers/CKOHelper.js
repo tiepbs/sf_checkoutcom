@@ -87,7 +87,7 @@ var CKOHelper = {
                     var condition1 = row.data_type == PaymentTransaction.TYPE_CAPTURE;
                     var condition2 = row.opened !== false;
                     if (condition1 && condition2) {
-                        row.refundable_amount = this.getRefundableAmount(item, paymentInstruments).toFixed(2);
+                        row.refundable_amount = this.getRefundableAmount(paymentInstruments);
                     }
 
                     // Add the transaction
@@ -103,7 +103,7 @@ var CKOHelper = {
     /**
      * Check if a capture transaction can allow refunds.
      */
-    getRefundableAmount: function (order, paymentInstruments) {
+    getRefundableAmount: function (paymentInstruments) {
         // Prepare the totals
         var totalRefunded = 0;
         var totalCaptured = 0;
@@ -123,8 +123,10 @@ var CKOHelper = {
                 totalCaptured += parseFloat(paymentTransaction.amount.value);
             }
         }
-      
-        return totalCaptured - totalRefunded;
+    
+        // Return the final amount
+        var finalAmount = totalCaptured - totalRefunded;
+        return finalAmount.toFixed(2);
     },
 
     /**
