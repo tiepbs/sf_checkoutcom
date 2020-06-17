@@ -1,6 +1,8 @@
-"use strict";
+"use strict"
 
 // API Includes 
+var PaymentMgr = require('dw/order/PaymentMgr');
+var PaymentTransaction = require('dw/order/PaymentTransaction');
 var Transaction = require('dw/system/Transaction');
 var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
@@ -15,6 +17,10 @@ var apmHelper = {
      * Creates Site Genesis Transaction Object
      */
     apmAuthorization: function (payObject, args) {
+    	
+        // Preparing payment parameters
+        var paymentInstrument = args.PaymentInstrument;
+        var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
         
         // perform the charge
         var apmRequest = this.handleApmRequest(payObject, args);
@@ -26,7 +32,7 @@ var apmHelper = {
                     
                     // Set the redirection template
                     var templatePath;
-                    if (payObject.type == "sepa") {
+                    if (payObject.hasOwnProperty('type') && payObject.type == "sepa") {
                         templatePath = 'redirects/sepaMandate.isml';
                     } else {
                         templatePath = 'redirects/apm.isml';
@@ -48,7 +54,7 @@ var apmHelper = {
             }
         } else {
         	
-            return false;
+            return false
         }
     },
         
@@ -101,25 +107,10 @@ var apmHelper = {
         var gatewayRequest = this.getApmRequest(payObject, args);
         
         // Test for SEPA
-        if (payObject.type == "sepa") {
-        	
-            // Prepare the charge data
-            var chargeData = {
-                "customer"              : ckoHelper.getCustomer(args),
-                "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), payObject.currency),
-                "type"                  : payObject.type,
-                "currency"              : payObject.currency,
-                "billing_address"       : ckoHelper.getBillingObject(args),
-                "source_data"           : payObject.source_data,
-                "reference"             : args.OrderNo,
-                "payment_ip"            : ckoHelper.getHost(args),
-                "metadata"              : ckoHelper.getMetadataObject(payObject, args),
-                "billing_descriptor"    : ckoHelper.getBillingDescriptorObject(),
-                "udf5"					: ckoHelper.getMetadataString(payObject, args)
-            };
+        if (payObject.hasOwnProperty('type') && payObject.type == "sepa") {
             
             // Perform the request to the payment gateway
-            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.sources." + ckoHelper.getValue('ckoMode') + ".service", chargeData);
+            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.sources." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
         } else {
         	
             // Perform the request to the payment gateway
@@ -157,7 +148,23 @@ var apmHelper = {
         var amount = ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), payObject.currency);
         
         // Object APM is SEPA
-        if (payObject.type == 'klarna') {
+        if (payObject.hasOwnProperty('type') && payObject.type == "sepa") {
+        	
+            // Prepare the charge data
+            chargeData = {
+                "customer"              : ckoHelper.getCustomer(args),
+                "amount"                : ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), payObject.currency),
+                "type"                  : payObject.type,
+                "currency"              : payObject.currency,
+                "billing_address"       : ckoHelper.getBillingObject(args),
+                "source_data"           : payObject.source_data,
+                "reference"             : args.OrderNo,
+                "payment_ip"            : ckoHelper.getHost(args),
+                "metadata"              : ckoHelper.getMetadataObject(payObject, args),
+                "billing_descriptor"    : ckoHelper.getBillingDescriptorObject(),
+                "udf5"					: ckoHelper.getMetadataString(payObject, args)
+            };     	
+        } else if (payObject.hasOwnProperty('source') && payObject.source.type == 'klarna') {
         	
             // Prepare chargeData object
             chargeData = {
@@ -221,7 +228,7 @@ var apmHelper = {
             return false;
         }
     }
-};
+}
 
 // Module exports
 module.exports = apmHelper;

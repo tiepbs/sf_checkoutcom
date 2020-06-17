@@ -13,11 +13,11 @@
     margin-bottom: 30px;
 }
 
-.ckoErrorMessage {
+.ckoErrorMessage, .ckoInvalidAmount {
     margin-top: 20px;
     display: none;
 }
 
-.ckoErrorMessage .msg {
+.ckoErrorMessage .msg, .ckoInvalidAmount .msg {
     display: inline;
 }

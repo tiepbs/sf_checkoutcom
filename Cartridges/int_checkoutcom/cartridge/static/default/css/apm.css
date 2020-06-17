@@ -78,8 +78,10 @@ vertical-align: middle;
 #klarnaConfirmBtn{
 	width: 100%; 
 	margin-top: 30px; 
-	background: #EB6F93; 
-	border: #EB6F93; 
+	padding: 10px;
+	font-size: 1.5em;
+	/*background: #EB6F93; */
+	/* border: #EB6F93; */
 	display: none;
 }
 

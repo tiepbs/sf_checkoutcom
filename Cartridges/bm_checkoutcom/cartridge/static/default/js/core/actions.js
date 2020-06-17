@@ -33,11 +33,19 @@ function initButtons()
     
     // Submit the action request
     jQuery('.ckoModal .modal-content .submit').click(function () {
-        performAction(jQuery(this).closest('.modal-content').find('input'));
+        // Prepare the origin element id members
+        var elt = jQuery(this).closest('.modal-content').find('input');
+        var members = elt.attr('id').split('_');
+
+        // Get the transaction task
+        var task = members[0];
+
+        // Perform the requested action
+        performAction(task);               
     });
 }
 
-function openModal(elt, rowIndex)
+function openModal(elt)
 {
     // Prepare the origin element id members
     var members = elt.id.split('-');
@@ -82,9 +90,18 @@ function getTransactionData(members)
             var field4Id = '[id="' + task + '_payment_id"]';
             var field5Id = '[id="' + task + '_full_amount"]';
             var field6Id = '[id="' + task + '_order_no"]';
+            var field7Id = '[id="' + task + '_refundable_amount"]';
 
-            // Add the transation data to the fields
-            jQuery(field1Id).val(transaction.amount);
+            // Handle the capture case transation amount value
+            if (transaction.data_type == 'CAPTURE') {
+                jQuery(field1Id).val(transaction.refundable_amount);
+                jQuery(field7Id).append(transaction.refundable_amount + ' ' + transaction.currency);
+            }
+            else {
+                jQuery(field1Id).val(transaction.amount);
+            }
+
+            // Add the remaining values
             jQuery(field2Id).append(transaction.currency);
             jQuery(field3Id).append(transaction.transaction_id);
             jQuery(field4Id).append(transaction.payment_id);
@@ -100,29 +117,23 @@ function getTransactionData(members)
     });
 }
 
-function showErrorMessage()
+function showErrorMessage(selector)
 {
     // Show the error message
-    jQuery('.ckoErrorMessage').show(
+    jQuery('.' + selector).show(
         'fast',
         function () {
             setTimeout(function () {
-                jQuery('.ckoErrorMessage').hide('fast');
+                jQuery('.' + selector).hide();
             }, 7000);
         }
     );
 }
 
-function performAction(elt)
+function performAction(task)
 {
     // Prepare the action URL
     var actionUrl = jQuery('[id="actionControllerUrl"]').val();
-
-    // Prepare the origin element id members
-    var members = elt.attr('id').split('_');
-
-    // Get the transaction task
-    var task = members[0];
     
     // Set the transaction id
     var paymentId = jQuery('[id="' + task + '_payment_id"]').text();
@@ -145,7 +156,7 @@ function performAction(elt)
         success: function (res) {
             var success = JSON.parse(res);
             if (!success) {
-                showErrorMessage();
+                showErrorMessage('ckoErrorMessage');
             } else {
                 // Close the modal window
                 jQuery('.ckoModal .modal-content .close').trigger('click');

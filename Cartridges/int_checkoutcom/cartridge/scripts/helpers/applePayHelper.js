@@ -1,4 +1,4 @@
-"use strict";
+"use strict"
 
 
 // API Includes 
@@ -96,7 +96,7 @@ var applePayHelper = {
         var source = {
             type: "token",
             token: tokenData.token
-        };
+        }
         
         return source;
     }

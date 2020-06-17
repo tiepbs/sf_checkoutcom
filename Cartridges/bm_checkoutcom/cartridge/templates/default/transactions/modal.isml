@@ -88,6 +88,7 @@
 				<p><span class="label">${Resource.msg('cko.transaction.id', 'cko', null)}:</span><span id="refund_transaction_id"></span></p>
 				<p><span class="label">${Resource.msg('cko.payment.id', 'cko', null)}:</span><span id="refund_payment_id"></span></p>
 				<p><span class="label">${Resource.msg('cko.full.amount', 'cko', null)}:</span><span id="refund_full_amount"></span></p>
+				<p><span class="label">${Resource.msg('cko.refundable.amount', 'cko', null)}:</span><span id="refund_refundable_amount"></span></p>
 			</div>
 			<div class="input-row">
 				<p>

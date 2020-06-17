@@ -13,7 +13,7 @@ var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper')
 
 // Gateway event functions for the Checkout.com cartridge integration.
 var eventsHelper = {
-    
+
     /**
      * Adds the gateway webhook information to the newly created order
      */
@@ -36,7 +36,7 @@ var eventsHelper = {
 
                 // Add the details to the order
                 order.addNote(ckoHelper._('cko.webhook.info', 'cko'), details);
-    
+
                 // Update the payment status
                 if (paymentStatus) {
                     order.setPaymentStatus(order[paymentStatus]);
@@ -63,7 +63,7 @@ var eventsHelper = {
 
         // Get the payment processor id
         var paymentProcessorId = hook.data.metadata.payment_processor;
-        
+
         // Get the  transaction amount
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
 
@@ -139,7 +139,7 @@ var eventsHelper = {
     /**
      * Capture failed event
      */
-    paymentCaptureDeclined: function (hook) {
+    paymentCapturedDeclined: function (hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
     },
 
@@ -156,12 +156,12 @@ var eventsHelper = {
 
         // Get the payment processor id
         var paymentProcessorId = hook.data.metadata.payment_processor;
-        
+
         // Get the  transaction amount
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
- 
+
         // Create the refunded transaction
-        Transaction.wrap(function () { 
+        Transaction.wrap(function () {
 
             // Create the transaction
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
@@ -177,7 +177,7 @@ var eventsHelper = {
             var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Authorization');
             if (parentTransaction) {
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
-                parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(order);
+                parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(transactionAmount);
             }
         });
     },
@@ -195,12 +195,12 @@ var eventsHelper = {
 
         // Get the payment processor id
         var paymentProcessorId = hook.data.metadata.payment_processor;
-        
+
         // Get the  transaction amount
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
-               
+
         // Create the voided transaction
-        Transaction.wrap(function () { 
+        Transaction.wrap(function () {
 
             // Create the transaction
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
@@ -233,6 +233,13 @@ var eventsHelper = {
      * Charge void failed event
      */
     paymentVoidDeclined: function (hook) {
+        this.addWebhookInfo(hook, null, null);
+    },
+
+    /**
+    * Payment pending event.
+    */
+    paymentExpired: function (hook) {
         this.addWebhookInfo(hook, null, null);
     }
 };

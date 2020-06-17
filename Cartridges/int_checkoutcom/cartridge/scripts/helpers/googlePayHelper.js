@@ -1,4 +1,4 @@
-"use strict";
+"use strict"
 
 
 // API Includes
@@ -97,11 +97,11 @@ var googlePayHelper = {
         var source = {
             type: "token",
             token: tokenData.token
-        };
+        }
         
         return source;
     }
-};
+}
 
 // Module exports
 module.exports = googlePayHelper;
