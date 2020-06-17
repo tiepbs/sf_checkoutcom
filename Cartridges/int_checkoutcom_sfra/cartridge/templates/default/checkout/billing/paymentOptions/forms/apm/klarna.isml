@@ -12,7 +12,7 @@
 </button>
 
 <div class="cko-apm-panel">
-	<div id="klarnaPay_pay_box">
+	<div id="klarna_pay_box">
 		<div id="klarna-buttons"></div>
 		<div id="klarna-payments-container"></div>
 		
