@@ -37,3 +37,7 @@
     font-size: 20px;
     color: black;
 }
+
+.klarna-button input[type="radio"] {
+    margin-left: 10px;
+}
