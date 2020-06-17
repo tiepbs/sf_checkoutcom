@@ -38,6 +38,9 @@ function initApmAccordion()
         $('.cko-apm-panel').css('maxHeight', '0px');
         $('.cko-apm-panel').removeClass('cko-apm-panel-opened');
 
+        // Disable the container auto height (display: table)
+        $('.cko-apm-panel').css('display', 'block');
+
         // Set the active element
         $(this).addClass('cko-apm-active');
 
@@ -50,11 +53,13 @@ function initApmAccordion()
 
         // Open the sibling panel
         var panel = $(this).next();
-        panel.addClass('cko-apm-panel-opened');
+
+        // Enable the container auto height
+        panel.css('display', 'table');
         if (panel.css('maxHeight') != '0px') {
             panel.css('maxHeight', '0px');
         } else {
-            panel.css('maxHeight', (panel.prop('scrollHeight') + 20) + 'px');
+            panel.css('maxHeight', panel.prop('scrollHeight') + 'px');
         } 
     });
 }
