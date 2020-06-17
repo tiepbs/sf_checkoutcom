@@ -1,8 +1,16 @@
+/**
+ * jQuery Ajax helpers on DOM ready.
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    callKlarnaController();
+}, false);
+
 /*
  * Get the Klarna controller
  */
-function callKlarnaController(controllerUrl)
-{    
+function callKlarnaController()
+{  
+    var controllerUrl = jQuery('[id="ckoKlarnaController"]').val();
     if (controllerUrl) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {

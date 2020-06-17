@@ -6,13 +6,13 @@
 </isscript>
 
 <button class="cko-apm-accordion">
-	<input id="klarna_apm_radio_btn" type="radio" onclick="callKlarnaController('${URLUtils.url('CKOKlarna-KlarnaSession')}')">
+	<input id="klarna_apm_radio_btn" type="radio">
 	<img alt="${Resource.msg('cko.klarna.name','cko',null)}" id="klarna_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}"/>
 	${Resource.msg('cko.klarna.name','cko',null)}
 </button>
 
 <div class="cko-apm-panel">
-	<div id="klarnaPay_pay_box">
+	<div id="klarna_pay_box">
 		<div id="klarna-buttons"></div>
 		<div id="klarna-payments-container"></div>
 		
@@ -27,4 +27,5 @@
 	</div>
 </div>
 
+<input type="hidden" id="ckoKlarnaController" value="${URLUtils.url('CKOKlarna-KlarnaSession')}">
 <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
