@@ -97,61 +97,17 @@ var setSchema = function (inputId) {
 }
 
 /**
- * Sets mada image in box
- */
-var setMada = function () {
-    var input = document.getElementById('dwfrm_cardPaymentForm_number');
-    input.addEventListener('keyup', function () {
-        var value = this.value;
-        if (value.length > 6) {
-            var cardNumber = value.replace(/\s/g, "");
-            
-            // Match cardnumber with mada bins
-            var result = Mada.compare(cardNumber);
-            
-            // If result match mada card
-            if (result) {
-                // Get element cardType from form
-                var cardType = document.getElementById('dwfrm_cardPaymentForm_type');
-                
-                // If element cardType exist set value to type
-                if (cardType) {
-                    cardType.value = result;
-                }
-                
-                // Get card schema
-                var imageId = getImageId(result);
-                
-                // Set card schema image
-                setImage(imageId);
-            } else {
-            	
-                // If there is an active schema image don't change
-                if (!isSet) {
-                    setImage('default_thumb');
-                }
-            }
-        } else if (value.length < 6) {
-            if (!isSet) {
-                setImage('default_thumb');
-            }
-        }
-    });
-}
-
-/**
  * Set schema card image
  */
 var setImage = function (element) {
+    var id = document.getElementById(element);
 	
     // If image is already set
     if (isSetId) {
         isSetId.style.display = "none";
-        var id = document.getElementById(element);
         id.style.display = "block";
         isSetId = id;
     } else {
-        var id = document.getElementById(element);
         id.style.display = "block";
         isSetId = id;
     }
@@ -186,81 +142,117 @@ var getImageId  = function (schema) {
     }
 }
 
-var Mada = {
-		
-    // MADA BINs
-    cards: {
-        four: [
-                "484783", "489317", "410685", "446672", "428331", "419593", "440647", "493428", "417633", "446393", "486094", "489318", "432328", "483010", "439954",
-                "440795", "468540", "462220", "486095", "489319", "428671", "434107", "483011", "407197", "446404", "468541", "400861", "455708", "486096", "445564",
-                "428672", "431361", "422817", "483012", "407395", "457865", "468542", "409201", "428673", "422818", "468543", "458456", "455036", "440533", "401757",
-                "422819"
-            ],
-        five: [
-                "588845", "588846", "588850", "554180", "537767", "588982", "588851", "543357", "549760", "535989", "589005", "539931", "588847", "535825", "588849",
-                "536023", "508160", "558848", "529415", "513213", "531095", "557606", "588848", "504300", "543085", "524514", "585265", "530906", "589206", "521076",
-                "524130", "529741", "588983", "532013",
-            ],
-        six: [ "636120", "605141", "604906" ],
-        nine: [ "968201", "968203", "968205", "968202", "968204", "968209", "968211", "968208", "968210", "968206", "968207" ]
-    },
+/**
+ * Compare card
+ */
+var ckoMadaFilter = function (cardNumber, bins) {
+	
+    // Get first number
+    var firstNumber = cardNumber.charAt(0);
+    var number = cardNumber.substr(0, 6);
 
-    /**
-     * Compare card
-     */
-    compare: function (cardNumber) {
-    	
-        // Get first number
-        var fNumber = this.firstNumber(cardNumber);
-        var number = cardNumber.substr(0, 6);
-
-        if (fNumber) {
-            switch (fNumber) {
-                case '4':
-                    var result = this.cards.four.includes(number);
-                    if (result) {
-                    	
-                        return "mada";
-                    }
-                    break;
-                case '5':
-                    var result = this.cards.five.includes(number);
-                    if (result) {
-                    	
-                        return "mada";
-                    }
-                    break;
-                case '6':
-                    var result = this.cards.six.includes(number);
-                    if (result) {
-                    	
-                        return "mada";
-                    }
-                    break;
-                case '9':
-                    var result = this.cards.nine.includes(number);
-                    if (result) {
-                    	
-                        return "mada";
-                    }
-                    break;
-                default:
+    if (firstNumber) {
+    	var result = null;
+        switch (firstNumber) {
+            case '4':
+                result = bins.four.includes(number);
+                if (result) {
                 	
-                    return false;
+                    return "mada";
+                }
+                break;
+            case '5':
+                result = bins.five.includes(number);
+                if (result) {
+                	
+                    return "mada";
+                }
+                break;
+            case '6':
+                result = bins.six.includes(number);
+                if (result) {
+                	
+                    return "mada";
+                }
+                break;
+            case '9':
+                result = bins.nine.includes(number);
+                if (result) {
+                	
+                    return "mada";
+                }
+                break;
+            default:
+            	
+                return false;
+        }
+    }
+    else {
+    	
+        return false;
+    }
+}
+
+/**
+ * Sets mada image in box
+ */
+var setMada = function () {
+    var input = document.getElementById('dwfrm_cardPaymentForm_number');
+    input.addEventListener('keyup', function () {
+        var value = this.value;
+        if (value.length == 7) {
+            var cardNumber = value.replace(/\s/g, "");
+            
+            // Get Mata Config data Url
+            var madaBinUrl = document.getElementById('ckoMadaBinUrl').value;
+            var madaBinRequest = new XMLHttpRequest();
+            
+            madaBinRequest.onreadystatechange = function() {
+            	
+            	// If request was successful and return 200
+                if (this.readyState == 4 && this.status == 200) {
+                	
+                	// Assign the request response to responseObject variable
+                    var responseObject = JSON.parse(this.responseText);
+                    var bins = responseObject;
+                    //console.log(bins);
+                    
+                    // Match cardnumber with mada bins
+                    var result = ckoMadaFilter(cardNumber, bins);
+				  
+                    // If result match mada card
+                    if (result) {
+                    	// Get element cardType from form
+                    	var cardType = document.getElementById('dwfrm_cardPaymentForm_type');
+				  
+                    	// If element cardType exist set value to type
+                    	if (cardType) {
+                    		cardType.value = result;
+                    	}
+				  
+                    	// Get card schema
+                    	var imageId = getImageId(result);
+				  
+                    	// Set card schema image
+                    	setImage(imageId);
+                    } else {
+				  	
+                    	// If there is an active schema image don't change
+                    	if (!isSet) {
+                    		setImage('default_thumb');
+                    	}
+                    }
+                    
+                }
+            }
+            
+            madaBinRequest.open('GET', madaBinUrl, true);
+            madaBinRequest.send();
+            
+        } else if (value.length < 6) {
+            if (!isSet) {
+                setImage('default_thumb');
             }
         }
-        else {
-        	
-            return "error";
-        }
-    },
-
-    /**
-     * Returns the first number of the card
-     */
-    firstNumber: function (cardNumber) {
-    	
-        // Get first number
-        return cardNumber.charAt(0);
-    }
+    });
 }
