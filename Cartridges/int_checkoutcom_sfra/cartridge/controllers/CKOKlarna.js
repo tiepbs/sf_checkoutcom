@@ -22,23 +22,22 @@ server.get('KlarnaSession', server.middleware.https, function (req, res, next) {
     var basket = BasketMgr.getCurrentBasket();
     if (Object.keys(basket).length !== 0) {
         // Prepare the variables
-        var countryCode = ckoHelper.getBasketCountyCode(basket);
+        var basketAddress = ckoHelper.getAddress(basket);
         var currency = basket.getCurrencyCode();
         var locale = ckoHelper.getLanguage();
         var total = ckoHelper.getFormattedPrice(basket.getTotalGrossPrice().value, currency);
         var tax =  ckoHelper.getFormattedPrice(basket.getTotalTax().value, currency);
         var products = ckoHelper.getBasketObject(basket);
-        var billing = ckoHelper.getBasketAddress(basket);
         
         // Prepare the request object
         var requestObject = {
-            "purchase_country": countryCode,
+            "purchase_country"      : basketAddress.countryCode,
             "currency"              : currency,
             "locale"                : locale,
             "amount"                : total,
             "tax_amount"            : tax,
             "products"              : products,
-            "billing_address"       : billing
+            "billing_address"       : basketAddress
         }
         
         // Perform the request to the payment gateway
@@ -49,7 +48,7 @@ server.get('KlarnaSession', server.middleware.https, function (req, res, next) {
         
         // Store variables in session
         gSession.requestObject = requestObject;
-        gSession.addressInfo = ckoHelper.getBasketAddress(basket);
+        gSession.addressInfo = basketAddress;
 
         // Write the session
         if (gSession) {
