@@ -22,7 +22,7 @@ server.get('KlarnaSession', server.middleware.https, function (req, res, next) {
     var basket = BasketMgr.getCurrentBasket();
     if (Object.keys(basket).length !== 0) {
         // Prepare the variables
-        var basketAddress = ckoHelper.getAddress(basket);
+        var basketAddress = ckoHelper.geBasketAddress(basket);
         var currency = basket.getCurrencyCode();
         var locale = ckoHelper.getLanguage();
         var total = ckoHelper.getFormattedPrice(basket.getTotalGrossPrice().value, currency);
