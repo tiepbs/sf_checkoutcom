@@ -17,27 +17,29 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 /**
  * Initiate the Kalrna session.
  */
-server.get('KlarnaSession', server.middleware.https, function (req, res, next) {
+server.get('KlarnaSession', function (req, res, next) {
     // Prepare the basket
     var basket = BasketMgr.getCurrentBasket();
+    var basket = Object.keys(basket).length !== 0 ? basket : JSON.parse(req.querystring.countryCode);
     if (Object.keys(basket).length !== 0) {
         // Prepare the variables
-        var basketAddress = ckoHelper.getBasketAddress(basket);
+        var countryCode = ckoHelper.getBasketCountyCode(basket);
         var currency = basket.getCurrencyCode();
         var locale = ckoHelper.getLanguage();
         var total = ckoHelper.getFormattedPrice(basket.getTotalGrossPrice().value, currency);
         var tax =  ckoHelper.getFormattedPrice(basket.getTotalTax().value, currency);
         var products = ckoHelper.getBasketObject(basket);
+        var billing = ckoHelper.getBasketAddress(basket);
         
         // Prepare the request object
         var requestObject = {
-            "purchase_country"      : basketAddress.country_code,
+            "purchase_country": countryCode,
             "currency"              : currency,
             "locale"                : locale,
             "amount"                : total,
             "tax_amount"            : tax,
             "products"              : products,
-            "billing_address"       : basketAddress
+            "billing_address"       : billing
         }
         
         // Perform the request to the payment gateway
@@ -48,7 +50,7 @@ server.get('KlarnaSession', server.middleware.https, function (req, res, next) {
         
         // Store variables in session
         gSession.requestObject = requestObject;
-        gSession.addressInfo = basketAddress;
+        gSession.addressInfo = ckoHelper.getBasketAddress(basket);
 
         // Write the session
         if (gSession) {

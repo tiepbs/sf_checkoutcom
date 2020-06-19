@@ -285,7 +285,7 @@ var ckoApmConfig = {
                         args.order.totalTax.value,
                         args.order.getCurrencyCode()
                     ),
-                    'billing_address'       : ckoHelper.getOrdeAddress(args),
+                    'billing_address'       : ckoHelper.getOrderBasketAddress(args),
                     'products'              : ckoHelper.getOrderBasketObject(args)
                 }
             };

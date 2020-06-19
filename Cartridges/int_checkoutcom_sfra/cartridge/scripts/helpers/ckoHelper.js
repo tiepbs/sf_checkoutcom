@@ -850,7 +850,15 @@ var ckoHelper = {
     },
 
     /*
-     * Return basket address
+     * Return Basket Item CountryCode
+     */
+    getBasketCountyCode: function (basket) {
+        var countyCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
+        return countyCode;
+    },
+
+    /*
+     * Return Basket Item CountryCode
      */
     getBasketAddress: function (basket) {
         var address = {
@@ -863,16 +871,17 @@ var ckoHelper = {
             postal_code                 : basket.defaultShipment.shippingAddress.postalCode,
             city                        : basket.defaultShipment.shippingAddress.city,
             phone                       : basket.defaultShipment.shippingAddress.phone,
-            country_code                : basket.defaultShipment.shippingAddress.countryCode
+            country                     : basket.defaultShipment.shippingAddress.countryCode.valueOf()
+
         }
 
         return address;
     },
 
     /*
-     * Return the order address
+     * Return Basket Item CountryCode
      */
-    getOrdeAddress: function (args) {
+    getOrderBasketAddress: function (args) {
         var order = OrderMgr.getOrder(args.orderNo);
         var address = {
             given_name                  : order.defaultShipment.shippingAddress.firstName,
