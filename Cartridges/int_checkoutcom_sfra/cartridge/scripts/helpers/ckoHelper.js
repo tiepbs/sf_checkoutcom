@@ -745,7 +745,6 @@ var ckoHelper = {
 
     // Build the Billing object
     getBilling: function (args) {
-
         // Get billing address information
         var billingAddress = args.order.getBillingAddress();
 
