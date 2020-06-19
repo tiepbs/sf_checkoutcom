@@ -266,7 +266,6 @@ var ckoApmConfig = {
     klarnaAuthorization: function (args) {
         // Klarna Form Inputs
         var klarna_approved = args.paymentData.klarna_approved.value.toString();
-
         if (klarna_approved) {
             // Build the payment object
             var params = {
@@ -285,7 +284,7 @@ var ckoApmConfig = {
                         args.order.totalTax.value,
                         args.order.getCurrencyCode()
                     ),
-                    'billing_address'       : ckoHelper.getOrderBasketAddress(args),
+                    'billing_address'       : ckoHelper.getBilling(args),
                     'products'              : ckoHelper.getOrderBasketObject(args)
                 }
             };

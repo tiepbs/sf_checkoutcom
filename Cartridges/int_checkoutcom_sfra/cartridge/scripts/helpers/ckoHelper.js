@@ -17,18 +17,6 @@ var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 */
 var ckoHelper = {
     /*
-     * Get the required value for each mode
-     */
-    getAppModeValue: function (sandboxValue, liveValue) {
-        var appMode = this.getValue('ckoMode');
-        if (appMode == 'sandbox') {
-            return sandboxValue;
-        } else {
-            return liveValue;
-        }
-    },
-
-    /*
      * Get a failed payment error message
      */
     getPaymentFailureMessage: function () {
@@ -765,7 +753,7 @@ var ckoHelper = {
      * Return Basket Item object
      */
     getBasketObject: function (basket) {
-        var currency = this.getAppModeValue('GBP', basket.getCurrencyCode());
+        var currency = basket.getCurrencyCode();
         var products_quantites = [];
         var it = basket.productLineItems.iterator();
         while (it.hasNext()) {
@@ -808,7 +796,7 @@ var ckoHelper = {
     getOrderBasketObject: function (args) {
         // Prepare some variables
         var order = OrderMgr.getOrder(args.orderNo);
-        var currency = this.getAppModeValue('GBP', order.getCurrencyCode());
+        var currency = order.getCurrencyCode();
         var it = order.productLineItems.iterator();
         var products_quantites = [];
 
@@ -873,28 +861,6 @@ var ckoHelper = {
             phone                       : basket.defaultShipment.shippingAddress.phone,
             country                     : basket.defaultShipment.shippingAddress.countryCode.valueOf()
 
-        }
-
-        return address;
-    },
-
-    /*
-     * Return Basket Item CountryCode
-     */
-    getOrderBasketAddress: function (args) {
-        var order = OrderMgr.getOrder(args.orderNo);
-        var billingAddress = order.getBillingAddress();
-        var address = {
-            given_name                  : billingAddress.firstName,
-            family_name                 : billingAddress.lastName,
-            email                       : order.customerEmail,
-            title                       : billingAddress.title,
-            street_address              : billingAddress.address1,
-            street_address2             : billingAddress.address2,
-            postal_code                 : billingAddress.postalCode,
-            city                        : billingAddress.city,
-            phone                       : billingAddress.phone,
-            country                     : billingAddress.countryCode.valueOf()
         }
 
         return address;
