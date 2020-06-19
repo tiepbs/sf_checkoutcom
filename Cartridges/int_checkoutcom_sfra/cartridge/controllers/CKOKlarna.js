@@ -20,10 +20,9 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 server.get('KlarnaSession', function (req, res, next) {
     // Prepare the basket
     var basket = BasketMgr.getCurrentBasket();
-    var basket = Object.keys(basket).length !== 0 ? basket : JSON.parse(req.querystring.countryCode);
     if (Object.keys(basket).length !== 0) {
         // Prepare the variables
-        var countryCode = ckoHelper.getBasketCountyCode(basket);
+        var countryCode = Object.keys(basket).length !== 0 ? basket : JSON.parse(req.querystring).countryCode;
         var currency = basket.getCurrencyCode();
         var locale = ckoHelper.getLanguage();
         var total = ckoHelper.getFormattedPrice(basket.getTotalGrossPrice().value, currency);

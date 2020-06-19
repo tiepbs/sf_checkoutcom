@@ -791,14 +791,6 @@ var ckoHelper = {
     },
 
     /*
-     * Return Basket countryCode
-     */
-    getBasketCountyCode: function (basket) {
-        var countyCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
-        return countyCode;
-    },
-
-    /*
      * Return Basket Item CountryCode
      */
     getBasketAddress: function (basket) {
@@ -812,7 +804,7 @@ var ckoHelper = {
             postal_code                 : basket.defaultShipment.shippingAddress.postalCode,
             city                        : basket.defaultShipment.shippingAddress.city,
             phone                       : basket.defaultShipment.shippingAddress.phone,
-            country                     : basket.defaultShipment.shippingAddress.countryCode.valueOf()
+            country                     : basket.defaultShipment.shippingAddress.countryCode
 
         }
 

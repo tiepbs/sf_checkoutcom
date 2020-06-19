@@ -139,7 +139,7 @@ server.get('GetApmFilter', server.middleware.https, function (req, res, next) {
     // Prepare some variables
     var basket = BasketMgr.getCurrentBasket();
     var currencyCode = basket.getCurrencyCode();
-    var countryCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
+    var countryCode = basket.getBillingAddress().countryCode.valueOf();
     
     // Prepare the filter object
     var filterObject = {
