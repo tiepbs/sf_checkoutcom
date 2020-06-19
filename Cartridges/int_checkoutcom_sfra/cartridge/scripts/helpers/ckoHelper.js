@@ -863,7 +863,7 @@ var ckoHelper = {
             postal_code                 : basket.defaultShipment.shippingAddress.postalCode,
             city                        : basket.defaultShipment.shippingAddress.city,
             phone                       : basket.defaultShipment.shippingAddress.phone,
-            country                     : basket.defaultShipment.shippingAddress.countryCode.valueOf()
+            country_code                : basket.defaultShipment.shippingAddress.countryCode
         }
 
         return address;
