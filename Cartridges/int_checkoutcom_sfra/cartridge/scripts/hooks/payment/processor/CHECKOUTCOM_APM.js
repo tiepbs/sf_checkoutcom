@@ -58,7 +58,8 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     var args = {
         order: order,
         processorId: processorId,
-        paymentData: billingForm.apmForm
+        paymentData: billingForm.apmForm,
+        req: req
     };
 
     // Get the selected APM request data

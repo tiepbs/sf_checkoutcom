@@ -876,27 +876,6 @@ var ckoHelper = {
         }
 
         return address;
-    },
-
-    /*
-     * Return Basket Item CountryCode
-     */
-    getOrderBasketAddress: function (args) {
-        var billingAddress = args.order.getBillingAddress();
-        var address = {
-            given_name                  : billingAddress.firstName,
-            family_name                 : billingAddress.lastName,
-            email                       : order.customerEmail,
-            title                       : billingAddress.title,
-            street_address              : billingAddress.address1,
-            street_address2             : billingAddress.address2,
-            postal_code                 : billingAddress.postalCode,
-            city                        : billingAddress.city,
-            phone                       : billingAddress.phone,
-            country                     : billingAddress.countryCode
-        }
-
-        return address;
     }
 }
 

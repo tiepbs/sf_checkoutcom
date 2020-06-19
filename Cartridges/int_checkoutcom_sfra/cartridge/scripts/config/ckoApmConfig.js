@@ -3,6 +3,9 @@
 /* Business Name */
 var businessName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBusinessName');
 
+/* API Includes */
+var BasketMgr = require('dw/order/BasketMgr');
+
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
@@ -267,6 +270,10 @@ var ckoApmConfig = {
         // Klarna Form Inputs
         var klarna_approved = args.paymentData.klarna_approved.value.toString();
 
+        // Prepare the basket
+        var basket = BasketMgr.getCurrentBasket();
+
+        // Process the payment
         if (klarna_approved) {
             // Build the payment object
             var params = {
@@ -285,7 +292,7 @@ var ckoApmConfig = {
                         args.order.totalTax.value,
                         args.order.getCurrencyCode()
                     ),
-                    'billing_address'       : ckoHelper.getOrderBasketAddress(args),
+                    'billing_address'       : ckoHelper.getBasketAddress(basket),
                     'products'              : ckoHelper.getOrderBasketObject(args)
                 }
             };
