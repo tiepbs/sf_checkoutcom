@@ -867,6 +867,26 @@ var ckoHelper = {
         }
 
         return address;
+    },
+
+    /**
+     * Return the order billing address
+     */
+    getOrderAddress: function (args) {
+        var address = {
+            given_name                  : args.order.defaultShipment.shippingAddress.firstName,
+            family_name                 : args.order.defaultShipment.shippingAddress.lastName,
+            email                       : args.order.customerEmail,
+            title                       : args.order.defaultShipment.shippingAddress.title,
+            street_address              : args.order.defaultShipment.shippingAddress.address1,
+            street_address2             : args.order.defaultShipment.shippingAddress.address2,
+            postal_code                 : args.order.defaultShipment.shippingAddress.postalCode,
+            city                        : args.order.defaultShipment.shippingAddress.city,
+            phone                       : args.order.defaultShipment.shippingAddress.phone,
+            country                     : args.order.defaultShipment.shippingAddress.countryCode.valueOf()
+        }
+        
+        return address;
     }
 }
 
