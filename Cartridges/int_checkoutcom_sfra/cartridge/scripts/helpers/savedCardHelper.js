@@ -148,9 +148,10 @@ var savedCardHelper = {
      * Delete a card in customer account
      */
     deleteSavedCard: function (hook) {
-        var condition1 = hook.data.metadata.hasOwnProperty('card_uuid');
-        var condition2 = hook.data.metadata.hasOwnProperty('customer_id');
-        if (condition1 && condition2) {           
+        var condition1 = hook.hasOwnProperty('data') && hook.data.hasOwnProperty('metadata');
+        var condition2 = hook.data.metadata.hasOwnProperty('card_uuid');
+        var condition3 = hook.data.metadata.hasOwnProperty('customer_id');
+        if (condition1 && condition2 && condition3) {           
             // Set the customer and card uuiid
             var customerId = hook.data.metadata.hasOwnProperty('customer_id');
             var cardUuid = hook.data.metadata.hasOwnProperty('card_uuid');
