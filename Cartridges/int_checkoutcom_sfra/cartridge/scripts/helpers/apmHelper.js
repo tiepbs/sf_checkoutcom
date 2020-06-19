@@ -21,7 +21,7 @@ var apmHelper = {
 
         // Create the payment request
         var gatewayRequest = this.getApmRequest(order, processorId, apmConfigData);
-
+       
         // Test SEPA
         if (gatewayRequest.source.type == "sepa") {
             gatewayRequest['billing_address'] = ckoHelper.getBilling({order: order});
@@ -99,7 +99,7 @@ var apmHelper = {
         
         // Test Klarna
         if (apmConfigData.type == 'klarna') {
-            chargeData.capture = false;
+            chargeData['capture'] = false;
         }
 
         return chargeData;

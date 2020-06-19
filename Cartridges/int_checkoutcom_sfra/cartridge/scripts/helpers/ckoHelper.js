@@ -850,29 +850,20 @@ var ckoHelper = {
     },
 
     /*
-     * Return Basket Item CountryCode
-     */
-    getBasketCountyCode: function (basket) {
-        var countyCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
-        return countyCode;
-    },
-
-    /*
-     * Return Basket Item CountryCode
+     * Return the basket billing address
      */
     getBasketAddress: function (basket) {
         var address = {
-            given_name                  : basket.defaultShipment.shippingAddress.firstName,
-            family_name                 : basket.defaultShipment.shippingAddress.lastName,
+            given_name                  : basket.billingAddress.firstName,
+            family_name                 : basket.billingAddress.lastName,
             email                       : null,
-            title                       : basket.defaultShipment.shippingAddress.title,
-            street_address              : basket.defaultShipment.shippingAddress.address1,
-            street_address2             : basket.defaultShipment.shippingAddress.address2,
-            postal_code                 : basket.defaultShipment.shippingAddress.postalCode,
-            city                        : basket.defaultShipment.shippingAddress.city,
-            phone                       : basket.defaultShipment.shippingAddress.phone,
-            country                     : basket.defaultShipment.shippingAddress.countryCode.valueOf()
-
+            title                       : basket.billingAddress.title,
+            street_address              : basket.billingAddress.address1,
+            street_address2             : basket.billingAddress.address2,
+            postal_code                 : basket.billingAddress.postalCode,
+            city                        : basket.billingAddress.city,
+            phone                       : basket.billingAddress.phone,
+            country                     : basket.billingAddress.countryCode
         }
 
         return address;
