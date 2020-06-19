@@ -269,9 +269,7 @@ var ckoApmConfig = {
     klarnaAuthorization: function (args) {
         // Prepare the basket
         var basket = BasketMgr.getCurrentBasket();
-        var countryCode = basket.getBillingAddress().countryCode.valueOf()
-        ? basket.getBillingAddress().countryCode.valueOf()
-        : JSON.parse(args.req.querystring).countryCode;
+        var countryCode = basket.getBillingAddress().countryCode.value() ? basket.getBillingAddress().countryCode.value() : JSON.parse(args.req.querystring).countryCode;
 
         // Klarna Form Inputs
         var klarna_approved = args.paymentData.klarna_approved.value.toString();
