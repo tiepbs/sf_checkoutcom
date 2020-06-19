@@ -20,12 +20,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 server.get('KlarnaSession', function (req, res, next) {
     // Prepare the basket
     var basket = BasketMgr.getCurrentBasket();
-    var countryCode = Object.keys(basket).length !== 0 
-    ? basket.defaultShipment.shippingAddress.countryCode.valueOf()
-    : req.querystring.countryCode;
-
-    var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('basket.billingAddress {0}', JSON.stringify(basket.billingAddress));
+    var countryCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
 
     if (Object.keys(basket).length !== 0) {
         // Prepare the variables
@@ -38,7 +33,7 @@ server.get('KlarnaSession', function (req, res, next) {
         
         // Prepare the request object
         var requestObject = {
-            "purchase_country": countryCode,
+            "purchase_country"      : countryCode,
             "currency"              : currency,
             "locale"                : locale,
             "amount"                : total,
