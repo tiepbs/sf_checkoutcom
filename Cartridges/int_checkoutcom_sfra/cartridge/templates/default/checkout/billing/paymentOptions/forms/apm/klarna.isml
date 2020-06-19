@@ -1,16 +1,11 @@
 <!-- Klarna APM option -->
 <isscript>
-	var klarnaControllerUrl = URLUtils.url(
-		'CKOKlarna-KlarnaSession',
-		'countryCode',
-		pdict.order.billing.billingAddress.address.countryCode.value
-	);
     var assets = require('*/cartridge/scripts/assets.js');
     assets.addJs('/js/apm/klarna.js');
     assets.addCss('/css/apm/klarna.css');
 </isscript>
 
-<button class="cko-apm-accordion">
+<button class="cko-apm-accordion klarna">
 	<input id="klarna_apm_radio_btn" type="radio">
 	<img alt="${Resource.msg('cko.klarna.name','cko',null)}" id="klarna_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}"/>
 	${Resource.msg('cko.klarna.name','cko',null)}
@@ -32,5 +27,5 @@
 	</div>
 </div>
 
-<input type="hidden" id="ckoKlarnaController" value="${klarnaControllerUrl}">
+<input type="hidden" id="ckoKlarnaController" value="${URLUtils.url('CKOKlarna-KlarnaSession')}">
 <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>

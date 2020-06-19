@@ -2,8 +2,18 @@
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function() {
-    callKlarnaController();
+    loadKlarna();
 }, false);
+
+/*
+ * Load Klarna
+ */
+function loadKlarna()
+{  
+    $('.cko-apm-accordion.klarna').on('click touch', function() {
+        callKlarnaController();
+    });
+}
 
 /*
  * Get the Klarna controller
