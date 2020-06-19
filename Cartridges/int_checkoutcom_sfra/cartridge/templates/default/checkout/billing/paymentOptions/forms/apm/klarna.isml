@@ -1,5 +1,10 @@
 <!-- Klarna APM option -->
 <isscript>
+	var klarnaControllerUrl = URLUtils.url(
+		'CKOKlarna-KlarnaSession',
+		'countryCode',
+		pdict.order.billing.billingAddress.address.countryCode.value
+	);
     var assets = require('*/cartridge/scripts/assets.js');
     assets.addJs('/js/apm/klarna.js');
     assets.addCss('/css/apm/klarna.css');
@@ -27,5 +32,5 @@
 	</div>
 </div>
 
-<input type="hidden" id="ckoKlarnaController" value="${URLUtils.url('CKOKlarna-KlarnaSession', 'countryCode', pdict.order.billing.billingAddress.address.countryCode.value)}">
+<input type="hidden" id="ckoKlarnaController" value="${klarnaControllerUrl}">
 <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
