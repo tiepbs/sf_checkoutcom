@@ -750,10 +750,10 @@ var ckoHelper = {
     },
 
     /*
-     * Return Basket Item object
+     * Return Basket object
      */
     getBasketObject: function (basket) {
-        var currency = basket.getCurrencyCode();
+        var currency = session.getCurrency().getCurrencyCode();
         var products_quantites = [];
         var it = basket.productLineItems.iterator();
         while (it.hasNext()) {
@@ -791,54 +791,7 @@ var ckoHelper = {
     },
 
     /*
-     * Return Basket Item object
-     */
-    getOrderBasketObject: function (args) {
-        // Prepare some variables
-        var order = OrderMgr.getOrder(args.orderNo);
-        var currency = order.getCurrencyCode();
-        var it = order.productLineItems.iterator();
-        var products_quantites = [];
-
-        // Iterate through the products
-        while (it.hasNext()) {
-            var pli = it.next();
-            var productTaxRate = pli.taxRate * 100 * 100;
-            var productQuantity = pli.quantityValue;
-            var unitPrice = Math.round(this.getFormattedPrice(pli.adjustedGrossPrice.value.toFixed(2), currency) / productQuantity);
-            var totalAmount = this.getFormattedPrice(pli.adjustedGrossPrice.value, currency);
-            var products = {
-                "name"              : pli.productName,
-                "quantity"          : productQuantity.toString(),
-                "unit_price"        : unitPrice.toString(),
-                "tax_rate"          : productTaxRate.toString(),
-                "total_amount"      : totalAmount.toString(),
-                "total_tax_amount"  : this.getFormattedPrice(pli.adjustedTax.value, currency)
-            }
-
-            products_quantites.push(products);
-        }
-
-        // Set the shipping variables
-        var shippingTaxRate = order.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100;
-        var shipping = {
-            "name"              : order.defaultShipment.shippingMethod.displayName + " Shipping",
-            "quantity"          : '1',
-            "unit_price"        : this.getFormattedPrice(order.shippingTotalGrossPrice.value, currency),
-            "tax_rate"          : shippingTaxRate.toString(),
-            "total_amount"      : this.getFormattedPrice(order.shippingTotalGrossPrice.value, currency),
-            "total_tax_amount"  : this.getFormattedPrice(order.shippingTotalTax.value, currency)
-        }
-
-        if (order.shippingTotalPrice.value > 0) {
-            products_quantites.push(shipping);
-        }
-
-        return products_quantites;
-    },
-
-    /*
-     * Return Basket Item CountryCode
+     * Return Basket countryCode
      */
     getBasketCountyCode: function (basket) {
         var countyCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
