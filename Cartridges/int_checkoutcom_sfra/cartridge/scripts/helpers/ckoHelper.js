@@ -17,18 +17,6 @@ var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 */
 var ckoHelper = {
     /*
-     * Get the required value for each mode
-     */
-    getAppModeValue: function (sandboxValue, liveValue) {
-        var appMode = this.getValue('ckoMode');
-        if (appMode == 'sandbox') {
-            return sandboxValue;
-        } else {
-            return liveValue;
-        }
-    },
-
-    /*
      * Get a failed payment error message
      */
     getPaymentFailureMessage: function () {
@@ -765,7 +753,7 @@ var ckoHelper = {
      * Return Basket Item object
      */
     getBasketObject: function (basket) {
-        var currency = this.getAppModeValue('GBP', basket.getCurrencyCode());
+        var currency = basket.getCurrencyCode();
         var products_quantites = [];
         var it = basket.productLineItems.iterator();
         while (it.hasNext()) {
@@ -807,9 +795,8 @@ var ckoHelper = {
      */
     getOrderBasketObject: function (args) {
         // Prepare some variables
-        var order = OrderMgr.getOrder(args.orderNo);
-        var currency = this.getAppModeValue('GBP', order.getCurrencyCode());
-        var it = order.productLineItems.iterator();
+        var currency = args.order.getCurrencyCode();
+        var it = args.order.productLineItems.iterator();
         var products_quantites = [];
 
         // Iterate through the products
@@ -832,17 +819,17 @@ var ckoHelper = {
         }
 
         // Set the shipping variables
-        var shippingTaxRate = order.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100;
+        var shippingTaxRate = args.order.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100;
         var shipping = {
-            "name"              : order.defaultShipment.shippingMethod.displayName + " Shipping",
+            "name"              : args.order.defaultShipment.shippingMethod.displayName + " Shipping",
             "quantity"          : '1',
-            "unit_price"        : this.getFormattedPrice(order.shippingTotalGrossPrice.value, currency),
+            "unit_price"        : this.getFormattedPrice(args.order.shippingTotalGrossPrice.value, currency),
             "tax_rate"          : shippingTaxRate.toString(),
-            "total_amount"      : this.getFormattedPrice(order.shippingTotalGrossPrice.value, currency),
-            "total_tax_amount"  : this.getFormattedPrice(order.shippingTotalTax.value, currency)
+            "total_amount"      : this.getFormattedPrice(args.order.shippingTotalGrossPrice.value, currency),
+            "total_tax_amount"  : this.getFormattedPrice(args.order.shippingTotalTax.value, currency)
         }
 
-        if (order.shippingTotalPrice.value > 0) {
+        if (args.order.shippingTotalPrice.value > 0) {
             products_quantites.push(shipping);
         }
 

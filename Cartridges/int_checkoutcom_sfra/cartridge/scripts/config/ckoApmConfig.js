@@ -270,9 +270,6 @@ var ckoApmConfig = {
         // Klarna Form Inputs
         var klarna_approved = args.paymentData.klarna_approved.value.toString();
 
-        // Prepare the basket
-        var basket = BasketMgr.getCurrentBasket();
-
         // Process the payment
         if (klarna_approved) {
             // Build the payment object
