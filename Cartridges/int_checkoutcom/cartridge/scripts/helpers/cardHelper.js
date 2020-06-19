@@ -140,7 +140,7 @@ var cardHelper = {
             'customer'              : ckoHelper.getCustomer(args),
             'billing_descriptor'    : ckoHelper.getBillingDescriptorObject(),
             'shipping'              : this.getShippingObject(args),
-            '3ds'                   : this.get3Ds(),
+            '3ds'                   : (cardData.type == "mada") ? {enabled: true} : this.get3Ds(),
             'risk'                  : {enabled: true},
             'success_url'           : URLUtils.https('CKOMain-HandleReturn').toString(),
             'failure_url'           : URLUtils.https('CKOMain-HandleFail').toString(),
@@ -175,7 +175,7 @@ var cardHelper = {
     /**
      * Build 3ds object
      */
-    get3Ds: function () { 	
+    get3Ds: function () { 
    
         return {
             'enabled' : ckoHelper.getValue('cko3ds'),
