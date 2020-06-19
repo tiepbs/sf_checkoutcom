@@ -3,6 +3,10 @@
     var assets = require('*/cartridge/scripts/assets.js');
     assets.addJs('/js/apm/klarna.js');
     assets.addCss('/css/apm/klarna.css');
+
+	var BasketMgr = require('dw/order/BasketMgr');
+    var basket = BasketMgr.getCurrentBasket();
+    var countryCode = ckoHelper.getBasketCountyCode(basket);
 </isscript>
 
 <button class="cko-apm-accordion">
@@ -12,6 +16,20 @@
 </button>
 
 <div class="cko-apm-panel">
+
+countryCode
+<isprint value="${countryCode}">
+
+basket
+<isprint value="${basket}">
+
+countryCode.valueOf
+<isprint value="${basket.defaultShipment.shippingAddress.countryCode.valueOf()}">
+
+countryCode
+<isprint value="${basket.defaultShipment.shippingAddress.countryCode.valueOf()}">
+
+
 	<div id="klarna_pay_box">
 		<div id="klarna-buttons"></div>
 		<div id="klarna-payments-container"></div>
