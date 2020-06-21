@@ -3,3 +3,5 @@
 link-checkoutcom.code-workspace
 dw.json
 node_modules/
+package.json
+package-lock.json
