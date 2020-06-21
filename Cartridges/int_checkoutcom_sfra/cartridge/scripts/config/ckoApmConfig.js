@@ -11,7 +11,6 @@ var ckoApmConfig = {
      * Ideal authorization
      */
     idealAuthorization: function (args) {
-        // Building ideal pay object
         var params = {
             'source'    : {
                 'type'          : 'ideal',
@@ -30,7 +29,6 @@ var ckoApmConfig = {
      * Boleto authorization
      */
     boletoAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source': {
                 'type': 'boleto',
@@ -53,7 +51,6 @@ var ckoApmConfig = {
      * Bancontact authorization
      */
     bancontactAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'        : {
                 'type'                  : 'bancontact',
@@ -72,7 +69,6 @@ var ckoApmConfig = {
      * Benefit Pay authorization
      */
     benefitpayAuthorization: function (args) {
-        // Process benefit pay
         var params = {
             'source' : {
                 'type'              : 'benefitpay',
@@ -89,7 +85,6 @@ var ckoApmConfig = {
      * Giro Pay authorization
      */
     giropayAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'        : {
                 'type'          : 'giropay',
@@ -106,7 +101,6 @@ var ckoApmConfig = {
      * Eps authorization
      */
     epsAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'    : {
                 'type'      : 'eps',
@@ -123,7 +117,6 @@ var ckoApmConfig = {
      * Sofort authorization
      */
     sofortAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'    : {
                 'type'  : 'sofort'
@@ -139,7 +132,6 @@ var ckoApmConfig = {
      * Knet authorization
      */
     knetAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'    :   {
                 'type'          : 'knet',
@@ -156,7 +148,6 @@ var ckoApmConfig = {
      * QPay authorization
      */
     qpayAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'    : {
                 'type'          : 'qpay',
@@ -176,7 +167,6 @@ var ckoApmConfig = {
      * Fawry authorization
      */
     fawryAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'    : {
                 'type'              : 'fawry',
@@ -196,7 +186,6 @@ var ckoApmConfig = {
      * Sepa authorization
      */
     sepaAuthorization: function (args) {
-        // Building pay object
         var params = {
             'type'          : 'sepa',
             'currency'      : args.order.getCurrencyCode(),
@@ -216,7 +205,6 @@ var ckoApmConfig = {
      * Multibanco authorization
      */
     multibancoAuthorization: function (args) {
-        // Building pay object
         var params = {
             'currency'  : args.order.getCurrencyCode(),
             'source'    : {
@@ -234,7 +222,6 @@ var ckoApmConfig = {
      * Poli authorization
      */
     poliAuthorization: function (args) {
-        // Building pay object
         var params = {
             'currency'  : args.order.getCurrencyCode(),
             'source'    : {
@@ -249,7 +236,6 @@ var ckoApmConfig = {
      * P24 authorization
      */
     p24Authorization: function (args) {
-        // Building pay object
         var params = {
             'currency'      : args.order.getCurrencyCode(),
             'source'        : {
@@ -305,7 +291,6 @@ var ckoApmConfig = {
      * Paypal authorization
      */
     paypalAuthorization: function (args) {
-        // Build the payment object
         var params = {
             'currency'      : args.order.getCurrencyCode(),
             'source'        : {
@@ -321,7 +306,6 @@ var ckoApmConfig = {
      * Alipay authorization
      */
     alipayAuthorization: function (args) {
-        // Build the payment object
         var params = {
             'source': {
                 'type': 'alipay'
