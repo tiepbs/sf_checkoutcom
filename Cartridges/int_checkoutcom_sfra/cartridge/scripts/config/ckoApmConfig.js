@@ -35,14 +35,18 @@ var ckoApmConfig = {
     boletoAuthorization: function (args) {
         // Building pay object
         var params = {
-            'source'        : {
-                'type'  : 'boleto',
-                'birthDate' : args.paymentData.boleto_birthDate.value.toString(),
-                'cpf'       : args.paymentData.boleto_cpf.value.toString(),
-                'customerName' : ckoHelper.getCustomerName(args)
+            'source': {
+                'type': 'boleto',
+                'integration_type': 'redirect',
+                'country': ckoHelper.getBillingCountry(args),
+                'payer': {
+                    'name' : ckoHelper.getCustomerName(args),
+                	'email': ckoHelper.getCustomer(args).email,
+                    'document': args.paymentData.boleto_cpf.value.toString()
+                }
             },
-            'purpose'   : businessName,
-            'currency'  : args.order.getCurrencyCode()
+            'purpose': businessName,
+            'currency': ckoHelper.getCurrency(args)
         };
 
         return params;
