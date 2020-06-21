@@ -1,9 +1,8 @@
 /* Klarna */
-#klarnaPay_pay_box {
+#klarna_pay_box {
     min-width: 280px;
     border: solid 1px #aaa;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin: 20px 10px 20px 10px;
     border-radius: 5px;
 }
 
@@ -37,4 +36,8 @@
 .klarna-button span {
     font-size: 20px;
     color: black;
+}
+
+.klarna-button input[type="radio"] {
+    margin-left: 10px;
 }

@@ -11,7 +11,6 @@ var ckoApmConfig = {
      * Ideal authorization
      */
     idealAuthorization: function (args) {
-        // Building ideal pay object
         var params = {
             'source'    : {
                 'type'          : 'ideal',
@@ -30,16 +29,19 @@ var ckoApmConfig = {
      * Boleto authorization
      */
     boletoAuthorization: function (args) {
-        // Building pay object
         var params = {
-            'source'        : {
-                'type'  : 'boleto',
-                'birthDate' : args.paymentData.boleto_birthDate.value.toString(),
-                'cpf'       : args.paymentData.boleto_cpf.value.toString(),
-                'customerName' : ckoHelper.getCustomerName(args)
+            'source': {
+                'type': 'boleto',
+                'integration_type': 'redirect',
+                'country': ckoHelper.getBillingCountry(args),
+                'payer': {
+                    'name' : ckoHelper.getCustomerName(args),
+                	'email': ckoHelper.getCustomer(args).email,
+                    'document': args.paymentData.boleto_cpf.value.toString()
+                }
             },
-            'purpose'   : businessName,
-            'currency'  : args.order.getCurrencyCode()
+            'purpose': businessName,
+            'currency': ckoHelper.getCurrency(args)
         };
 
         return params;
@@ -49,7 +51,6 @@ var ckoApmConfig = {
      * Bancontact authorization
      */
     bancontactAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'        : {
                 'type'                  : 'bancontact',
@@ -68,7 +69,6 @@ var ckoApmConfig = {
      * Benefit Pay authorization
      */
     benefitpayAuthorization: function (args) {
-        // Process benefit pay
         var params = {
             'source' : {
                 'type'              : 'benefitpay',
@@ -85,7 +85,6 @@ var ckoApmConfig = {
      * Giro Pay authorization
      */
     giropayAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'        : {
                 'type'          : 'giropay',
@@ -102,7 +101,6 @@ var ckoApmConfig = {
      * Eps authorization
      */
     epsAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'    : {
                 'type'      : 'eps',
@@ -119,7 +117,6 @@ var ckoApmConfig = {
      * Sofort authorization
      */
     sofortAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'    : {
                 'type'  : 'sofort'
@@ -135,7 +132,6 @@ var ckoApmConfig = {
      * Knet authorization
      */
     knetAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'    :   {
                 'type'          : 'knet',
@@ -152,7 +148,6 @@ var ckoApmConfig = {
      * QPay authorization
      */
     qpayAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'    : {
                 'type'          : 'qpay',
@@ -172,7 +167,6 @@ var ckoApmConfig = {
      * Fawry authorization
      */
     fawryAuthorization: function (args) {
-        // Building pay object
         var params = {
             'source'    : {
                 'type'              : 'fawry',
@@ -192,7 +186,6 @@ var ckoApmConfig = {
      * Sepa authorization
      */
     sepaAuthorization: function (args) {
-        // Building pay object
         var params = {
             'type'          : 'sepa',
             'currency'      : args.order.getCurrencyCode(),
@@ -212,7 +205,6 @@ var ckoApmConfig = {
      * Multibanco authorization
      */
     multibancoAuthorization: function (args) {
-        // Building pay object
         var params = {
             'currency'  : args.order.getCurrencyCode(),
             'source'    : {
@@ -230,7 +222,6 @@ var ckoApmConfig = {
      * Poli authorization
      */
     poliAuthorization: function (args) {
-        // Building pay object
         var params = {
             'currency'  : args.order.getCurrencyCode(),
             'source'    : {
@@ -245,7 +236,6 @@ var ckoApmConfig = {
      * P24 authorization
      */
     p24Authorization: function (args) {
-        // Building pay object
         var params = {
             'currency'      : args.order.getCurrencyCode(),
             'source'        : {
@@ -267,6 +257,7 @@ var ckoApmConfig = {
         // Klarna Form Inputs
         var klarna_approved = args.paymentData.klarna_approved.value.toString();
 
+        // Process the payment
         if (klarna_approved) {
             // Build the payment object
             var params = {
@@ -285,7 +276,7 @@ var ckoApmConfig = {
                         args.order.totalTax.value,
                         args.order.getCurrencyCode()
                     ),
-                    'billing_address'       : ckoHelper.getOrderBasketAddress(args),
+                    'billing_address'       : ckoHelper.getOrderAddress(args),
                     'products'              : ckoHelper.getOrderBasketObject(args)
                 }
             };
@@ -300,7 +291,6 @@ var ckoApmConfig = {
      * Paypal authorization
      */
     paypalAuthorization: function (args) {
-        // Build the payment object
         var params = {
             'currency'      : args.order.getCurrencyCode(),
             'source'        : {
@@ -313,32 +303,9 @@ var ckoApmConfig = {
     },
 
     /*
-     * Oxxo authorization
-     */
-    oxxoAuthorization: function (args) {    
-        // Build the payment object
-        var params = {
-            'source': {
-                'type': 'oxxo',
-                'integration_type': 'redirect',
-                'country': ckoHelper.getBilling(args).country,
-                'payer': {
-                    'name': ckoHelper.getCustomerName(args),
-                    'email': ckoHelper.getCustomer(args).email,
-                    'document': args.paymentData.oxxo_identification.value.toString()
-                }
-            },
-            'currency'      : args.order.getCurrencyCode(),
-        };
-
-        return params;
-    },
-
-    /*
      * Alipay authorization
      */
     alipayAuthorization: function (args) {
-        // Build the payment object
         var params = {
             'source': {
                 'type': 'alipay'

@@ -61,10 +61,6 @@ var ckoApmFilterConfig = {
         countries   : ["AT", "DK", "FI", "DE", "NL", "NO", "SE", "UK", "GB"],
         currencies  : ["EUR", "DKK", "GBP", "NOK", "SEK"]
     },
-    oxxo: {
-        countries   : ["MX"],
-        currencies  : ["MXN"]
-    },
     alipay: {
     	countries	: ["CN" ,"US"],
     	currencies	: ["USD", "CNY"]
@@ -74,7 +70,6 @@ var ckoApmFilterConfig = {
     	currencies	: ["AUD", "BRL", "CAD", "CZK", "DKK", "EUR", "HKD", "HUF", "INR", "ILS", "JPY", "MYR", "MXN", "TWD", "NZD", "NOK", "PHP", "PLN", "GBP", "RUB", "SGD", "SEK", "CHF", "THB", "USD"]
     }
 }
-
 
 /*
 * Module exports

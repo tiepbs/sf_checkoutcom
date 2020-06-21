@@ -17,18 +17,6 @@ var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 */
 var ckoHelper = {
     /*
-     * Get the required value for each mode
-     */
-    getAppModeValue: function (sandboxValue, liveValue) {
-        var appMode = this.getValue('ckoMode');
-        if (appMode == 'sandbox') {
-            return sandboxValue;
-        } else {
-            return liveValue;
-        }
-    },
-
-    /*
      * Get a failed payment error message
      */
     getPaymentFailureMessage: function () {
@@ -128,7 +116,7 @@ var ckoHelper = {
      * Cartridge metadata.
      */
     getCartridgeMeta: function () {
-        return this.getValue("ckoUserAgent") + ' ' + this.getValue("ckoVersion");
+        return this.getValue("ckoSfraPlatformData");
     },
 
     /*
@@ -715,7 +703,7 @@ var ckoHelper = {
         // Prepare the base metadata
         var meta = {
             integration_data: this.getCartridgeMeta(),
-            platform_data: this.getValue('ckoPlatformData')
+            platform_data: this.getValue('ckoSfraPlatformData')
         }
 
         // Add the data info if needed
@@ -745,7 +733,6 @@ var ckoHelper = {
 
     // Build the Billing object
     getBilling: function (args) {
-
         // Get billing address information
         var billingAddress = args.order.getBillingAddress();
 
@@ -766,7 +753,7 @@ var ckoHelper = {
      * Return Basket Item object
      */
     getBasketObject: function (basket) {
-        var currency = this.getAppModeValue('GBP', basket.getCurrencyCode());
+        var currency = basket.getCurrencyCode();
         var products_quantites = [];
         var it = basket.productLineItems.iterator();
         while (it.hasNext()) {
@@ -808,9 +795,8 @@ var ckoHelper = {
      */
     getOrderBasketObject: function (args) {
         // Prepare some variables
-        var order = OrderMgr.getOrder(args.orderNo);
-        var currency = this.getAppModeValue('GBP', order.getCurrencyCode());
-        var it = order.productLineItems.iterator();
+        var currency = args.order.getCurrencyCode();
+        var it = args.order.productLineItems.iterator();
         var products_quantites = [];
 
         // Iterate through the products
@@ -833,17 +819,17 @@ var ckoHelper = {
         }
 
         // Set the shipping variables
-        var shippingTaxRate = order.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100;
+        var shippingTaxRate = args.order.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100;
         var shipping = {
-            "name"              : order.defaultShipment.shippingMethod.displayName + " Shipping",
+            "name"              : args.order.defaultShipment.shippingMethod.displayName + " Shipping",
             "quantity"          : '1',
-            "unit_price"        : this.getFormattedPrice(order.shippingTotalGrossPrice.value, currency),
+            "unit_price"        : this.getFormattedPrice(args.order.shippingTotalGrossPrice.value, currency),
             "tax_rate"          : shippingTaxRate.toString(),
-            "total_amount"      : this.getFormattedPrice(order.shippingTotalGrossPrice.value, currency),
-            "total_tax_amount"  : this.getFormattedPrice(order.shippingTotalTax.value, currency)
+            "total_amount"      : this.getFormattedPrice(args.order.shippingTotalGrossPrice.value, currency),
+            "total_tax_amount"  : this.getFormattedPrice(args.order.shippingTotalTax.value, currency)
         }
 
-        if (order.shippingTotalPrice.value > 0) {
+        if (args.order.shippingTotalPrice.value > 0) {
             products_quantites.push(shipping);
         }
 
@@ -851,52 +837,42 @@ var ckoHelper = {
     },
 
     /*
-     * Return Basket Item CountryCode
-     */
-    getBasketCountyCode: function (basket) {
-        var countyCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
-        return countyCode;
-    },
-
-    /*
-     * Return Basket Item CountryCode
+     * Return the basket billing address
      */
     getBasketAddress: function (basket) {
         var address = {
-            given_name                  : basket.defaultShipment.shippingAddress.firstName,
-            family_name                 : basket.defaultShipment.shippingAddress.lastName,
+            given_name                  : basket.billingAddress.firstName,
+            family_name                 : basket.billingAddress.lastName,
             email                       : null,
-            title                       : basket.defaultShipment.shippingAddress.title,
-            street_address              : basket.defaultShipment.shippingAddress.address1,
-            street_address2             : basket.defaultShipment.shippingAddress.address2,
-            postal_code                 : basket.defaultShipment.shippingAddress.postalCode,
-            city                        : basket.defaultShipment.shippingAddress.city,
-            phone                       : basket.defaultShipment.shippingAddress.phone,
+            title                       : basket.billingAddress.title,
+            street_address              : basket.billingAddress.address1,
+            street_address2             : basket.billingAddress.address2,
+            postal_code                 : basket.billingAddress.postalCode,
+            city                        : basket.billingAddress.city,
+            phone                       : basket.billingAddress.phone,
             country                     : basket.defaultShipment.shippingAddress.countryCode.valueOf()
-
         }
 
         return address;
     },
 
-    /*
-     * Return Basket Item CountryCode
+    /**
+     * Return the order billing address
      */
-    getOrderBasketAddress: function (args) {
-        var order = OrderMgr.getOrder(args.orderNo);
+    getOrderAddress: function (args) {
         var address = {
-            given_name                  : order.defaultShipment.shippingAddress.firstName,
-            family_name                 : order.defaultShipment.shippingAddress.lastName,
-            email                       : order.customerEmail,
-            title                       : order.defaultShipment.shippingAddress.title,
-            street_address              : order.defaultShipment.shippingAddress.address1,
-            street_address2             : order.defaultShipment.shippingAddress.address2,
-            postal_code                 : order.defaultShipment.shippingAddress.postalCode,
-            city                        : order.defaultShipment.shippingAddress.city,
-            phone                       : order.defaultShipment.shippingAddress.phone,
-            country                     : order.defaultShipment.shippingAddress.countryCode.valueOf()
+            given_name                  : args.order.defaultShipment.shippingAddress.firstName,
+            family_name                 : args.order.defaultShipment.shippingAddress.lastName,
+            email                       : args.order.customerEmail,
+            title                       : args.order.defaultShipment.shippingAddress.title,
+            street_address              : args.order.defaultShipment.shippingAddress.address1,
+            street_address2             : args.order.defaultShipment.shippingAddress.address2,
+            postal_code                 : args.order.defaultShipment.shippingAddress.postalCode,
+            city                        : args.order.defaultShipment.shippingAddress.city,
+            phone                       : args.order.defaultShipment.shippingAddress.phone,
+            country                     : args.order.defaultShipment.shippingAddress.countryCode.valueOf()
         }
-
+        
         return address;
     }
 }

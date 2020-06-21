@@ -122,13 +122,6 @@
 					</div>
 				</isif>
 				
-				<!-- This to include the Oxxo apm form -->
-				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoOxxoEnabled'))}">
-					<div id="oxxo" class="apm-list-item">	
-						<isinclude template="checkout/billing/paymentOptions/forms/apm/oxxo.isml"/>
-					</div>
-				</isif>
-				
 				<!-- This to include the klarna apm form -->
 				<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoKlarnaEnabled'))}">
 					<div id="klarna" class="apm-list-item">	
