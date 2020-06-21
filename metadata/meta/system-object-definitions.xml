@@ -75,17 +75,13 @@
     </type-extension>
     <type-extension type-id="SitePreferences">
         <custom-attribute-definitions>
-            <attribute-definition attribute-id="ckoPlatformData">
+            <attribute-definition attribute-id="ckoSgPlatformData">
                 <type>string</type>
-                <default-value>SiteGenesis Version: 19.10 Last Updated: Oct 21, 2019 (Compatibility Mode: 16.2)</default-value>
+                <default-value>Checkout.com Site Genesis Cartridge - Version: 20.0</default-value>
             </attribute-definition>
-            <attribute-definition attribute-id="ckoUserAgent">
+            <attribute-definition attribute-id="ckoSfraPlatformData">
                 <type>string</type>
-                <default-value>SFCC Checkout.com Cartridge</default-value>
-            </attribute-definition>
-            <attribute-definition attribute-id="ckoVersion">
-                <type>string</type>
-                <default-value>19.1.0</default-value>
+                <default-value>Checkout.com SFRA Cartridge - Version: 20.0</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoBillingDescriptor1">
                 <display-name xml:lang="x-default">Billing Descriptor Line1</display-name>
@@ -529,25 +525,19 @@
             </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
-            <attribute-group group-id="[CKO][1] Sandbox Keys">
+            <attribute-group group-id="CKO [1] Sandbox Keys">
                 <display-name xml:lang="x-default">Checkout.com Sandbox API Keys</display-name>
                 <attribute attribute-id="ckoSandboxPublicKey"/>
                 <attribute attribute-id="ckoSandboxSecretKey"/>
                 <attribute attribute-id="ckoSandboxPrivateSharedKey"/>
             </attribute-group>
-            <attribute-group group-id="[CKO][2] Live Keys">
+            <attribute-group group-id="CKO [2] Live Keys">
                 <display-name xml:lang="x-default">Checkout.com Live API Keys</display-name>
                 <attribute attribute-id="ckoLivePublicKey"/>
                 <attribute attribute-id="ckoLiveSecretKey"/>
                 <attribute attribute-id="ckoLivePrivateSharedKey"/>
             </attribute-group>
-            <attribute-group group-id="[CKO][3] Cartridge Settings">
-                <display-name xml:lang="x-default">Checkout.com Live API Keys</display-name>
-                <attribute attribute-id="ckoLivePublicKey"/>
-                <attribute attribute-id="ckoLiveSecretKey"/>
-                <attribute attribute-id="ckoLivePrivateSharedKey"/>
-            </attribute-group>
-            <attribute-group group-id="[CKO][4] Business Info">
+            <attribute-group group-id="CKO [3] Business Info">
                 <attribute attribute-id="ckoBillingDescriptor1"/>
                 <attribute attribute-id="ckoBillingDescriptor2"/>
                 <attribute attribute-id="ckoBusinessName"/>
@@ -556,7 +546,13 @@
                 <attribute attribute-id="ckoBusinessCity"/>
                 <attribute attribute-id="ckoBusinessCountry"/>
             </attribute-group>
-            <attribute-group group-id="[CKO][5] Payment Settings">
+            <attribute-group group-id="CKO [4] Cartridge Settings">
+                <display-name xml:lang="x-default">Checkout.com Live API Keys</display-name>
+                <attribute attribute-id="ckoLivePublicKey"/>
+                <attribute attribute-id="ckoLiveSecretKey"/>
+                <attribute attribute-id="ckoLivePrivateSharedKey"/>
+            </attribute-group>
+            <attribute-group group-id="CKO [5] Payment Settings">
                 <display-name xml:lang="x-default">Checkout.com Payment Settings</display-name>
                 <attribute attribute-id="ckoEnabled"/>
                 <attribute attribute-id="ckoMode"/>
@@ -569,7 +565,7 @@
                 <attribute attribute-id="ckoStorefrontCore"/>
                 <attribute attribute-id="ckoStorefrontController"/>
             </attribute-group>
-            <attribute-group group-id="[CKO][6] APM Settings">
+            <attribute-group group-id="CKO [6] APM Settings">
                 <display-name xml:lang="x-default">Checkout.com Alternative Payment Methods Settings</display-name>
                 <attribute attribute-id="ckoIdealEnabled"/>
                 <attribute attribute-id="ckoBoletoEnabled"/>
@@ -589,14 +585,14 @@
                 <attribute attribute-id="ckoKlarnaEnabled"/>
                 <attribute attribute-id="ckoPaypalEnabled"/>
             </attribute-group>
-            <attribute-group group-id="[CKO][7] Google Pay Settings">
+            <attribute-group group-id="CKO [7] Google Pay Settings">
                 <display-name xml:lang="x-default">Checkout.com Google Pay Settings</display-name>
                 <attribute attribute-id="ckoGooglePayEnabled"/>
                 <attribute attribute-id="ckoGooglePayEnvironment"/>
                 <attribute attribute-id="ckoGooglePayMerchantId"/>
                 <attribute attribute-id="ckoGooglePayButton"/>
             </attribute-group>
-            <attribute-group group-id="[CKO][8] Apple Pay Settings">
+            <attribute-group group-id="CKO [8] Apple Pay Settings">
                 <display-name xml:lang="x-default">Checkout.com Apple Pay Settings</display-name>
                 <attribute attribute-id="ckoApplePayEnabled"/>
                 <attribute attribute-id="ckoApplePayEnvironment"/>
