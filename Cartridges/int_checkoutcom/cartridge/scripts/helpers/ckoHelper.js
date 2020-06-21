@@ -116,7 +116,7 @@ var ckoHelper = {
      * Cartridge metadata
      */
     getCartridgeMeta: function () {
-        return this.getValue("ckoUserAgent") + ' ' + this.getValue("ckoVersion");
+        return this.getValue('ckoSgPlatformData');
     },
     
     /**
@@ -749,7 +749,7 @@ var ckoHelper = {
         // Prepare the base metadata
         var meta = {
             integration_data    : this.getCartridgeMeta(),
-            platform_data       : this.getValue('ckoPlatformData')
+            platform_data       : this.getValue('ckoSgPlatformData')
         }
 
         // Add the data info if needed
@@ -772,7 +772,7 @@ var ckoHelper = {
      */
     getMetadataString: function (data, args) {
         // Prepare the base metadata
-        var meta = 'integration_data' + this.getCartridgeMeta() + 'platform_data' + this.getValue('ckoPlatformData')
+        var meta = 'integration_data' + this.getCartridgeMeta() + 'platform_data' + this.getValue('ckoSgPlatformData')
 
         // Add the data info if needed
         if (data.hasOwnProperty('type')) {
