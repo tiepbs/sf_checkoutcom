@@ -3,9 +3,6 @@
 /* Business Name */
 var businessName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBusinessName');
 
-/* API Includes */
-var BasketMgr = require('dw/order/BasketMgr');
-
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
