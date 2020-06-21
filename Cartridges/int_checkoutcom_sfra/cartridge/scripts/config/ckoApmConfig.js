@@ -3,9 +3,6 @@
 /* Business Name */
 var businessName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBusinessName');
 
-/* API Includes */
-var BasketMgr = require('dw/order/BasketMgr');
-
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
@@ -35,14 +32,18 @@ var ckoApmConfig = {
     boletoAuthorization: function (args) {
         // Building pay object
         var params = {
-            'source'        : {
-                'type'  : 'boleto',
-                'birthDate' : args.paymentData.boleto_birthDate.value.toString(),
-                'cpf'       : args.paymentData.boleto_cpf.value.toString(),
-                'customerName' : ckoHelper.getCustomerName(args)
+            'source': {
+                'type': 'boleto',
+                'integration_type': 'redirect',
+                'country': ckoHelper.getBillingCountry(args),
+                'payer': {
+                    'name' : ckoHelper.getCustomerName(args),
+                	'email': ckoHelper.getCustomer(args).email,
+                    'document': args.paymentData.boleto_cpf.value.toString()
+                }
             },
-            'purpose'   : businessName,
-            'currency'  : args.order.getCurrencyCode()
+            'purpose': businessName,
+            'currency': ckoHelper.getCurrency(args)
         };
 
         return params;
