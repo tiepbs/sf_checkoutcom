@@ -71,7 +71,6 @@ var ckoApmFilterConfig = {
     }
 }
 
-
 /*
 * Module exports
 */
