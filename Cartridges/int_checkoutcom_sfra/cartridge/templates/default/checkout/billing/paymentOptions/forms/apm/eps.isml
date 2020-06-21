@@ -1,6 +1,0 @@
-<!-- EPS APM option -->
-<button class="cko-apm-accordion">
-	<input id="eps_apm_radio_btn" type="radio">
-	<img alt="${Resource.msg('cko.eps.name','cko',null)}" id="eps_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/eps.png')}">
-	${Resource.msg('cko.eps.name','cko',null)} 
-</button>
