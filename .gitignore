@@ -2,3 +2,4 @@
 .DS_Store
 link-checkoutcom.code-workspace
 dw.json
+node_modules/
