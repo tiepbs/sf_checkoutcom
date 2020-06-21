@@ -239,7 +239,7 @@ var CKOHelper = {
      * The cartridge metadata.
      */
     getCartridgeMeta: function (price) {
-        return this.getValue('ckoUserAgent') + ' ' + this.getValue('ckoVersion');
+        return this.getValue('ckoBmPlatformData');
     },
 
     /**
