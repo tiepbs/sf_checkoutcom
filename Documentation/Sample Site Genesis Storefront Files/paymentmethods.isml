@@ -25,35 +25,23 @@
 
 			</isloop>
 		</div>
-
 		<div class="form-row form-row-button">
 			<button id="payment-select-go" name="${pdict.CurrentForms.billing.paymentSelect.htmlName}" type="submit" value="Go" class="simple-submit">Select</button>
 		</div>
-
 		<isif condition="${!empty(pdict.MissingPaymentProcessor)}">
 			<div class="billing-error">${Resource.msg('billing.missingprocessorerror','checkout',null)}</div>
 		</isif>
-		
-		
 		
 		<iscomment>
             Checkout.com - Integration
             Add this code to your paymentmethods.isml file
             --------------------------------------------------------------
         </iscomment>
-        <isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue("ckoEnabled"))}">  
-            <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_CARD'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_CARD">
-                <div class="form-row form-caption cko-form">
-                    <isinclude template="cardForm" />
-                </div>
-            </div>
 
-            <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_APM'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_APM">
-                <div class="form-row form-caption cko-form">
-                    <isinclude template="apmForm" />
-                </div>
-            </div>
+        <isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue("ckoEnabled"))}">  
+        	<isinclude template="ckoPayments" />
         <iselse>
+
             <iscomment>
                 Site Genesis - Default Credit card block
                 Add the default Site Genesis credit card form code here.
