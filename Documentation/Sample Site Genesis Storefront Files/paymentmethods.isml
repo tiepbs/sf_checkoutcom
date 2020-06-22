@@ -25,38 +25,38 @@
 
 			</isloop>
 		</div>
+
 		<div class="form-row form-row-button">
 			<button id="payment-select-go" name="${pdict.CurrentForms.billing.paymentSelect.htmlName}" type="submit" value="Go" class="simple-submit">Select</button>
 		</div>
+
 		<isif condition="${!empty(pdict.MissingPaymentProcessor)}">
 			<div class="billing-error">${Resource.msg('billing.missingprocessorerror','checkout',null)}</div>
 		</isif>
-		
+
 		<iscomment>
             Checkout.com - Integration
             Add this code to your paymentmethods.isml file
             --------------------------------------------------------------
         </iscomment>
-
         <isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue("ckoEnabled"))}">  
-        	<isinclude template="ckoPayments" />
+            <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_CARD'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_CARD">
+                <div class="form-row form-caption cko-form">
+                    <isinclude template="ckoPayments" />
+                </div>
+            </div>
         <iselse>
 
-            <iscomment>
-                Site Genesis - Default Credit card block
-                Add the default Site Genesis credit card form code here.
-                --------------------------------------------------------------
-            </iscomment>
 			<iscomment>
 				Credit card block
 				--------------------------------------------------------------
 			</iscomment>
-	
+
 			<div class="payment-method <isif condition="${empty(pdict.selectedPaymentID) || pdict.selectedPaymentID=='CREDIT_CARD'}">payment-method-expanded</isif>" data-method="CREDIT_CARD">
-	
+
 				<iscomment>display select box with stored credit cards if customer is authenticated</iscomment>
 				<isif condition="${pdict.CurrentCustomer.authenticated && !empty(pdict.ApplicableCreditCards)}">
-	
+
 					<div class="form-row">
 						<label class="label">${Resource.msg('billing.selectcreditcard','checkout',null)}</label>
 						<div class="field-wrapper">
@@ -68,11 +68,11 @@
 							</select>
 						</div>
 					</div>
-	
+
 					<div class="form-row form-row-button">
 						<button id="credit-card-select-go" name="${pdict.CurrentForms.billing.creditCardSelect.htmlName}" type="submit" value="Go" class="simple-submit">Select</button>
 					</div>
-	
+
 					<iscomment>
 						<isloop items="${pdict.ApplicableCreditCards}" var="creditCardInstr">
 							<a href="${URLUtils.https('COBilling-UpdateCreditCardSelection', 'creditCardUUID', creditCardInstr.UUID)}">
@@ -84,15 +84,15 @@
 							</a>
 						</isloop>
 					</iscomment>
-	
+
 				</isif>
-	
+
 				<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.owner}" type="input"/>
-	
+
 				<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.type}" type="select"/>
-	
+
 				<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.number}" type="input" dynamicname="true"/>
-	
+
 				<div class="form-row required">
 					<label>
 						<span class="required-indicator">${Resource.msg('billing.requiredindicator','checkout',null)}</span>
@@ -101,11 +101,11 @@
 					<isscript>
 						var currentCountry = require('~/cartridge/scripts/util/Countries').getCurrent(pdict);
 					</isscript>
-	
+
 					<isdynamicform formobject="${pdict.CurrentForms.billing.paymentMethods.creditCard.expiration}" formdata="${currentCountry.dynamicForms.expirationInfo}"/>
-	
+
 				</div>
-	
+
 				<isscript>
 					var help = {
 						label: Resource.msg('billing.linkcvn', 'checkout', null),
@@ -113,15 +113,14 @@
 					};
 				</isscript>
 				<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${help}"/>
-	
+
 				<isif condition="${pdict.CurrentCustomer.authenticated}">
 					<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.saveCard}" type="checkbox"/>
 				</isif>
-	
+
 			</div>
-                
-        </isif>
-		
+		</isif>
+
 		<iscomment>
 			Bill me later
 			--------------------------------------------------------------
