@@ -1,7 +1,7 @@
 'use strict'
 
 // Site controller
-var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontController');
+var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontControllers');
 
 // API Includes
 var OrderMgr = require('dw/order/OrderMgr');

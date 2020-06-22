@@ -1,7 +1,7 @@
 'use strict';
 
 // API Includes
-var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontController');
+var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontControllers');
 var app = require(siteControllerName + '/cartridge/scripts/app');
 var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var ISML = require('dw/template/ISML');
