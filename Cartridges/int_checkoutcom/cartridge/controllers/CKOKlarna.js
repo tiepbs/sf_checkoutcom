@@ -1,7 +1,7 @@
 'use strict';
 
 //  API Includes
-var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
+var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontController');
 var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var BasketMgr = require('dw/order/BasketMgr');
 

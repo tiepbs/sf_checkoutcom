@@ -5,7 +5,7 @@ var PaymentMgr = require('dw/order/PaymentMgr');
 var Transaction = require('dw/system/Transaction');
 
 // Site controller 
-var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoStorefrontController');
+var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontController');
 
 // Shopper cart 
 var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');

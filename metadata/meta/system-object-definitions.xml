@@ -176,23 +176,32 @@
                     </value-definition>
                 </value-definitions>
             </attribute-definition>
-            <attribute-definition attribute-id="ckoStorefrontCore">
-                <display-name xml:lang="x-default">Storefront Core Folder</display-name>
-                <description xml:lang="x-default">SiteGenesis Core Folder Name</description>
+            <attribute-definition attribute-id="ckoSgStorefrontCore">
+                <display-name xml:lang="x-default">Site Genesis Storefront Core</display-name>
+                <description xml:lang="x-default">Site Genesis Storefront Core Folder Name</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
                 <default-value>sitegenesis_storefront_core</default-value>
             </attribute-definition>
-            <attribute-definition attribute-id="ckoStorefrontController">
-                <display-name xml:lang="x-default">Storefront Controller Folder</display-name>
-                <description xml:lang="x-default">SiteGenesis Controllers Folder Name</description>
+            <attribute-definition attribute-id="ckoSgStorefrontController">
+                <display-name xml:lang="x-default">Site Genesis Storefront Controller</display-name>
+                <description xml:lang="x-default">Site Genesis Storefront Controller Folder Name</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
                 <default-value>sitegenesis_storefront_controllers</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoSfraStorefrontBase">
+                <display-name xml:lang="x-default">SFRA Storefront Base</display-name>
+                <description xml:lang="x-default">SFRA Storefront Base Folder Name</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>app_storefront_base</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoDebugEnabled">
                 <display-name xml:lang="x-default">Enable debug mode</display-name>
@@ -552,10 +561,9 @@
                 <attribute attribute-id="ckoBusinessCountry"/>
             </attribute-group>
             <attribute-group group-id="CKO [4] Cartridge Settings">
-                <display-name xml:lang="x-default">Checkout.com Live API Keys</display-name>
-                <attribute attribute-id="ckoLivePublicKey"/>
-                <attribute attribute-id="ckoLiveSecretKey"/>
-                <attribute attribute-id="ckoLivePrivateSharedKey"/>
+                <display-name xml:lang="x-default">Checkout.com Site Genesis Cartridge Settings</display-name>
+                <attribute attribute-id="ckoSgStorefrontCore"/>
+                <attribute attribute-id="ckoSgStorefrontController"/>
             </attribute-group>
             <attribute-group group-id="CKO [5] Payment Settings">
                 <display-name xml:lang="x-default">Checkout.com Payment Settings</display-name>
@@ -567,8 +575,6 @@
                 <attribute attribute-id="cko3ds"/>
                 <attribute attribute-id="ckoN3ds"/>
                 <attribute attribute-id="ckoMada"/>
-                <attribute attribute-id="ckoStorefrontCore"/>
-                <attribute attribute-id="ckoStorefrontController"/>
             </attribute-group>
             <attribute-group group-id="CKO [6] APM Settings">
                 <display-name xml:lang="x-default">Checkout.com Alternative Payment Methods Settings</display-name>
