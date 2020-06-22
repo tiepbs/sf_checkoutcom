@@ -1,2 +1,0 @@
-<!--- TEMPLATENAME: SepaMandate.isml --->
-<isredirect location="${URLUtils.url('CKOSepa-Mandate')}" permanent="false">
