@@ -40,11 +40,9 @@
             --------------------------------------------------------------
         </iscomment>
         <isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue("ckoEnabled"))}">  
-            <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_CARD'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_CARD">
-                <div class="form-row form-caption cko-form">
-                    <isinclude template="ckoPayments" />
-                </div>
-            </div>
+        	<div class="form-row form-caption cko-form">
+            	<isinclude template="ckoPayments" />
+        	</div>
         <iselse>
 
 
