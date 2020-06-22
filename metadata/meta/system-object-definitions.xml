@@ -77,15 +77,15 @@
         <custom-attribute-definitions>
             <attribute-definition attribute-id="ckoSgPlatformData">
                 <type>string</type>
-                <default-value>Checkout.com Site Genesis Cartridge - Version: 20.0</default-value>
+                <default-value>Checkout.com Site Genesis Cartridge - Version: 20.1.0</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoSfraPlatformData">
                 <type>string</type>
-                <default-value>Checkout.com SFRA Cartridge - Version: 20.0</default-value>
+                <default-value>Checkout.com SFRA Cartridge - Version: 20.1.0</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoBmPlatformData">
                 <type>string</type>
-                <default-value>Checkout.com Business Manager Cartridge - Version: 20.0</default-value>
+                <default-value>Checkout.com Business Manager Cartridge - Version: 20.1.0</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoBillingDescriptor1">
                 <display-name xml:lang="x-default">Billing Descriptor 1</display-name>
