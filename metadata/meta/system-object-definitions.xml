@@ -561,8 +561,7 @@
                 <attribute attribute-id="ckoBusinessCountry"/>
             </attribute-group>
             <attribute-group group-id="CKO [4] Cartridge Settings">
-                <display-name xml:lang="x-default">Checkout.com SFRA and Site Genesis Cartridge Settings</display-name>
-                <attribute attribute-id="ckoSfraStorefrontBase"/>
+                <display-name xml:lang="x-default">Checkout.com Site Genesis Cartridge Settings</display-name>
                 <attribute attribute-id="ckoSgStorefrontCore"/>
                 <attribute attribute-id="ckoSgStorefrontController"/>
             </attribute-group>
