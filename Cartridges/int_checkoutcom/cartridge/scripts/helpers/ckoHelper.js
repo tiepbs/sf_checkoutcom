@@ -9,7 +9,6 @@ var BasketMgr = require('dw/order/BasketMgr');
 var PaymentMgr = require('dw/order/PaymentMgr');
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
-var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var PaymentMgr = require('dw/order/PaymentMgr');
 
 // Card Currency Config
