@@ -2,7 +2,7 @@
 
 
 // Site controller
-var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontController');
+var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontControllers');
 
 // API Includes 
 var Transaction = require('dw/system/Transaction');
