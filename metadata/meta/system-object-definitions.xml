@@ -186,8 +186,8 @@
                 <default-value>sitegenesis_storefront_core</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="ckoSgStorefrontController">
-                <display-name xml:lang="x-default">Site Genesis Storefront Controller</display-name>
-                <description xml:lang="x-default">Site Genesis Storefront Controller Folder Name</description>
+                <display-name xml:lang="x-default">Site Genesis Storefront Controllers</display-name>
+                <description xml:lang="x-default">Site Genesis Storefront Controllers Folder Name</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
