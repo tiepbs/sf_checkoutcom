@@ -7,7 +7,7 @@ var util = require('~/cartridge/scripts/helpers/ckoHelper');
 /**
  * Initialize HTTP service for the Checkout.com sandbox charges verification
  */
-svc.ServiceRegistry.configure("cko.verify.charges.sandbox.service", {
+svc.LocalServiceRegistry.createService("cko.verify.charges.sandbox.service", {
     createRequest: function (svc, args) {
         var serviceUrl = svc.configuration.credential.URL + "/" + args.paymentToken;
             
@@ -29,7 +29,7 @@ svc.ServiceRegistry.configure("cko.verify.charges.sandbox.service", {
 /**
  * Initialize HTTP service for the Checkout.com sandbox charges verification
  */
-svc.ServiceRegistry.configure("cko.verify.charges.live.service", {
+svc.LocalServiceRegistry.createService("cko.verify.charges.live.service", {
     createRequest: function (svc, args) {
         var serviceUrl = svc.configuration.credential.URL + "/" + args.paymentToken;
             
