@@ -1,0 +1,6 @@
+<!-- Alipay APM Option -->
+<div class="cko-apm-accordion">
+	<input id="aplipay_apm_radio_btn" type="radio" name="apm_list" value="ali">
+	<img alt="${Resource.msg('cko.alipay.name','cko',null)}" id="alipay_thumb" src="${URLUtils.staticURL('/images/apm-icons/alipay.jpg')}">
+	${Resource.msg('cko.alipay.name','cko',null)}
+</div>
