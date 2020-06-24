@@ -4,7 +4,6 @@
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var OrderMgr = require('dw/order/OrderMgr');
 var PaymentMgr = require('dw/order/PaymentMgr');
-var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
 
 /**
