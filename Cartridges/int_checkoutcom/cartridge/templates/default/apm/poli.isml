@@ -1,0 +1,6 @@
+<!-- Multibanco pay APM Option -->
+<div class="cko-apm-accordion">
+	<input id="poliPay_apm_radio_btn" type="radio" name="apm_list" value="poli">
+	<img alt="${Resource.msg('cko.poli.name','cko',null)}" id="poliPay_thumb" src="${URLUtils.staticURL('/images/apm-icons/poli.png')}">
+	${Resource.msg('cko.poli.name','cko',null)} 
+</div>
