@@ -4,7 +4,6 @@
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var OrderMgr = require('dw/order/OrderMgr');
 var PaymentMgr = require('dw/order/PaymentMgr');
-var ServiceRegistry = require('dw/svc/ServiceRegistry');
 var PaymentTransaction = require('dw/order/PaymentTransaction');
 
 /**
@@ -205,12 +204,12 @@ var CKOHelper = {
         }
     },
 
-    /**
-     * Creates an HTTP Client to handle gateway queries.
+    /*
+     * Create an HTTP client to handle request to gateway
      */
     getGatewayClient: function (serviceId, requestData, method) {
         var method = method || 'POST';
-        var serv = ServiceRegistry.get(serviceId);
+        var serv = this.getService(serviceId);
 
         // Prepare the request URL and data
         if (requestData.hasOwnProperty('chargeId')) {
@@ -221,11 +220,25 @@ var CKOHelper = {
 
         // Set the request method
         serv.setRequestMethod(method);
-        
+
         // Call the service
         var resp = serv.call(requestData);
+        if (resp.status != 'OK') {
+            return resp.error;
+        }
 
         return resp.object;
+    },
+
+    getService: function (serviceId) {
+        var parts  =  serviceId.split('.');
+        var entity = parts[1];
+        var action = parts[2];
+        var mode = parts[3];
+        var svcFile = entity + action.charAt(0).toUpperCase() + action.slice(1);
+        var svcClass = require('~/cartridge/scripts/services/' + svcFile);
+
+        return svcClass[mode]();
     },
     
     /**
