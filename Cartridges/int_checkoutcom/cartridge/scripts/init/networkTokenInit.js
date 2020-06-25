@@ -7,7 +7,7 @@ var util = require('~/cartridge/scripts/helpers/ckoHelper');
 /**
  * Initialize HTTP service for the Checkout.com sandbox network token
  */
-svc.ServiceRegistry.configure("cko.network.token.sandbox.service", {
+svc.LocalServiceRegistry.createService("cko.network.token.sandbox.service", {
     createRequest: function (svc, args) {
     	
         // Prepare the http service
@@ -26,7 +26,7 @@ svc.ServiceRegistry.configure("cko.network.token.sandbox.service", {
 /**
  * Initialize HTTP service for the Checkout.com live network token
  */
-svc.ServiceRegistry.configure("cko.network.token.live.service", {
+svc.LocalServiceRegistry.createService("cko.network.token.live.service", {
     createRequest: function (svc, args) {
     	
         // Prepare the http service
