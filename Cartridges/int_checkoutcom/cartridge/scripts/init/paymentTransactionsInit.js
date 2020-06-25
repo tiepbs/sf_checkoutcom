@@ -7,7 +7,7 @@ var util = require('~/cartridge/scripts/helpers/ckoHelper');
 /**
  * Initialize HTTP service for the Checkout.com sandbox full card capture
  */
-svc.ServiceRegistry.configure("cko.transaction.capture.sandbox.service", {
+svc.LocalServiceRegistry.createService("cko.transaction.capture.sandbox.service", {
     createRequest: function (svc, args) {
     	
         // Prepare the http service
@@ -26,7 +26,7 @@ svc.ServiceRegistry.configure("cko.transaction.capture.sandbox.service", {
 /**
  * Initialize HTTP service for the Checkout.com live full card capture
  */
-svc.ServiceRegistry.configure("cko.transaction.capture.live.service", {
+svc.LocalServiceRegistry.createService("cko.transaction.capture.live.service", {
     createRequest: function (svc, args) {
     	
         // Prepare the http service
@@ -45,7 +45,7 @@ svc.ServiceRegistry.configure("cko.transaction.capture.live.service", {
 /**
  * Initialize HTTP service for the Checkout.com sandbox full card refund
  */
-svc.ServiceRegistry.configure("cko.transaction.refund.sandbox.service", {
+svc.LocalServiceRegistry.createService("cko.transaction.refund.sandbox.service", {
     createRequest: function (svc, args) {
     	
         // Prepare the http service
@@ -64,7 +64,7 @@ svc.ServiceRegistry.configure("cko.transaction.refund.sandbox.service", {
 /**
  * Initialize HTTP service for the Checkout.com live full card refund
  */
-svc.ServiceRegistry.configure("cko.transaction.refund.live.service", {
+svc.LocalServiceRegistry.createService("cko.transaction.refund.live.service", {
     createRequest: function (svc, args) {
     	
         // Prepare the http service
@@ -83,7 +83,7 @@ svc.ServiceRegistry.configure("cko.transaction.refund.live.service", {
 /**
  * Initialize HTTP service for the Checkout.com sandbox full card void
  */
-svc.ServiceRegistry.configure("cko.transaction.void.sandbox.service", {
+svc.LocalServiceRegistry.createService("cko.transaction.void.sandbox.service", {
     createRequest: function (svc, args) {
     	
         // Prepare the http service
@@ -102,7 +102,7 @@ svc.ServiceRegistry.configure("cko.transaction.void.sandbox.service", {
 /**
  * Initialize HTTP service for the Checkout.com live full card void
  */
-svc.ServiceRegistry.configure("cko.transaction.void.live.service", {
+svc.LocalServiceRegistry.createService("cko.transaction.void.live.service", {
     createRequest: function (svc, args) {
     	
         // Prepare the http service
