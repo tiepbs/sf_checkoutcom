@@ -7,7 +7,7 @@ var util = require('~/cartridge/scripts/helpers/ckoHelper');
 /**
  * Initialize HTTP service for the Checkout.com sandbox full card charge
  */
-svc.ServiceRegistry.configure("cko.klarna.session.sandbox.service", {
+svc.LocalServiceRegistry.createService("cko.klarna.session.sandbox.service", {
     createRequest: function (svc, args) {
     	
         // Prepare the http service
@@ -26,7 +26,7 @@ svc.ServiceRegistry.configure("cko.klarna.session.sandbox.service", {
 /**
  * Initialize HTTP service for the Checkout.com live full card charge
  */
-svc.ServiceRegistry.configure("cko.klarna.session.live.service", {
+svc.LocalServiceRegistry.createService("cko.klarna.session.live.service", {
     createRequest: function (svc, args) {
     	
         // Prepare the http service
