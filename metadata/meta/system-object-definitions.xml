@@ -185,7 +185,7 @@
                 <min-length>0</min-length>
                 <default-value>sitegenesis_storefront_core</default-value>
             </attribute-definition>
-            <attribute-definition attribute-id="ckoSgStorefrontController">
+            <attribute-definition attribute-id="ckoSgStorefrontControllers">
                 <display-name xml:lang="x-default">Site Genesis Storefront Controllers</display-name>
                 <description xml:lang="x-default">Site Genesis Storefront Controllers Folder Name</description>
                 <type>string</type>
@@ -563,7 +563,7 @@
             <attribute-group group-id="CKO [4] Cartridge Settings">
                 <display-name xml:lang="x-default">Checkout.com Site Genesis Cartridge Settings</display-name>
                 <attribute attribute-id="ckoSgStorefrontCore"/>
-                <attribute attribute-id="ckoSgStorefrontController"/>
+                <attribute attribute-id="ckoSgStorefrontControllers"/>
             </attribute-group>
             <attribute-group group-id="CKO [5] Payment Settings">
                 <display-name xml:lang="x-default">Checkout.com Payment Settings</display-name>
