@@ -872,7 +872,7 @@ var ckoHelper = {
             phone                       : args.order.defaultShipment.shippingAddress.phone,
             country                     : args.order.defaultShipment.shippingAddress.countryCode.valueOf()
         }
-        
+
         return address;
     }
 }
