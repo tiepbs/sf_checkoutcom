@@ -55,59 +55,6 @@ var transactionHelper = {
         });
     },
 
-    /**
-     * Get the Checkout.com orders.
-     */
-    getCkoOrders: function () {
-        // Prepare the output array
-        var data = [];
-    
-        // Query the orders
-        var result  = SystemObjectMgr.querySystemObjects('Order', '', 'creationDate desc');
-        
-        // Loop through the results
-        for each(var item in result) {
-            // Get the payment instruments
-            var paymentInstruments = item.getPaymentInstruments();
-            
-            // Loop through the payment instruments
-            for each(var instrument in paymentInstruments) {
-                if (ckoHelper.isCkoItem(instrument.paymentMethod) && !ckoHelper.containsObject(item, data)) {
-                    data.push(item);
-                }
-            }
-        }
-
-        return data;
-    },
-
-    /**
-     * Get the Checkout.com transactions.
-     */
-    loadTransactionById: function (transactionId) {
-        // Query the orders
-        var result  = this.getCkoOrders();
-
-        // Loop through the results
-        for each(var item in result) {
-            // Get the payment instruments
-            var paymentInstruments = item.getPaymentInstruments();
-            
-            // Loop through the payment instruments
-            for each(var instrument in paymentInstruments) {
-                // Get the payment transaction
-                var paymentTransaction = instrument.getPaymentTransaction();
-
-                // Add the payment transaction to the output
-                if (transactionId = paymentTransaction.transactionID) {
-                    return paymentTransaction;
-                }
-            }
-        }
-        
-        return null;
-    },
-
     /*
      * Get a parent transaction from a payment id
      */
