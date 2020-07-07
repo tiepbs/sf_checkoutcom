@@ -207,12 +207,12 @@ var ckoHelper = {
     /**
      * Get the Checkout.com orders.
      */
-    getOrders: function () {
+    getOrders: function (orderNo) {
         // Prepare the output array
         var data = [];
 
         // Query the orders
-        var result  = SystemObjectMgr.querySystemObjects('Order', '', 'creationDate desc');
+        var result  = SystemObjectMgr.querySystemObjects('Order', 'orderNo = {0}', 'creationDate desc', orderNo);
 
         // Loop through the results
         for each(var item in result) {

@@ -58,11 +58,11 @@ var transactionHelper = {
     /*
      * Get a parent transaction from a payment id
      */
-    getParentTransaction: function (paymentId, transactionType) {
+    getParentTransaction: function (hook, transactionType) {
         // Prepare the payload
         var mode = ckoHelper.getValue('ckoMode');
         var ckoChargeData = {
-            chargeId: paymentId
+            chargeId: hook.data.id
         }
 
         // Get the payment actions
@@ -79,7 +79,7 @@ var transactionHelper = {
             // Return the requested transaction
             for (var i = 0; i < paymentActionsArray.length; i++) {
                 if (paymentActionsArray[i].type == transactionType) {
-                    return this.loadTransaction(paymentActionsArray[i].id);
+                    return this.loadTransaction(paymentActionsArray[i].id, hook.data.reference);
                 }
             }
         }
@@ -90,9 +90,9 @@ var transactionHelper = {
     /**
      * Load a transaction by Id.
      */
-    loadTransaction: function (transactionId) {
+    loadTransaction: function (transactionId, orderNo) {
         // Query the orders
-        var result  = ckoHelper.getOrders();
+        var result  = ckoHelper.getOrders(orderNo);
 
         // Loop through the results
         for each(var item in result) {
