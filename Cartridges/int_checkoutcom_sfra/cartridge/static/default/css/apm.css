@@ -3,7 +3,7 @@
     background-color: #ffffff;
     color: #444;
     cursor: pointer;
-    padding: 18px;
+    padding: 1em;
     width: 100%;
     text-align: left;
     border: none;
@@ -13,14 +13,14 @@
 
 .cko-apm-accordion img {
     display: inline-block;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 0.7em;
+    margin-right: 0.7em;
     width: 7%;
 }
 
 .apm-list-item {
     display: none;
-    border-bottom: solid 1px #cccccc;
+    border-bottom: solid 0.1em #cccccc;
 }
 
 .cko-apm-active, .cko-apm-accordion:hover {
@@ -28,7 +28,7 @@
 }
 
 .cko-apm-panel {
-    padding: 0px 18px 0px 18px;
+    padding: 0em 1em 0em 1em;
     width: 100%;
     background-color: white;
     max-height: 0;
@@ -37,6 +37,6 @@
 }
 
 .cko-apm-panel > div {
-	padding-top: 23px;
-	padding-bottom: 20px;
+	padding-top: 1.5em;
+	padding-bottom: 1.2em;
 }
