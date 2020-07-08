@@ -21,32 +21,29 @@ var apmHelper = {
 
         // Create the payment request
         var gatewayRequest = this.getApmRequest(order, processorId, apmConfigData);
-       
+
         // Test SEPA
-        if (gatewayRequest.source.type == "sepa") {
-            gatewayRequest['billing_address'] = ckoHelper.getBilling({order: order});
-            gatewayRequest['type'] = apmConfigData.type;
-            gatewayRequest['source_data'] = apmConfigData.source_data;
-        }
+        if (gatewayRequest.hasOwnProperty('type') & gatewayRequest.type == "sepa") {
+            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.sources." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
+        } else {
 
-        // Test Klarna
-        else if (gatewayRequest.source.type == "klarna") {
-            gatewayRequest['capture'] = false;
-        }
-        // Perform the request to the payment gateway
-        gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
+            // Test Klarna
+            if (gatewayRequest.source.type == "klarna") {
+                gatewayRequest['capture'] = false;
+            }
 
-        // Log the SEPA payment response data
-        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
+            // Perform the request to the payment gateway
+            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
+        }
 
         // Process the response
-        return this.handleResponse(gatewayResponse);
+        return this.handleResponse(gatewayResponse, orderNumber);
     },
 
     /*
      * Handle the payment response
      */
-    handleResponse: function (gatewayResponse) {
+    handleResponse: function (gatewayResponse, orderNumber) {
         // Prepare the result
         var result = {
             error: true,
@@ -58,9 +55,9 @@ var apmHelper = {
 
         // Add redirect to sepa source reqeust
         if (gatewayResponse.hasOwnProperty('type') && gatewayResponse.type == 'Sepa') {
-            session.privacy.sepaResponseId = gatewayResponse.id;
             result.error = false;
-            result.redirectUrl = URLUtils.url('CKOSepa-Mandate').toString();
+            result.redirectUrl = URLUtils.url('CKOSepa-Mandate').toString()
+            + "?orderNumber=" + orderNumber + "&sepaResponseId=" + gatewayResponse.id;
         }
 
         // Add redirect URL to session if exists
@@ -87,19 +84,37 @@ var apmHelper = {
         );
 
         // Prepare the charge data
-        chargeData = {
-            "customer"              : ckoHelper.getCustomer(order),
-            "amount"                : amount,
-            "currency"              : order.getCurrencyCode(),
-            "source"                : apmConfigData.source,
-            "reference"             : order.orderNo,
-            "metadata"              : ckoHelper.getMetadata({}, processorId),
-            "billing_descriptor"    : ckoHelper.getBillingDescriptor()
-        };
-        
-        // Test Klarna
-        if (apmConfigData.type == 'klarna') {
-            chargeData['capture'] = false;
+        if (apmConfigData.hasOwnProperty('type') && apmConfigData.type == "sepa") {
+
+            // Prepare the charge data
+            chargeData = {
+                "customer"              : ckoHelper.getCustomer(order),
+                "amount"                : amount,
+                "type"                  : apmConfigData.type,
+                "currency"              : order.getCurrencyCode(),
+                "billing_address"       : apmConfigData.billingAddress,
+                "source_data"           : apmConfigData.source_data,
+                "reference"             : order.orderNo,
+                "metadata"              : ckoHelper.getMetadata({}, processorId),
+                "billing_descriptor"    : ckoHelper.getBillingDescriptor()
+            };
+        } else {
+
+            // Prepare chargeData object
+            chargeData = {
+                "customer"              : ckoHelper.getCustomer(order),
+                "amount"                : amount,
+                "currency"              : order.getCurrencyCode(),
+                "source"                : apmConfigData.source,
+                "reference"             : order.orderNo,
+                "metadata"              : ckoHelper.getMetadata({}, processorId),
+                "billing_descriptor"    : ckoHelper.getBillingDescriptor()
+            };
+
+            // Test Klarna
+            if (chargeData.source.type == "klarna") {
+                chargeData['capture'] = false;
+            }
         }
 
         return chargeData;
@@ -117,7 +132,6 @@ var apmHelper = {
 
         // If the charge is valid, process the response
         if (gatewayResponse) {
-            ckoHelper.doLog(ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
             this.handleResponse(gatewayResponse, order);
         } else {
             // Update the transaction
