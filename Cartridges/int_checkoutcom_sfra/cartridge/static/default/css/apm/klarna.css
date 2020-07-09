@@ -1,29 +1,28 @@
 /* Klarna */
 #klarna_pay_box {
-    min-width: 280px;
-    border: solid 1px #aaa;
-    margin: 20px 10px 20px 10px;
-    border-radius: 5px;
+    min-width: 20em;
+    margin: 1em 1em 1em 1em;
+    border-radius: 0.2;
 }
 
 #klarna-payments-container {
-    min-width: 280px;
-    padding: 10px;
+    min-width: 20em;
+    padding: 0.7;
 }
 
 #klarna_authorize_btn {
     width: 100%;
-    margin-top: 30px;
+    margin-top: 1.8em;
 }
 
 .klarna-button {
-    padding: 10px;
-    border: solid 0.5px #eee;
-    border-radius: 5px;
+    padding: 0.7em;
+    border: solid 0.01em #eee;
+    border-radius: 0.2em;
 }
 
 .klarna-button img {
-    margin-top: 10px;
+    margin-top: 0.7em;
     float: right;
 }
 
@@ -34,10 +33,10 @@
 }
 
 .klarna-button span {
-    font-size: 20px;
+    font-size: 1em;
     color: black;
 }
 
 .klarna-button input[type="radio"] {
-    margin-left: 10px;
+    margin-left: 0.7em;
 }
