@@ -2,6 +2,10 @@
 	@import url("${URLUtils.staticURL('/css/card.css')}");
 </style>
 
+<isscript>
+	var countries = require(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontCore') + '/cartridge/scripts/util/Countries');
+</isscript>
+
 <div id="card_payment_box">	
 	<isif condition="${pdict.CurrentCustomer.authenticated}">
 		<div id="ckoCardSelector" class="form-row" class="hideCard">
@@ -45,21 +49,11 @@
 			<span class="required-indicator">${Resource.msg('billing.requiredindicator', 'checkout', null)}</span>
 			<span>${Resource.msg('billing.creditcardlistexpdate', 'checkout', null)}</span>
 		</label>
-		<isscript>
-			var currentCountry = require(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontCore') + '/cartridge/scripts/util/Countries').getCurrent(pdict);
-		</isscript>
-		<isdynamicform formobject="${pdict.CurrentForms.cardPaymentForm.expiration}" formdata="${currentCountry.dynamicForms.expirationInfo}"/>
+		<isdynamicform formobject="${pdict.CurrentForms.cardPaymentForm.expiration}" formdata="${countries.getCurrent(pdict).dynamicForms.expirationInfo}"/>
 	</div>
 	
-	<isscript>
-		var help = {
-			label: Resource.msg('billing.linkcvn', 'checkout', null),
-			cid: 'checkout-security-code'
-		};
-	</isscript>
-	
 	<!-- Card CVN -->
-	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${help}"/>
+	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${{label: Resource.msg('billing.linkcvn', 'checkout', null), cid: 'checkout-security-code'}}"/>
 	
 	<!-- Save Card -->
 	<isif condition="${pdict.CurrentCustomer.authenticated}">
@@ -83,7 +77,7 @@
 	<input type="hidden" id="ckoApmFilterUrl" value="${URLUtils.https('CKOMain-GetApmFilter')}" />
 </div>
 
-<!-- Imort card formatting scripts -->
+<!-- Import card formatting scripts -->
 <script src="${URLUtils.staticURL('/js/checkoutcom.js')}"></script>
 <script src="${URLUtils.staticURL('/js/cleave.js')}"></script>
 <script src="${URLUtils.staticURL('js/cardPayment.js')}"></script>

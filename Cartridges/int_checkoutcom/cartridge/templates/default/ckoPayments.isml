@@ -1,23 +1,27 @@
+<style>
+    @import url("${URLUtils.staticURL('/css/payments.css')}");
+</style>
+
 <!-- This includes the card payment forms and buttons -->
 <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_CARD'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_CARD">
-    <div class="form-row form-caption cko-form">
-		<isinclude template="cardPayments/cardPaymentForm.isml"/>
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="cardPayments/cardPaymentForm.isml"/>
     </div>
 </div>
 
 
 <!-- This includes the alternative payment forms and buttons -->
 <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_APM'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_APM">
-	<div class="form-row form-caption cko-form">
-		<isinclude template="apm/apm.isml"/>
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apm/apm.isml"/>
     </div>
 </div>
 
 
 <!-- This includes the google payment forms and buttons -->
 <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_GOOGLE_PAY'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_GOOGLE_PAY">
-    <div class="form-row form-caption cko-form">
-		<isinclude template="walletPayments/googlePayForm.isml"/>
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="walletPayments/googlePayForm.isml"/>
     </div>
 </div>
 
@@ -25,7 +29,7 @@
 
 <!-- This includes the apple payment forms and buttons -->
 <div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_APPLE_PAY'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_APPLE_PAY">
-	<div class="form-row form-caption cko-form">
-		<isinclude template="walletPayments/applePayForm.isml"/>
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="walletPayments/applePayForm.isml"/>
     </div>
 </div>

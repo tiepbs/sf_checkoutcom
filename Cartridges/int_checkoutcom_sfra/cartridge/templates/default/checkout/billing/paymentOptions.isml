@@ -4,16 +4,9 @@
     assets.addJs('/js/checkoutcom.js');
     assets.addJs('/js/lib/cleave.js');
     assets.addCss('/css/checkoutcom.css');
-
-    // Translatrion strings
-	var translationStrings = JSON.stringify({
-        googlePayDataInvalid: dw.web.Resource.msg('cko.googlepaydata.invalid', 'cko', null),
-		applePayDataInvalid: dw.web.Resource.msg('cko.applepaydata.invalid', 'cko', null),
-		apmFieldInvalid: dw.web.Resource.msg('cko.apmfield.invalid', 'cko', null)
-	});
 </isscript>
 
-<input type="hidden" id="translationStrings" value='${translationStrings}'>
+<input type="hidden" id="translationStrings" value="${JSON.stringify({googlePayDataInvalid: dw.web.Resource.msg('cko.googlepaydata.invalid', 'cko', null), applePayDataInvalid: dw.web.Resource.msg('cko.applepaydata.invalid', 'cko', null), apmFieldInvalid: dw.web.Resource.msg('cko.apmfield.invalid', 'cko', null)})}">
 
 <!-- Payment options -->
 <div class="form-nav billing-nav payment-information"

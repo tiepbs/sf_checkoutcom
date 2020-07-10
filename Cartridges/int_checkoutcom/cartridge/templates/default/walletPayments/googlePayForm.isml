@@ -3,20 +3,13 @@
 	@import url("${URLUtils.staticURL('/css/googlepay.css')}");
 </style>
 
-<isscript>
-var buttonStyle = 'google-pay-button-' + dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayButton');
-var ckoMode = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode').value; 
-var publicKey = 'cko' + ckoMode.charAt(0).toUpperCase() + ckoMode.slice(1) + 'PublicKey';
-var gatewayMerchantId = dw.system.Site.getCurrent().getCustomPreferenceValue(publicKey);
-</isscript>
-
-<button id="ckoGooglePayButton" type="button" class="cko-google-pay-button ${buttonStyle}"></button>
+<button id="ckoGooglePayButton" type="button" class="cko-google-pay-button ${'google-pay-button-' + dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayButton')}"></button>
 
 <input type="hidden" id="ckoGooglePayEnvironment" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnvironment').value)}">
 <input type="hidden" id="ckoGooglePayMerchantId" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayMerchantId'))}">
 <input type="hidden" id="ckoGooglePayCurrency" value="${pdict.Basket.getCurrencyCode()}">
 <input type="hidden" id="ckoGooglePayAmount" value="${pdict.OrderTotal}">
-<input type="hidden" id="ckoGatewayMerchantId" value="${gatewayMerchantId}">
+<input type="hidden" id="ckoGatewayMerchantId" value="${dw.system.Site.getCurrent().getCustomPreferenceValue('cko' + dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode').value.charAt(0).toUpperCase() + dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode').value.slice(1) + 'PublicKey')}">
 
 <isinputfield formfield="${pdict.CurrentForms.googlePayForm.data}" id="googlePayData" type="hidden"/>
 

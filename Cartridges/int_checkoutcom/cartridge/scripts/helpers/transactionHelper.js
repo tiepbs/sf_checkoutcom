@@ -68,73 +68,14 @@ var transactionHelper = {
         });
     },
 
-    /**
-     * Get the Checkout.com orders
-     */
-    getCkoOrders: function () {
-
-        // Prepare the output array
-        var data = [];
-    
-        // Query the orders
-        var result  = SystemObjectMgr.querySystemObjects('Order', '', 'creationDate desc');
-        
-        // Loop through the results
-        for each(var item in result) {
-        	
-            // Get the payment instruments
-            var paymentInstruments = item.getPaymentInstruments();
-            
-            // Loop through the payment instruments
-            for each(var instrument in paymentInstruments) {
-                if (ckoHelper.isCkoItem(instrument.paymentMethod) && !this.containsObject(item, data)) {
-                    data.push(item);
-                }
-            }
-        }
-
-        return data;
-    },
-
-    /**
-     * Get the Checkout.com transactions
-     */
-    loadTransactionById: function (transactionId) {
-
-        // Query the orders
-        var result  = ckoHelper.getCkoOrders();
-
-        // Loop through the results
-        for each(var item in result) {
-        	
-            // Get the payment instruments
-            var paymentInstruments = item.getPaymentInstruments();
-            
-            // Loop through the payment instruments
-            for each(var instrument in paymentInstruments) {
-            	
-                // Get the payment transaction
-                var paymentTransaction = instrument.getPaymentTransaction();
-
-                // Add the payment transaction to the output
-                if (transactionId = paymentTransaction.transactionID) {
-                    return paymentTransaction;
-                }
-            }
-        }
-        
-        return null;
-    },
-
     /*
      * Get a parent transaction from a payment id
      */
-    getParentTransaction: function (paymentId, transactionType) {
-
+    getParentTransaction: function (hook, transactionType) {
         // Prepare the payload
         var mode = ckoHelper.getValue('ckoMode');
         var ckoChargeData = {
-            chargeId: paymentId
+            chargeId: hook.data.id
         }
 
         // Get the payment actions
@@ -151,7 +92,7 @@ var transactionHelper = {
             // Return the requested transaction
             for (var i = 0; i < paymentActionsArray.length; i++) {
                 if (paymentActionsArray[i].type == transactionType) {
-                    return this.loadTransaction(paymentActionsArray[i].id);
+                    return this.loadTransaction(paymentActionsArray[i].id, hook.data.reference);
                 }
             }
         }
@@ -160,22 +101,19 @@ var transactionHelper = {
     },
 
     /**
-     * Load a transaction by Id
+     * Load a transaction by Id.
      */
-    loadTransaction: function (transactionId) {
-
+    loadTransaction: function (transactionId, orderNo) {
         // Query the orders
-        var result  = ckoHelper.getOrders();
+        var result  = ckoHelper.getOrders(orderNo);
 
         // Loop through the results
         for each(var item in result) {
-
             // Get the payment instruments
             var paymentInstruments = item.getPaymentInstruments();
             
             // Loop through the payment instruments
             for each(var instrument in paymentInstruments) {
-
                 // Get the payment transaction
                 var paymentTransaction = instrument.getPaymentTransaction();
 
@@ -184,7 +122,6 @@ var transactionHelper = {
 
                 // Add the payment transaction to the output
                 if (isIdMatch) {
-
                     return paymentTransaction;
                 }
             }

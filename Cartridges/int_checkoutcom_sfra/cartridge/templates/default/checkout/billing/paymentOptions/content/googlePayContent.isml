@@ -3,12 +3,6 @@
     var assets = require('*/cartridge/scripts/assets.js');
     assets.addJs('/js/googlepay.js');
     assets.addCss('/css/googlepay.css');
-
-    var buttonStyle = 'google-pay-button-' + dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayButton');
-    var ckoMode = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMode').value; 
-	var publicKey = 'cko' + ckoMode.charAt(0).toUpperCase() + ckoMode.slice(1) + 'PublicKey';
-	var gatewayMerchantId = dw.system.Site.getCurrent().getCustomPreferenceValue(publicKey);
-    var orderAmount = pdict.order.totals.grandTotal.replace(/[^\d\.\,\s]+/g, '');
 </isscript>
 
 <div class="tab-pane google-pay-content" id="google-pay-content" role="tabpanel">

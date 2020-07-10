@@ -80,7 +80,7 @@ var eventsHelper = {
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CAPTURE);
 
             // Update the parent transaction state
-            var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Authorization');
+            var parentTransaction = transactionHelper.getParentTransaction(hook, 'Authorization');
             if (parentTransaction) {
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
                 parentTransaction.custom.ckoTransactionOpened = false;
@@ -174,7 +174,7 @@ var eventsHelper = {
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CREDIT);
 
             // Update the parent transaction state
-            var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Authorization');
+            var parentTransaction = transactionHelper.getParentTransaction(hook, 'Authorization');
             if (parentTransaction) {
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
                 parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(transactionAmount);
@@ -214,7 +214,7 @@ var eventsHelper = {
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH_REVERSAL);
 
             // Update the parent transaction state
-            var parentTransaction = transactionHelper.getParentTransaction(hook.data.id, 'Authorization');
+            var parentTransaction = transactionHelper.getParentTransaction(hook, 'Authorization');
             if (parentTransaction) {
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
                 parentTransaction.custom.ckoTransactionOpened = false;
