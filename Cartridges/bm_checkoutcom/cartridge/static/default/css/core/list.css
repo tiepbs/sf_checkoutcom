@@ -1,22 +1,22 @@
 /* Table styles */
 .tabulator .tabulator-tableHolder .tabulator-placeholder span {
-    font-size: 15px !important;
-    margin: 0px !important;
+    font-size: 0.9em;
+    margin: 0em;
 }
 
 .tabulator-header-filter input {
-    border: solid 1px #cccccc;
-    height: 27px;
+    border: solid 0.01em #cccccc;
+    height: 1.8em;
 }
 
 .tabulator-cell button {
     cursor: pointer;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 0.1em;
+    margin-right: 0.1em;
 }
 
 .tabulator-row .tabulator-cell, .tabulator-col {
-    border-right: 1px solid #dddddd !important;
+    border-right: 0.01em solid #dddddd;
 }
 
 /* Table controls */
@@ -28,7 +28,6 @@
 .ckoModal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -42,8 +41,8 @@
 .ckoModal .modal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
+    padding: 1.2em;
+    border: 0.01em solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
 }
   
@@ -51,7 +50,7 @@
 .ckoModal .close {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    font-size: 1.6em;
     font-weight: bold;
 }
   
@@ -63,11 +62,11 @@
 }
 
 .ckoAction {
-    min-width: 82px;
+    min-width: 5em;
 }
 
 .ckoSuccessMessage {
-    margin-top: 20px;
+    margin-top: 1.2em;
     display: none;
 }
 

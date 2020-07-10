@@ -1,12 +1,12 @@
 /* Style the buttons that are used to open and close the accordion panel */
 .cko-apm-accordion {
-  height: 60px !important;
-  line-height: 60px !important;
+  height: 5em;
+  line-height: 5em;
   background-color: #fff;
   color: #444;
   cursor: pointer;
   text-align: left;
-  border: solid 1px #eee;
+  border: solid 0.1em #eee;
   outline: none;
   transition: 0.4s;
 }
@@ -19,8 +19,8 @@
 /* Style the accordion panel. Note: hidden by default */
 .cko-apm-panel {
 	display: none;
-	border: solid 1px #eee;
-	padding: 0 18px;
+	border: solid 0.1em #eee;
+	padding: 0 1em;
 	background-color: white;
 	min-height: 0;
 	overflow: hidden;
@@ -39,31 +39,31 @@ vertical-align: middle;
 }
 
  .apmBox{
-	//width: 300px;
+	width: 100%;
 }
 
 
 /* klarna Styles */
 
 .klarnaForm{
-	padding-top: 10px;
-	min-width: 280px; 
-	border-radius: 5px;
+	padding-top: 0.5em;
+	min-width: 30em;
+	border-radius: 0.1em;
 }
 
 .klarnaContainer{
-	min-width: 280px; 
-	padding: 10px;
+	min-width: 30em;
+	padding: 0.7em;
 }
 
 .klarnaButton{
-	padding: 10px; 
-	border: solid 0.5px #eee; 
-	border-radius: 5px;
+	padding: 0.7em;
+	border: solid 0.1em #eee;
+	border-radius: 0.1em;
 }
 
 .klarnaButton span{
-	font-size:20px;
+	font-size: 1em;
 }
 
 .klarnaButton .klarnaBlack{
@@ -71,28 +71,26 @@ vertical-align: middle;
 }
 
 .klarnaLogo{
-	margin-top: 10px; 
+	margin-top: 0.7em;
 	float: right;
 }
 
 #klarnaConfirmBtn{
-	width: 100%; 
-	margin-top: 30px; 
-	padding: 10px;
+	width: 100%;
+	margin-top: 2em;
+	padding: 0.7em;
 	font-size: 1.5em;
-	/*background: #EB6F93; */
-	/* border: #EB6F93; */
 	display: none;
 }
 
 .klarnaAproved{
-	color: #EB6F93; 
-	float: right; 
+	color: #EB6F93;
+	float: right;
 	display: none;
 }
 
 .klarnaFail{
-	color: #990000; 
-	float: right; 
+	color: #990000;
+	float: right;
 	display: none;
 }

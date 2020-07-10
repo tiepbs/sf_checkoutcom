@@ -15,8 +15,10 @@ var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
 
 // Initiate the mandate session
 server.get('Mandate', server.middleware.https, function (req, res, next) {
+
     // Prepare the variables
-    var orderId = ckoHelper.getOrderId();
+    var sepaResponseId = req.querystring.sepaResponseId;
+    var orderId = req.querystring.orderNumber;
     var order = OrderMgr.getOrder(orderId);
 
     // Process the URL
@@ -42,6 +44,8 @@ server.get('Mandate', server.middleware.https, function (req, res, next) {
             creditorAddress2: ckoHelper.getValue('ckoBusinessAddressLine2'),
             creditorCity: ckoHelper.getValue('ckoBusinessCity'),
             creditorCountry: ckoHelper.getValue('ckoBusinessCountry'),
+            orderNumber: orderId,
+            sepaResponseId: sepaResponseId,
             ContinueURL: URLUtils.https('CKOSepa-HandleMandate')
         });
     } else {
@@ -60,16 +64,18 @@ server.get('Mandate', server.middleware.https, function (req, res, next) {
 });
 
 server.post('HandleMandate', server.middleware.https, function (req, res, next) {
-    // Get the order id
-    var orderId = ckoHelper.getOrderId();
 
     // Get the form
     var sepaForm = req.form;
 
+    // Get the order id from mandate form
+    var orderId = sepaForm.orderNumber;
+    var sepaResponseId = sepaForm.sepaResponseId;
+
     // Validation
     if (sepaForm) {
-        var sepa = sepaForm;
-        var mandate = sepa.mandate;
+
+        var mandate = sepaForm.mandate;
         this.on('route:BeforeComplete', function () {
             // Mandate is true
             if (mandate) {
@@ -77,7 +83,7 @@ server.post('HandleMandate', server.middleware.https, function (req, res, next) 
                 mandateForm.clear();
 
                 // Get the response object from session
-                var responseObjectId = session.privacy.sepaResponseId;
+                var responseObjectId = sepaResponseId;
                 if (responseObjectId) {
                     if (orderId) {
                         // Load the order
@@ -96,9 +102,6 @@ server.post('HandleMandate', server.middleware.https, function (req, res, next) 
                             "currency": order.getCurrencyCode(),
                             "reference": orderId
                         };
-
-                        // Reset the response in session
-                        session.privacy.sepaResponseId = null;
 
                         // Handle the SEPA request
                         apmHelper.handleSepaRequest(payObject, order);
@@ -120,9 +123,27 @@ server.post('HandleMandate', server.middleware.https, function (req, res, next) 
                     );
                 }
             } else {
-                res.redirect(URLUtils.url('CKOSepa-Mandate'));
+                return next(
+                    new Error(
+                        Resource.msg(
+                            'cko.payment.invalid',
+                            'cko',
+                            null
+                        )
+                    )
+                );
             }
         });
+    } else {
+        return next(
+            new Error(
+                Resource.msg(
+                    'cko.payment.invalid',
+                    'cko',
+                    null
+                )
+            )
+        );
     }
 
     next();

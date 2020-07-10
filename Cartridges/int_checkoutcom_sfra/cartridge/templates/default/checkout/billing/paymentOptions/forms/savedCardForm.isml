@@ -4,15 +4,7 @@
     var savedCardHelper = require('~/cartridge/scripts/helpers/savedCardHelper');
 </isscript>
 <isloop items="${pdict.customer.customerPaymentInstruments}" var="paymentInstrument" status="loopState">
-    <isscript>
-        // Get the saved card
-        var card = savedCardHelper.getSavedCard(
-            paymentInstrument.UUID,
-            BasketMgr.currentBasket.getCustomerNo(),
-            paymentOption.ID
-        );
-    </isscript>
-    <isif condition="${card && card.getCreditCardToken()}">
+    <isif condition="${savedCardHelper.getSavedCard(paymentInstrument.UUID, BasketMgr.currentBasket.getCustomerNo(), paymentOption.ID) && savedCardHelper.getSavedCard(paymentInstrument.UUID, BasketMgr.currentBasket.getCustomerNo(), paymentOption.ID).getCreditCardToken()}">
         <div class="row saved-payment-instrument" data-uuid="${paymentInstrument.UUID}">
             <div class="form-group required saved-security-code col-6 col-md-3">
                 <img class="card-image ${loopState.first ? 'checkout-hidden' : ''}"

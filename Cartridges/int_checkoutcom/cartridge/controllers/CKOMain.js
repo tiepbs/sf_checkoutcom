@@ -94,7 +94,7 @@ function handleReturn() {
             ckoHelper.handleFail(null);
         }
     } else {
-        CKOHelper.handleFail(null);
+        ckoHelper.handleFail(null);
     }
 }
 
@@ -196,7 +196,7 @@ function getApmFilter() {
     }
 
     // Write the response
-    response.getWriter().println(JSON.stringify(responseObject));
+    return ckoHelper.ckoResponse(responseObject);
 }
 
 /**
@@ -204,7 +204,9 @@ function getApmFilter() {
  */
 function getMadaBin() {
 	var madaBins = ckoMadaConfig;
-	response.getWriter().println(JSON.stringify(madaBins));
+
+    // Write the response
+    return ckoHelper.ckoResponse(madaBins);
 }
 
 // Module exports

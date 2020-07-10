@@ -51,8 +51,8 @@
 	 		<div class="cko-sepa-message">
 	 		
 		 		<p>
-		        	${Resource.msg('cko.sepa.infoa','cko',null)} (A) <isprint value="${pdict.creditor}"> 
-		        	${Resource.msg('cko.sepa.infob','cko',null)} (B) ${Resource.msg('cko.sepa.infoc','cko',null)} <isprint value="${pdict.creditor}">.
+		        	${Resource.msg('cko.sepa.infoa','cko',null)} (${Resource.msg('cko.letter.a','cko',null)}) <isprint value="${pdict.creditor}"> 
+		        	${Resource.msg('cko.sepa.infob','cko',null)} (${Resource.msg('cko.letter.b','cko',null)}) ${Resource.msg('cko.sepa.infoc','cko',null)} <isprint value="${pdict.creditor}">.
 		        </p>
 		        <p>
 		        	${Resource.msg('cko.sepa.infod','cko',null)}

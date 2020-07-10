@@ -1,5 +1,5 @@
 <fieldset>
-    <button id="ckoApplePayButton" type="button" class="apple-pay-button ${buttonStyle}"></button>
+    <button id="ckoApplePayButton" type="button" class="apple-pay-button ${'apple-pay-button-' + dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayButton')}"></button>
 	<div class="invalid-field-message"></div>
 
     <div class="ckoApplePayUnavailable">${Resource.msg('cko.applepay.inactive', 'cko', null)}</div>
@@ -8,7 +8,7 @@
     <input type="hidden" id="ckoApplePayEnvironment" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayEnvironment'))}">
     <input type="hidden" id="ckoApplePayMerchantId" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayMerchantId'))}">
     <input type="hidden" id="ckoApplePayCurrency" value="${session.getCurrency().getCurrencyCode()}">
-    <input type="hidden" id="ckoApplePayAmount" value="${orderAmount}">
+    <input type="hidden" id="ckoApplePayAmount" value="${pdict.order.totals.grandTotal.replace(/[^\d\.\,\s]+/g, '')}">
     <input type="hidden" id="ckoApplePaySiteName" value="${dw.system.Site.getCurrent().name}">
     <input type="hidden" id="ckoApplePaySiteCountry" value="${ckoHelper.getSiteCountryCode()}">
     <input type="hidden" id="ckoApplePayValidationUrl" value="${URLUtils.https('Applepay-GetValidation')}">

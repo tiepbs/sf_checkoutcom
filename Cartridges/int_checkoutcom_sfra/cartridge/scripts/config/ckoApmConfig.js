@@ -189,6 +189,7 @@ var ckoApmConfig = {
         var params = {
             'type'          : 'sepa',
             'currency'      : args.order.getCurrencyCode(),
+            'billingAddress'       : ckoHelper.getBilling(args),
             'source_data'   : {
                 'first_name'            : args.order.billingAddress.firstName,
                 'last_name'             : args.order.billingAddress.lastName,

@@ -7,12 +7,12 @@
     <ul>
         <li>
             <p>
-                <a href="${URLUtils.https('Cart-Show')}">Try a new payment</a>
+                <a href="${URLUtils.https('Cart-Show')}">${Resource.msg('cko.new.payment', 'cko', null)}</a>
             </p>
         </li>
         <li>
             <p>
-                <a href="${URLUtils.https('Account-Show')}">Access the account</a>
+                <a href="${URLUtils.https('Account-Show')}">${Resource.msg('cko.view.account', 'cko', null)}</a>
             </p>
         </li>
     </ul>
