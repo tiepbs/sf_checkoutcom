@@ -24,7 +24,7 @@ var applePayHelper = {
         };    
 
         // Log the payment token request data
-        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.tokenrequest.data', 'cko'), tokenRequest);
+        ckoHelper.log(processorId + ' ' + ckoHelper._('cko.tokenrequest.data', 'cko'), tokenRequest);
 
         // Perform the request to the payment gateway
         var tokenResponse = ckoHelper.gatewayClientRequest(
@@ -33,7 +33,7 @@ var applePayHelper = {
         );
 
         // Log the payment token response data
-        ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.tokenresponse.data', 'cko'), tokenResponse);
+        ckoHelper.log(processorId + ' ' + ckoHelper._('cko.tokenresponse.data', 'cko'), tokenResponse);
 
         // If the request is valid, process the response
         if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
@@ -54,7 +54,7 @@ var applePayHelper = {
             };
 
             // Log the payment request data
-            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
+            ckoHelper.log(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
 
             // Perform the request to the payment gateway
             var gatewayResponse = ckoHelper.gatewayClientRequest(
@@ -63,7 +63,7 @@ var applePayHelper = {
             );
 
             // Log the payment response data
-            ckoHelper.doLog(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
+            ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
 
             // Process the response
             return gatewayResponse && this.handleResponse(gatewayResponse);

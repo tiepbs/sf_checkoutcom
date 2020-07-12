@@ -88,7 +88,7 @@ var ckoHelper = {
     /*
      * Write gateway information to the website's custom log files
      */
-    doLog: function (dataType, gatewayData) {
+    log: function (dataType, gatewayData) {
         if (this.getValue("ckoDebugEnabled") == true) {
             var logger = Logger.getLogger('ckodebug');
             if (logger) {
