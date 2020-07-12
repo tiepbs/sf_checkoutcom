@@ -8,9 +8,9 @@
     "upload:sfra": "sgmf-scripts --uploadCartridge ../Cartridges/int_checkoutcom_sfra",
     "upload:sg": "sgmf-scripts --uploadCartridge ../Cartridges/int_checkoutcom",
     "upload:bm": "sgmf-scripts --uploadCartridge ../Cartridges/bm_checkoutcom",
-    "lint:sfra": "eslint --fix --ext .js ../Cartridges/int_checkoutcom_sfra",
-    "lint:sg": "eslint --fix --ext .js ../Cartridges/int_checkoutcom",
-    "lint:bm": "eslint --fix --ext .js ../Cartridges/bm_checkoutcom"
+    "lint:fix": "npx eslint-auto-fix",
+    "lint:check": "eslint --ignore-path .gitignore ."
+
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,10 @@
   "dependencies": {
     "lint": "^0.7.0",
     "sgmf-scripts": "^2.4.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.4.0",
+    "eslint-auto-fix": "^1.0.3",
+    "eslint-config-strongloop": "^2.1.0"
   }
 }
