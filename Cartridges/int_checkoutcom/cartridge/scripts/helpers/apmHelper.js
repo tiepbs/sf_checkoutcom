@@ -96,36 +96,35 @@ var apmHelper = {
      * Apm Request
      */
     handleApmRequest: function (payObject, args) {
-    	
         // Gateway response
         var gatewayResponse = false;
+        var serviceName;
         
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         
         // Creating billing address object
         var gatewayRequest = this.getApmRequest(payObject, args);
+
+        // Log the payment request data
+        ckoHelper.log(serviceName + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
+
+        // Prepare the service name (test for SEPA)
+        serviceName = payObject.hasOwnProperty('type') && payObject.type == 'sepa'
+        ? 'cko.card.sources.'
+        : 'cko.card.charge.';
+
+        // Perform the request to the payment gateway
+        serviceName += ckoHelper.getValue('ckoMode') + '.service';
+        gatewayResponse = ckoHelper.gatewayClientRequest(serviceName, gatewayRequest);
         
-        // Test for SEPA
-        if (payObject.hasOwnProperty('type') && payObject.type == "sepa") {
-            
-            // Perform the request to the payment gateway
-            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.sources." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
-        } else {
-        	
-            // Perform the request to the payment gateway
-            gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", gatewayRequest);
-        }
-        
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
+        // Log the payment response data
+        ckoHelper.log(serviceName + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
         
         // If the charge is valid, process the response
         if (gatewayResponse) {
-        	
         	return gatewayResponse;
         } else {
-        	
             // Update the transaction
             Transaction.wrap(function () {
                 OrderMgr.failOrder(order, true);
@@ -137,7 +136,6 @@ var apmHelper = {
      * Return the APM request data
      */
     getApmRequest: function (payObject, args) {
-    	
         // Charge data
         var chargeData = false;
         
@@ -200,7 +198,6 @@ var apmHelper = {
      * Sepa controller Request
      */
     handleSepaControllerRequest: function (payObject, order) {
-    	
         // Gateway response
         var gatewayResponse = false;
         
@@ -208,22 +205,13 @@ var apmHelper = {
         gatewayResponse = ckoHelper.gatewayClientRequest("cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service", payObject);
         
         // If the charge is valid, process the response
-        if (gatewayResponse) {
-        	
-            // Logging
-            ckoHelper.doLog('sepa response', gatewayResponse);
-        	
+        if (gatewayResponse) {        	
             return gatewayResponse;
-            
         } else {
-        	
             // Update the transaction
             Transaction.wrap(function () {
-                OrderMgr.failOrder(order);
+                OrderMgr.failOrder(order, true);
             });
-            
-            // Restore the cart
-            ckoHelper.checkAndRestoreBasket(order);
             
             return false;
         }

@@ -53,25 +53,33 @@ var cardHelper = {
      * Handle full charge Request to CKO API
      */
     handleCardRequest: function (cardData, args) {
-    	
-        // Load the card and order information
+        // Prepare the parameters
         var order = OrderMgr.getOrder(args.OrderNo);
-        
+        var serviceName = 'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service';
+
         // Create billing address object
         var gatewayRequest = this.getCardRequest(cardData, args);
-        	
+            
+        // Log the payment response data
+        ckoHelper.log(
+            serviceName + ' - ' + ckoHelper._('cko.request.data', 'cko'),
+            gatewayRequest
+        );
+
         // Perform the request to the payment gateway
         var gatewayResponse = ckoHelper.gatewayClientRequest(
-            "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
+            serviceName,
             gatewayRequest
         );
 
         // If the charge is valid, process the response
         if (gatewayResponse) {    
-        	
-            // Logging
-            ckoHelper.doLog('response', gatewayResponse);
-        	
+            // Log the payment response data
+            ckoHelper.log(
+                serviceName + ' - ' + ckoHelper._('cko.response.data', 'cko'),
+                gatewayResponse
+            );
+
             // Handle the response
             if (this.handleFullChargeResponse(gatewayResponse)) {
             	
@@ -83,7 +91,7 @@ var cardHelper = {
         	
             // Fail the order
             Transaction.wrap(function () {
-                OrderMgr.failOrder(order);
+                OrderMgr.failOrder(order, true);
             });
 
             return false;

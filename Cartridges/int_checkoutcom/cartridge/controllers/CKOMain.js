@@ -24,45 +24,49 @@ var ckoMadaConfig = require('~/cartridge/scripts/config/ckoMadaConfig');
  * Handles responses from the Checkout.com payment gateway
  */
 function handleReturn() {
-
     // Prepare some variables
     var gResponse = false;
     var mode = ckoHelper.getValue('ckoMode');
+    var serviceName = 'cko.verify.charges.' + mode + '.service';
     var orderId = ckoHelper.getOrderId();
 
     // If there is a track id
     if (orderId) {
-
         // Load the order
         var order = OrderMgr.getOrder(orderId);
         if (order) {
-
             // Check the payment token if exists
             var sessionId = request.httpParameterMap.get('cko-session-id').stringValue;
 
             // If there is a payment session id available, verify
             if (sessionId) {
-
                 // Perform the request to the payment gateway
                 gVerify = ckoHelper.gatewayClientRequest(
-                    'cko.verify.charges.' + mode + '.service',
+                    serviceName,
                     {'paymentToken': sessionId}
+                );
+        
+                // Log the payment verify data
+                ckoHelper.log(
+                    serviceName + ' - ' + ckoHelper._('cko.verify.data', 'cko'),
+                    gRequest
                 );
 
                 // If there is a valid response
                 if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
-                    var verify = false;
+                    // Log the payment response data
+                    ckoHelper.log(
+                        serviceName + ' - ' + ckoHelper._('cko.response.data', 'cko'),
+                        gVerify
+                    );
 
-                    // Logging
-                    ckoHelper.doLog('Redirect response', gVerify);
+                    // Test the response
                     if (ckoHelper.paymentSuccess(gVerify)) {
-
                         // Show order confirmation page
                         app.getController('COSummary').ShowConfirmation(order);
                     } else {
-
                         // Restore the cart
-                        ckoHelper.checkAndRestoreBasket(order);
+                        OrderMgr.failOrder(order, true);
 
                         // Send back to the error page
                         ISML.renderTemplate('custom/common/response/failed.isml');
@@ -70,7 +74,7 @@ function handleReturn() {
                 } else {
 
                     // Restore the cart
-                    ckoHelper.checkAndRestoreBasket(order);
+                    OrderMgr.failOrder(order, true);
 
                     // Send back to the error page
                     ISML.renderTemplate('custom/common/response/failed.isml');
@@ -79,9 +83,14 @@ function handleReturn() {
 
             // Else it's a normal transaction
             else {
-
                 // Get the response
                 gResponse = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
+
+                // Log the payment response data
+                ckoHelper.log(
+                    serviceName + ' - ' + ckoHelper._('cko.response.data', 'cko'),
+                    gResponse
+                );
 
                 // Process the response data
                 if (ckoHelper.paymentIsValid(gResponse)) {
@@ -107,7 +116,7 @@ function handleFail() {
     var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
     // Restore the cart
-    ckoHelper.checkAndRestoreBasket(order);
+    OrderMgr.failOrder(order, true);
 
     // Send back to the error page
     ISML.renderTemplate('custom/common/response/failed.isml');

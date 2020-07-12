@@ -2,11 +2,12 @@
     // CSS and JS
     var assets = require('*/cartridge/scripts/assets.js');
     assets.addJs('/js/checkoutcom.js');
-    assets.addJs('/js/lib/cleave.js');
     assets.addCss('/css/checkoutcom.css');
+    var translationStrings = JSON.stringify({googlePayDataInvalid: dw.web.Resource.msg('cko.googlepaydata.invalid', 'cko', null), applePayDataInvalid: dw.web.Resource.msg('cko.applepaydata.invalid', 'cko', null), apmFieldInvalid: dw.web.Resource.msg('cko.apmfield.invalid', 'cko', null)});
 </isscript>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
 
-<input type="hidden" id="translationStrings" value="${JSON.stringify({googlePayDataInvalid: dw.web.Resource.msg('cko.googlepaydata.invalid', 'cko', null), applePayDataInvalid: dw.web.Resource.msg('cko.applepaydata.invalid', 'cko', null), apmFieldInvalid: dw.web.Resource.msg('cko.apmfield.invalid', 'cko', null)})}">
+<input type="hidden" id="translationStrings" value="${translationStrings}">
 
 <!-- Payment options -->
 <div class="form-nav billing-nav payment-information"

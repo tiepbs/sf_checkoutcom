@@ -99,7 +99,7 @@ var ckoHelper = {
     /**
      * Write gateway information to the website's custom log files
      */
-    doLog: function (dataType, gatewayData) {
+    log: function (dataType, gatewayData) {
         if (this.getValue("ckoDebugEnabled") == true) {
             var logger = Logger.getLogger('ckodebug');
             if (logger) {
@@ -314,92 +314,14 @@ var ckoHelper = {
      * Handle a failed payment response
      */
     handleFail: function (gatewayResponse) {
-        if (gatewayResponse) {
-
-            // Logging
-            this.doLog(this._('cko.cartridge.failed', 'cko'), JSON.stringify(gatewayResponse));
-        }
-
         // Send back to the error page
         ISML.renderTemplate('custom/common/response/failed.isml');
-    },
-
-    /**
-     * Rebuild basket contents after a failed payment
-     */
-    checkAndRestoreBasket: function (order) {
-        var basket = BasketMgr.getCurrentOrNewBasket();
-        var it;
-        var pli;
-        var newPLI;
-        var gcit;
-        var gcli;
-        var newGCLI;
-        var billingAddress;
-        var shippingAddress;
-
-        if (order && basket && basket.productLineItems.size() === 0 && basket.giftCertificateLineItems.size() === 0) {
-            Transaction.begin();
-
-            it = order.productLineItems.iterator();
-
-            while (it.hasNext()) {
-                pli = it.next();
-                newPLI = basket.createProductLineItem(pli.productID, basket.defaultShipment);
-                newPLI.setQuantityValue(pli.quantity.value);
-            }
-
-            gcit = order.giftCertificateLineItems.iterator();
-            while (gcit.hasNext()) {
-                gcli = it.next();
-                newGCLI = basket.createGiftCertificateLineItems(gcli.priceValue, gcli.recipientEmail);
-
-                newGCLI.setMessage(gcli.message);
-                newGCLI.setRecipientName(gcli.recipientName);
-                newGCLI.setSenderName(gcli.senderName);
-                newGCLI.setProductListItem(gcli.productListItem);
-            }
-
-            // Handle email address
-            basket.customerEmail = order.customerEmail;
-
-            // Handle billing address
-            billingAddress = basket.createBillingAddress();
-            billingAddress.firstName = order.billingAddress.firstName;
-            billingAddress.lastName = order.billingAddress.lastName;
-            billingAddress.address1 = order.billingAddress.address1;
-            billingAddress.address2 = order.billingAddress.address2;
-            billingAddress.city = order.billingAddress.city;
-            billingAddress.postalCode = order.billingAddress.postalCode;
-            billingAddress.stateCode = order.billingAddress.stateCode;
-            billingAddress.countryCode = order.billingAddress.countryCode;
-            billingAddress.phone = order.billingAddress.phone;
-
-            // Handle shipping address
-            shippingAddress = basket.defaultShipment.createShippingAddress();
-            shippingAddress.firstName = order.defaultShipment.shippingAddress.firstName;
-            shippingAddress.lastName = order.defaultShipment.shippingAddress.lastName;
-            shippingAddress.address1 = order.defaultShipment.shippingAddress.address1;
-            shippingAddress.address2 = order.defaultShipment.shippingAddress.address2;
-            shippingAddress.city = order.defaultShipment.shippingAddress.city;
-            shippingAddress.postalCode = order.defaultShipment.shippingAddress.postalCode;
-            shippingAddress.stateCode = order.defaultShipment.shippingAddress.stateCode;
-            shippingAddress.countryCode = order.defaultShipment.shippingAddress.countryCode;
-            shippingAddress.phone = order.defaultShipment.shippingAddress.phone;
-
-            // Handle shipping method
-            basket.defaultShipment.setShippingMethod(order.defaultShipment.getShippingMethod());
-
-            // Commit the transaction
-            Transaction.commit();
-        }
     },
 
     /**
      * Return customer object
      */
     getCustomer: function (args) {
-
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 
@@ -416,7 +338,6 @@ var ckoHelper = {
      * Get Basket Quantities
      */
     getQuantity : function (args) {
-
         // load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         var quantity = order.getProductQuantityTotal();
@@ -440,7 +361,6 @@ var ckoHelper = {
      * Get Products Information
      */
     getProductInformation : function (args) {
-
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
         var it = order.productLineItems.iterator();
@@ -497,7 +417,6 @@ var ckoHelper = {
      * Return shipping object
      */
     getShippingValue : function (args) {
-
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
 

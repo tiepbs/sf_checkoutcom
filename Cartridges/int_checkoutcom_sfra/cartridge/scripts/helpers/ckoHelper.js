@@ -86,11 +86,17 @@ var ckoHelper = {
     },
 
     /*
-     * Write gateway information to the website's custom log files
+     * Write gateway information to the website's custom log file
      */
-    doLog: function (dataType, gatewayData) {
-        if (this.getValue("ckoDebugEnabled") == true) {
+    log: function (dataType, gatewayData) {
+        if (this.getValue('ckoDebugEnabled') == true) {
+            // Get the logger
             var logger = Logger.getLogger('ckodebug');
+
+            // Remove sensitive data
+            gatewayData = this.removeSentisiveData(gatewayData);
+
+            // Log the data
             if (logger) {
                 logger.debug(
                     dataType + ' : {0}',
@@ -98,6 +104,27 @@ var ckoHelper = {
                 );
             }
         }
+    },
+
+    /*
+     * Remove sentitive data from the logs
+     */
+    removeSentisiveData: function (data) {
+        // Card data
+        if (data.hasOwnProperty('source')) {
+           if (data.source.hasOwnProperty('number')) data.source.number.replace(/^.{14}/g, '*');
+           if (data.source.hasOwnProperty('cvv')) data.source.cvv.replace(/^.{3}/g, '*');
+           if (data.source.hasOwnProperty('billing_address')) delete data.source.billing_address;
+           if (data.source.hasOwnProperty('phone')) delete data.source.phone;
+           if (data.source.hasOwnProperty('name')) delete data.source.name;
+        }
+
+        // Customer data
+        if (data.hasOwnProperty('customer')) delete data.customer;
+        if (data.hasOwnProperty('shipping')) delete data.shipping;
+        if (data.hasOwnProperty('billing')) delete data.billing;
+
+        return data;
     },
 
     /*
@@ -345,77 +372,6 @@ var ckoHelper = {
                     session.customer.profile.custom.ckoCustomerId = gatewayResponse.card.customerId;
                 }
             });
-        }
-    },
-
-    /*
-     * Rebuild basket contents after a failed payment.
-     */
-    checkAndRestoreBasket: function (order) {
-        var basket = BasketMgr.getCurrentOrNewBasket();
-        var it;
-        var pli;
-        var newPLI;
-        var gcit;
-        var gcli;
-        var newGCLI;
-        var billingAddress;
-        var shippingAddress;
-
-        if (order && basket && basket.productLineItems.size() === 0 && basket.giftCertificateLineItems.size() === 0) {
-            Transaction.begin();
-
-            it = order.productLineItems.iterator();
-
-            while (it.hasNext()) {
-                pli = it.next();
-                newPLI = basket.createProductLineItem(pli.productID, basket.defaultShipment);
-                newPLI.setQuantityValue(pli.quantity.value);
-            }
-
-            gcit = order.giftCertificateLineItems.iterator();
-            while (gcit.hasNext()) {
-                gcli = it.next();
-                newGCLI = basket.createGiftCertificateLineItems(gcli.priceValue, gcli.recipientEmail);
-
-                newGCLI.setMessage(gcli.message);
-                newGCLI.setRecipientName(gcli.recipientName);
-                newGCLI.setSenderName(gcli.senderName);
-                newGCLI.setProductListItem(gcli.productListItem);
-            }
-
-            // Handle email address
-            basket.customerEmail = order.customerEmail;
-
-            // Handle billing address
-            billingAddress = basket.createBillingAddress();
-            billingAddress.firstName = order.billingAddress.firstName;
-            billingAddress.lastName = order.billingAddress.lastName;
-            billingAddress.address1 = order.billingAddress.address1;
-            billingAddress.address2 = order.billingAddress.address2;
-            billingAddress.city = order.billingAddress.city;
-            billingAddress.postalCode = order.billingAddress.postalCode;
-            billingAddress.stateCode = order.billingAddress.stateCode;
-            billingAddress.countryCode = order.billingAddress.countryCode;
-            billingAddress.phone = order.billingAddress.phone;
-
-            // Handle shipping address
-            shippingAddress = basket.defaultShipment.createShippingAddress();
-            shippingAddress.firstName = order.defaultShipment.shippingAddress.firstName;
-            shippingAddress.lastName = order.defaultShipment.shippingAddress.lastName;
-            shippingAddress.address1 = order.defaultShipment.shippingAddress.address1;
-            shippingAddress.address2 = order.defaultShipment.shippingAddress.address2;
-            shippingAddress.city = order.defaultShipment.shippingAddress.city;
-            shippingAddress.postalCode = order.defaultShipment.shippingAddress.postalCode;
-            shippingAddress.stateCode = order.defaultShipment.shippingAddress.stateCode;
-            shippingAddress.countryCode = order.defaultShipment.shippingAddress.countryCode;
-            shippingAddress.phone = order.defaultShipment.shippingAddress.phone;
-
-            // Handle shipping method
-            basket.defaultShipment.setShippingMethod(order.defaultShipment.getShippingMethod());
-
-            // Commit the transaction
-            Transaction.commit();
         }
     },
 

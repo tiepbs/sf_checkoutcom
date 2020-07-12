@@ -21,6 +21,14 @@ var wrapper = {
 
             parseResponse: function (svc, resp) {
                 return JSON.parse(resp.text);
+            },
+
+            getRequestLogMessage: function (request) {
+                return request;
+            },
+    
+            getResponseLogMessage: function (response) {
+                return response.text;
             }
         });
     },
@@ -41,6 +49,14 @@ var wrapper = {
 
             parseResponse: function (svc, resp) {
                 return JSON.parse(resp.text);
+            },
+
+            getRequestLogMessage: function (request) {
+                return request;
+            },
+    
+            getResponseLogMessage: function (response) {
+                return response.text;
             }
         });
     }

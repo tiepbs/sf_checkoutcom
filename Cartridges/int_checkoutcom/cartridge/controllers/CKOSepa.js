@@ -70,7 +70,7 @@ function handleMandate() {
 
                 // Load the order
                 var order = OrderMgr.getOrder(orderId);
-                ckoHelper.checkAndRestoreBasket(order);
+                OrderMgr.failOrder(order, true);
             }
 
             app.getController('COBilling').Start();
@@ -128,9 +128,8 @@ function handleMandate() {
                         app.getController('COBilling').Start();
                     }
                 } else {
-
                     // Restore the cart
-                    ckoHelper.checkAndRestoreBasket(order);
+                    OrderMgr.failOrder(order, true);
 
                     // Send back to the error page
                     ISML.renderTemplate('custom/common/response/failed.isml');

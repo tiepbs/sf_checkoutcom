@@ -44,7 +44,7 @@ var eventsHelper = {
 
                 // Update the order status
                 if ((orderStatus) && (orderStatus.indexOf("CANCELLED") != -1 || orderStatus.indexOf("FAILED") != -1)) {
-                    OrderMgr.failOrder(order);
+                    OrderMgr.failOrder(order, true);
                 }
             });
         }
