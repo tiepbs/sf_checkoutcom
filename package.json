@@ -1,0 +1,27 @@
+{
+  "name": "link_checkoutcom",
+  "packageName": "link_checkoutcom",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "sfra": "sgmf-scripts --uploadCartridge ../Cartridges/int_checkoutcom_sfra",
+    "sg": "sgmf-scripts --uploadCartridge ../Cartridges/int_checkoutcom",
+    "bm": "sgmf-scripts --uploadCartridge ../Cartridges/bm_checkoutcom",
+    "lint": "eslint --fix --ext .js ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/checkout/link_checkoutcom.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/checkout/link_checkoutcom/issues"
+  },
+  "homepage": "https://github.com/checkout/link_checkoutcom#readme",
+  "dependencies": {
+    "lint": "^0.7.0",
+    "sgmf-scripts": "^2.4.1"
+  }
+}
