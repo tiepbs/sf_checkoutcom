@@ -8,9 +8,8 @@
     "upload:sfra": "sgmf-scripts --uploadCartridge ../Cartridges/int_checkoutcom_sfra",
     "upload:sg": "sgmf-scripts --uploadCartridge ../Cartridges/int_checkoutcom",
     "upload:bm": "sgmf-scripts --uploadCartridge ../Cartridges/bm_checkoutcom",
-    "lint:fix": "npx eslint-auto-fix",
+    "lint:fix": "npx eslint-auto-fix .",
     "lint:check": "eslint --ignore-path .gitignore ."
-
   },
   "repository": {
     "type": "git",
