@@ -10,16 +10,15 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 // Utility functions for my cartridge integration
 var applePayHelper = {
-		
     /**
      * Handle full charge Request to CKO API
      */
     handleRequest: function (args) {
-    	
-        // load the order information
+        // Prepare the parameters
         var order = OrderMgr.getOrder(args.OrderNo);
         var paymentInstrument = args.PaymentInstrument;
         var ckoApplePayData =  paymentInstrument.paymentTransaction.custom.ckoApplePayData;
+        var serviceName;
 
         // Prepare the parameters
         var requestData = {
@@ -28,10 +27,19 @@ var applePayHelper = {
         };
 
         // Perform the request to the payment gateway
+        serviceName = 'cko.network.token.' + ckoHelper.getValue('ckoMode') + '.service';
+
+        // Log the token request data
+        ckoHelper.log(serviceName + ' ' + ckoHelper._('cko.request.data', 'cko'), requestData);
+
+        // Get the payment response
         var tokenResponse = ckoHelper.gatewayClientRequest(
-            "cko.network.token." + ckoHelper.getValue('ckoMode') + ".service",
+            serviceName,
             requestData
         );
+
+        // Log the token response data
+        ckoHelper.log(serviceName + ' ' + ckoHelper._('cko.response.data', 'cko'), tokenResponse);
 
         // If the request is valid, process the response
         if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
@@ -49,49 +57,40 @@ var applePayHelper = {
                 "metadata"              : ckoHelper.getMetadataObject([], args)
             };
 
-            // Perform the request to the payment gateway
+            // Log the payment request data
+            ckoHelper.log(serviceName + ' ' + ckoHelper._('cko.request.data', 'cko'), requestData);
+
+             // Perform the request to the payment gateway
+            serviceName = 'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service';
             var gatewayResponse = ckoHelper.gatewayClientRequest(
-                "cko.card.charge." + ckoHelper.getValue('ckoMode') + ".service",
+                serviceName,
                 chargeData
             );
 
+            // Log the payment response data
+            ckoHelper.log(serviceName + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
+
             // Validate the response
             if (ckoHelper.paymentSuccess(gatewayResponse)) {
+                ckoHelper.updateCustomerData(gatewayResponse);
                 return gatewayResponse;
             }
 
             return false;
         } else {
-        	
-            // update the transaction
+            // Update the transaction
             Transaction.wrap(function () {
-                OrderMgr.failOrder(order);
+                OrderMgr.failOrder(order, true);
             });
-            
-            // Restore the cart
-            ckoHelper.checkAndRestoreBasket(order);
             
             return false;
         }
     },
     
     /**
-     * Handle full Google Pay response from CKO API
-     */
-    handleResponse: function (gatewayResponse) {
-    	
-        // Logging
-        ckoHelper.doLog('response', gatewayResponse);
-        
-        // Update customer data
-        ckoHelper.updateCustomerData(gatewayResponse);
-    },
-    
-    /**
      * Build Gateway Source Object
      */
     getSourceObject: function (tokenData) {
-    	
         // source object
         var source = {
             type: "token",

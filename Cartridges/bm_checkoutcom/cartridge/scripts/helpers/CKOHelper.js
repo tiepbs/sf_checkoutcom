@@ -195,15 +195,41 @@ var CKOHelper = {
     /**
      * Writes gateway information to the website's custom log files.
      */
-    logThis: function (dataType, gatewayData) {
+    log: function (dataType, gatewayData) {
         if (this.getValue('ckoDebugEnabled') == 'true' && (gatewayData)) {
+            // Get the logger
             var logger = Logger.getLogger('ckodebug');
+
+            // Remove sensitive data
+            gatewayData = this.removeSentisiveData(gatewayData);
+
             if (logger) {
                 logger.debug(this._('cko.gateway.name', 'cko') + ' ' + dataType + ' : {0}', gatewayData);
             }
         }
     },
 
+    /*
+     * Remove sentitive data from the logs
+     */
+    removeSentisiveData: function (data) {
+        // Card data
+        if (data.hasOwnProperty('source')) {
+           if (data.source.hasOwnProperty('number')) data.source.number.replace(/^.{14}/g, '*');
+           if (data.source.hasOwnProperty('cvv')) data.source.cvv.replace(/^.{3}/g, '*');
+           if (data.source.hasOwnProperty('billing_address')) delete data.source.billing_address;
+           if (data.source.hasOwnProperty('phone')) delete data.source.phone;
+           if (data.source.hasOwnProperty('name')) delete data.source.name;
+        }
+
+        // Customer data
+        if (data.hasOwnProperty('customer')) delete data.customer;
+        if (data.hasOwnProperty('shipping')) delete data.shipping;
+        if (data.hasOwnProperty('billing')) delete data.billing;
+
+        return data;
+    },
+    
     /*
      * Create an HTTP client to handle request to gateway
      */

@@ -157,6 +157,6 @@
 
 <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
 
-<script src="${URLUtils.staticURL('/js/cleave.js')}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
 
 <script src="${URLUtils.staticURL('js/apm.js')}"></script>

@@ -39,7 +39,7 @@ function remoteCall()
     var task = request.httpParameterMap.get('task');
 
     // Prepare the payload
-    var ckoChargeData = {
+    var gRequest = {
         amount: CKOHelper.getFormattedPrice(request.httpParameterMap.get('amount').stringValue),
         chargeId: request.httpParameterMap.get('pid').stringValue
     }
@@ -47,10 +47,22 @@ function remoteCall()
     // Set the service parameter
     var serviceName = 'cko.transaction.' + task + '.' + mode + '.service';
 
+    // Log the payment request data
+    ckoHelper.log(
+        ckoHelper._('cko.request.data', 'cko') + ' - ' + serviceName,
+        gRequest
+    );
+
     // Perform the request
     var gResponse = CKOHelper.getGatewayClient(
         serviceName,
-        ckoChargeData
+        gRequest
+    );
+
+    // Log the payment response data
+    ckoHelper.log(
+        ckoHelper._('cko.response.data', 'cko') + ' - ' + serviceName,
+        gResponse
     );
 
     // Return the response
