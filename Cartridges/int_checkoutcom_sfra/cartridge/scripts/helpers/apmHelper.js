@@ -136,11 +136,8 @@ var apmHelper = {
         } else {
             // Update the transaction
             Transaction.wrap(function () {
-                OrderMgr.failOrder(order);
+                OrderMgr.failOrder(order, true);
             });
-
-            // Restore the cart
-            ckoHelper.checkAndRestoreBasket(order);
 
             return false;
         }

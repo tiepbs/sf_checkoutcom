@@ -458,9 +458,6 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
             OrderMgr.failOrder(order, true); 
         });
 
-        // Restore the cart
-        ckoHelper.checkAndRestoreBasket(order);
-
         res.json({
             error: true,
             errorMessage: ckoHelper.getPaymentFailureMessage()
@@ -484,9 +481,6 @@ server.replace('PlaceOrder', server.middleware.https, function (req, res, next) 
         Transaction.wrap(function () { 
             OrderMgr.failOrder(order, true); 
         });
-
-        // Restore the cart
-        ckoHelper.checkAndRestoreBasket(order);
 
         // fraud detection failed
         req.session.privacyCache.set('fraudDetectionStatus', true);

@@ -32,11 +32,9 @@ function handleReturn() {
 
     // If there is a track id
     if (orderId) {
-
         // Load the order
         var order = OrderMgr.getOrder(orderId);
         if (order) {
-
             // Check the payment token if exists
             var sessionId = request.httpParameterMap.get('cko-session-id').stringValue;
 
@@ -51,26 +49,21 @@ function handleReturn() {
 
                 // If there is a valid response
                 if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
-                    var verify = false;
-
                     // Logging
                     ckoHelper.log('Redirect response', gVerify);
                     if (ckoHelper.paymentSuccess(gVerify)) {
-
                         // Show order confirmation page
                         app.getController('COSummary').ShowConfirmation(order);
                     } else {
-
                         // Restore the cart
-                        ckoHelper.checkAndRestoreBasket(order);
+                        OrderMgr.failOrder(order, true);
 
                         // Send back to the error page
                         ISML.renderTemplate('custom/common/response/failed.isml');
                     }
                 } else {
-
                     // Restore the cart
-                    ckoHelper.checkAndRestoreBasket(order);
+                    OrderMgr.failOrder(order, true);
 
                     // Send back to the error page
                     ISML.renderTemplate('custom/common/response/failed.isml');
@@ -102,12 +95,11 @@ function handleReturn() {
  * Handles a failed payment from the Checkout.com payment gateway
  */
 function handleFail() {
-
     // Load the order
     var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
     // Restore the cart
-    ckoHelper.checkAndRestoreBasket(order);
+    OrderMgr.failOrder(order, true);
 
     // Send back to the error page
     ISML.renderTemplate('custom/common/response/failed.isml');

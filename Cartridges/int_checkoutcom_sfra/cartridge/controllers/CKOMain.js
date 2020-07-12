@@ -48,7 +48,7 @@ server.get('HandleReturn', server.middleware.https, function (req, res, next) {
                 paymentHelper.getConfirmationPageRedirect(res, order);
             } else {
                 // Restore the cart
-                ckoHelper.checkAndRestoreBasket(order);
+                OrderMgr.failOrder(order, true);
 
                 // Send back to the error page
                 paymentHelper.getFailurePageRedirect(res);
@@ -83,7 +83,7 @@ server.get('HandleFail', server.middleware.https, function (req, res, next) {
     var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
     // Restore the cart
-    ckoHelper.checkAndRestoreBasket(order);
+    OrderMgr.failOrder(order, true);
 
     // Send back to the error page
     paymentHelper.getFailurePageRedirect(res);
