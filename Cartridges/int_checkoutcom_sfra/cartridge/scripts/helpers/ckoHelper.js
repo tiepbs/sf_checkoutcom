@@ -86,11 +86,17 @@ var ckoHelper = {
     },
 
     /*
-     * Write gateway information to the website's custom log files
+     * Write gateway information to the website's custom log file
      */
     log: function (dataType, gatewayData) {
-        if (this.getValue("ckoDebugEnabled") == true) {
+        if (this.getValue('ckoDebugEnabled') == true) {
+            // Get the logger
             var logger = Logger.getLogger('ckodebug');
+
+            // Remove sensitive data
+            gatewayData = this.removeSentisiveData(gatewayData);
+
+            // Log the data
             if (logger) {
                 logger.debug(
                     dataType + ' : {0}',
@@ -98,6 +104,27 @@ var ckoHelper = {
                 );
             }
         }
+    },
+
+    /*
+     * Remove sentitive data from the logs
+     */
+    removeSentisiveData: function (data) {
+        // Card data
+        if (data.hasOwnProperty('source')) {
+           if (data.source.hasOwnProperty('number')) data.source.number.replace(/^.{14}/g, '*');
+           if (data.source.hasOwnProperty('cvv')) data.source.cvv.replace(/^.{3}/g, '*');
+           if (data.source.hasOwnProperty('billing_address')) delete data.source.billing_address;
+           if (data.source.hasOwnProperty('phone')) delete data.source.phone;
+           if (data.source.hasOwnProperty('name')) delete data.source.name;
+        }
+
+        // Customer data
+        if (data.hasOwnProperty('customer')) delete data.customer;
+        if (data.hasOwnProperty('shipping')) delete data.shipping;
+        if (data.hasOwnProperty('billing')) delete data.billing;
+
+        return data;
     },
 
     /*
