@@ -26,8 +26,10 @@
     "sgmf-scripts": "^2.4.1"
   },
   "devDependencies": {
-    "eslint": "^7.4.0",
+    "eslint": "^7.2.0",
     "eslint-auto-fix": "^1.0.3",
-    "eslint-config-strongloop": "^2.1.0"
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-strongloop": "^2.1.0",
+    "eslint-plugin-import": "^2.22.0"
   }
 }
