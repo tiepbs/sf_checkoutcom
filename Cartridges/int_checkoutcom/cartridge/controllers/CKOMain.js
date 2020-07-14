@@ -45,11 +45,11 @@ function handleReturn() {
                     serviceName,
                     {'paymentToken': sessionId}
                 );
-        
+
                 // Log the payment verify data
                 ckoHelper.log(
                     serviceName + ' - ' + ckoHelper._('cko.verify.data', 'cko'),
-                    gRequest
+                    gVerify
                 );
 
                 // If there is a valid response
@@ -146,7 +146,15 @@ function handleWebhook() {
                 // Call the event
                 eventsHelper[func](hook);
             }
+       } else {
+
+           // Write the response
+           return ckoHelper.ckoResponse(null);
        }
+    } else {
+
+        // Write the response
+        return ckoHelper.ckoResponse(null);
     }
 }
 
@@ -186,36 +194,48 @@ function getCardsList() {
  * Apms filter helper
  */
 function getApmFilter() {
+	try {
 
-    // Prepare some variables
-    var basket = BasketMgr.getCurrentBasket();
-    var currencyCode = basket.getCurrencyCode();
-    var countryCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
+	    // Prepare some variables
+	    var basket = BasketMgr.getCurrentBasket();
+	    var currencyCode = basket.getCurrencyCode();
+	    var countryCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
 
-    // Prepare the filter object
-    var filterObject = {
-        country     : countryCode,
-        currency    : currencyCode
-    }
+	    // Prepare the filter object
+	    var filterObject = {
+	        country     : countryCode,
+	        currency    : currencyCode
+	    }
 
-    // Prepare the response object
-    var responseObject = {
-        'filterObject'          : filterObject,
-        'ckoApmFilterConfig'    : ckoApmFilterConfig
-    }
+	    // Prepare the response object
+	    var responseObject = {
+	        'filterObject'          : filterObject,
+	        'ckoApmFilterConfig'    : ckoApmFilterConfig
+	    }
 
-    // Write the response
-    return ckoHelper.ckoResponse(responseObject);
+	    // Write the response
+	    return ckoHelper.ckoResponse(responseObject);
+	} catch(e) {
+
+	    // Write the response
+	    return ckoHelper.ckoResponse(null);
+	}
 }
 
 /**
  * Mada Bins helper
  */
 function getMadaBin() {
-	var madaBins = ckoMadaConfig;
+	try {
+		var madaBins = ckoMadaConfig;
 
-    // Write the response
-    return ckoHelper.ckoResponse(madaBins);
+	    // Write the response
+	    return ckoHelper.ckoResponse(madaBins);
+	} catch(e) {
+
+	    // Write the response
+	    return ckoHelper.ckoResponse(null);
+	}
 }
 
 // Module exports
