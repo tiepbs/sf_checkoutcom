@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Validate the save card form
+ */
 function savedCardFormValidation() {
   // Enable the saved card selection
   savedCardSelection();
@@ -41,6 +44,9 @@ function savedCardFormValidation() {
   });
 }
 
+/**
+ * Handle the saved card selection
+ */
 function savedCardSelection() {
   // Target saved card
   var savedCardItem = $('.saved-payment-instrument');
