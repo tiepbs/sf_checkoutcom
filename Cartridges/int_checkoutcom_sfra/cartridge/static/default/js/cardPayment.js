@@ -1,3 +1,5 @@
+'use strict';
+
 function initCheckoutcomCardValidation() {
   // Is card payment
   var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD';

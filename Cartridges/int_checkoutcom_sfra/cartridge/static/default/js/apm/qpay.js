@@ -1,3 +1,5 @@
+'use strict';
+
 function qpayFormValidation() {
   // Errors count
   var errors = [];

@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * jQuery Ajax helpers on DOM ready.
  */

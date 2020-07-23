@@ -1,3 +1,5 @@
+'use strict';
+
 function savedCardFormValidation() {
   // Enable the saved card selection
   savedCardSelection();

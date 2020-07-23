@@ -1,3 +1,5 @@
+'use strict';
+
 function sepaFormValidation() {
   // Errors count
   var errors = [];

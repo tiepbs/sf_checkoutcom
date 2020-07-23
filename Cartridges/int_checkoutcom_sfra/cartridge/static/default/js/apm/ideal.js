@@ -1,3 +1,5 @@
+'use strict';
+
 function idealFormValidation() {
   // Errors count
   var errors = [];
