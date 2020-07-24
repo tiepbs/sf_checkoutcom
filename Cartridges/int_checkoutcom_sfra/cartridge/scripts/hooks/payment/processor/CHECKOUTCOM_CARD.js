@@ -10,41 +10,41 @@ var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
  * Verifies that the payment data is valid.
  */
 function Handle(basket, billingData, processorId, req) {
-  var fieldErrors = {};
-  var serverErrors = [];
-  var customerNo = null;
+    var fieldErrors = {};
+    var serverErrors = [];
+    var customerNo = null;
 
   // Pre authorize the card
-  if (!billingData.selectedCardUuid) {
+    if (!billingData.selectedCardUuid) {
     // Prepare the customer number
-    var condition = req.hasOwnProperty('currentCustomer')
+        var condition = req.hasOwnProperty('currentCustomer')
         && req.currentCustomer.hasOwnProperty('profile')
         && req.currentCustomer.profile.hasOwnProperty('customerNo');
-    if (condition) {
-      customerNo = req.currentCustomer.profile.customerNo;
+        if (condition) {
+            customerNo = req.currentCustomer.profile.customerNo;
+        }
     }
-  }
 
-  return {
-    fieldErrors: fieldErrors,
-    serverErrors: serverErrors,
-    error: false,
-  };
+    return {
+        fieldErrors: fieldErrors,
+        serverErrors: serverErrors,
+        error: false,
+    };
 }
 
 /**
  * Authorizes a payment using card details
  */
 function Authorize(orderNumber, billingForm, processorId, req) {
-  var serverErrors = [];
-  var fieldErrors = {};
-  var result = {
-    error: false,
-    redirectUrl: false,
-  };
+    var serverErrors = [];
+    var fieldErrors = {};
+    var result = {
+        error: false,
+        redirectUrl: false,
+    };
 
   // Payment request
-  result = cardHelper.handleRequest(
+    result = cardHelper.handleRequest(
     billingForm,
     processorId,
     orderNumber,
@@ -52,18 +52,18 @@ function Authorize(orderNumber, billingForm, processorId, req) {
   );
 
   // Handle errors
-  if (result.error) {
-    serverErrors.push(
+    if (result.error) {
+        serverErrors.push(
       ckoHelper.getPaymentFailureMessage()
     );
-  }
+    }
 
-  return {
-    fieldErrors: fieldErrors,
-    serverErrors: serverErrors,
-    error: result.error,
-    redirectUrl: result.redirectUrl,
-  };
+    return {
+        fieldErrors: fieldErrors,
+        serverErrors: serverErrors,
+        error: result.error,
+        redirectUrl: result.redirectUrl,
+    };
 }
 
 exports.Handle = Handle;

@@ -8,8 +8,8 @@ var Resource = require('dw/web/Resource');
 * Payment helper
 */
 var paymentHelper = {
-  getConfirmationPageRedirect: function(res, order) {
-    return res.redirect(
+    getConfirmationPageRedirect: function(res, order) {
+        return res.redirect(
       URLUtils.url(
         'Order-Confirm',
         'ID',
@@ -18,10 +18,10 @@ var paymentHelper = {
         order.orderToken
       ).toString()
     );
-  },
+    },
 
-  getFailurePageRedirect: function(res) {
-    return res.redirect(
+    getFailurePageRedirect: function(res) {
+        return res.redirect(
       URLUtils.url(
         'Checkout-Begin',
         'stage',
@@ -30,7 +30,7 @@ var paymentHelper = {
         Resource.msg('error.payment.not.valid', 'checkout', null)
       )
     );
-  },
+    },
 };
 
 /*

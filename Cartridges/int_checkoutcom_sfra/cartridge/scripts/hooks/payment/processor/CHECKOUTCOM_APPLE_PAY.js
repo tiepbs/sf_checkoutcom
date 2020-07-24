@@ -12,56 +12,56 @@ var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
  * Verifies that the payment data is valid.
  */
 function Handle(basket, billingData, processorId, req) {
-  var currentBasket = basket;
-  var cardErrors = {};
-  var serverErrors = [];
+    var currentBasket = basket;
+    var cardErrors = {};
+    var serverErrors = [];
 
   // Verify the payload
-  if (!billingData.paymentInformation.ckoApplePayData.value || billingData.paymentInformation.ckoApplePayData.value.length == 0) {
-    serverErrors.push(
+    if (!billingData.paymentInformation.ckoApplePayData.value || billingData.paymentInformation.ckoApplePayData.value.length == 0) {
+        serverErrors.push(
       Resource.msg('cko.applepay.error', 'cko', null)
     );
 
-    return {
-      fieldErrors: [cardErrors],
-      serverErrors: serverErrors,
-      error: true,
-    };
-  }
+        return {
+            fieldErrors: [cardErrors],
+            serverErrors: serverErrors,
+            error: true,
+        };
+    }
 
-  return {
-    fieldErrors: cardErrors,
-    serverErrors: serverErrors,
-    error: false,
-  };
+    return {
+        fieldErrors: cardErrors,
+        serverErrors: serverErrors,
+        error: false,
+    };
 }
 
 /**
  * Authorizes a payment
  */
 function Authorize(orderNumber, billingForm, processorId, req) {
-  var serverErrors = [];
-  var fieldErrors = {};
+    var serverErrors = [];
+    var fieldErrors = {};
 
   // Payment request
-  var success = applePayHelper.handleRequest(
+    var success = applePayHelper.handleRequest(
     billingForm.applePayForm.ckoApplePayData.htmlValue,
     processorId,
     orderNumber
   );
 
   // Handle errors
-  if (!success) {
-    serverErrors.push(
+    if (!success) {
+        serverErrors.push(
       ckoHelper.getPaymentFailureMessage()
     );
-  }
+    }
 
-  return {
-    fieldErrors: fieldErrors,
-    serverErrors: serverErrors,
-    error: !success,
-  };
+    return {
+        fieldErrors: fieldErrors,
+        serverErrors: serverErrors,
+        error: !success,
+    };
 }
 
 exports.Handle = Handle;

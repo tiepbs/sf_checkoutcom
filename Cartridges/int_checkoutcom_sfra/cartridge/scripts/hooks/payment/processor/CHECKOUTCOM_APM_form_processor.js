@@ -8,25 +8,25 @@
  * @returns {Object} an object that has error information or payment information
  */
 function processForm(paymentForm, viewFormData) {
-  var viewData = viewFormData;
-  var ckoSelectedApm = paymentForm.apmForm.ckoSelectedApm;
-  var result = {
-    error: false,
-    viewData: viewData,
-  };
-  if (ckoSelectedApm.htmlValue.length > 0) {
-    viewData.paymentInformation = {
-      ckoApm: {
-        value: ckoSelectedApm.htmlValue,
-        htmlName: ckoSelectedApm.htmlValue,
-        data: paymentForm.apmForm,
-      },
+    var viewData = viewFormData;
+    var ckoSelectedApm = paymentForm.apmForm.ckoSelectedApm;
+    var result = {
+        error: false,
+        viewData: viewData,
     };
-  } else {
-    result.error = true;
-  }
+    if (ckoSelectedApm.htmlValue.length > 0) {
+        viewData.paymentInformation = {
+            ckoApm: {
+                value: ckoSelectedApm.htmlValue,
+                htmlName: ckoSelectedApm.htmlValue,
+                data: paymentForm.apmForm,
+            },
+        };
+    } else {
+        result.error = true;
+    }
 
-  return result;
+    return result;
 }
 
 exports.processForm = processForm;

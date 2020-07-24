@@ -13,72 +13,72 @@ var googlePayHelper = {
   /*
      * Handle the payment request
      */
-  handleRequest: function(paymentData, processorId, orderNumber) {
+    handleRequest: function(paymentData, processorId, orderNumber) {
     // Load the order information
-    var order = OrderMgr.getOrder(orderNumber);
+        var order = OrderMgr.getOrder(orderNumber);
 
     // Prepare the parameters
-    var tokenRequest = {
-      type: 'googlepay',
-      token_data: JSON.parse(paymentData),
-    };
+        var tokenRequest = {
+            type: 'googlepay',
+            token_data: JSON.parse(paymentData),
+        };
 
     // Log the payment token request data
-    ckoHelper.log(processorId + ' ' + ckoHelper._('cko.tokenrequest.data', 'cko'), tokenRequest);
+        ckoHelper.log(processorId + ' ' + ckoHelper._('cko.tokenrequest.data', 'cko'), tokenRequest);
 
     // Perform the request to the payment gateway
-    var tokenResponse = ckoHelper.gatewayClientRequest(
+        var tokenResponse = ckoHelper.gatewayClientRequest(
       'cko.network.token.' + ckoHelper.getValue('ckoMode') + '.service',
       JSON.stringify(tokenRequest)
     );
 
     // Log the payment token response data
-    ckoHelper.log(processorId + ' ' + ckoHelper._('cko.tokenresponse.data', 'cko'), tokenResponse);
+        ckoHelper.log(processorId + ' ' + ckoHelper._('cko.tokenresponse.data', 'cko'), tokenResponse);
 
     // If the request is valid, process the response
-    if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
-      var gatewayRequest = {
-        source: {
-          type: 'token',
-          token: tokenResponse.token,
-        },
-        amount: ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
-        currency: order.getCurrencyCode(),
-        reference: order.orderNo,
-        capture: ckoHelper.getValue('ckoAutoCapture'),
-        capture_on: ckoHelper.getCaptureTime(),
-        customer: ckoHelper.getCustomer(order),
-        billing_descriptor: ckoHelper.getBillingDescriptor(),
-        shipping: ckoHelper.getShipping(order),
-        metadata: ckoHelper.getMetadata({}, processorId),
-      };
+        if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
+            var gatewayRequest = {
+                source: {
+                    type: 'token',
+                    token: tokenResponse.token,
+                },
+                amount: ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
+                currency: order.getCurrencyCode(),
+                reference: order.orderNo,
+                capture: ckoHelper.getValue('ckoAutoCapture'),
+                capture_on: ckoHelper.getCaptureTime(),
+                customer: ckoHelper.getCustomer(order),
+                billing_descriptor: ckoHelper.getBillingDescriptor(),
+                shipping: ckoHelper.getShipping(order),
+                metadata: ckoHelper.getMetadata({}, processorId),
+            };
 
       // Log the payment request data
-      ckoHelper.log(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
+            ckoHelper.log(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
 
       // Perform the request to the payment gateway
-      var gatewayResponse = ckoHelper.gatewayClientRequest(
+            var gatewayResponse = ckoHelper.gatewayClientRequest(
         'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
         gatewayRequest
       );
 
       // Log the payment response data
-      ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
+            ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
 
       // Process the response
-      return gatewayResponse && this.handleResponse(gatewayResponse);
-    }
-  },
+            return gatewayResponse && this.handleResponse(gatewayResponse);
+        }
+    },
 
   /*
      * Handle the payment response
      */
-  handleResponse: function(gatewayResponse) {
+    handleResponse: function(gatewayResponse) {
     // Update customer data
-    ckoHelper.updateCustomerData(gatewayResponse);
+        ckoHelper.updateCustomerData(gatewayResponse);
 
-    return ckoHelper.paymentSuccess(gatewayResponse);
-  },
+        return ckoHelper.paymentSuccess(gatewayResponse);
+    },
 };
 
 /*
