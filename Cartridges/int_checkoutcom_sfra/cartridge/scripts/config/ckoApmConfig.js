@@ -7,7 +7,7 @@ var businessName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBusi
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 var ckoApmConfig = {
-  /*
+    /*
      * Ideal authorization
      */
     idealAuthorization: function(args) {
@@ -25,7 +25,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Boleto authorization
      */
     boletoAuthorization: function(args) {
@@ -47,7 +47,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Bancontact authorization
      */
     bancontactAuthorization: function(args) {
@@ -65,7 +65,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Benefit Pay authorization
      */
     benefitpayAuthorization: function(args) {
@@ -81,7 +81,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Giro Pay authorization
      */
     giropayAuthorization: function(args) {
@@ -97,7 +97,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Eps authorization
      */
     epsAuthorization: function(args) {
@@ -113,7 +113,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Sofort authorization
      */
     sofortAuthorization: function(args) {
@@ -128,7 +128,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Knet authorization
      */
     knetAuthorization: function(args) {
@@ -144,7 +144,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * QPay authorization
      */
     qpayAuthorization: function(args) {
@@ -163,7 +163,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Fawry authorization
      */
     fawryAuthorization: function(args) {
@@ -182,7 +182,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Sepa authorization
      */
     sepaAuthorization: function(args) {
@@ -202,7 +202,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Multibanco authorization
      */
     multibancoAuthorization: function(args) {
@@ -219,7 +219,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Poli authorization
      */
     poliAuthorization: function(args) {
@@ -233,7 +233,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * P24 authorization
      */
     p24Authorization: function(args) {
@@ -251,21 +251,21 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Klarna authorization
      */
     klarnaAuthorization: function(args) {
     // Klarna Form Inputs
         var klarna_approved = args.paymentData.klarna_approved.value.toString();
 
-    // Process the payment
+        // Process the payment
         if (klarna_approved) {
-      // Build the payment object
+            // Build the payment object
             var params = {
                 amount: ckoHelper.getFormattedPrice(
-          args.order.totalGrossPrice.value.toFixed(2),
-          args.order.getCurrencyCode()
-        ),
+                    args.order.totalGrossPrice.value.toFixed(2),
+                    args.order.getCurrencyCode()
+                ),
                 currency: args.order.getCurrencyCode(),
                 capture: false,
                 source: {
@@ -274,9 +274,9 @@ var ckoApmConfig = {
                     locale: ckoHelper.getLanguage(),
                     purchase_country: ckoHelper.getBilling(args).country,
                     tax_amount: ckoHelper.getFormattedPrice(
-            args.order.totalTax.value,
-            args.order.getCurrencyCode()
-          ),
+                        args.order.totalTax.value,
+                        args.order.getCurrencyCode()
+                    ),
                     billing_address: ckoHelper.getOrderAddress(args),
                     products: ckoHelper.getOrderBasketObject(args),
                 },
@@ -287,7 +287,7 @@ var ckoApmConfig = {
         return { success: false };
     },
 
-  /*
+    /*
      * Paypal authorization
      */
     paypalAuthorization: function(args) {
@@ -302,7 +302,7 @@ var ckoApmConfig = {
         return params;
     },
 
-  /*
+    /*
      * Alipay authorization
      */
     alipayAuthorization: function(args) {

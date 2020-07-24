@@ -10,26 +10,26 @@ var Resource = require('dw/web/Resource');
 var paymentHelper = {
     getConfirmationPageRedirect: function(res, order) {
         return res.redirect(
-      URLUtils.url(
-        'Order-Confirm',
-        'ID',
-        order.orderNo,
-        'token',
-        order.orderToken
-      ).toString()
-    );
+            URLUtils.url(
+                'Order-Confirm',
+                'ID',
+                order.orderNo,
+                'token',
+                order.orderToken
+            ).toString()
+        );
     },
 
     getFailurePageRedirect: function(res) {
         return res.redirect(
-      URLUtils.url(
-        'Checkout-Begin',
-        'stage',
-        'payment',
-        'paymentError',
-        Resource.msg('error.payment.not.valid', 'checkout', null)
-      )
-    );
+            URLUtils.url(
+                'Checkout-Begin',
+                'stage',
+                'payment',
+                'paymentError',
+                Resource.msg('error.payment.not.valid', 'checkout', null)
+            )
+        );
     },
 };
 

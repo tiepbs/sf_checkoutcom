@@ -5,7 +5,7 @@ var svc = require('dw/svc');
 var util = require('~/cartridge/scripts/helpers/ckoHelper');
 
 var wrapper = {
-  /**
+    /**
      * Initialize HTTP service for the Checkout.com sandbox charges verification.
      */
     sandbox: function() {
@@ -13,7 +13,7 @@ var wrapper = {
             createRequest: function(svc, args) {
                 var serviceUrl = svc.configuration.credential.URL + '/' + args.paymentToken;
 
-        // Prepare the http service
+                // Prepare the http service
                 svc.setURL(serviceUrl);
                 svc.setRequestMethod('GET');
                 svc.addHeader('Authorization', util.getAccountKeys().secretKey);
@@ -37,7 +37,7 @@ var wrapper = {
         });
     },
 
-  /**
+    /**
      * Initialize HTTP service for the Checkout.com sandbox charges verification.
      */
     live: function() {
@@ -45,7 +45,7 @@ var wrapper = {
             createRequest: function(svc, args) {
                 var serviceUrl = svc.configuration.credential.URL + '/' + args.paymentToken;
 
-        // Prepare the http service
+                // Prepare the http service
                 svc.setURL(serviceUrl);
                 svc.setRequestMethod('GET');
                 svc.addHeader('Authorization', util.getAccountKeys().secretKey);

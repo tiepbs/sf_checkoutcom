@@ -14,7 +14,7 @@ function Handle(basket, billingData, processorId, req) {
     var serverErrors = [];
     var customerNo = null;
 
-  // Pre authorize the card
+    // Pre authorize the card
     if (!billingData.selectedCardUuid) {
     // Prepare the customer number
         var condition = req.hasOwnProperty('currentCustomer')
@@ -43,19 +43,19 @@ function Authorize(orderNumber, billingForm, processorId, req) {
         redirectUrl: false,
     };
 
-  // Payment request
+    // Payment request
     result = cardHelper.handleRequest(
-    billingForm,
-    processorId,
-    orderNumber,
-    req
-  );
+        billingForm,
+        processorId,
+        orderNumber,
+        req
+    );
 
-  // Handle errors
+    // Handle errors
     if (result.error) {
         serverErrors.push(
-      ckoHelper.getPaymentFailureMessage()
-    );
+            ckoHelper.getPaymentFailureMessage()
+        );
     }
 
     return {

@@ -10,32 +10,32 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 * Utility functions for my cartridge integration.
 */
 var googlePayHelper = {
-  /*
+    /*
      * Handle the payment request
      */
     handleRequest: function(paymentData, processorId, orderNumber) {
     // Load the order information
         var order = OrderMgr.getOrder(orderNumber);
 
-    // Prepare the parameters
+        // Prepare the parameters
         var tokenRequest = {
             type: 'googlepay',
             token_data: JSON.parse(paymentData),
         };
 
-    // Log the payment token request data
+        // Log the payment token request data
         ckoHelper.log(processorId + ' ' + ckoHelper._('cko.tokenrequest.data', 'cko'), tokenRequest);
 
-    // Perform the request to the payment gateway
+        // Perform the request to the payment gateway
         var tokenResponse = ckoHelper.gatewayClientRequest(
-      'cko.network.token.' + ckoHelper.getValue('ckoMode') + '.service',
-      JSON.stringify(tokenRequest)
-    );
+            'cko.network.token.' + ckoHelper.getValue('ckoMode') + '.service',
+            JSON.stringify(tokenRequest)
+        );
 
-    // Log the payment token response data
+        // Log the payment token response data
         ckoHelper.log(processorId + ' ' + ckoHelper._('cko.tokenresponse.data', 'cko'), tokenResponse);
 
-    // If the request is valid, process the response
+        // If the request is valid, process the response
         if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
             var gatewayRequest = {
                 source: {
@@ -53,24 +53,24 @@ var googlePayHelper = {
                 metadata: ckoHelper.getMetadata({}, processorId),
             };
 
-      // Log the payment request data
+            // Log the payment request data
             ckoHelper.log(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
 
-      // Perform the request to the payment gateway
+            // Perform the request to the payment gateway
             var gatewayResponse = ckoHelper.gatewayClientRequest(
-        'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
-        gatewayRequest
-      );
+                'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
+                gatewayRequest
+            );
 
-      // Log the payment response data
+            // Log the payment response data
             ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
 
-      // Process the response
+            // Process the response
             return gatewayResponse && this.handleResponse(gatewayResponse);
         }
     },
 
-  /*
+    /*
      * Handle the payment response
      */
     handleResponse: function(gatewayResponse) {

@@ -16,11 +16,11 @@ function Handle(basket, billingData, processorId, req) {
     var cardErrors = {};
     var serverErrors = [];
 
-  // Verify the payload
+    // Verify the payload
     if (!billingData.paymentInformation.ckoApplePayData.value || billingData.paymentInformation.ckoApplePayData.value.length == 0) {
         serverErrors.push(
-      Resource.msg('cko.applepay.error', 'cko', null)
-    );
+            Resource.msg('cko.applepay.error', 'cko', null)
+        );
 
         return {
             fieldErrors: [cardErrors],
@@ -43,18 +43,18 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     var serverErrors = [];
     var fieldErrors = {};
 
-  // Payment request
+    // Payment request
     var success = applePayHelper.handleRequest(
-    billingForm.applePayForm.ckoApplePayData.htmlValue,
-    processorId,
-    orderNumber
-  );
+        billingForm.applePayForm.ckoApplePayData.htmlValue,
+        processorId,
+        orderNumber
+    );
 
-  // Handle errors
+    // Handle errors
     if (!success) {
         serverErrors.push(
-      ckoHelper.getPaymentFailureMessage()
-    );
+            ckoHelper.getPaymentFailureMessage()
+        );
     }
 
     return {

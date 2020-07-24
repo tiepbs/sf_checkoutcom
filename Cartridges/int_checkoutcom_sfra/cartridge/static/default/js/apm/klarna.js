@@ -32,13 +32,13 @@ function callKlarnaController() {
                 var addressInfo = JSON.parse(this.responseText).addressInfo;
 
                 Klarna.Payments.init(
-          // Options
+                    // Options
                     {
                         client_token: token,
                     }
-        );
+                );
 
-        // Prepare the Klarna box display
+                // Prepare the Klarna box display
                 var klarnaBox = $('#klarna-buttons');
                 klarnaBox.empty();
                 for (var i = 0; i < categories.length; i++) {
@@ -63,37 +63,37 @@ function callKlarnaController() {
  * Load Klarna Widget
  */
 function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId) {
-  // Prepare parameters
+    // Prepare parameters
     var requestObject = JSON.parse(requestObject);
     var addressInfo = JSON.parse(addressInfo);
 
-  // Empty the Klarna container
+    // Empty the Klarna container
     $('#klarna-payments-container').empty();
 
-  // Load Klarna content
+    // Load Klarna content
     Klarna.Payments.load({
         container: '#klarna-payments-container',
         payment_method_category: paymentMethod,
         instance_id: sessionId,
     }, function(res) {
         klarnaAuthorizeButton(
-      '#klarna-payments-container',
-      sessionId, paymentMethod, addressInfo, requestObject
-    );
+            '#klarna-payments-container',
+            sessionId, paymentMethod, addressInfo, requestObject
+        );
     }
-  );
+    );
 }
 
 /*
  * Klarna Authorize button
  */
 function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject) {
-  // Prepare paramters
+    // Prepare paramters
     var authorizeBtn = "<button id='klarna_authorize_btn' type='button' onclick='klarnaAuthorize(`" + sessionId
     + '`, `' + klarnaContainer + '`, `' + paymentMethod + '`, ` ' + JSON.stringify(billingAddress) + ' ` , ` ' + JSON.stringify(requestObject) + " `)'>Authorize</button>";
     var klarna = $(klarnaContainer);
 
-  // Append the button
+    // Append the button
     klarna.append(authorizeBtn);
 }
 
@@ -101,13 +101,13 @@ function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billin
  * Klarna Authorize
  */
 function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, requestData) {
-  // Prepare the parameters
+    // Prepare the parameters
     var requestObject = JSON.parse(requestData);
     var billingAddress = JSON.parse(address);
     var emailAddress = $('input[name$="dwfrm_billing_contactInfoFields_email"]').val();
     billingAddress.email = emailAddress;
 
-  // Authorize the Klarna charge
+    // Authorize the Klarna charge
     Klarna.Payments.authorize(
     // Options
         {
@@ -124,29 +124,29 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, req
             order_tax_amount: requestObject.tax_amount,
             order_lines: requestObject.products,
         },
-    // Callback
-    function(response) {
-        if (response.approved) {
-            $(klarnaContainer).empty();
-            $('#' + paymentMethod + '_image').hide();
-            $('#' + paymentMethod + '_aproved').show();
-            $('#' + paymentMethod + '_rejected').hide();
+        // Callback
+        function(response) {
+            if (response.approved) {
+                $(klarnaContainer).empty();
+                $('#' + paymentMethod + '_image').hide();
+                $('#' + paymentMethod + '_aproved').show();
+                $('#' + paymentMethod + '_rejected').hide();
 
-        // save value to hidden klarna form
-            $('#klarna_token').val(response.authorization_token);
-            $('#klarna_approved').val(response.approved);
-            $('#klarna_finalize_required').val(response.finalize_required);
-        } else {
-            $(klarnaContainer).empty();
-            $('#' + paymentMethod + '_image').hide();
-            $('#' + paymentMethod + '_rejected').show();
-            $('#' + paymentMethod + '_aproved').hide();
+                // save value to hidden klarna form
+                $('#klarna_token').val(response.authorization_token);
+                $('#klarna_approved').val(response.approved);
+                $('#klarna_finalize_required').val(response.finalize_required);
+            } else {
+                $(klarnaContainer).empty();
+                $('#' + paymentMethod + '_image').hide();
+                $('#' + paymentMethod + '_rejected').show();
+                $('#' + paymentMethod + '_aproved').hide();
 
-        // save value to hidden klarna form
-            $('#klarna_token').val(response.authorization_token);
-            $('#klarna_approved').val(response.approved);
-            $('#klarna_finalize_required').val(response.finalize_required);
+                // save value to hidden klarna form
+                $('#klarna_token').val(response.authorization_token);
+                $('#klarna_approved').val(response.approved);
+                $('#klarna_finalize_required').val(response.finalize_required);
+            }
         }
-    }
-  );
+    );
 }

@@ -14,11 +14,11 @@ function Handle(basket, billingData, processorId, req) {
     var cardErrors = {};
     var serverErrors = [];
 
-  // Verify the payload
+    // Verify the payload
     if (!billingData.paymentInformation.ckoGooglePayData.value || billingData.paymentInformation.ckoGooglePayData.value.length == 0) {
         serverErrors.push(
-      Resource.msg('cko.googlepay.error', 'cko', null)
-    );
+            Resource.msg('cko.googlepay.error', 'cko', null)
+        );
 
         return {
             fieldErrors: [cardErrors],
@@ -41,18 +41,18 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     var serverErrors = [];
     var fieldErrors = {};
 
-  // Payment request
+    // Payment request
     var success = googlePayHelper.handleRequest(
-    billingForm.googlePayForm.ckoGooglePayData.htmlValue,
-    processorId,
-    orderNumber
-  );
+        billingForm.googlePayForm.ckoGooglePayData.htmlValue,
+        processorId,
+        orderNumber
+    );
 
-  // Handle errors
+    // Handle errors
     if (!success) {
         serverErrors.push(
-      ckoHelper.getPaymentFailureMessage()
-    );
+            ckoHelper.getPaymentFailureMessage()
+        );
     }
 
     return {

@@ -4,23 +4,23 @@
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function() {
-  // Launch Google Pay
+    // Launch Google Pay
     launchGooglePay();
 }, false);
 
 function initCheckoutcomGooglePayValidation() {
     $('button.submit-payment').off('click touch').one('click touch', function(e) {
         if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_GOOGLE_PAY') {
-      // Prevent the default button click behaviour
+            // Prevent the default button click behaviour
             e.preventDefault();
             e.stopImmediatePropagation();
 
-      // Validate the payment data
+            // Validate the payment data
             var field1 = $('input[name="dwfrm_billing_googlePayForm_ckoGooglePayData"]');
             if (field1.val() == '') {
                 $('#google-pay-content .invalid-field-message').text(
-          window.ckoLang.googlePayDataInvalid
-        );
+                    window.ckoLang.googlePayDataInvalid
+                );
             } else {
                 $(this).trigger('click');
             }
@@ -42,10 +42,10 @@ function launchGooglePay() {
             },
         };
 
-    // Prepare the Google Pay client
+        // Prepare the Google Pay client
         onGooglePayLoaded();
 
-    /**
+        /**
          * Show Google Pay chooser when Google Pay purchase button is clicked
          */
         var paymentDataRequest = getGooglePaymentDataConfiguration();
@@ -53,19 +53,19 @@ function launchGooglePay() {
 
         var paymentsClient = getGooglePaymentsClient();
         paymentsClient.loadPaymentData(paymentDataRequest)
-      .then(
-        function(paymentData) {
-          // Handle the response
-            processPayment(paymentData);
-        }
-      )
-      .catch(
-        function(error) {
-            console.log(error);
-        }
-      );
+            .then(
+                function(paymentData) {
+                    // Handle the response
+                    processPayment(paymentData);
+                }
+            )
+            .catch(
+                function(error) {
+                    console.log(error);
+                }
+            );
 
-    /**
+        /**
          * Initialize a Google Pay API client
          *
          * @returns {google.payments.api.PaymentsClient} Google Pay API client
@@ -75,34 +75,34 @@ function launchGooglePay() {
                 {
                     environment: jQuery('[id="ckoGooglePayEnvironment"]').val(),
                 }
-      ));
+            ));
         }
 
-    /**
+        /**
          * Initialize Google PaymentsClient after Google-hosted JavaScript has loaded
          */
         function onGooglePayLoaded() {
             var paymentsClient = getGooglePaymentsClient();
             paymentsClient.isReadyToPay({ allowedPaymentMethods: allowedPaymentMethods })
-        .then(
-          function(response) {
-              if (response.result) {
-                  prefetchGooglePaymentData();
-              }
-          }
-        )
-        .catch(
-          function(error) {
-              console.log(error);
-          }
-        );
+                .then(
+                    function(response) {
+                        if (response.result) {
+                            prefetchGooglePaymentData();
+                        }
+                    }
+                )
+                .catch(
+                    function(error) {
+                        console.log(error);
+                    }
+                );
         }
 
-    /**
+        /**
          * Configure support for the Google Pay API
          *
          * @see     {@link https://developers.google.com/pay/api/web/reference/object#PaymentDataRequest|PaymentDataRequest}
-         * @returns {object} PaymentDataRequest fields
+         * @returns {Object} PaymentDataRequest fields
          */
         function getGooglePaymentDataConfiguration() {
             return {
@@ -115,11 +115,11 @@ function launchGooglePay() {
             };
         }
 
-    /**
+        /**
          * Provide Google Pay API with a payment amount, currency, and amount status
          *
          * @see     {@link https://developers.google.com/pay/api/web/reference/object#TransactionInfo|TransactionInfo}
-         * @returns {object} transaction info, suitable for use as transactionInfo property of PaymentDataRequest
+         * @returns {Object} transaction info, suitable for use as transactionInfo property of PaymentDataRequest
          */
         function getGoogleTransactionInfo() {
             return {
@@ -129,13 +129,13 @@ function launchGooglePay() {
             };
         }
 
-    /**
+        /**
          * Prefetch payment data to improve performance
          */
         function prefetchGooglePaymentData() {
             var paymentDataRequest = getGooglePaymentDataConfiguration();
 
-      // TransactionInfo must be set but does not affect cache
+            // TransactionInfo must be set but does not affect cache
             paymentDataRequest.transactionInfo = {
                 totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
                 currencyCode: jQuery('[id="ckoGooglePayCurrency"]').val(),
@@ -145,21 +145,21 @@ function launchGooglePay() {
             paymentsClient.prefetchPaymentData(paymentDataRequest);
         }
 
-    /**
+        /**
          * Process payment data returned by the Google Pay API
          *
-         * @param {object} paymentData response from Google Pay API after shopper approves payment
+         * @param {Object} paymentData response from Google Pay API after shopper approves payment
          * @see   {@link https://developers.google.com/pay/api/web/reference/object#PaymentData|PaymentData object reference}
          */
         function processPayment(paymentData) {
-      // Prepare the payload
+            // Prepare the payload
             var payload = {
                 signature: JSON.parse(paymentData.paymentMethodToken.token).signature,
                 protocolVersion: JSON.parse(paymentData.paymentMethodToken.token).protocolVersion,
                 signedMessage: JSON.parse(paymentData.paymentMethodToken.token).signedMessage,
             };
 
-      // Store the payload
+            // Store the payload
             jQuery('#ckoGooglePayData').val(JSON.stringify(payload));
         }
     });

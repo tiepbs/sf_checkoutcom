@@ -12,20 +12,20 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
   */
 
 var savedCardHelper = {
-  /*
+    /*
      * Get a customer saved card
      */
     getSavedCard: function(cardUuid, customerNo, methodId) {
     // Get the customer
         var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
 
-    // Get the customer wallet
+        // Get the customer wallet
         var wallet = customer.getProfile().getWallet();
 
-    // Get the existing payment instruments
+        // Get the existing payment instruments
         var paymentInstruments = wallet.getPaymentInstruments(methodId);
 
-    // Match the saved card
+        // Match the saved card
         for (var i = 0; i < paymentInstruments.length; i++) {
             var card = paymentInstruments[i];
             if (card.getUUID() == cardUuid) {
@@ -36,31 +36,31 @@ var savedCardHelper = {
         return null;
     },
 
-  /*
+    /*
      * Get all customer saved cards
      */
     getSavedCards: function(customerNo, methodId) {
     // Prepare the processor id
         var processorId = methodId || 'CHECKOUTCOM_CARD';
 
-    // Get the customer
+        // Get the customer
         var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
 
-    // Get the customer wallet
+        // Get the customer wallet
         var wallet = customer.getProfile().getWallet();
 
-    // Get the existing payment instruments
+        // Get the existing payment instruments
         var paymentInstruments = wallet.getPaymentInstruments(processorId);
 
-    // Prepare the return value
+        // Prepare the return value
         var cards = [];
 
-    // Match the saved cards
+        // Match the saved cards
         for (var i = 0; i < paymentInstruments.length; i++) {
             var paymentInstrument = paymentInstruments[i];
             var condition = (processorId) ? paymentInstrument.paymentMethod == processorId : true;
             if (condition) {
-        // Card data
+                // Card data
                 var card = {
                     creditCardHolder: paymentInstrument.creditCardHolder,
                     maskedCreditCardNumber: paymentInstrument.maskedCreditCardNumber,
@@ -71,7 +71,7 @@ var savedCardHelper = {
                     paymentMethod: paymentInstrument.paymentMethod,
                 };
 
-        // Card image
+                // Card image
                 card.cardTypeImage = {
                     src: URLUtils.staticURL('/images/' +
                     paymentInstrument.creditCardType.toLowerCase().replace(/\s/g, '') +
@@ -86,7 +86,7 @@ var savedCardHelper = {
         return cards;
     },
 
-  /*
+    /*
      * Save a card in customer account
      */
     saveCard: function(paymentData, req) {
@@ -95,16 +95,16 @@ var savedCardHelper = {
         var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
         var processorId = paymentData.paymentMethod.value;
 
-    // Build the customer full name
+        // Build the customer full name
         var fullName = ckoHelper.getCustomerFullName(customerProfile);
 
-    // Get the customer wallet
+        // Get the customer wallet
         var wallet = customerProfile.getWallet();
 
-    // The return value
+        // The return value
         var uuid;
 
-    // Create a stored payment instrument
+        // Create a stored payment instrument
         Transaction.wrap(function() {
             var storedPaymentInstrument = wallet.createPaymentInstrument(processorId);
             storedPaymentInstrument.setCreditCardHolder(fullName);
@@ -118,21 +118,21 @@ var savedCardHelper = {
         return uuid;
     },
 
-  /*
+    /*
      * Update a card in customer account
      */
     updateSavedCard: function(hook) {
         var condition1 = hook.data.metadata.hasOwnProperty('card_uuid');
         var condition2 = hook.data.metadata.hasOwnProperty('customer_id');
         if (condition1 && condition2) {
-      // Get the card
+            // Get the card
             var card = this.getSavedCard(
-        hook.data.metadata.card_uuid,
-        hook.data.metadata.customer_id,
-        hook.data.metadata.payment_processor
-      );
+                hook.data.metadata.card_uuid,
+                hook.data.metadata.customer_id,
+                hook.data.metadata.payment_processor
+            );
 
-      // Create a stored payment instrument
+            // Create a stored payment instrument
             if (card) {
                 Transaction.wrap(function() {
                     card.setCreditCardToken(hook.data.source.id);
@@ -143,7 +143,7 @@ var savedCardHelper = {
         }
     },
 
-  /*
+    /*
      * Delete a card in customer account
      */
     deleteSavedCard: function(hook) {
@@ -151,20 +151,20 @@ var savedCardHelper = {
         var condition2 = hook.data.metadata.hasOwnProperty('card_uuid');
         var condition3 = hook.data.metadata.hasOwnProperty('customer_id');
         if (condition1 && condition2 && condition3) {
-      // Set the customer and card uuiid
+            // Set the customer and card uuiid
             var customerId = hook.data.metadata.hasOwnProperty('customer_id');
             var cardUuid = hook.data.metadata.hasOwnProperty('card_uuid');
 
-      // Get the customer
+            // Get the customer
             var customer = CustomerMgr.getCustomerByCustomerNumber(customerId);
 
-      // Get the customer wallet
+            // Get the customer wallet
             var wallet = customer.getProfile().getWallet();
 
-      // Get the existing payment instruments
+            // Get the existing payment instruments
             var paymentInstruments = wallet.getPaymentInstruments();
 
-      // Remove  the relevand payment instruments
+            // Remove  the relevand payment instruments
             Transaction.wrap(function() {
                 for (var i = 0; i < paymentInstruments.length; i++) {
                     var card = paymentInstruments[i];

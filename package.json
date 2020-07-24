@@ -12,7 +12,7 @@
     "lint:css": "sgmf-scripts --lint css",
     "lint:js": "sgmf-scripts --lint js",
     "lint:fix": "eslint --fix Cartridges/**",
-    "lint:autofix": "eslint-auto-fix",
+    "lint:autofix": "npx eslint-auto-fix \"Cartridges/**/*.js\" --verbose --fix-on-startup",
     "lint:check": "eslint --ignore-path .gitignore .",
     "test:sfra": "mocha ./tests/sfra-integration-test",
     "test:sg": "mocha ./tests/sg-integration-test"

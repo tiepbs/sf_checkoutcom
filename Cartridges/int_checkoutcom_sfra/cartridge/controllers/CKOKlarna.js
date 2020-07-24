@@ -18,7 +18,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
  * Initiate the Kalrna session.
  */
 server.get('KlarnaSession', function(req, res, next) {
-  // Prepare the basket
+    // Prepare the basket
     var basket = BasketMgr.getCurrentBasket();
     var countryCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
 
@@ -31,7 +31,7 @@ server.get('KlarnaSession', function(req, res, next) {
         var products = ckoHelper.getBasketObject(basket);
         var billing = ckoHelper.getBasketAddress(basket);
 
-    // Prepare the request object
+        // Prepare the request object
         var requestObject = {
             purchase_country: countryCode,
             currency: currency,
@@ -42,30 +42,30 @@ server.get('KlarnaSession', function(req, res, next) {
             billing_address: billing,
         };
 
-    // Perform the request to the payment gateway
+        // Perform the request to the payment gateway
         var gSession = ckoHelper.gatewayClientRequest(
-      'cko.klarna.session.' + ckoHelper.getValue('ckoMode') + '.service',
-      requestObject
-    );
+            'cko.klarna.session.' + ckoHelper.getValue('ckoMode') + '.service',
+            requestObject
+        );
 
-    // Store variables in session
+        // Store variables in session
         gSession.requestObject = requestObject;
         gSession.addressInfo = ckoHelper.getBasketAddress(basket);
 
-    // Write the session
+        // Write the session
         if (gSession) {
             res.json(gSession);
         }
     } else {
         return next(
-      new Error(
-        Resource.msg(
-          'cko.payment.invalid',
-          'cko',
-          null
-        )
-      )
-    );
+            new Error(
+                Resource.msg(
+                    'cko.payment.invalid',
+                    'cko',
+                    null
+                )
+            )
+        );
     }
 
     next();

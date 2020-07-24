@@ -15,16 +15,16 @@ function Handle(basket, billingData, processorId, req) {
     var fieldErrors = {};
     var serverErrors = [];
 
-  // Conditions
+    // Conditions
     var condition1 = billingData.paymentInformation.hasOwnProperty('ckoApm');
     var condition2 = condition1 && billingData.paymentInformation.ckoApm.value;
     var condition3 = condition2 && billingData.paymentInformation.ckoApm.value.length > 0;
 
-  // Verify the payload
+    // Verify the payload
     if (!condition3) {
         serverErrors.push(
-      Resource.msg('cko.apm.error', 'cko', null)
-    );
+            Resource.msg('cko.apm.error', 'cko', null)
+        );
 
         return {
             fieldErrors: fieldErrors,
@@ -51,10 +51,10 @@ function Authorize(orderNumber, billingForm, processorId, req) {
         redirectUrl: false,
     };
 
-  // Get the order
+    // Get the order
     var order = OrderMgr.getOrder(orderNumber);
 
-  // Prepare the arguments
+    // Prepare the arguments
     var args = {
         order: order,
         processorId: processorId,
@@ -62,22 +62,22 @@ function Authorize(orderNumber, billingForm, processorId, req) {
         req: req,
     };
 
-  // Get the selected APM request data
+    // Get the selected APM request data
     var func = billingForm.apmForm.ckoSelectedApm.value.toString() + 'Authorization';
     var apmConfigData = apmConfig[func](args);
 
-  // Payment request
+    // Payment request
     var result = apmHelper.handleRequest(
-    apmConfigData,
-    processorId,
-    orderNumber
-  );
+        apmConfigData,
+        processorId,
+        orderNumber
+    );
 
-  // Handle errors
+    // Handle errors
     if (result.error) {
         serverErrors.push(
-      ckoHelper.getPaymentFailureMessage()
-    );
+            ckoHelper.getPaymentFailureMessage()
+        );
     }
 
     return {

@@ -15,13 +15,13 @@ function processForm(paymentForm, viewFormData) {
     var selectedCardCvv = paymentForm.savedCardForm.selectedCardCvv.value;
     var fieldErrors = {};
 
-  // Add the payment method info
+    // Add the payment method info
     viewData.paymentMethod = {
         value: paymentForm.paymentMethod.value.toString(),
         htmlName: paymentForm.paymentMethod.htmlName,
     };
 
-  // Process the card info
+    // Process the card info
     if (!selectedCardUuid || !selectedCardCvv) {
     // Verify credit card form data
         fieldErrors = COHelpers.validateCreditCard(paymentForm);
@@ -32,7 +32,7 @@ function processForm(paymentForm, viewFormData) {
             };
         }
 
-    // New card
+        // New card
         viewData.paymentInformation = {
             cardType: {
                 value: paymentForm.creditCardFields.cardType.value,
@@ -48,9 +48,9 @@ function processForm(paymentForm, viewFormData) {
             },
             expirationMonth: {
                 value: parseInt(
-          paymentForm.creditCardFields.expirationMonth.selectedOption,
-          10
-        ),
+                    paymentForm.creditCardFields.expirationMonth.selectedOption,
+                    10
+                ),
                 htmlName: paymentForm.creditCardFields.expirationMonth.htmlName,
             },
             expirationYear: {
