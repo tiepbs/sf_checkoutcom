@@ -94,7 +94,7 @@ var transactionHelper = {
 
     /**
      * Load a transaction by Id.
-     * @param {Object} hook The gateway webhook data
+     * @param {string} transactionId The transaction id
      * @param {string} orderNo The order number
      * @returns {Object} The transactionn instance
      */
@@ -127,7 +127,7 @@ var transactionHelper = {
 
     /**
      * Check if a capture transaction can allow refunds.
-     * @param {Object} hook The gateway webhook data
+     * @param {Object} order The order instance
      * @returns {boolean} Should the refund action be closed
      */
     shouldCloseRefund: function(order) {
