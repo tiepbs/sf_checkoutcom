@@ -19,7 +19,7 @@ var transactionHelper = {
      * @param {Object} hook The gateway webhook data
      * @returns {Object} The formatted amount object
      */
-    getHookTransactionAmount : function(hook) {
+    getHookTransactionAmount: function(hook) {
         var divider = ckoHelper.getCkoFormatedValue(hook.data.currency);
         var amount = parseInt(hook.data.amount) / divider;
         return new Money(
@@ -41,8 +41,7 @@ var transactionHelper = {
 
         // Get the payment processor id
         var paymentProcessorId = hook.data.metadata.payment_processor;
-        
-        Transaction.wrap(function () {
+        Transaction.wrap(function() {
             // Create the payment instrument and processor
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
@@ -68,8 +67,8 @@ var transactionHelper = {
         // Prepare the payload
         var mode = ckoHelper.getValue('ckoMode');
         var ckoChargeData = {
-            chargeId: hook.data.id
-        }
+            chargeId: hook.data.id,
+        };
 
         // Get the payment actions
         var paymentActions = ckoHelper.gatewayClientRequest(
@@ -89,7 +88,7 @@ var transactionHelper = {
                 }
             }
         }
-        
+
         return null;
     },
 
@@ -101,13 +100,13 @@ var transactionHelper = {
      */
     loadTransaction: function(transactionId, orderNo) {
         // Query the orders
-        var result  = ckoHelper.getOrders(orderNo);
+        var result = ckoHelper.getOrders(orderNo);
 
         // Loop through the results
         for (var i = 0; i < result.length; i++) {
             // Get the payment instruments
             var paymentInstruments = result[i].getPaymentInstruments().toArray();
-            
+
             // Loop through the payment instruments
             for (var j = 0; j < paymentInstruments.length; j++) {
                 // Get the payment transaction
@@ -122,7 +121,7 @@ var transactionHelper = {
                 }
             }
         }
-        
+
         return null;
     },
 
@@ -154,10 +153,10 @@ var transactionHelper = {
                 totalCaptured += parseFloat(paymentTransaction.amount.value);
             }
         }
-      
+
         // Check if a refund is possible
         return totalRefunded >= totalCaptured;
-    }
+    },
 };
 
 /*
