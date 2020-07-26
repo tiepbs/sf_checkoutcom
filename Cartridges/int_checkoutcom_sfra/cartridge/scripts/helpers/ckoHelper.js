@@ -429,6 +429,7 @@ var ckoHelper = {
     updateCustomerData: function(gatewayResponse) {
         if ((gatewayResponse) && Object.prototype.hasOwnProperty.call(gatewayResponse, 'card')) {
             Transaction.wrap(function() {
+                // eslint-disable-next-line
                 if (session.customer.profile !== null) {
                     session.customer.profile.custom.ckoCustomerId = gatewayResponse.card.customerId;
                 }
@@ -647,13 +648,13 @@ var ckoHelper = {
         var it = order.productLineItems.iterator();
 
         // Loop through the items
-        var products_quantites = 0;
+        var productsQuantities = 0;
         while (it.hasNext()) {
             var pli = it.next();
-            products_quantites += pli.quantityValue;
+            productsQuantities += pli.quantityValue;
         }
 
-        return products_quantites;
+        return productsQuantities;
     },
 
     /**
@@ -784,7 +785,7 @@ var ckoHelper = {
      */
     getBasketObject: function(basket) {
         var currency = basket.getCurrencyCode();
-        var products_quantites = [];
+        var productsQuantities = [];
         var it = basket.productLineItems.iterator();
         while (it.hasNext()) {
             var pli = it.next();
@@ -801,7 +802,7 @@ var ckoHelper = {
                 total_tax_amount: this.getFormattedPrice(pli.adjustedTax.value, currency),
             };
 
-            products_quantites.push(products);
+            productsQuantities.push(products);
         }
         var shippingTaxRate = basket.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100;
         var shipping = {
@@ -814,10 +815,10 @@ var ckoHelper = {
         };
 
         if (basket.shippingTotalPrice.value > 0) {
-            products_quantites.push(shipping);
+            productsQuantities.push(shipping);
         }
 
-        return products_quantites;
+        return productsQuantities;
     },
 
     /**
