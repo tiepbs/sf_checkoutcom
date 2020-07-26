@@ -7,12 +7,14 @@ var businessName = Site.getCurrent().getCustomPreferenceValue('ckoBusinessName')
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
-/*
+/**
  * Module ckoApmConfig.
  */
 var ckoApmConfig = {
-    /*
+    /**
      * Ideal authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     idealAuthorization: function(args) {
         var params = {
@@ -29,8 +31,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Boleto authorization
+    /**
+     * Boleto authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     boletoAuthorization: function(args) {
         var params = {
@@ -51,8 +55,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Bancontact authorization
+    /**
+     * Bancontact authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     bancontactAuthorization: function(args) {
         var params = {
@@ -69,8 +75,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Benefit Pay authorization
+    /**
+     * Benefit Pay authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     benefitpayAuthorization: function(args) {
         var params = {
@@ -85,8 +93,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Giro Pay authorization
+    /**
+     * Giro Pay authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     giropayAuthorization: function(args) {
         var params = {
@@ -101,8 +111,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Eps authorization
+    /**
+     * EPS authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     epsAuthorization: function(args) {
         var params = {
@@ -117,8 +129,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Sofort authorization
+    /**
+     * Sofort authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     sofortAuthorization: function(args) {
         var params = {
@@ -132,8 +146,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Knet authorization
+    /**
+     * Knet authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     knetAuthorization: function(args) {
         var params = {
@@ -148,8 +164,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * QPay authorization
+    /**
+     * QPay authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     qpayAuthorization: function(args) {
         var params = {
@@ -167,8 +185,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Fawry authorization
+    /**
+     * Fawry authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     fawryAuthorization: function(args) {
         var params = {
@@ -186,8 +206,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Sepa authorization
+    /**
+     * SEPA authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     sepaAuthorization: function(args) {
         var params = {
@@ -206,8 +228,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Multibanco authorization
+    /**
+     * Multibanco authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     multibancoAuthorization: function(args) {
         var params = {
@@ -223,8 +247,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Poli authorization
+    /**
+     * Poli authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     poliAuthorization: function(args) {
         var params = {
@@ -237,8 +263,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * P24 authorization
+    /**
+     * P24 authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     p24Authorization: function(args) {
         var params = {
@@ -255,8 +283,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Klarna authorization
+    /**
+     * Klarna authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     klarnaAuthorization: function(args) {
         // Klarna Form Inputs
@@ -292,8 +322,10 @@ var ckoApmConfig = {
         return { success: false };
     },
 
-    /*
-     * Paypal authorization
+    /**
+     * Paypal authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     paypalAuthorization: function(args) {
         var params = {
@@ -307,8 +339,10 @@ var ckoApmConfig = {
         return params;
     },
 
-    /*
-     * Alipay authorization
+    /**
+     * Alipay authorization.
+     * @param {Object} args The payment method parameters
+     * @returns {Object} The payment method config
      */
     alipayAuthorization: function(args) {
         var params = {
@@ -319,10 +353,10 @@ var ckoApmConfig = {
         };
 
         return params;
-    },
+    }
 };
 
-/*
-* Module exports
-*/
+/**
+ * Module exports
+ */
 module.exports = ckoApmConfig;

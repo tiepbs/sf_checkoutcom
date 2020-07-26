@@ -17,9 +17,12 @@ var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper')
 var eventsHelper = {
     /**
      * Adds the gateway webhook information to the newly created order.
+     * @param {Object} hook The gateway webhook data
+     * @param {string} paymentStatus The payment status
+     * @param {string} orderStatus The order status
      */
     addWebhookInfo: function(hook, paymentStatus, orderStatus) {
-    // Load the order
+        // Load the order
         var order = OrderMgr.getOrder(hook.data.reference);
         if (order) {
             // Prepare the webhook info
@@ -50,9 +53,10 @@ var eventsHelper = {
 
     /**
      * Payment captured event.
+     * @param {Object} hook The gateway webhook data
      */
     paymentCaptured: function(hook) {
-    // Get the  transaction amount
+        // Get the  transaction amount
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
 
         // Create the webhook info
@@ -87,9 +91,10 @@ var eventsHelper = {
 
     /**
      * Payment authorized event.
+     * @param {Object} hook The gateway webhook data
      */
     paymentApproved: function(hook) {
-    // Create the webhook info
+        // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 
         // Create the authorized transaction
@@ -101,6 +106,7 @@ var eventsHelper = {
 
     /**
      * Card verified event.
+     * @param {Object} hook The gateway webhook data
      */
     cardVerified: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
@@ -108,6 +114,7 @@ var eventsHelper = {
 
     /**
      * Authorization failed event.
+     * @param {Object} hook The gateway webhook data
      */
     paymentDeclined: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
@@ -118,6 +125,7 @@ var eventsHelper = {
 
     /**
      * Capture failed event.
+     * @param {Object} hook The gateway webhook data
      */
     paymentCaptureDeclined: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
@@ -125,9 +133,10 @@ var eventsHelper = {
 
     /**
      * Payment refunded event.
+     * @param {Object} hook The gateway webhook data
      */
     paymentRefunded: function(hook) {
-    // Get the  transaction amount
+        // Get the  transaction amount
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
 
         // Create the webhook info
@@ -161,9 +170,10 @@ var eventsHelper = {
 
     /**
      * Payment voided event.
+     * @param {Object} hook The gateway webhook data
      */
     paymentVoided: function(hook) {
-    // Get the  transaction amount
+        // Get the  transaction amount
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
 
         // Create the webhook info
@@ -198,6 +208,7 @@ var eventsHelper = {
 
     /**
      * Payment pending event.
+     * @param {Object} hook The gateway webhook data
      */
     paymentPending: function(hook) {
         this.addWebhookInfo(hook, null, null);
@@ -205,6 +216,7 @@ var eventsHelper = {
 
     /**
      * Payment expired event.
+     * @param {Object} hook The gateway webhook data
      */
     paymentExpired: function(hook) {
         this.addWebhookInfo(hook, null, null);
@@ -212,6 +224,7 @@ var eventsHelper = {
 
     /**
      * Refund failed event.
+     * @param {Object} hook The gateway webhook data
      */
     paymentRefundDeclined: function(hook) {
         this.addWebhookInfo(hook, null, null);
@@ -219,6 +232,7 @@ var eventsHelper = {
 
     /**
      * Charge void failed event.
+     * @param {Object} hook The gateway webhook data
      */
     paymentVoidDeclined: function(hook) {
         this.addWebhookInfo(hook, null, null);

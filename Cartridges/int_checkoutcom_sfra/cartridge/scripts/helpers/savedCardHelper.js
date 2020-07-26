@@ -7,16 +7,19 @@ var URLUtils = require('dw/web/URLUtils');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
+
 /**
   * Saved card functions for the Checkout.com cartridge integration.
   */
-
 var savedCardHelper = {
-    /*
-     * Get a customer saved card
+    /**
+     * Get a customer saved card.
+     * @param {string} cardUuid The card uuid
+     * @param {string} customerNo The customer number
+     * @param {string} methodId The method id
      */
     getSavedCard: function(cardUuid, customerNo, methodId) {
-    // Get the customer
+        // Get the customer
         var customer = CustomerMgr.getCustomerByCustomerNumber(customerNo);
 
         // Get the customer wallet
@@ -36,11 +39,13 @@ var savedCardHelper = {
         return null;
     },
 
-    /*
+    /**
      * Get all customer saved cards
+     * @param {string} customerNo The customer number
+     * @param {string} customerNo The customer number
      */
     getSavedCards: function(customerNo, methodId) {
-    // Prepare the processor id
+        // Prepare the processor id
         var processorId = methodId || 'CHECKOUTCOM_CARD';
 
         // Get the customer
