@@ -27,7 +27,8 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
 
     // Check if a session id is available
     if (Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id')) {
-    // Reset the session URL
+        // Reset the session URL
+        // eslint-disable-next-line
         session.privacy.redirectUrl = null;
 
         // Perform the request to the payment gateway
