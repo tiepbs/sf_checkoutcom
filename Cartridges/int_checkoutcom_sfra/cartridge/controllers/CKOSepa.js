@@ -13,7 +13,10 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var apmHelper = require('~/cartridge/scripts/helpers/apmHelper');
 var paymentHelper = require('~/cartridge/scripts/helpers/paymentHelper');
 
-// Initiate the mandate session
+/**
+ * Initiate the SEPA mandate session.
+ * @returns {string} The controller response
+ */
 server.get('Mandate', server.middleware.https, function(req, res, next) {
     // Prepare the variables
     var sepaResponseId = req.querystring.sepaResponseId;
@@ -62,6 +65,10 @@ server.get('Mandate', server.middleware.https, function(req, res, next) {
     return next();
 });
 
+/**
+ * Handle the SEPA mandates.
+ * @returns {string} The controller response
+ */
 server.post('HandleMandate', server.middleware.https, function(req, res, next) {
     // Get the form
     var sepaForm = req.form;
