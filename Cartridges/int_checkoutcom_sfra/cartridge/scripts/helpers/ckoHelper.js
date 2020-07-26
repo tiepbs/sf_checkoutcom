@@ -241,13 +241,14 @@ var ckoHelper = {
         var result  = SystemObjectMgr.querySystemObjects('Order', 'orderNo = {0}', 'creationDate desc', orderNo);
 
         // Loop through the results
-        for each(var item in result) {
+        while (result.hasNext()) {
             // Get the payment instruments
+            var item = result.next();
             var paymentInstruments = item.getPaymentInstruments();
 
             // Loop through the payment instruments
-            for each(var instrument in paymentInstruments) {
-                if (this.isCkoItem(instrument.paymentMethod) && !this.containsObject(item, data)) {
+            for (var i = 0; i < paymentInstruments.length; i++) {
+                if (this.isCkoItem(paymentInstruments[i].paymentMethod) && !this.containsObject(item, data)) {
                     data.push(item);
                 }
             }
