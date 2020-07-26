@@ -12,6 +12,7 @@ var paymentHelper = {
      * Get the confirmation page redirection.
      * @param {Object} res The HTTP response object
      * @param {Object} order The order instance
+     * @returns {string} The redirection URL
      */
     getConfirmationPageRedirect: function(res, order) {
         return res.redirect(
@@ -28,6 +29,7 @@ var paymentHelper = {
     /**
      * Get the failure page redirection.
      * @param {Object} res The HTTP response object
+     * @returns {string} The redirection URL
      */
     getFailurePageRedirect: function(res) {
         return res.redirect(
