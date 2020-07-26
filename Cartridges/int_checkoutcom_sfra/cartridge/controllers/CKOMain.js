@@ -41,10 +41,8 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
 
         // If there is a valid response
         if (typeof (gVerify) === 'object' && Object.prototype.hasOwnProperty.call(gVerify, 'id')) {
+            var order = OrderMgr.getOrder(gVerify.reference);
             if (ckoHelper.redirectPaymentSuccess(gVerify)) {
-                // Load the order
-                var order = OrderMgr.getOrder(gVerify.reference);
-
                 // Show order confirmation page
                 paymentHelper.getConfirmationPageRedirect(res, order);
             } else {
@@ -58,7 +56,6 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
             paymentHelper.getFailurePageRedirect(res);
         }
     } else {
-    // Process the response data
         var gResponse = JSON.parse(req.querystring);
         if (ckoHelper.paymentIsValid(gResponse)) {
             // Load the order
