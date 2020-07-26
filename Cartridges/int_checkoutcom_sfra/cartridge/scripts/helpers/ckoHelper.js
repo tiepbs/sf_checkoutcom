@@ -230,7 +230,7 @@ var ckoHelper = {
         return orderTotalFormated.toFixed();
     },
 
-    /***
+    /**
      * Get the Checkout.com orders.
      */
     getOrders: function (orderNo) {
@@ -257,7 +257,7 @@ var ckoHelper = {
         return data;
     },
 
-    /***
+    /**
      * Checks if an object already exists in an array.
      */
     containsObject: function (obj, list) {
@@ -271,7 +271,7 @@ var ckoHelper = {
         return false;
     },
 
-    /***
+    /**
      * Checks if a payment instrument is Checkout.com.
      */
     isCkoItem: function(item) {
