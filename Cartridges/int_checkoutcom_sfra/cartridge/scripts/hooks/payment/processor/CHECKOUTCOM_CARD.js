@@ -15,18 +15,6 @@ var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 function Handle(basket, billingData, processorId, req) {
     var fieldErrors = {};
     var serverErrors = [];
-    var customerNo = null;
-
-    // Pre authorize the card
-    if (!billingData.selectedCardUuid) {
-    // Prepare the customer number
-        var condition = Object.prototype.hasOwnProperty.call(req, 'currentCustomer')
-        && Object.prototype.hasOwnProperty.call(req.currentCustomer, 'profile')
-        && Object.prototype.hasOwnProperty.call(req.currentCustomer.profile, 'customerNo');
-        if (condition) {
-            customerNo = req.currentCustomer.profile.customerNo;
-        }
-    }
 
     return {
         fieldErrors: fieldErrors,
