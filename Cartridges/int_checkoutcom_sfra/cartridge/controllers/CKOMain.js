@@ -20,9 +20,11 @@ var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig'
 
 /**
  * Handles responses from the Checkout.com payment gateway.
+ * @returns {string} The controller response
  */
 server.get('HandleReturn', server.middleware.https, function(req, res, next) {
     // Prepare some variables
+    var order;
     var mode = ckoHelper.getValue('ckoMode');
 
     // Check if a session id is available
@@ -40,7 +42,7 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
         );
 
         // Load the order
-        var order = OrderMgr.getOrder(gVerify.reference);
+        order = OrderMgr.getOrder(gVerify.reference);
 
         // If there is a valid response
         if (typeof (gVerify) === 'object' && Object.prototype.hasOwnProperty.call(gVerify, 'id')) {
@@ -61,7 +63,7 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
         var gResponse = JSON.parse(req.querystring);
         if (ckoHelper.paymentSuccess(gResponse)) {
             // Load the order
-            var order = OrderMgr.getOrder(gResponse.reference);
+            order = OrderMgr.getOrder(gResponse.reference);
 
             // Redirect to the confirmation page
             paymentHelper.getConfirmationPageRedirect(res, order);
@@ -76,9 +78,11 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
 
 /**
  * Handles a failed payment from the Checkout.com payment gateway.
+ * @returns {string} The controller response
  */
 server.get('HandleFail', server.middleware.https, function(req, res, next) {
     // Load the order
+    // eslint-disable-next-line
     var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
     // Restore the cart
@@ -92,6 +96,7 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
 
 /**
  * Handles webhook responses from the Checkout.com payment gateway.
+ * @returns {string} The controller response
  */
 server.post('HandleWebhook', function(req, res, next) {
     if (ckoHelper.isValidResponse(req)) {
@@ -133,6 +138,10 @@ server.post('HandleWebhook', function(req, res, next) {
     return next();
 });
 
+/**
+ * Gets the APM filter data.
+ * @returns {string} The controller response
+ */
 server.get('GetApmFilter', server.middleware.https, function(req, res, next) {
     // Prepare some variables
     var basket = BasketMgr.getCurrentBasket();
