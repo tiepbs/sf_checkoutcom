@@ -18,6 +18,7 @@
         "vars-on-top": "off",
         "global-require": "off",
         "no-shadow": ["error", { "allow": ["err", "callback"]}],
-        "max-len": "off"
+        "max-len": "off",
+        "no-underscore-dangle": "off"
     }
 } 
