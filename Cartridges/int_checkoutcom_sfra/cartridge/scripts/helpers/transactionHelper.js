@@ -137,12 +137,12 @@ var transactionHelper = {
         var totalCaptured = 0;
 
         // Get the payment instruments
-        var paymentInstruments = order.getPaymentInstruments();
+        var paymentInstruments = order.getPaymentInstruments().toArray();
 
         // Loop through the payment instruments
-        for each(var instrument in paymentInstruments) {
+        for (var i = 0; i < paymentInstruments.length; i++) {
             // Get the payment transaction
-            var paymentTransaction = instrument.getPaymentTransaction();
+            var paymentTransaction = paymentInstruments[i].getPaymentTransaction();
 
             // Calculate the total refunds
             if (paymentTransaction.type.toString() === PaymentTransaction.TYPE_CREDIT) {

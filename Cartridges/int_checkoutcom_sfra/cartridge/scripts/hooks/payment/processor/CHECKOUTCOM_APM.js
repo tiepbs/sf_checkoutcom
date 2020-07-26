@@ -77,7 +77,7 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     var apmConfigData = apmConfig[func](args);
 
     // Payment request
-    var result = apmHelper.handleRequest(
+    result = apmHelper.handleRequest(
         apmConfigData,
         processorId,
         orderNumber
