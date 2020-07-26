@@ -36,7 +36,7 @@ function Handle(basket, billingData, processorId, req) {
 }
 
 /**
- * Authorizes a payment
+ * Authorizes a payment.
  * @param {Object} orderNumber The order number
  * @param {Object} billingForm The billing data
  * @param {string} processorId The processor id
