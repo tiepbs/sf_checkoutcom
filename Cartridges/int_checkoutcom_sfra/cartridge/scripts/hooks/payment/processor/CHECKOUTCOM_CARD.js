@@ -1,13 +1,15 @@
 'use strict';
 
-var Resource = require('dw/web/Resource');
-
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 
 /**
  * Verifies that the payment data is valid.
+ * @param {Object} basket The basket instance
+ * @param {Object} billingData The billing data
+ * @param {string} processorId The processor id
+ * @param {Object} req The HTTP request data
  */
 function Handle(basket, billingData, processorId, req) {
     var fieldErrors = {};

@@ -1,8 +1,6 @@
 'use strict';
 
-var collections = require('*/cartridge/scripts/util/collections');
 var Resource = require('dw/web/Resource');
-var Transaction = require('dw/system/Transaction');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -10,9 +8,12 @@ var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
 
 /**
  * Verifies that the payment data is valid.
+ * @param {Object} basket The basket instance
+ * @param {Object} billingData The billing data
+ * @param {string} processorId The processor id
+ * @param {Object} req The HTTP request data
  */
 function Handle(basket, billingData, processorId, req) {
-    var currentBasket = basket;
     var cardErrors = {};
     var serverErrors = [];
 

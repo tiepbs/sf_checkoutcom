@@ -104,14 +104,14 @@ var transactionHelper = {
         var result  = ckoHelper.getOrders(orderNo);
 
         // Loop through the results
-        for each(var item in result) {
+        for (var i = 0; i < result.length; i++) {
             // Get the payment instruments
-            var paymentInstruments = item.getPaymentInstruments();
+            var paymentInstruments = result[i].getPaymentInstruments().toArray();
             
             // Loop through the payment instruments
-            for each(var instrument in paymentInstruments) {
+            for (var j = 0; j < paymentInstruments.length; j++) {
                 // Get the payment transaction
-                var paymentTransaction = instrument.getPaymentTransaction();
+                var paymentTransaction = paymentInstruments[j].getPaymentTransaction();
 
                 // Prepare the filter condition
                 var isIdMatch = paymentTransaction.transactionID === transactionId;

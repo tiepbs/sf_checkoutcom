@@ -10,6 +10,10 @@ var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
 
 /**
  * Verifies that the payment data is valid.
+ * @param {Object} basket The basket instance
+ * @param {Object} billingData The billing data
+ * @param {string} processorId The processor id
+ * @param {Object} req The HTTP request data
  */
 function Handle(basket, billingData, processorId, req) {
     var fieldErrors = {};

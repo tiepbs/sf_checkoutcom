@@ -2,10 +2,9 @@
 
 /**
  * Verifies the required information for billing form is provided.
- * @param {Object} req - The request object
- * @param {Object} paymentForm - the payment form
- * @param {Object} viewFormData - object contains billing form data
- * @returns {Object} an object that has error information or payment information
+ * @param {Object} paymentForm The payment form
+ * @param {Object} viewFormData Object contains billing form data
+ * @returns {Object} An object that has error information or payment information
  */
 function processForm(paymentForm, viewFormData) {
     var viewData = viewFormData;
