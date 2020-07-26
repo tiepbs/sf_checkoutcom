@@ -19,6 +19,7 @@
         "global-require": "off",
         "no-shadow": ["error", { "allow": ["err", "callback"]}],
         "max-len": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "radix": false
     }
 } 
