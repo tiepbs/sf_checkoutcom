@@ -137,6 +137,8 @@ server.post('HandleMandate', server.middleware.https, function(req, res, next) {
                     )
                 );
             }
+
+            return next();
         });
     } else {
         return next(
