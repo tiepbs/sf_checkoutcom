@@ -85,7 +85,7 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
     // Send back to the error page
     paymentHelper.getFailurePageRedirect(res);
 
-    next(); // eslint-disable-line no-consistent-return
+    next(); // eslint-disable-line
 });
 
 /**
@@ -128,7 +128,7 @@ server.post('HandleWebhook', function(req, res, next) {
         });
     }
 
-    next(); // eslint-disable-line no-consistent-return
+    next(); // eslint-disable-line
 });
 
 server.get('GetApmFilter', server.middleware.https, function(req, res, next) {
@@ -151,7 +151,7 @@ server.get('GetApmFilter', server.middleware.https, function(req, res, next) {
 
     // Write the response
     res.json(responseObject);
-    next(); // eslint-disable-line no-consistent-return
+    next(); // eslint-disable-line
 });
 
 /*
