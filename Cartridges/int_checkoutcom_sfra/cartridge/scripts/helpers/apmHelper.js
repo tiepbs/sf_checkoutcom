@@ -65,8 +65,7 @@ var apmHelper = {
             result.error = false;
             result.redirectUrl = URLUtils.url('CKOSepa-Mandate').toString()
             + '?orderNumber=' + orderNumber + '&sepaResponseId=' + gatewayResponse.id;
-        }
-        else if (Object.prototype.hasOwnProperty.call(gatewayResponse, '_links') && Object.prototype.hasOwnProperty.call(gatewayResponse._links, 'redirect')) {
+        } else if (Object.prototype.hasOwnProperty.call(gatewayResponse, '_links') && Object.prototype.hasOwnProperty.call(gatewayResponse._links, 'redirect')) {
             result.error = false;
             var gatewayLinks = gatewayResponse._links;
             result.redirectUrl = gatewayLinks.redirect.href;
