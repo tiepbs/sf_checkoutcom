@@ -123,7 +123,7 @@ var ckoHelper = {
 
     /**
      * Remove sentitive data from the logs.
-     * @param {Object} data The log data
+     * @param {Object} rawData The log data
      * @returns {Object} The filtered data
      */
     removeSentisiveData: function(rawData) {
@@ -150,8 +150,10 @@ var ckoHelper = {
      * @returns {string} The order id
      */
     getOrderId: function() {
+        // eslint-disable-next-line
         var orderId = (this.getValue('cko3ds')) ? request.httpParameterMap.get('reference').stringValue : request.httpParameterMap.get('reference').stringValue;
         if (orderId === null) {
+            // eslint-disable-next-line
             orderId = session.privacy.ckoOrderId;
         }
 
@@ -163,7 +165,7 @@ var ckoHelper = {
      * @returns {string} The platform data
      */
     getCartridgeMeta: function() {
-        return this.getValue("ckoSfraPlatformData");
+        return this.getValue('ckoSfraPlatformData');
     },
 
     /**
@@ -188,8 +190,8 @@ var ckoHelper = {
         var str = this.getValue('ckoMode') === 'live' ? 'Live' : 'Sandbox';
 
         keys.publicKey = this.getValue('cko' + str + 'PublicKey');
-        keys.secretKey = this.getValue('cko' +  str + 'SecretKey');
-        keys.privateSharedKey = this.getValue('cko' +  str + 'PrivateSharedKey');
+        keys.secretKey = this.getValue('cko' + str + 'SecretKey');
+        keys.privateSharedKey = this.getValue('cko' + str + 'PrivateSharedKey');
 
         return keys;
     },
@@ -201,15 +203,17 @@ var ckoHelper = {
      * @param {string} method The HTTP request method
      * @returns {Object} The HTTP response object
      */
-    gatewayClientRequest: function(serviceId, requestData, method) {
-        var method = method || 'POST';
+    gatewayClientRequest: function(serviceId, data, method) {
+        // eslint-disable-next-line
+        method = method || 'POST';
         var serv = this.getService(serviceId);
+        var requestData = data;
 
         // Prepare the request URL and data
         if (Object.prototype.hasOwnProperty.call(requestData, 'chargeId')) {
             var requestUrl = serv.getURL().replace('chargeId', requestData.chargeId);
             serv.setURL(requestUrl);
-            delete requestData['chargeId'];
+            delete requestData.chargeId;
         }
 
         // Set the request method
