@@ -24,7 +24,7 @@ server.get('KlarnaSession', function(req, res, next) {
     var countryCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
 
     if (Object.keys(basket).length !== 0) {
-    // Prepare the variables
+        // Prepare the variables
         var currency = basket.getCurrencyCode();
         var locale = ckoHelper.getLanguage();
         var total = ckoHelper.getFormattedPrice(basket.getTotalGrossPrice().value, currency);
