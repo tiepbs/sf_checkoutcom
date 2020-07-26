@@ -6,9 +6,13 @@ var LocalServiceRegistry = require('dw/svc/LocalServiceRegistry');
 /* Utility */
 var util = require('~/cartridge/scripts/helpers/ckoHelper');
 
+/**
+ * Transaction service wrapper.
+ */
 var wrapper = {
     /**
      * Initialize HTTP service for the Checkout.com sandbox full card refund.
+     * @returns {Object} The service instance
      */
     sandbox: function() {
         return LocalServiceRegistry.createService('cko.transaction.refund.sandbox.service', {
@@ -37,6 +41,7 @@ var wrapper = {
 
     /**
      * Initialize HTTP service for the Checkout.com live full card refund.
+     * @returns {Object} The service instance
      */
     live: function() {
         return LocalServiceRegistry.createService('cko.transaction.refund.live.service', {
@@ -64,7 +69,7 @@ var wrapper = {
     },
 };
 
-/*
-* Module exports
-*/
+/**
+ * Module exports
+ */
 module.exports = wrapper;
