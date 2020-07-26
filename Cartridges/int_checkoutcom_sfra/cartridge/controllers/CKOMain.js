@@ -26,7 +26,7 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
     var mode = ckoHelper.getValue('ckoMode');
 
     // Check if a session id is available
-    if (req.querystring.hasOwnProperty('cko-session-id')) {
+    if (Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id')) {
     // Reset the session URL
         session.privacy.redirectUrl = null;
 
@@ -39,7 +39,7 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
         );
 
         // If there is a valid response
-        if (typeof (gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
+        if (typeof (gVerify) === 'object' && Object.prototype.hasOwnProperty.call(gVerify, 'id')) {
             if (ckoHelper.redirectPaymentSuccess(gVerify)) {
                 // Load the order
                 var order = OrderMgr.getOrder(gVerify.reference);
@@ -99,7 +99,7 @@ server.post('HandleWebhook', function(req, res, next) {
         var hook = JSON.parse(req.body);
 
         // Check the webhook event
-        if (hook !== null && hook.hasOwnProperty('type')) {
+        if (hook !== null && Object.prototype.hasOwnProperty.call(hook, 'type')) {
             // Get a camel case function name from event type
             var func = '';
             var parts = hook.type.split('_');

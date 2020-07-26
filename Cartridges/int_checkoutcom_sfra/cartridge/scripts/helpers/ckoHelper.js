@@ -111,18 +111,18 @@ var ckoHelper = {
      */
     removeSentisiveData: function (data) {
         // Card data
-        if (data.hasOwnProperty('source')) {
-           if (data.source.hasOwnProperty('number')) data.source.number.replace(/^.{14}/g, '*');
-           if (data.source.hasOwnProperty('cvv')) data.source.cvv.replace(/^.{3}/g, '*');
-           if (data.source.hasOwnProperty('billing_address')) delete data.source.billing_address;
-           if (data.source.hasOwnProperty('phone')) delete data.source.phone;
-           if (data.source.hasOwnProperty('name')) delete data.source.name;
+        if (Object.prototype.hasOwnProperty.call(data, 'source')) {
+           if (Object.prototype.hasOwnProperty.call(data.source, 'number')) data.source.number.replace(/^.{14}/g, '*');
+           if (Object.prototype.hasOwnProperty.call(data.source, 'cvv')) data.source.cvv.replace(/^.{3}/g, '*');
+           if (Object.prototype.hasOwnProperty.call(data.source, 'billing_address')) delete data.source.billing_address;
+           if (Object.prototype.hasOwnProperty.call(data.source, 'phone')) delete data.source.phone;
+           if (Object.prototype.hasOwnProperty.call(data.source, 'name')) delete data.source.name;
         }
 
         // Customer data
-        if (data.hasOwnProperty('customer')) delete data.customer;
-        if (data.hasOwnProperty('shipping')) delete data.shipping;
-        if (data.hasOwnProperty('billing')) delete data.billing;
+        if (Object.prototype.hasOwnProperty.call(data, 'customer')) delete data.customer;
+        if (Object.prototype.hasOwnProperty.call(data, 'shipping')) delete data.shipping;
+        if (Object.prototype.hasOwnProperty.call(data, 'billing')) delete data.billing;
 
         return data;
     },
@@ -179,7 +179,7 @@ var ckoHelper = {
         var serv = this.getService(serviceId);
 
         // Prepare the request URL and data
-        if (requestData.hasOwnProperty('chargeId')) {
+        if (Object.prototype.hasOwnProperty.call(requestData, 'chargeId')) {
             var requestUrl = serv.getURL().replace('chargeId', requestData.chargeId);
             serv.setURL(requestUrl);
             delete requestData['chargeId'];
@@ -335,7 +335,7 @@ var ckoHelper = {
      * Confirm is a payment is valid from API response code
      */
     paymentSuccess: function (gatewayResponse) {
-        if (gatewayResponse && gatewayResponse.hasOwnProperty('response_code')) {
+        if (gatewayResponse && Object.prototype.hasOwnProperty.call(gatewayResponse, 'response_code')) {
             return gatewayResponse.response_code == "10000"
             || gatewayResponse.response_code == '10100'
             || gatewayResponse.response_code == '10200';
@@ -348,14 +348,14 @@ var ckoHelper = {
      * Confirm is a payment is valid from API redirect response code
      */
     redirectPaymentSuccess: function (gatewayResponse) {
-      if (gatewayResponse.hasOwnProperty('actions')) {
+      if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'actions')) {
           return gatewayResponse
           && (gatewayResponse.actions[0].response_code == "10000"
           || gatewayResponse.actions[0].response_code == '10100'
           || gatewayResponse.actions[0].response_code == '10200');
       }
 
-      if (gatewayResponse.source.hasOwnProperty('type') && gatewayResponse.source.type == 'sofort') {
+      if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'type') && gatewayResponse.source.type == 'sofort') {
           return true;
       }
 
@@ -366,7 +366,7 @@ var ckoHelper = {
      * Write order information to session for the current shopper.
      */
     updateCustomerData: function (gatewayResponse) {
-        if ((gatewayResponse) && gatewayResponse.hasOwnProperty('card')) {
+        if ((gatewayResponse) && Object.prototype.hasOwnProperty.call(gatewayResponse, 'card')) {
             Transaction.wrap(function () {
                 if (session.customer.profile !== null) {
                     session.customer.profile.custom.ckoCustomerId = gatewayResponse.card.customerId;
@@ -663,7 +663,7 @@ var ckoHelper = {
         }
 
         // Add the data info if needed
-        if (data.hasOwnProperty('type')) {
+        if (Object.prototype.hasOwnProperty.call(data, 'type')) {
             meta.udf1 = data.type;
         }
 

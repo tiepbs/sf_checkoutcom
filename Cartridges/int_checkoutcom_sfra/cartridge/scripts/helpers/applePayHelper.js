@@ -36,7 +36,7 @@ var applePayHelper = {
         ckoHelper.log(processorId + ' ' + ckoHelper._('cko.tokenresponse.data', 'cko'), tokenResponse);
 
         // If the request is valid, process the response
-        if (tokenResponse && tokenResponse.hasOwnProperty('token')) {
+        if (tokenResponse && Object.prototype.hasOwnProperty.call(tokenResponse, 'token')) {
             var gatewayRequest = {
                 source: {
                     type: 'token',

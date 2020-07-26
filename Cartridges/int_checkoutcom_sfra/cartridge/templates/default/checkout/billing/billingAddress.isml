@@ -96,7 +96,7 @@
     </div>
     <div class="col-sm-6">
         <div class="form-group
-            ${billingFields.hasOwnProperty('states') && billingFields.states.stateCode.mandatory === true ? 'required' : ''}
+            ${Object.prototype.hasOwnProperty.call(billingFields, 'states') && billingFields.states.stateCode.mandatory === true ? 'required' : ''}
             ${billingFields.states.stateCode.htmlName}">
             <label class="form-control-label" for="billingState">${Resource.msg('field.billing.address.state','address',null)}</label>
             <select class="form-control billingState custom-select" id="billingState"

@@ -16,7 +16,7 @@ function Handle(basket, billingData, processorId, req) {
     var serverErrors = [];
 
     // Conditions
-    var condition1 = billingData.paymentInformation.hasOwnProperty('ckoApm');
+    var condition1 = Object.prototype.hasOwnProperty.call(billingData.paymentInformation, 'ckoApm');
     var condition2 = condition1 && billingData.paymentInformation.ckoApm.value;
     var condition3 = condition2 && billingData.paymentInformation.ckoApm.value.length > 0;
 

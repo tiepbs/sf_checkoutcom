@@ -122,8 +122,8 @@ var savedCardHelper = {
      * Update a card in customer account
      */
     updateSavedCard: function(hook) {
-        var condition1 = hook.data.metadata.hasOwnProperty('card_uuid');
-        var condition2 = hook.data.metadata.hasOwnProperty('customer_id');
+        var condition1 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'card_uuid');
+        var condition2 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'customer_id');
         if (condition1 && condition2) {
             // Get the card
             var card = this.getSavedCard(
@@ -147,13 +147,13 @@ var savedCardHelper = {
      * Delete a card in customer account
      */
     deleteSavedCard: function(hook) {
-        var condition1 = hook.hasOwnProperty('data') && hook.data.hasOwnProperty('metadata');
-        var condition2 = hook.data.metadata.hasOwnProperty('card_uuid');
-        var condition3 = hook.data.metadata.hasOwnProperty('customer_id');
+        var condition1 = Object.prototype.hasOwnProperty.call(hook, 'data') && Object.prototype.hasOwnProperty.call(hook.data, 'metadata');
+        var condition2 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'card_uuid');
+        var condition3 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'customer_id');
         if (condition1 && condition2 && condition3) {
             // Set the customer and card uuiid
-            var customerId = hook.data.metadata.hasOwnProperty('customer_id');
-            var cardUuid = hook.data.metadata.hasOwnProperty('card_uuid');
+            var customerId = hook.data.metadata.customer_id;
+            var cardUuid = hook.data.metadata.card_uuid;
 
             // Get the customer
             var customer = CustomerMgr.getCustomerByCustomerNumber(customerId);

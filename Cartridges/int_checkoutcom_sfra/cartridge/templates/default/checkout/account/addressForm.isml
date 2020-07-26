@@ -92,7 +92,7 @@
         <!-- State  -->
         <div class="col-6">
             <div class="form-group
-                ${pdict.addressForm.hasOwnProperty('states') && pdict.addressForm.states.stateCode.mandatory === true ? 'required' : ''}">
+                ${Object.prototype.hasOwnProperty.call(pdict.addressForm, 'states') && pdict.addressForm.states.stateCode.mandatory === true ? 'required' : ''}">
                 <label class="form-control-label" for="state">
                     <isprint value="${pdict.addressForm.states.stateCode.label}" encoding="htmlcontent" />
                 </label>

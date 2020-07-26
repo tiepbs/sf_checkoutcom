@@ -17,9 +17,9 @@ function Handle(basket, billingData, processorId, req) {
     // Pre authorize the card
     if (!billingData.selectedCardUuid) {
     // Prepare the customer number
-        var condition = req.hasOwnProperty('currentCustomer')
-        && req.currentCustomer.hasOwnProperty('profile')
-        && req.currentCustomer.profile.hasOwnProperty('customerNo');
+        var condition = Object.prototype.hasOwnProperty.call(req, 'currentCustomer')
+        && Object.prototype.hasOwnProperty.call(req.currentCustomer, 'profile')
+        && Object.prototype.hasOwnProperty.call(req.currentCustomer.profile, 'customerNo');
         if (condition) {
             customerNo = req.currentCustomer.profile.customerNo;
         }

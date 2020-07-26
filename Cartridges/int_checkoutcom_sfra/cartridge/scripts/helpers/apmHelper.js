@@ -23,7 +23,7 @@ var apmHelper = {
         var gatewayRequest = this.getApmRequest(order, processorId, apmConfigData);
 
         // Test SEPA
-        if (gatewayRequest.hasOwnProperty('type') & gatewayRequest.type == 'sepa') {
+        if (Object.prototype.hasOwnProperty.call(gatewayRequest, 'type') & gatewayRequest.type == 'sepa') {
             gatewayResponse = ckoHelper.gatewayClientRequest('cko.card.sources.' + ckoHelper.getValue('ckoMode') + '.service', gatewayRequest);
         } else {
             // Test Klarna
@@ -53,14 +53,12 @@ var apmHelper = {
         ckoHelper.updateCustomerData(gatewayResponse);
 
         // Add redirect to sepa source reqeust
-        if (gatewayResponse.hasOwnProperty('type') && gatewayResponse.type == 'Sepa') {
+        if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'type') && gatewayResponse.type == 'Sepa') {
             result.error = false;
             result.redirectUrl = URLUtils.url('CKOSepa-Mandate').toString()
             + '?orderNumber=' + orderNumber + '&sepaResponseId=' + gatewayResponse.id;
         }
-
-        // Add redirect URL to session if exists
-        else if (gatewayResponse.hasOwnProperty('_links') && gatewayResponse._links.hasOwnProperty('redirect')) {
+        else if (Object.prototype.hasOwnProperty.call(gatewayResponse, '_links') && Object.prototype.hasOwnProperty.call(gatewayResponse._links, 'redirect')) {
             result.error = false;
             var gatewayLinks = gatewayResponse._links;
             result.redirectUrl = gatewayLinks.redirect.href;
@@ -83,7 +81,7 @@ var apmHelper = {
         );
 
         // Prepare the charge data
-        if (apmConfigData.hasOwnProperty('type') && apmConfigData.type == 'sepa') {
+        if (Object.prototype.hasOwnProperty.call(apmConfigData, 'type') && apmConfigData.type == 'sepa') {
             // Prepare the charge data
             chargeData = {
                 customer: ckoHelper.getCustomer(order),
