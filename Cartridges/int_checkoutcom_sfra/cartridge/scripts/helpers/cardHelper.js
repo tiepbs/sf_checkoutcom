@@ -11,8 +11,12 @@ var savedCardHelper = require('~/cartridge/scripts/helpers/savedCardHelper');
  * Utility functions.
  */
 var cardHelper = {
-    /*
+    /**
      * Handle the payment request.
+     * @param {Object} paymentData The payment data
+     * @param {string} processorId The processor ID
+     * @param {string} orderNumber The order number
+     * @returns {boolean} The request success or failure
      */
     handleRequest: function(paymentData, processorId, orderNumber, req) {
         // Order number

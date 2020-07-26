@@ -9,11 +9,15 @@ var URLUtils = require('dw/web/URLUtils');
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /*
-* Utility functions APM.
+* Utility functionss.
 */
 var apmHelper = {
-    /*
-     * Apm Request
+    /**
+     * Handle the payment request.
+     * @param {Object} apmConfigData The payment data
+     * @param {string} processorId The processor ID
+     * @param {string} orderNumber The order number
+     * @returns {boolean} The request success or failure
      */
     handleRequest: function(apmConfigData, processorId, orderNumber) {
         // Prepare required parameters
