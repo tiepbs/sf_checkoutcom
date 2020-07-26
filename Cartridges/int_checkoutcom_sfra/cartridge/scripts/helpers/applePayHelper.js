@@ -10,8 +10,12 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
  * Utility functions.
  */
 var applePayHelper = {
-    /*
-     * Handle the payment request
+    /**
+     * Handle the payment request.
+     * @param {Object} paymentData The payment data
+     * @param {string} processorId The processor ID
+     * @param {string} orderNumber The order number
+     * @returns {boolean} The request success or failure
      */
     handleRequest: function(paymentData, processorId, orderNumber) {
         // Load the order information
@@ -70,8 +74,10 @@ var applePayHelper = {
         }
     },
 
-    /*
-     * Handle the payment response
+    /**
+     * Handle the payment response.
+     * @param {Object} gatewayResponse The gateway response data
+     * @returns {boolean} The payment success or failure
      */
     handleResponse: function(gatewayResponse) {
         // Update customer data
@@ -81,7 +87,7 @@ var applePayHelper = {
     },
 };
 
-/*
-* Module exports
-*/
+/**
+ * Module exports
+ */
 module.exports = applePayHelper;

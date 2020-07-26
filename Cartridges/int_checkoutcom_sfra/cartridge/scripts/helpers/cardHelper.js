@@ -154,7 +154,7 @@ var cardHelper = {
     },
 };
 
-/*
-* Module exports
-*/
+/**
+ * Module exports
+ */
 module.exports = cardHelper;
