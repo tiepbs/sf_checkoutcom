@@ -239,8 +239,7 @@ var eventsHelper = {
     },
 };
 
-/*
+/**
  * Module exports
  */
-
 module.exports = eventsHelper;

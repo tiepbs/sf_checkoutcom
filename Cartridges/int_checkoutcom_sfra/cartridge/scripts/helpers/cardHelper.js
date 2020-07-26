@@ -7,9 +7,9 @@ var OrderMgr = require('dw/order/OrderMgr');
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var savedCardHelper = require('~/cartridge/scripts/helpers/savedCardHelper');
 
-/*
-* Utility functions for my cartridge integration.
-*/
+/**
+ * Utility functions.
+ */
 var cardHelper = {
     /*
      * Handle the payment request.

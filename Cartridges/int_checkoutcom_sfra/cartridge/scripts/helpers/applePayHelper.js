@@ -6,9 +6,9 @@ var OrderMgr = require('dw/order/OrderMgr');
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
-/*
-* Utility functions for my cartridge integration.
-*/
+/**
+ * Utility functions.
+ */
 var applePayHelper = {
     /*
      * Handle the payment request

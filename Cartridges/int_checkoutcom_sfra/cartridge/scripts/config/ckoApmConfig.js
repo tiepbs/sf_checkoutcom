@@ -353,7 +353,7 @@ var ckoApmConfig = {
         };
 
         return params;
-    }
+    },
 };
 
 /**

@@ -11,20 +11,20 @@ var Site = require('dw/system/Site');
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 
-/*
-* Utility functions for my cartridge integration.
-*/
+/**
+ * Utility functions.
+ */
 var ckoHelper = {
-    /*
-     * Get a failed payment error message
+    /**
+     * Get a failed payment error message.
      */
     getPaymentFailureMessage: function () {
         return Resource.msg('cko.transaction.failedMessage1', 'cko', null)
         + ' ' + Resource.msg('cko.transaction.failedMessage2', 'cko', null);
     },
 
-    /*
-     * Get a failed order error message
+    /**
+     * Get a failed order error message.
      */
     getOrderFailureMessage: function () {
         return Resource.msg('cko.transaction.failedMessage1', 'cko', null)
@@ -32,28 +32,28 @@ var ckoHelper = {
     },
 
 
-    /*
-     * Get user language
+    /**
+     * Get user language.
      */
     getLanguage: function () {
         return request.locale.replace('_', '-');
     },
 
-    /*
-     * Get Site Name
+    /**
+     * Get Site Name.
      */
     getSiteName: function () {
         return Site.getCurrent().name;
     },
 
-    /*
-     * Get site Hostname
+    /**
+     * Get site Hostname.
      */
     getSiteHostName: function () {
         return Site.getCurrent().httpHostName;
     },
 
-    /*
+    /**
      * Check if the gateway response is valid.
      */
     isValidResponse: function (req) {
@@ -63,29 +63,29 @@ var ckoHelper = {
         return requestKey == privateSharedKey;
     },
 
-    /*
-     * Get value from custom preferences
+    /**
+     * Get value from custom preferences.
      */
     getValue: function (field) {
         return Site.getCurrent().getCustomPreferenceValue(field);
     },
 
-    /*
-     * Get site country code from locale
+    /**
+     * Get site country code from locale.
      */
     getSiteCountryCode: function () {
         return Site.getCurrent().defaultLocale.split('_')[1];
     },
 
-    /*
+    /**
      * Handles string translation with language resource files.
      */
     _: function (strValue, strFile) {
         return Resource.msg(strValue, strFile, null);
     },
 
-    /*
-     * Write gateway information to the website's custom log file
+    /**
+     * Write gateway information to the website's custom log file.
      */
     log: function (dataType, gatewayData) {
         if (this.getValue('ckoDebugEnabled') == true) {
@@ -105,8 +105,8 @@ var ckoHelper = {
         }
     },
 
-    /*
-     * Remove sentitive data from the logs
+    /**
+     * Remove sentitive data from the logs.
      */
     removeSentisiveData: function (data) {
         // Card data
@@ -126,8 +126,8 @@ var ckoHelper = {
         return data;
     },
 
-    /*
-     * Return order id
+    /**
+     * Return order id.
      */
     getOrderId: function () {
         var orderId = (this.getValue('cko3ds')) ? request.httpParameterMap.get('reference').stringValue : request.httpParameterMap.get('reference').stringValue;
@@ -138,15 +138,15 @@ var ckoHelper = {
         return orderId;
     },
 
-    /*
+    /**
      * Cartridge metadata.
      */
     getCartridgeMeta: function () {
         return this.getValue("ckoSfraPlatformData");
     },
 
-    /*
-     * Get a customer full name
+    /**
+     * Get a customer full name.
      */
     getCustomerFullName: function(customerProfile) {
         var customerName = '';
@@ -156,8 +156,8 @@ var ckoHelper = {
         return customerName;
     },
 
-    /*
-     * Get Account API Keys
+    /**
+     * Get Account API Keys.
      */
     getAccountKeys: function () {
         var keys = {};
@@ -170,8 +170,8 @@ var ckoHelper = {
         return keys;
     },
 
-    /*
-     * Create an HTTP client to handle request to gateway
+    /**
+     * Create an HTTP client to handle request to gateway.
      */
     gatewayClientRequest: function (serviceId, requestData, method) {
         var method = method || 'POST';
@@ -207,8 +207,8 @@ var ckoHelper = {
         return svcClass[mode]();
     },
 
-    /*
-     * Currency Conversion Ratio
+    /**
+     * Currency Conversion Ratio.
      */
     getCkoFormatedValue: function (currency) {
         if (ckoCurrencyConfig.x1.currencies.match(currency)) {
@@ -220,8 +220,8 @@ var ckoHelper = {
         }
     },
 
-    /*
-     * Format price for cko gateway
+    /**
+     * Format price for cko gateway.
      */
     getFormattedPrice: function (price, currency) {
         var ckoFormateBy = this.getCkoFormatedValue(currency);
@@ -230,7 +230,7 @@ var ckoHelper = {
         return orderTotalFormated.toFixed();
     },
 
-    /**
+    /***
      * Get the Checkout.com orders.
      */
     getOrders: function (orderNo) {
@@ -257,7 +257,7 @@ var ckoHelper = {
         return data;
     },
 
-    /**
+    /***
      * Checks if an object already exists in an array.
      */
     containsObject: function (obj, list) {
@@ -271,15 +271,15 @@ var ckoHelper = {
         return false;
     },
 
-    /**
+    /***
      * Checks if a payment instrument is Checkout.com.
      */
     isCkoItem: function(item) {
         return item.length > 0 && item.indexOf('CHECKOUTCOM_') >= 0;
     },
 
-    /*
-     * Return the customer data
+    /**
+     * Return the customer data.
      */
     getCustomer: function(order) {
         return {
@@ -288,8 +288,8 @@ var ckoHelper = {
         };
     },
 
-    /*
-     * Return phone object
+    /**
+     * Return phone object.
      */
     getPhone: function(billingAddress) {
         return {
@@ -298,15 +298,15 @@ var ckoHelper = {
         };
     },
 
-    /*
-     * Strip spaces form number
+    /**
+     * Strip spaces form number.
      */
     getFormattedNumber: function (num) {
         return num.toString().replace(/\s/g, '');
     },
 
-    /*
-     * Build the shipping data
+    /**
+     * Build the shipping data.
      */
     getShipping: function (order) {
         // Get shipping address
@@ -331,8 +331,8 @@ var ckoHelper = {
         return shipping;
     },
 
-    /*
-     * Confirm is a payment is valid from API response code
+    /**
+     * Confirm is a payment is valid from API response code.
      */
     paymentSuccess: function (gatewayResponse) {
         if (gatewayResponse && Object.prototype.hasOwnProperty.call(gatewayResponse, 'response_code')) {
@@ -344,8 +344,8 @@ var ckoHelper = {
         return false;
     },
 
-    /*
-     * Confirm is a payment is valid from API redirect response code
+    /**
+     * Confirm is a payment is valid from API redirect response code.
      */
     redirectPaymentSuccess: function (gatewayResponse) {
       if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'actions')) {
@@ -362,7 +362,7 @@ var ckoHelper = {
       return false;
     },
 
-    /*
+    /**
      * Write the order information to session for the current shopper.
      */
     updateCustomerData: function (gatewayResponse) {
@@ -375,7 +375,7 @@ var ckoHelper = {
         }
     },
 
-    /*
+    /**
      * Get the basket quantities.
      */
     getQuantity : function (args) {
@@ -386,7 +386,7 @@ var ckoHelper = {
         return quantity;
     },
 
-    /*
+    /**
      * Get the billing descriptor object from custom preferences.
      */
     getBillingDescriptor : function () {
@@ -398,7 +398,7 @@ var ckoHelper = {
         return billingDescriptor;
     },
 
-    /*
+    /**
      * Get the products information.
      */
     getProductInformation : function (args) {
@@ -437,7 +437,7 @@ var ckoHelper = {
         return products;
     },
 
-    /*
+    /**
      * Return the tax object.
      */
     getTaxObject : function (args) {
@@ -463,7 +463,7 @@ var ckoHelper = {
         }
     },
 
-    /*
+    /**
      * Return the shipping object.
      */
     getShippingValue : function (args) {
@@ -488,7 +488,7 @@ var ckoHelper = {
         }
     },
 
-    /*
+    /**
      * Return the order currency code.
      */
     getCurrencyCode: function (args) {
@@ -502,7 +502,7 @@ var ckoHelper = {
         return shippingCurrency;
     },
 
-    /*
+    /**
      * Get the product names.
      */
     getProductNames : function (args) {
@@ -522,7 +522,7 @@ var ckoHelper = {
         return products;
     },
 
-    /*
+    /**
      * Get the product price array.
      */
     getProductPrices : function (args) {
@@ -542,7 +542,7 @@ var ckoHelper = {
         return products;
     },
 
-    /*
+    /**
      * Get the product IDs.
      */
     getProductIds : function (args) {
@@ -558,8 +558,8 @@ var ckoHelper = {
         return productIds;
     },
 
-    /*
-     * Get each product quantity
+    /**
+     * Get each product quantity.
      */
     getProductQuantity : function (args) {
         // Load the card and order information
@@ -578,16 +578,16 @@ var ckoHelper = {
         return products_quantites;
     },
 
-    /*
-     * Return order amount
+    /**
+     * Return order amount.
      */
     getAmount: function (order) {
         var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode());
         return amount;
     },
 
-    /*
-     * Return Customer FullName
+    /**
+     * Return Customer FullName.
      */
     getCustomerName: function (args) {
         // Load the order information
@@ -600,8 +600,8 @@ var ckoHelper = {
         return fullname;
     },
 
-    /*
-     * Return capture time
+    /**
+     * Return capture time.
      */
     getCaptureTime: function () {
         // Get the current date/time in milliseconds
@@ -618,21 +618,21 @@ var ckoHelper = {
         return new Date(captureOnMs).toISOString();
     },
 
-    /*
-     * Build 3ds object
+    /**
+     * Build 3ds object.
      */
     get3Ds: function () {
         // 3ds object
         var ds = {
-            "enabled"               : this.getValue('cko3ds'),
-            "attempt_n3d"           : this.getValue('ckoN3ds')
+            "enabled" : this.getValue('cko3ds'),
+            "attempt_n3d" : this.getValue('ckoN3ds')
         }
 
         return ds;
     },
 
-    /*
-     * Build metadata object
+    /**
+     * Build metadata object.
      */
     getMetadata: function (data, processorId) {
         // Prepare the base metadata
@@ -652,8 +652,8 @@ var ckoHelper = {
         return meta;
     },
 
-    /*
-     * Get Billing Country
+    /**
+     * Get Billing Country.
      */
     getBillingCountry: function (args) {
         // Load the card and order information
@@ -684,8 +684,8 @@ var ckoHelper = {
         return billingDetails;
     },
 
-    /*
-     * Return Basket Item object
+    /**
+     * Return Basket Item object.
      */
     getBasketObject: function (basket) {
         var currency = basket.getCurrencyCode();
@@ -725,8 +725,8 @@ var ckoHelper = {
         return products_quantites;
     },
 
-    /*
-     * Return Basket Item object
+    /**
+     * Return Basket Item object.
      */
     getOrderBasketObject: function (args) {
         // Prepare some variables
@@ -771,8 +771,8 @@ var ckoHelper = {
         return products_quantites;
     },
 
-    /*
-     * Return the basket billing address
+    /**
+     * Return the basket billing address.
      */
     getBasketAddress: function (basket) {
         var address = {
@@ -791,8 +791,8 @@ var ckoHelper = {
         return address;
     },
 
-    /**
-     * Return the order billing address
+    /***
+     * Return the order billing address.
      */
     getOrderAddress: function (args) {
         var address = {
@@ -812,7 +812,7 @@ var ckoHelper = {
     }
 }
 
-/*
-* Module exports
-*/
+/**
+ * Module exports
+ */
 module.exports = ckoHelper;
