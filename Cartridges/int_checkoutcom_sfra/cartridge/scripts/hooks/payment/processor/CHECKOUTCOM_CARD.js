@@ -10,6 +10,7 @@ var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
  * @param {Object} billingData The billing data
  * @param {string} processorId The processor id
  * @param {Object} req The HTTP request data
+ * @returns {Object} The form validation result
  */
 function Handle(basket, billingData, processorId, req) {
     var fieldErrors = {};
@@ -35,7 +36,12 @@ function Handle(basket, billingData, processorId, req) {
 }
 
 /**
- * Authorizes a payment using card details
+ * Authorizes a payment
+ * @param {Object} orderNumber The order number
+ * @param {Object} billingForm The billing data
+ * @param {string} processorId The processor id
+ * @param {Object} req The HTTP request data
+ * @returns {Object} The payment result
  */
 function Authorize(orderNumber, billingForm, processorId, req) {
     var serverErrors = [];
