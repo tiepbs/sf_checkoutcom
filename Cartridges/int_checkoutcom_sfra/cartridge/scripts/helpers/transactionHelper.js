@@ -19,7 +19,7 @@ var transactionHelper = {
      * @param {Object} hook The gateway webhook data
      * @returns {Object} The formatted amount object
      */
-    getHookTransactionAmount : function (hook) {
+    getHookTransactionAmount : function(hook) {
         var divider = ckoHelper.getCkoFormatedValue(hook.data.currency);
         var amount = parseInt(hook.data.amount) / divider;
         return new Money(
@@ -32,7 +32,7 @@ var transactionHelper = {
      * Create an authorization transaction
      * @param {Object} hook The gateway webhook data
      */
-    createAuthorization: function (hook) {
+    createAuthorization: function(hook) {
         // Get the transaction amount
         var transactionAmount = this.getHookTransactionAmount(hook);
 
@@ -64,7 +64,7 @@ var transactionHelper = {
      * @param {string} transactionType The transaction type
      * @returns {Object} The parent transaction instance
      */
-    getParentTransaction: function (hook, transactionType) {
+    getParentTransaction: function(hook, transactionType) {
         // Prepare the payload
         var mode = ckoHelper.getValue('ckoMode');
         var ckoChargeData = {
@@ -99,7 +99,7 @@ var transactionHelper = {
      * @param {string} orderNo The order number
      * @returns {Object} The transactionn instance
      */
-    loadTransaction: function (transactionId, orderNo) {
+    loadTransaction: function(transactionId, orderNo) {
         // Query the orders
         var result  = ckoHelper.getOrders(orderNo);
 
@@ -131,7 +131,7 @@ var transactionHelper = {
      * @param {Object} hook The gateway webhook data
      * @returns {boolean} Should the refund action be closed
      */
-    shouldCloseRefund: function (order) {
+    shouldCloseRefund: function(order) {
         // Prepare the totals
         var totalRefunded = 0;
         var totalCaptured = 0;

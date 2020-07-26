@@ -35,10 +35,11 @@ var ckoHelper = {
 
 
     /**
-     * Get user language.
+     * Get the user language.
      * @returns {string} The user language code
      */
     getLanguage: function() {
+        // eslint-disable-next-line
         return request.locale.replace('_', '-');
     },
 
@@ -61,12 +62,13 @@ var ckoHelper = {
     /**
      * Check if the gateway response is valid.
      * @param {Object} req The HTTP response data
+     * @returns {boolean} Is the private shared key valid
      */
-    isValidResponse: function (req) {
-        var requestKey = req.httpHeaders['authorization'];
+    isValidResponse: function(req) {
+        var requestKey = req.httpHeaders.authorization;
         var privateSharedKey = this.getAccountKeys().privateSharedKey;
 
-        return requestKey == privateSharedKey;
+        return requestKey === privateSharedKey;
     },
 
     /**
@@ -74,7 +76,7 @@ var ckoHelper = {
      * @param {string} field The field id
      * @returns {string} The preference value
      */
-    getValue: function (field) {
+    getValue: function(field) {
         return Site.getCurrent().getCustomPreferenceValue(field);
     },
 
@@ -92,7 +94,7 @@ var ckoHelper = {
      * @param {string} strFile The file name
      * @returns {string} The translated string value
      */
-    _: function (strValue, strFile) {
+    _: function(strValue, strFile) {
         return Resource.msg(strValue, strFile, null);
     },
 
@@ -101,7 +103,7 @@ var ckoHelper = {
      * @param {string} dataType The data type
      * @param {Object} gatewayData The gateway data
      */
-    log: function (dataType, gatewayData) {
+    log: function(dataType, gatewayData) {
         if (this.getValue('ckoDebugEnabled') == true) {
             // Get the logger
             var logger = Logger.getLogger('ckodebug');
@@ -124,7 +126,7 @@ var ckoHelper = {
      * @param {Object} data The log data
      * @returns {Object} The filtered data
      */
-    removeSentisiveData: function (data) {
+    removeSentisiveData: function(data) {
         // Card data
         if (Object.prototype.hasOwnProperty.call(data, 'source')) {
            if (Object.prototype.hasOwnProperty.call(data.source, 'number')) data.source.number.replace(/^.{14}/g, '*');
@@ -198,7 +200,7 @@ var ckoHelper = {
      * @param {string} method The HTTP request method
      * @returns {Object} The HTTP response object
      */
-    gatewayClientRequest: function (serviceId, requestData, method) {
+    gatewayClientRequest: function(serviceId, requestData, method) {
         var method = method || 'POST';
         var serv = this.getService(serviceId);
 
@@ -226,7 +228,7 @@ var ckoHelper = {
      * @param {string} serviceId The service id
      * @returns {Object} The HTTP service instance
      */
-    getService: function (serviceId) {
+    getService: function(serviceId) {
         var parts  =  serviceId.split('.');
         var entity = parts[1];
         var action = parts[2];
@@ -242,7 +244,7 @@ var ckoHelper = {
      * @param {string} currency The currency code
      * @returns {number} The conversion factor
      */
-    getCkoFormatedValue: function (currency) {
+    getCkoFormatedValue: function(currency) {
         if (ckoCurrencyConfig.x1.currencies.match(currency)) {
             return ckoCurrencyConfig.x1.multiple;
         } else if (ckoCurrencyConfig.x1000.currencies.match(currency)) {
@@ -258,7 +260,7 @@ var ckoHelper = {
      * @param {string} currency The currency code
      * @returns {Number} The formatted price
      */
-    getFormattedPrice: function (price, currency) {
+    getFormattedPrice: function(price, currency) {
         var ckoFormateBy = this.getCkoFormatedValue(currency);
         var orderTotalFormated = price * ckoFormateBy;
 
@@ -270,7 +272,7 @@ var ckoHelper = {
      * @param {string} orderNo The order number
      * @returns {Array} The list of orders
      */
-    getOrders: function (orderNo) {
+    getOrders: function(orderNo) {
         // Prepare the output array
         var data = [];
 
@@ -300,7 +302,7 @@ var ckoHelper = {
      * @param {Array} list The list of objects
      * @returns {boolean} If the object is found
      */
-    containsObject: function (obj, list) {
+    containsObject: function(obj, list) {
         var i;
         for (i = 0; i < list.length; i++) {
             if (list[i] === obj) {
@@ -349,7 +351,7 @@ var ckoHelper = {
      * @param {Number} num The number to process
      * @returns {Number} The processed number
      */
-    getFormattedNumber: function (num) {
+    getFormattedNumber: function(num) {
         return num.toString().replace(/\s/g, '');
     },
 
@@ -358,7 +360,7 @@ var ckoHelper = {
      * @param {Object} order The order instance
      * @returns {Object} The shipping data
      */
-    getShipping: function (order) {
+    getShipping: function(order) {
         // Get shipping address
         var shippingAddress = order.getDefaultShipment().getShippingAddress();
 
@@ -386,7 +388,7 @@ var ckoHelper = {
      * @param {Object} gatewayResponse The gateway response
      * @returns {boolean} The payment success or failure
      */
-    paymentSuccess: function (gatewayResponse) {
+    paymentSuccess: function(gatewayResponse) {
         if (gatewayResponse && Object.prototype.hasOwnProperty.call(gatewayResponse, 'response_code')) {
             return gatewayResponse.response_code == "10000"
             || gatewayResponse.response_code == '10100'
@@ -401,7 +403,7 @@ var ckoHelper = {
      * @param {Object} gatewayResponse The gateway response
      * @returns {boolean} Is redirection needed
      */
-    redirectPaymentSuccess: function (gatewayResponse) {
+    redirectPaymentSuccess: function(gatewayResponse) {
       if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'actions')) {
           return gatewayResponse
           && (gatewayResponse.actions[0].response_code == "10000"
@@ -420,7 +422,7 @@ var ckoHelper = {
      * Write the order information to session for the current shopper.
      * @param {Object} gatewayResponse The gateway response
      */
-    updateCustomerData: function (gatewayResponse) {
+    updateCustomerData: function(gatewayResponse) {
         if ((gatewayResponse) && Object.prototype.hasOwnProperty.call(gatewayResponse, 'card')) {
             Transaction.wrap(function () {
                 if (session.customer.profile !== null) {
@@ -435,7 +437,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {Number} The basked quantities
      */
-    getQuantity : function (args) {
+    getQuantity : function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
         var quantity = order.getProductQuantityTotal();
@@ -461,7 +463,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {Object} The product information
      */
-    getProductInformation : function (args) {
+    getProductInformation : function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
         var it = order.productLineItems.iterator();
@@ -502,7 +504,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {Object} The tax data
      */
-    getTaxObject : function (args) {
+    getTaxObject : function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -530,7 +532,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {Object} The shipping data
      */
-    getShippingValue : function (args) {
+    getShippingValue : function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -557,7 +559,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {string} The currency code
      */
-    getCurrencyCode: function (args) {
+    getCurrencyCode: function(args) {
         // Get the order
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -573,7 +575,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {Array} The products list
      */
-    getProductNames : function (args) {
+    getProductNames : function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -595,7 +597,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {Array} The prices list
      */
-    getProductPrices : function (args) {
+    getProductPrices : function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -617,7 +619,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {Array} The product ids list
      */
-    getProductIds : function (args) {
+    getProductIds : function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
         var it = order.productLineItems.iterator();
@@ -635,7 +637,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {Array} The product quantities list
      */
-    getProductQuantity : function (args) {
+    getProductQuantity : function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -657,7 +659,7 @@ var ckoHelper = {
      * @param {Object} order The order instance
      * @returns {Number} The amount
      */
-    getAmount: function (order) {
+    getAmount: function(order) {
         var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode());
         return amount;
     },
@@ -667,7 +669,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {string} The customer name
      */
-    getCustomerName: function (args) {
+    getCustomerName: function(args) {
         // Load the order information
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -717,7 +719,7 @@ var ckoHelper = {
      * @param {string} processorId The processor id
      * @returns {Object} The metadata
      */
-    getMetadata: function (data, processorId) {
+    getMetadata: function(data, processorId) {
         // Prepare the base metadata
         var meta = {
             integration_data: this.getCartridgeMeta(),
@@ -740,7 +742,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {string} The billing country code
      */
-    getBillingCountry: function (args) {
+    getBillingCountry: function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -756,7 +758,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {Object} The billing object
      */
-    getBilling: function (args) {
+    getBilling: function(args) {
         // Get billing address information
         var billingAddress = args.order.getBillingAddress();
 
@@ -778,7 +780,7 @@ var ckoHelper = {
      * @param {Object} basket The basket instance
      * @returns {Array} The list of quantities
      */
-    getBasketObject: function (basket) {
+    getBasketObject: function(basket) {
         var currency = basket.getCurrencyCode();
         var products_quantites = [];
         var it = basket.productLineItems.iterator();
@@ -821,7 +823,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {Array} The list of quantities
      */
-    getOrderBasketObject: function (args) {
+    getOrderBasketObject: function(args) {
         // Prepare some variables
         var currency = args.order.getCurrencyCode();
         var it = args.order.productLineItems.iterator();
@@ -869,7 +871,7 @@ var ckoHelper = {
      * @param {Object} basket The basket instance
      * @returns {Object} The billing address
      */
-    getBasketAddress: function (basket) {
+    getBasketAddress: function(basket) {
         var address = {
             given_name                  : basket.billingAddress.firstName,
             family_name                 : basket.billingAddress.lastName,
@@ -891,7 +893,7 @@ var ckoHelper = {
      * @param {Object} args The method arguments
      * @returns {Object} The billing address
      */
-    getOrderAddress: function (args) {
+    getOrderAddress: function(args) {
         var address = {
             given_name                  : args.order.defaultShipment.shippingAddress.firstName,
             family_name                 : args.order.defaultShipment.shippingAddress.lastName,
