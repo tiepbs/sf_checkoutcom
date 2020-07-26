@@ -32,7 +32,7 @@ var savedCardHelper = {
         // Match the saved card
         for (var i = 0; i < paymentInstruments.length; i++) {
             var card = paymentInstruments[i];
-            if (card.getUUID() == cardUuid) {
+            if (card.getUUID() === cardUuid) {
                 return card;
             }
         }
@@ -65,7 +65,7 @@ var savedCardHelper = {
         // Match the saved cards
         for (var i = 0; i < paymentInstruments.length; i++) {
             var paymentInstrument = paymentInstruments[i];
-            var condition = (processorId) ? paymentInstrument.paymentMethod == processorId : true;
+            var condition = (processorId) ? paymentInstrument.paymentMethod === processorId : true;
             if (condition) {
                 // Card data
                 var card = {
@@ -180,7 +180,7 @@ var savedCardHelper = {
             Transaction.wrap(function() {
                 for (var i = 0; i < paymentInstruments.length; i++) {
                     var card = paymentInstruments[i];
-                    if (card.getUUID() == cardUuid) {
+                    if (card.getUUID() === cardUuid) {
                         wallet.removePaymentInstrument(card);
                     }
                 }

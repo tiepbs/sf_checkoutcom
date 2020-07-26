@@ -17,7 +17,7 @@ function Handle(basket, billingData, processorId, req) {
     var serverErrors = [];
 
     // Verify the payload
-    if (!billingData.paymentInformation.ckoApplePayData.value || billingData.paymentInformation.ckoApplePayData.value.length == 0) {
+    if (!billingData.paymentInformation.ckoApplePayData.value || billingData.paymentInformation.ckoApplePayData.value.length === 0) {
         serverErrors.push(
             Resource.msg('cko.applepay.error', 'cko', null)
         );

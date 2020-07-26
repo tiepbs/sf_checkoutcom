@@ -104,7 +104,7 @@ var ckoHelper = {
      * @param {Object} gatewayData The gateway data
      */
     log: function(dataType, gatewayData) {
-        if (this.getValue('ckoDebugEnabled') == true) {
+        if (this.getValue('ckoDebugEnabled') === true) {
             // Get the logger
             var logger = Logger.getLogger('ckodebug');
 
@@ -184,7 +184,7 @@ var ckoHelper = {
      */
     getAccountKeys: function() {
         var keys = {};
-        var str = this.getValue('ckoMode') == 'live' ? 'Live' : 'Sandbox';
+        var str = this.getValue('ckoMode') === 'live' ? 'Live' : 'Sandbox';
 
         keys.publicKey = this.getValue('cko' + str + 'PublicKey');
         keys.secretKey = this.getValue('cko' +  str + 'SecretKey');
@@ -216,7 +216,7 @@ var ckoHelper = {
 
         // Call the service
         var resp = serv.call(requestData);
-        if (resp.status != 'OK') {
+        if (resp.status !== 'OK') {
             return resp.error;
         }
 
@@ -390,9 +390,9 @@ var ckoHelper = {
      */
     paymentSuccess: function(gatewayResponse) {
         if (gatewayResponse && Object.prototype.hasOwnProperty.call(gatewayResponse, 'response_code')) {
-            return gatewayResponse.response_code == "10000"
-            || gatewayResponse.response_code == '10100'
-            || gatewayResponse.response_code == '10200';
+            return gatewayResponse.response_code === "10000"
+            || gatewayResponse.response_code === '10100'
+            || gatewayResponse.response_code === '10200';
         }
 
         return false;
@@ -406,12 +406,12 @@ var ckoHelper = {
     redirectPaymentSuccess: function(gatewayResponse) {
       if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'actions')) {
           return gatewayResponse
-          && (gatewayResponse.actions[0].response_code == "10000"
-          || gatewayResponse.actions[0].response_code == '10100'
-          || gatewayResponse.actions[0].response_code == '10200');
+          && (gatewayResponse.actions[0].response_code === "10000"
+          || gatewayResponse.actions[0].response_code === '10100'
+          || gatewayResponse.actions[0].response_code === '10200');
       }
 
-      if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'type') && gatewayResponse.source.type == 'sofort') {
+      if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'type') && gatewayResponse.source.type === 'sofort') {
           return true;
       }
 

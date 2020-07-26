@@ -38,7 +38,7 @@
                     <option id="${month.id}" value="${month.htmlValue}"
                         <isif condition="${pdict.order.billing.payment.selectedPaymentInstruments
                             && pdict.order.billing.payment.selectedPaymentInstruments.length > 0
-                            && month.id == pdict.order.billing.payment.selectedPaymentInstruments[0].expirationMonth}">
+                            && month.id === pdict.order.billing.payment.selectedPaymentInstruments[0].expirationMonth}">
                             selected
                         </isif> >
                         ${month.label}
@@ -64,7 +64,7 @@
                     <option id="${year.toFixed(0)}" value="${year.toFixed(0)}"
                         <isif condition="${pdict.order.billing.payment.selectedPaymentInstruments
                             && pdict.order.billing.payment.selectedPaymentInstruments.length > 0
-                            && year == pdict.order.billing.payment.selectedPaymentInstruments[0].expirationYear}">
+                            && year === pdict.order.billing.payment.selectedPaymentInstruments[0].expirationYear}">
                                 selected
                         </isif> >
                     <isprint value="${year}" formatter="####" /></option>

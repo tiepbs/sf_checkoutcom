@@ -84,7 +84,7 @@ var transactionHelper = {
 
             // Return the requested transaction
             for (var i = 0; i < paymentActionsArray.length; i++) {
-                if (paymentActionsArray[i].type == transactionType) {
+                if (paymentActionsArray[i].type === transactionType) {
                     return this.loadTransaction(paymentActionsArray[i].id, hook.data.reference);
                 }
             }
@@ -114,7 +114,7 @@ var transactionHelper = {
                 var paymentTransaction = instrument.getPaymentTransaction();
 
                 // Prepare the filter condition
-                var isIdMatch = paymentTransaction.transactionID == transactionId;
+                var isIdMatch = paymentTransaction.transactionID === transactionId;
 
                 // Add the payment transaction to the output
                 if (isIdMatch) {
@@ -145,12 +145,12 @@ var transactionHelper = {
             var paymentTransaction = instrument.getPaymentTransaction();
 
             // Calculate the total refunds
-            if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CREDIT) {
+            if (paymentTransaction.type.toString() === PaymentTransaction.TYPE_CREDIT) {
                 totalRefunded += parseFloat(paymentTransaction.amount.value);
             }
 
             // Calculate the total captures
-            if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CAPTURE) {
+            if (paymentTransaction.type.toString() === PaymentTransaction.TYPE_CAPTURE) {
                 totalCaptured += parseFloat(paymentTransaction.amount.value);
             }
         }

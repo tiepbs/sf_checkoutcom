@@ -6,7 +6,7 @@ function idealFormValidation() {
 
     // Field 1 validation
     var field1 = '#ideal_bic';
-    if ($(field1).val() == '') {
+    if ($(field1).val() === '') {
         errors.push(field1);
     }
 

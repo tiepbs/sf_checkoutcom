@@ -36,7 +36,7 @@ function initTabs() {
             $('input[name="dwfrm_billing_paymentMethod"]').val(methodId);
 
             // Run the APM filter if relevant
-            if (methodId == 'CHECKOUTCOM_APM') {
+            if (methodId === 'CHECKOUTCOM_APM') {
                 filterApm();
             }
 
@@ -51,7 +51,7 @@ function initTabs() {
 
 function handleSavedCardsDisplay() {
     var savedCards = $('.row.saved-payment-instrument').length;
-    if (savedCards == 0) {
+    if (savedCards === 0) {
         $('.saved-card-tab').closest('li').hide();
         $('.tab-pane.saved-card-content').hide();
     }

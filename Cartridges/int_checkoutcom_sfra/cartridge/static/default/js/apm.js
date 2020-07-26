@@ -55,7 +55,7 @@ function initApmAccordion() {
 
         // Enable the container auto height
         panel.css('display', 'table');
-        if (panel.css('maxHeight') != '0px') {
+        if (panel.css('maxHeight') !== '0px') {
             panel.css('maxHeight', '0px');
         } else {
             panel.css('maxHeight', panel.prop('scrollHeight') + 'px');
@@ -73,7 +73,7 @@ function filterApm() {
     // Send the APM filter AJAX request
     var xhttpFilter = new XMLHttpRequest();
     xhttpFilter.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
             // Get the APM countries and currencies list
             var apmList = JSON.parse(this.responseText);
 
@@ -100,7 +100,7 @@ function filterApm() {
 function initCheckoutcomApmValidation() {
     // Submit event
     $('button.submit-payment').off('click touch').on('click touch', function(e) {
-        if ($('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_APM') {
+        if ($('input[name="dwfrm_billing_paymentMethod"]').val() === 'CHECKOUTCOM_APM') {
             // Remove all previous errors
             $('.apm-list-item .is-invalid').removeClass('is-invalid');
             $('.apm-list-item .invalid-field-message').hide();

@@ -24,7 +24,7 @@ function callKlarnaController() {
     if (controllerUrl) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
+            if (this.readyState === 4 && this.status === 200) {
                 var sessionId = JSON.parse(this.responseText).session_id;
                 var token = JSON.parse(this.responseText).client_token;
                 var categories = JSON.parse(this.responseText).payment_method_categories;

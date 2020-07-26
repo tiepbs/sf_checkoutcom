@@ -2,7 +2,7 @@
 
 function initCheckoutcomCardValidation() {
     // Is card payment
-    var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() == 'CHECKOUTCOM_CARD';
+    var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() === 'CHECKOUTCOM_CARD';
 
     // Is card form
     var condition2 = $('.saved-card-tab').hasClass('active');
@@ -37,7 +37,7 @@ function cardFormValidation() {
 
         // Handle errors
         $.each(cardFields, function(i, field) {
-            if (field.error == 1) {
+            if (field.error === 1) {
                 $('#' + field.id).next('.invalid-feedback').show();
             }
         });
@@ -80,7 +80,7 @@ function checkCardExpirationMonth() {
     };
 
     // Check expiration month
-    if (targetField.val() == '') {
+    if (targetField.val() === '') {
         $('.dwfrm_billing_creditCardFields_expirationMonth .invalid-field-message').text(
             window.ckoLang.cardExpirationMonthInvalid
         );
@@ -100,7 +100,7 @@ function checkCardExpirationYear() {
     };
 
     // Check expiration year
-    if (targetField.val() == '') {
+    if (targetField.val() === '') {
         $('.dwfrm_billing_creditCardFields_expirationYear .invalid-field-message').text(
             window.ckoLang.cardExpirationYearInvalid
         );
@@ -161,10 +161,10 @@ function savedCardFormValidation() {
             var condition1 = self.hasClass('selected-payment');
 
             // Field is empty
-            var condition2 = cvvField.val() == '';
+            var condition2 = cvvField.val() === '';
 
             // Field is numeric
-            var condition3 = cvvField.val() % 1 == 0;
+            var condition3 = cvvField.val() % 1 === 0;
 
             // Field validation
             if (condition1 && (condition2 || !condition3)) {

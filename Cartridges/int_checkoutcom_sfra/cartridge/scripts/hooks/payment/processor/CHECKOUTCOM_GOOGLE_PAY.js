@@ -15,7 +15,7 @@ function Handle(basket, billingData, processorId, req) {
     var serverErrors = [];
 
     // Verify the payload
-    if (!billingData.paymentInformation.ckoGooglePayData.value || billingData.paymentInformation.ckoGooglePayData.value.length == 0) {
+    if (!billingData.paymentInformation.ckoGooglePayData.value || billingData.paymentInformation.ckoGooglePayData.value.length === 0) {
         serverErrors.push(
             Resource.msg('cko.googlepay.error', 'cko', null)
         );
