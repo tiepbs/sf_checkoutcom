@@ -42,8 +42,10 @@ var cardHelper = {
         return this.handleResponse(gatewayResponse);
     },
 
-    /*
-     * Handle the payment response
+    /**
+     * Handle the payment response.
+     * @param {Object} gatewayResponse The gateway response data
+     * @returns {Object} The payment result
      */
     handleResponse: function(gatewayResponse) {
         // Prepare the result
@@ -69,8 +71,13 @@ var cardHelper = {
         return result;
     },
 
-    /*
-     * Build the gateway request
+    /**
+     * Build the gateway request.
+     * @param {Object} paymentData The payment data
+     * @param {string} processorId The processor ID
+     * @param {string} orderNumber The order number
+     * @param {Object} req The HTTP request data
+     * @returns {Object} The payment request data
      */
     buildRequest: function(paymentData, processorId, orderNumber, req) {
         // Load the order
@@ -108,9 +115,12 @@ var cardHelper = {
         return chargeData;
     },
 
-
-    /*
-     * Get a card source
+    /**
+     * Get a card source.
+     * @param {Object} paymentData The payment data
+     * @param {Object} order The order instance
+     * @param {string} processorId The processor ID
+     * @returns {Object} The card source
      */
     getCardSource: function(paymentData, order, processorId) {
         // Replace selectedCardUuid by get saved card token from selectedCardUuid
@@ -147,8 +157,9 @@ var cardHelper = {
         return cardSource;
     },
 
-    /*
-     * Build 3ds object
+    /**
+     * Build a 3ds object.
+     * @returns {Object} The 3ds parameters
      */
     get3Ds: function() {
         return {

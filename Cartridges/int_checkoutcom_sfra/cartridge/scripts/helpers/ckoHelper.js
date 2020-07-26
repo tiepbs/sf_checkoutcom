@@ -17,6 +17,7 @@ var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 var ckoHelper = {
     /**
      * Get a failed payment error message.
+     * @returns {string} The message string
      */
     getPaymentFailureMessage: function () {
         return Resource.msg('cko.transaction.failedMessage1', 'cko', null)
@@ -25,6 +26,7 @@ var ckoHelper = {
 
     /**
      * Get a failed order error message.
+     * @returns {string} The message string
      */
     getOrderFailureMessage: function () {
         return Resource.msg('cko.transaction.failedMessage1', 'cko', null)
@@ -34,20 +36,23 @@ var ckoHelper = {
 
     /**
      * Get user language.
+     * @returns {string} The user language code
      */
     getLanguage: function () {
         return request.locale.replace('_', '-');
     },
 
     /**
-     * Get Site Name.
+     * Get the site name.
+     * @returns {string} The site name
      */
     getSiteName: function () {
         return Site.getCurrent().name;
     },
 
     /**
-     * Get site Hostname.
+     * Get the site hostname.
+     * @returns {string} The site host name
      */
     getSiteHostName: function () {
         return Site.getCurrent().httpHostName;
@@ -55,6 +60,7 @@ var ckoHelper = {
 
     /**
      * Check if the gateway response is valid.
+     * @param {Object} req The HTTP response data
      */
     isValidResponse: function (req) {
         var requestKey = req.httpHeaders['authorization'];
@@ -65,13 +71,16 @@ var ckoHelper = {
 
     /**
      * Get value from custom preferences.
+     * @param {string} field The field id
+     * @returns {string} The preference value
      */
     getValue: function (field) {
         return Site.getCurrent().getCustomPreferenceValue(field);
     },
 
     /**
-     * Get site country code from locale.
+     * Get the site country code from locale.
+     * @returns {string} The site  country code
      */
     getSiteCountryCode: function () {
         return Site.getCurrent().defaultLocale.split('_')[1];
@@ -79,6 +88,9 @@ var ckoHelper = {
 
     /**
      * Handles string translation with language resource files.
+     * @param {string} strValue The string value
+     * @param {string} strFile The file name
+     * @returns {string} The translated string value
      */
     _: function (strValue, strFile) {
         return Resource.msg(strValue, strFile, null);
@@ -86,6 +98,8 @@ var ckoHelper = {
 
     /**
      * Write gateway information to the website's custom log file.
+     * @param {string} dataType The data type
+     * @param {Object} gatewayData The gateway data
      */
     log: function (dataType, gatewayData) {
         if (this.getValue('ckoDebugEnabled') == true) {
@@ -107,6 +121,7 @@ var ckoHelper = {
 
     /**
      * Remove sentitive data from the logs.
+     * @param {Object} data The log data
      */
     removeSentisiveData: function (data) {
         // Card data
@@ -127,7 +142,8 @@ var ckoHelper = {
     },
 
     /**
-     * Return order id.
+     * Return an order id.
+     * @returns {string} The order id
      */
     getOrderId: function () {
         var orderId = (this.getValue('cko3ds')) ? request.httpParameterMap.get('reference').stringValue : request.httpParameterMap.get('reference').stringValue;
@@ -139,7 +155,8 @@ var ckoHelper = {
     },
 
     /**
-     * Cartridge metadata.
+     * Get the cartridge metadata.
+     * @returns {string} The platform data
      */
     getCartridgeMeta: function () {
         return this.getValue("ckoSfraPlatformData");
@@ -147,6 +164,8 @@ var ckoHelper = {
 
     /**
      * Get a customer full name.
+     * @param {Object} customerProfile The customer profile instance
+     * @returns {string} The customer name
      */
     getCustomerFullName: function(customerProfile) {
         var customerName = '';
@@ -157,7 +176,8 @@ var ckoHelper = {
     },
 
     /**
-     * Get Account API Keys.
+     * Get the account API keys.
+     * @returns {Object} The account keys object
      */
     getAccountKeys: function () {
         var keys = {};
@@ -172,6 +192,10 @@ var ckoHelper = {
 
     /**
      * Create an HTTP client to handle request to gateway.
+     * @param {string} serviceId The service id
+     * @param {Object} requestData The request data
+     * @param {string} method The HTTP request method
+     * @returns {Object} The HTTP response object
      */
     gatewayClientRequest: function (serviceId, requestData, method) {
         var method = method || 'POST';
@@ -196,6 +220,11 @@ var ckoHelper = {
         return resp.object;
     },
 
+    /**
+     * Get an HTTP service.
+     * @param {string} serviceId The service id
+     * @returns {Object} The HTTP service instance
+     */
     getService: function (serviceId) {
         var parts  =  serviceId.split('.');
         var entity = parts[1];
@@ -208,7 +237,8 @@ var ckoHelper = {
     },
 
     /**
-     * Currency Conversion Ratio.
+     * Currency conversion mapping.
+     * @param {string} currency The currency code
      */
     getCkoFormatedValue: function (currency) {
         if (ckoCurrencyConfig.x1.currencies.match(currency)) {
@@ -221,7 +251,9 @@ var ckoHelper = {
     },
 
     /**
-     * Format price for cko gateway.
+     * Format a price for a gateway request.
+     * @param {number} price The price to format
+     * @param {string} currency The currency code
      */
     getFormattedPrice: function (price, currency) {
         var ckoFormateBy = this.getCkoFormatedValue(currency);
@@ -232,6 +264,8 @@ var ckoHelper = {
 
     /**
      * Get the Checkout.com orders.
+     * @param {string} orderNo The order number
+     * @returns {Array} The list of orders
      */
     getOrders: function (orderNo) {
         // Prepare the output array
@@ -259,6 +293,8 @@ var ckoHelper = {
 
     /**
      * Checks if an object already exists in an array.
+     * @param {Object} obj The object
+     * @param {Array} list The list of objects
      */
     containsObject: function (obj, list) {
         var i;
@@ -273,6 +309,8 @@ var ckoHelper = {
 
     /**
      * Checks if a payment instrument is Checkout.com.
+     * @param {Object} item The payment instrument instance
+     * @returns {boolean} If the instance matches conditions
      */
     isCkoItem: function(item) {
         return item.length > 0 && item.indexOf('CHECKOUTCOM_') >= 0;
@@ -280,6 +318,8 @@ var ckoHelper = {
 
     /**
      * Return the customer data.
+     * @param {Object} order The order instance
+     * @returns {Object} The customer data
      */
     getCustomer: function(order) {
         return {
@@ -289,12 +329,14 @@ var ckoHelper = {
     },
 
     /**
-     * Return phone object.
+     * Return a phone object.
+     * @param {Object} billingAddress The billing data
+     * @returns {Object} The phone object
      */
     getPhone: function(billingAddress) {
         return {
-            country_code        : null,
-            number              : billingAddress.getPhone()
+            country_code: null,
+            number: billingAddress.getPhone()
         };
     },
 

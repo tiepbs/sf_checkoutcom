@@ -4,9 +4,9 @@
 var URLUtils = require('dw/web/URLUtils');
 var Resource = require('dw/web/Resource');
 
-/*
-* Payment helper
-*/
+/**
+ * paymentHelper module.
+ */
 var paymentHelper = {
     getConfirmationPageRedirect: function(res, order) {
         return res.redirect(
@@ -33,7 +33,7 @@ var paymentHelper = {
     },
 };
 
-/*
-* Module exports
-*/
+/**
+ * Module exports
+ */
 module.exports = paymentHelper;

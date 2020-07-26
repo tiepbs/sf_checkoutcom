@@ -72,6 +72,8 @@ var googlePayHelper = {
             // Process the response
             return gatewayResponse && this.handleResponse(gatewayResponse);
         }
+
+        return false;
     },
 
     /**

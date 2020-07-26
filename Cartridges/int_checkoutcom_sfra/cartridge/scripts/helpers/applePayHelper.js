@@ -72,6 +72,8 @@ var applePayHelper = {
             // Process the response
             return gatewayResponse && this.handleResponse(gatewayResponse);
         }
+
+        return false;
     },
 
     /**

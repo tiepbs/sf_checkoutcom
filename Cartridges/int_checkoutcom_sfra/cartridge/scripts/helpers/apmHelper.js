@@ -44,8 +44,11 @@ var apmHelper = {
         return this.handleResponse(gatewayResponse, orderNumber);
     },
 
-    /*
-     * Handle the payment response
+    /**
+     * Handle the payment response.
+     * @param {Object} gatewayResponse The gateway response data
+     * @param {string} orderNumber The order number
+     * @returns {Object} The payment result
      */
     handleResponse: function(gatewayResponse, orderNumber) {
         // Prepare the result
@@ -72,8 +75,12 @@ var apmHelper = {
         return result;
     },
 
-    /*
-     * Return the APM request data
+    /**
+     * Return the APM request data.
+     * @param {Object} order The order instance
+     * @param {string} processorId The processor ID
+     * @param {string} apmConfigData The APM config data
+     * @returns {Object} The payment request data
      */
     getApmRequest: function(order, processorId, apmConfigData) {
         // Charge data
@@ -120,8 +127,11 @@ var apmHelper = {
         return chargeData;
     },
 
-    /*
-     * Sepa APM request
+    /**
+     * Handle the SEPA payment request.
+     * @param {Object} payObject The payment data
+     * @param {string} order The order instance
+     * @returns {boolean} The request success or failure
      */
     handleSepaRequest: function(payObject, order) {
         // Gateway response
@@ -146,8 +156,7 @@ var apmHelper = {
     },
 };
 
-/*
-* Module exports
-*/
-
+/**
+ * Module exports
+ */
 module.exports = apmHelper;
