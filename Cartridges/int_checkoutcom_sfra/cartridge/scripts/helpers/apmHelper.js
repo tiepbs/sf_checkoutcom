@@ -82,7 +82,7 @@ var apmHelper = {
         );
 
         // Prepare the charge data
-        if (Object.prototype.hasOwnProperty.call(apmConfigData, 'type') && apmConfigData.type == 'sepa') {
+        if (Object.prototype.hasOwnProperty.call(apmConfigData, 'type') && apmConfigData.type === 'sepa') {
             // Prepare the charge data
             chargeData = {
                 customer: ckoHelper.getCustomer(order),
@@ -108,7 +108,7 @@ var apmHelper = {
             };
 
             // Test Klarna
-            if (chargeData.source.type == 'klarna') {
+            if (chargeData.source.type === 'klarna') {
                 chargeData.capture = false;
             }
         }

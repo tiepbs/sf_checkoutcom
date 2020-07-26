@@ -16,6 +16,7 @@ var cardHelper = {
      */
     handleRequest: function(paymentData, processorId, orderNumber, req) {
         // Order number
+        // eslint-disable-next-line
         orderNumber = orderNumber || null;
 
         // Build the request data
