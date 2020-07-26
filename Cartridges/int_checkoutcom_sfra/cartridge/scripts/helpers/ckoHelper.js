@@ -791,7 +791,7 @@ var ckoHelper = {
         return address;
     },
 
-    /***
+    /**
      * Return the order billing address.
      */
     getOrderAddress: function (args) {
