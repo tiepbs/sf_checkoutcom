@@ -262,7 +262,7 @@ var ckoHelper = {
      * Format a price for a gateway request.
      * @param {number} price The price to format
      * @param {string} currency The currency code
-     * @returns {Number} The formatted price
+     * @returns {number} The formatted price
      */
     getFormattedPrice: function(price, currency) {
         var ckoFormateBy = this.getCkoFormatedValue(currency);
@@ -352,8 +352,8 @@ var ckoHelper = {
 
     /**
      * Strip spaces form a number.
-     * @param {Number} num The number to process
-     * @returns {Number} The processed number
+     * @param {number} num The number to process
+     * @returns {number} The processed number
      */
     getFormattedNumber: function(num) {
         return num.toString().replace(/\s/g, '');
@@ -439,7 +439,7 @@ var ckoHelper = {
     /**
      * Get the basket quantities.
      * @param {Object} args The method arguments
-     * @returns {Number} The basked quantities
+     * @returns {number} The basked quantities
      */
     getQuantity: function(args) {
         // Load the card and order information
@@ -659,7 +659,7 @@ var ckoHelper = {
     /**
      * Return an order amount.
      * @param {Object} order The order instance
-     * @returns {Number} The amount
+     * @returns {number} The amount
      */
     getAmount: function(order) {
         var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode());
