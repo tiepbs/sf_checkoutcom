@@ -8,6 +8,11 @@ var Resource = require('dw/web/Resource');
  * paymentHelper module.
  */
 var paymentHelper = {
+    /**
+     * Get the confirmation page redirection.
+     * @param {Object} res The HTTP response object
+     * @param {Object} order The order instance
+     */
     getConfirmationPageRedirect: function(res, order) {
         return res.redirect(
             URLUtils.url(
@@ -20,6 +25,10 @@ var paymentHelper = {
         );
     },
 
+    /**
+     * Get the failure page redirection.
+     * @param {Object} res The HTTP response object
+     */
     getFailurePageRedirect: function(res) {
         return res.redirect(
             URLUtils.url(
