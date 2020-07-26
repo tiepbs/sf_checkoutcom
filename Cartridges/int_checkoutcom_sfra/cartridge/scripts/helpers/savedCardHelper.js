@@ -96,7 +96,7 @@ var savedCardHelper = {
     /**
      * Save a card in the customer account.
      * @param {Object} paymentData The payment data
-     * @param {Object} reg The HTTP request data
+     * @param {Object} req The HTTP request data
      * @returns {string} A card uuid
      */
     saveCard: function(paymentData, req) {
