@@ -1,3 +1,5 @@
+'use strict';
+
 /* API Includes */
 var svc = require('dw/svc');
 
