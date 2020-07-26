@@ -14,7 +14,7 @@ var applePayHelper = {
      * Handle the payment request
      */
     handleRequest: function(paymentData, processorId, orderNumber) {
-    // Load the order information
+        // Load the order information
         var order = OrderMgr.getOrder(orderNumber);
 
         // Prepare the parameters
@@ -74,7 +74,7 @@ var applePayHelper = {
      * Handle the payment response
      */
     handleResponse: function(gatewayResponse) {
-    // Update customer data
+        // Update customer data
         ckoHelper.updateCustomerData(gatewayResponse);
 
         return ckoHelper.paymentSuccess(gatewayResponse);

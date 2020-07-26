@@ -15,7 +15,7 @@ var cardHelper = {
      * Handle the payment request.
      */
     handleRequest: function(paymentData, processorId, orderNumber, req) {
-    // Order number
+        // Order number
         orderNumber = orderNumber || null;
 
         // Build the request data
@@ -41,7 +41,7 @@ var cardHelper = {
      * Handle the payment response
      */
     handleResponse: function(gatewayResponse) {
-    // Prepare the result
+        // Prepare the result
         var result = {
             error: !ckoHelper.paymentSuccess(gatewayResponse),
             redirectUrl: false,
@@ -68,7 +68,7 @@ var cardHelper = {
      * Build the gateway request
      */
     buildRequest: function(paymentData, processorId, orderNumber, req) {
-    //  Load the order
+        // Load the order
         var order = OrderMgr.getOrder(orderNumber);
 
         // Prepare the charge data
@@ -108,7 +108,7 @@ var cardHelper = {
      * Get a card source
      */
     getCardSource: function(paymentData, order, processorId) {
-    // Replace selectedCardUuid by get saved card token from selectedCardUuid
+        // Replace selectedCardUuid by get saved card token from selectedCardUuid
         var cardSource;
         var selectedCardUuid = paymentData.savedCardForm.selectedCardUuid.value;
         var selectedCardCvv = paymentData.savedCardForm.selectedCardCvv.value;

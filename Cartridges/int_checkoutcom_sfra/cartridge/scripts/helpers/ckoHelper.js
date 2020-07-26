@@ -362,7 +362,7 @@ var ckoHelper = {
     },
 
     /*
-     * Write order information to session for the current shopper.
+     * Write the order information to session for the current shopper.
      */
     updateCustomerData: function (gatewayResponse) {
         if ((gatewayResponse) && Object.prototype.hasOwnProperty.call(gatewayResponse, 'card')) {
@@ -375,7 +375,7 @@ var ckoHelper = {
     },
 
     /*
-     * Get Basket Quantities
+     * Get the basket quantities.
      */
     getQuantity : function (args) {
         // Load the card and order information
@@ -386,10 +386,9 @@ var ckoHelper = {
     },
 
     /*
-     * Get Billing Descriptor Object from custom preferences
+     * Get the billing descriptor object from custom preferences.
      */
     getBillingDescriptor : function () {
-
         var billingDescriptor = {
             "name"  : this.getValue('ckoBillingDescriptor1'),
             "city"  : this.getValue('ckoBillingDescriptor2')
@@ -399,7 +398,7 @@ var ckoHelper = {
     },
 
     /*
-     * Get Products Information
+     * Get the products information.
      */
     getProductInformation : function (args) {
         // Load the card and order information
@@ -438,7 +437,7 @@ var ckoHelper = {
     },
 
     /*
-     * Return tax object
+     * Return the tax object.
      */
     getTaxObject : function (args) {
         // Load the card and order information
@@ -464,7 +463,7 @@ var ckoHelper = {
     },
 
     /*
-     * return shipping object
+     * Return the shipping object.
      */
     getShippingValue : function (args) {
         // Load the card and order information
@@ -489,7 +488,7 @@ var ckoHelper = {
     },
 
     /*
-     * Return Order Currency Code
+     * Return the order currency code.
      */
     getCurrencyCode: function (args) {
         // Get the order
@@ -503,7 +502,7 @@ var ckoHelper = {
     },
 
     /*
-     * Get Product Names
+     * Get the product names.
      */
     getProductNames : function (args) {
         // Load the card and order information
@@ -523,7 +522,7 @@ var ckoHelper = {
     },
 
     /*
-     * get Product price array
+     * Get the product price array.
      */
     getProductPrices : function (args) {
         // Load the card and order information
@@ -543,7 +542,7 @@ var ckoHelper = {
     },
 
     /*
-     * Get Product IDs
+     * Get the product IDs.
      */
     getProductIds : function (args) {
         // Load the card and order information
@@ -559,7 +558,7 @@ var ckoHelper = {
     },
 
     /*
-     * Get Each Product Quantity
+     * Get each product quantity
      */
     getProductQuantity : function (args) {
         // Load the card and order information
@@ -573,26 +572,6 @@ var ckoHelper = {
         while (it.hasNext()) {
             var pli = it.next();
             products_quantites += pli.quantityValue;
-        }
-
-        return products_quantites;
-    },
-
-    /*
-     * Get Each Product Quantity
-     */
-    getProductQuantities : function (args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
-
-        // Prepare the iterator
-        var it = order.productLineItems.iterator();
-
-        // Loop through the items
-        var products_quantites = [];
-        while (it.hasNext()) {
-            var pli = it.next();
-            products_quantites.push(pli.quantityValue);
         }
 
         return products_quantites;
