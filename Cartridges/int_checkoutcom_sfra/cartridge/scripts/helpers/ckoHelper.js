@@ -43,14 +43,14 @@ var ckoHelper = {
      * Get Site Name
      */
     getSiteName: function () {
-        return dw.system.Site.getCurrent().name;
+        return Site.getCurrent().name;
     },
 
     /*
      * Get site Hostname
      */
     getSiteHostName: function () {
-        return dw.system.Site.getCurrent().httpHostName;
+        return Site.getCurrent().httpHostName;
     },
 
     /*
@@ -67,7 +67,7 @@ var ckoHelper = {
      * Get value from custom preferences
      */
     getValue: function (field) {
-        return dw.system.Site.getCurrent().getCustomPreferenceValue(field);
+        return Site.getCurrent().getCustomPreferenceValue(field);
     },
 
     /*

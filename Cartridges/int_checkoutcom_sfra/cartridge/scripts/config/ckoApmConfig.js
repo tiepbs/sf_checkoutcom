@@ -1,7 +1,8 @@
 'use strict';
 
 /* Business Name */
-var businessName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoBusinessName');
+var Site = require('dw/system/Site');
+var businessName = Site.getCurrent().getCustomPreferenceValue('ckoBusinessName');
 
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
