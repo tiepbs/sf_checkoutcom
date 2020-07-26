@@ -109,13 +109,13 @@ var ckoHelper = {
             var logger = Logger.getLogger('ckodebug');
 
             // Remove sensitive data
-            gatewayData = this.removeSentisiveData(gatewayData);
+            var cleanData = this.removeSentisiveData(gatewayData);
 
             // Log the data
             if (logger) {
                 logger.debug(
                     dataType + ' : {0}',
-                    JSON.stringify(gatewayData)
+                    JSON.stringify(cleanData)
                 );
             }
         }
@@ -129,11 +129,11 @@ var ckoHelper = {
     removeSentisiveData: function(data) {
         // Card data
         if (Object.prototype.hasOwnProperty.call(data, 'source')) {
-           if (Object.prototype.hasOwnProperty.call(data.source, 'number')) data.source.number.replace(/^.{14}/g, '*');
-           if (Object.prototype.hasOwnProperty.call(data.source, 'cvv')) data.source.cvv.replace(/^.{3}/g, '*');
-           if (Object.prototype.hasOwnProperty.call(data.source, 'billing_address')) delete data.source.billing_address;
-           if (Object.prototype.hasOwnProperty.call(data.source, 'phone')) delete data.source.phone;
-           if (Object.prototype.hasOwnProperty.call(data.source, 'name')) delete data.source.name;
+            if (Object.prototype.hasOwnProperty.call(data.source, 'number')) data.source.number.replace(/^.{14}/g, '*');
+            if (Object.prototype.hasOwnProperty.call(data.source, 'cvv')) data.source.cvv.replace(/^.{3}/g, '*');
+            if (Object.prototype.hasOwnProperty.call(data.source, 'billing_address')) delete data.source.billing_address;
+            if (Object.prototype.hasOwnProperty.call(data.source, 'phone')) delete data.source.phone;
+            if (Object.prototype.hasOwnProperty.call(data.source, 'name')) delete data.source.name;
         }
 
         // Customer data
