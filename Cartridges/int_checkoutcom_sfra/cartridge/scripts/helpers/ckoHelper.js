@@ -19,7 +19,7 @@ var ckoHelper = {
      * Get a failed payment error message.
      * @returns {string} The message string
      */
-    getPaymentFailureMessage: function () {
+    getPaymentFailureMessage: function() {
         return Resource.msg('cko.transaction.failedMessage1', 'cko', null)
         + ' ' + Resource.msg('cko.transaction.failedMessage2', 'cko', null);
     },
@@ -28,7 +28,7 @@ var ckoHelper = {
      * Get a failed order error message.
      * @returns {string} The message string
      */
-    getOrderFailureMessage: function () {
+    getOrderFailureMessage: function() {
         return Resource.msg('cko.transaction.failedMessage1', 'cko', null)
         + ' ' + Resource.msg('cko.transaction.failedMessage3', 'cko', null);
     },
@@ -38,7 +38,7 @@ var ckoHelper = {
      * Get user language.
      * @returns {string} The user language code
      */
-    getLanguage: function () {
+    getLanguage: function() {
         return request.locale.replace('_', '-');
     },
 
@@ -46,7 +46,7 @@ var ckoHelper = {
      * Get the site name.
      * @returns {string} The site name
      */
-    getSiteName: function () {
+    getSiteName: function() {
         return Site.getCurrent().name;
     },
 
@@ -54,7 +54,7 @@ var ckoHelper = {
      * Get the site hostname.
      * @returns {string} The site host name
      */
-    getSiteHostName: function () {
+    getSiteHostName: function() {
         return Site.getCurrent().httpHostName;
     },
 
@@ -82,7 +82,7 @@ var ckoHelper = {
      * Get the site country code from locale.
      * @returns {string} The site  country code
      */
-    getSiteCountryCode: function () {
+    getSiteCountryCode: function() {
         return Site.getCurrent().defaultLocale.split('_')[1];
     },
 
@@ -146,7 +146,7 @@ var ckoHelper = {
      * Return an order id.
      * @returns {string} The order id
      */
-    getOrderId: function () {
+    getOrderId: function() {
         var orderId = (this.getValue('cko3ds')) ? request.httpParameterMap.get('reference').stringValue : request.httpParameterMap.get('reference').stringValue;
         if (orderId === null) {
             orderId = session.privacy.ckoOrderId;
@@ -159,7 +159,7 @@ var ckoHelper = {
      * Get the cartridge metadata.
      * @returns {string} The platform data
      */
-    getCartridgeMeta: function () {
+    getCartridgeMeta: function() {
         return this.getValue("ckoSfraPlatformData");
     },
 
@@ -180,7 +180,7 @@ var ckoHelper = {
      * Get the account API keys.
      * @returns {Object} The account keys object
      */
-    getAccountKeys: function () {
+    getAccountKeys: function() {
         var keys = {};
         var str = this.getValue('ckoMode') == 'live' ? 'Live' : 'Sandbox';
 
@@ -682,7 +682,7 @@ var ckoHelper = {
      * Return the capture time.
      * @returns {Object} The capture time
      */
-    getCaptureTime: function () {
+    getCaptureTime: function() {
         // Get the current date/time in milliseconds
         var now = Date.now();
 
@@ -701,7 +701,7 @@ var ckoHelper = {
      * Build a 3ds object.
      * @returns {Object} The 3ds data
      */
-    get3Ds: function () {
+    get3Ds: function() {
         // 3ds object
         var treeDs = {
             "enabled" : this.getValue('cko3ds'),
