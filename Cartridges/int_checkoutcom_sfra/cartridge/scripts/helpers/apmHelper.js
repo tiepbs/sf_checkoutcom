@@ -16,18 +16,19 @@ var apmHelper = {
      * Apm Request
      */
     handleRequest: function(apmConfigData, processorId, orderNumber) {
-    // Load the order
+        // Prepare required parameters
+        var gatewayResponse;
         var order = OrderMgr.getOrder(orderNumber);
 
         // Create the payment request
         var gatewayRequest = this.getApmRequest(order, processorId, apmConfigData);
 
         // Test SEPA
-        if (Object.prototype.hasOwnProperty.call(gatewayRequest, 'type') & gatewayRequest.type == 'sepa') {
+        if (Object.prototype.hasOwnProperty.call(gatewayRequest, 'type') & gatewayRequest.type === 'sepa') {
             gatewayResponse = ckoHelper.gatewayClientRequest('cko.card.sources.' + ckoHelper.getValue('ckoMode') + '.service', gatewayRequest);
         } else {
             // Test Klarna
-            if (gatewayRequest.source.type == 'klarna') {
+            if (gatewayRequest.source.type === 'klarna') {
                 gatewayRequest.capture = false;
             }
 
@@ -43,7 +44,7 @@ var apmHelper = {
      * Handle the payment response
      */
     handleResponse: function(gatewayResponse, orderNumber) {
-    // Prepare the result
+        // Prepare the result
         var result = {
             error: true,
             redirectUrl: false,
@@ -53,7 +54,7 @@ var apmHelper = {
         ckoHelper.updateCustomerData(gatewayResponse);
 
         // Add redirect to sepa source reqeust
-        if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'type') && gatewayResponse.type == 'Sepa') {
+        if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'type') && gatewayResponse.type === 'Sepa') {
             result.error = false;
             result.redirectUrl = URLUtils.url('CKOSepa-Mandate').toString()
             + '?orderNumber=' + orderNumber + '&sepaResponseId=' + gatewayResponse.id;
@@ -71,7 +72,7 @@ var apmHelper = {
      * Return the APM request data
      */
     getApmRequest: function(order, processorId, apmConfigData) {
-    // Charge data
+        // Charge data
         var chargeData;
 
         // Get the order amount
@@ -119,7 +120,7 @@ var apmHelper = {
      * Sepa APM request
      */
     handleSepaRequest: function(payObject, order) {
-    // Gateway response
+        // Gateway response
         var gatewayResponse = false;
 
         // Perform the request to the payment gateway

@@ -1,5 +1,8 @@
 'use strict';
 
+/*
+ * APM filters config.
+ */
 var ckoApmFilterConfig = {
     ideal: {
         countries: ['NL'],
@@ -62,12 +65,12 @@ var ckoApmFilterConfig = {
         currencies: ['EUR', 'DKK', 'GBP', 'NOK', 'SEK'],
     },
     alipay: {
-    	countries: ['CN', 'US'],
-    	currencies: ['USD', 'CNY'],
+        countries: ['CN', 'US'],
+        currencies: ['USD', 'CNY'],
     },
     paypal: {
-    	countries: ['*'],
-    	currencies: ['AUD', 'BRL', 'CAD', 'CZK', 'DKK', 'EUR', 'HKD', 'HUF', 'INR', 'ILS', 'JPY', 'MYR', 'MXN', 'TWD', 'NZD', 'NOK', 'PHP', 'PLN', 'GBP', 'RUB', 'SGD', 'SEK', 'CHF', 'THB', 'USD'],
+        countries: ['*'],
+        currencies: ['AUD', 'BRL', 'CAD', 'CZK', 'DKK', 'EUR', 'HKD', 'HUF', 'INR', 'ILS', 'JPY', 'MYR', 'MXN', 'TWD', 'NZD', 'NOK', 'PHP', 'PLN', 'GBP', 'RUB', 'SGD', 'SEK', 'CHF', 'THB', 'USD'],
     },
 };
 

@@ -7,9 +7,12 @@ var businessName = Site.getCurrent().getCustomPreferenceValue('ckoBusinessName')
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
+/*
+ * Module ckoApmConfig.
+ */
 var ckoApmConfig = {
     /*
-     * Ideal authorization
+     * Ideal authorization.
      */
     idealAuthorization: function(args) {
         var params = {
@@ -37,7 +40,7 @@ var ckoApmConfig = {
                 country: ckoHelper.getBillingCountry(args),
                 payer: {
                     name: ckoHelper.getCustomerName(args),
-                	email: ckoHelper.getCustomer(args).email,
+                    email: ckoHelper.getCustomer(args).email,
                     document: args.paymentData.boleto_cpf.value.toString(),
                 },
             },
@@ -256,11 +259,11 @@ var ckoApmConfig = {
      * Klarna authorization
      */
     klarnaAuthorization: function(args) {
-    // Klarna Form Inputs
-        var klarna_approved = args.paymentData.klarna_approved.value.toString();
+        // Klarna Form Inputs
+        var klarnaApproved = args.paymentData.klarna_approved.value.toString();
 
         // Process the payment
-        if (klarna_approved) {
+        if (klarnaApproved) {
             // Build the payment object
             var params = {
                 amount: ckoHelper.getFormattedPrice(
@@ -285,6 +288,7 @@ var ckoApmConfig = {
 
             return params;
         }
+
         return { success: false };
     },
 
