@@ -122,6 +122,7 @@ var ckoHelper = {
     /**
      * Remove sentitive data from the logs.
      * @param {Object} data The log data
+     * @returns {Object} The filtered data
      */
     removeSentisiveData: function (data) {
         // Card data
@@ -239,6 +240,7 @@ var ckoHelper = {
     /**
      * Currency conversion mapping.
      * @param {string} currency The currency code
+     * @returns {number} The conversion factor
      */
     getCkoFormatedValue: function (currency) {
         if (ckoCurrencyConfig.x1.currencies.match(currency)) {
@@ -254,6 +256,7 @@ var ckoHelper = {
      * Format a price for a gateway request.
      * @param {number} price The price to format
      * @param {string} currency The currency code
+     * @returns {Number} The formatted price
      */
     getFormattedPrice: function (price, currency) {
         var ckoFormateBy = this.getCkoFormatedValue(currency);
@@ -295,6 +298,7 @@ var ckoHelper = {
      * Checks if an object already exists in an array.
      * @param {Object} obj The object
      * @param {Array} list The list of objects
+     * @returns {boolean} If the object is found
      */
     containsObject: function (obj, list) {
         var i;
@@ -341,7 +345,9 @@ var ckoHelper = {
     },
 
     /**
-     * Strip spaces form number.
+     * Strip spaces form a number.
+     * @param {Number} num The number to process
+     * @returns {Number} The processed number
      */
     getFormattedNumber: function (num) {
         return num.toString().replace(/\s/g, '');
@@ -349,6 +355,8 @@ var ckoHelper = {
 
     /**
      * Build the shipping data.
+     * @param {Object} order The order instance
+     * @returns {Object} The shipping data
      */
     getShipping: function (order) {
         // Get shipping address
@@ -375,6 +383,8 @@ var ckoHelper = {
 
     /**
      * Confirm is a payment is valid from API response code.
+     * @param {Object} gatewayResponse The gateway response
+     * @returns {boolean} The payment success or failure
      */
     paymentSuccess: function (gatewayResponse) {
         if (gatewayResponse && Object.prototype.hasOwnProperty.call(gatewayResponse, 'response_code')) {
@@ -388,6 +398,8 @@ var ckoHelper = {
 
     /**
      * Confirm is a payment is valid from API redirect response code.
+     * @param {Object} gatewayResponse The gateway response
+     * @returns {boolean} Is redirection needed
      */
     redirectPaymentSuccess: function (gatewayResponse) {
       if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'actions')) {
@@ -406,6 +418,7 @@ var ckoHelper = {
 
     /**
      * Write the order information to session for the current shopper.
+     * @param {Object} gatewayResponse The gateway response
      */
     updateCustomerData: function (gatewayResponse) {
         if ((gatewayResponse) && Object.prototype.hasOwnProperty.call(gatewayResponse, 'card')) {
@@ -419,6 +432,8 @@ var ckoHelper = {
 
     /**
      * Get the basket quantities.
+     * @param {Object} args The method arguments
+     * @returns {Number} The basked quantities
      */
     getQuantity : function (args) {
         // Load the card and order information
@@ -430,8 +445,9 @@ var ckoHelper = {
 
     /**
      * Get the billing descriptor object from custom preferences.
+     * @returns {Object} The billing descriptor data
      */
-    getBillingDescriptor : function () {
+    getBillingDescriptor : function() {
         var billingDescriptor = {
             "name"  : this.getValue('ckoBillingDescriptor1'),
             "city"  : this.getValue('ckoBillingDescriptor2')
@@ -442,6 +458,8 @@ var ckoHelper = {
 
     /**
      * Get the products information.
+     * @param {Object} args The method arguments
+     * @returns {Object} The product information
      */
     getProductInformation : function (args) {
         // Load the card and order information
@@ -481,6 +499,8 @@ var ckoHelper = {
 
     /**
      * Return the tax object.
+     * @param {Object} args The method arguments
+     * @returns {Object} The tax data
      */
     getTaxObject : function (args) {
         // Load the card and order information
@@ -507,6 +527,8 @@ var ckoHelper = {
 
     /**
      * Return the shipping object.
+     * @param {Object} args The method arguments
+     * @returns {Object} The shipping data
      */
     getShippingValue : function (args) {
         // Load the card and order information
@@ -526,12 +548,14 @@ var ckoHelper = {
 
             return shippment;
         } else {
-            return false;
+            return null;
         }
     },
 
     /**
      * Return the order currency code.
+     * @param {Object} args The method arguments
+     * @returns {string} The currency code
      */
     getCurrencyCode: function (args) {
         // Get the order
@@ -546,6 +570,8 @@ var ckoHelper = {
 
     /**
      * Get the product names.
+     * @param {Object} args The method arguments
+     * @returns {Array} The products list
      */
     getProductNames : function (args) {
         // Load the card and order information
@@ -566,6 +592,8 @@ var ckoHelper = {
 
     /**
      * Get the product price array.
+     * @param {Object} args The method arguments
+     * @returns {Array} The prices list
      */
     getProductPrices : function (args) {
         // Load the card and order information
@@ -586,6 +614,8 @@ var ckoHelper = {
 
     /**
      * Get the product IDs.
+     * @param {Object} args The method arguments
+     * @returns {Array} The product ids list
      */
     getProductIds : function (args) {
         // Load the card and order information
@@ -602,6 +632,8 @@ var ckoHelper = {
 
     /**
      * Get each product quantity.
+     * @param {Object} args The method arguments
+     * @returns {Array} The product quantities list
      */
     getProductQuantity : function (args) {
         // Load the card and order information
@@ -621,7 +653,9 @@ var ckoHelper = {
     },
 
     /**
-     * Return order amount.
+     * Return an order amount.
+     * @param {Object} order The order instance
+     * @returns {Number} The amount
      */
     getAmount: function (order) {
         var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode());
@@ -630,6 +664,7 @@ var ckoHelper = {
 
     /**
      * Return Customer FullName.
+     * @param {Object} args The method arguments
      */
     getCustomerName: function (args) {
         // Load the order information
@@ -696,6 +731,7 @@ var ckoHelper = {
 
     /**
      * Get Billing Country.
+     * @param {Object} args The method arguments
      */
     getBillingCountry: function (args) {
         // Load the card and order information
@@ -769,6 +805,7 @@ var ckoHelper = {
 
     /**
      * Return Basket Item object.
+     * @param {Object} args The method arguments
      */
     getOrderBasketObject: function (args) {
         // Prepare some variables
@@ -835,6 +872,7 @@ var ckoHelper = {
 
     /**
      * Return the order billing address.
+     * @param {Object} args The method arguments
      */
     getOrderAddress: function (args) {
         var address = {
