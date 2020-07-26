@@ -68,7 +68,7 @@ server.get('KlarnaSession', function(req, res, next) {
         );
     }
 
-    next();
+    next(); // eslint-disable-line no-consistent-return
 });
 
 /*

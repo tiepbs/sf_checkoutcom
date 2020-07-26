@@ -59,7 +59,7 @@ server.get('Mandate', server.middleware.https, function(req, res, next) {
         );
     }
 
-    next();
+    next(); // eslint-disable-line no-consistent-return
 });
 
 server.post('HandleMandate', server.middleware.https, function(req, res, next) {
@@ -143,7 +143,7 @@ server.post('HandleMandate', server.middleware.https, function(req, res, next) {
         );
     }
 
-    next();
+    next(); // eslint-disable-line no-consistent-return
 });
 
 /*
