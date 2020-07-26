@@ -1,7 +1,7 @@
 'use strict';
 
 /* API Includes */
-var svc = require('dw/svc');
+var LocalServiceRegistry = require('dw/svc/LocalServiceRegistry');
 
 /* Utililty module */
 var util = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -11,7 +11,7 @@ var wrapper = {
      * Initialize HTTP service for the Checkout.com sandbox full card charge.
      */
     sandbox: function() {
-        return svc.LocalServiceRegistry.createService('cko.card.sources.sandbox.service', {
+        return LocalServiceRegistry.createService('cko.card.sources.sandbox.service', {
             createRequest: function(svc, args) {
                 // Prepare the http service
                 svc.addHeader('Authorization', util.getAccountKeys().secretKey);
@@ -39,7 +39,7 @@ var wrapper = {
      * Initialize HTTP service for the Checkout.com live full card charge.
      */
     live: function() {
-        return svc.LocalServiceRegistry.createService('cko.card.sources.live.service', {
+        return LocalServiceRegistry.createService('cko.card.sources.live.service', {
             createRequest: function(svc, args) {
                 // Prepare the http service
                 svc.addHeader('Authorization', util.getAccountKeys().secretKey);

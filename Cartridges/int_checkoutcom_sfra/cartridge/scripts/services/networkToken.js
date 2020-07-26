@@ -1,7 +1,7 @@
 'use strict';
 
 /* API Includes */
-var svc = require('dw/svc');
+var LocalServiceRegistry = require('dw/svc/LocalServiceRegistry');
 
 /* Utility */
 var util = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -11,7 +11,7 @@ var wrapper = {
      * Initialize HTTP service for the Checkout.com sandbox network token.
      */
     sandbox: function() {
-        return svc.LocalServiceRegistry.createService('cko.network.token.sandbox.service', {
+        return LocalServiceRegistry.createService('cko.network.token.sandbox.service', {
             createRequest: function(svc, args) {
                 // Prepare the http service
                 svc.addHeader('Authorization', util.getAccountKeys().publicKey);
@@ -39,7 +39,7 @@ var wrapper = {
      * Initialize HTTP service for the Checkout.com live network token.
      */
     live: function() {
-        return svc.LocalServiceRegistry.createService('cko.network.token.live.service', {
+        return LocalServiceRegistry.createService('cko.network.token.live.service', {
             createRequest: function(svc, args) {
                 // Prepare the http service
                 svc.addHeader('Authorization', util.getAccountKeys().publicKey);
