@@ -126,8 +126,9 @@ var ckoHelper = {
      * @param {Object} data The log data
      * @returns {Object} The filtered data
      */
-    removeSentisiveData: function(data) {
+    removeSentisiveData: function(rawData) {
         // Card data
+        var data = rawData;
         if (Object.prototype.hasOwnProperty.call(data, 'source')) {
             if (Object.prototype.hasOwnProperty.call(data.source, 'number')) data.source.number.replace(/^.{14}/g, '*');
             if (Object.prototype.hasOwnProperty.call(data.source, 'cvv')) data.source.cvv.replace(/^.{3}/g, '*');
