@@ -69,7 +69,7 @@ server.get('KlarnaSession', function(req, res, next) {
         );
     }
 
-    next();
+    return next();
 });
 
 /*
