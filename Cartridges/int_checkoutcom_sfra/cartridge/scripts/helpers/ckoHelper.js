@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 /* API Includes */
 var Transaction = require('dw/system/Transaction');

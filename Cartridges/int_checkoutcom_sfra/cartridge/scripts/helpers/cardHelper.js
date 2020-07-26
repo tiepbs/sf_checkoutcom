@@ -16,6 +16,7 @@ var cardHelper = {
      * @param {Object} paymentData The payment data
      * @param {string} processorId The processor ID
      * @param {string} orderNumber The order number
+     * @param {Object} req The HTTP request data
      * @returns {boolean} The request success or failure
      */
     handleRequest: function(paymentData, processorId, orderNumber, req) {
