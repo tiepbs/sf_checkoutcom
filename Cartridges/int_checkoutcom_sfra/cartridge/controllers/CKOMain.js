@@ -39,9 +39,11 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
             }
         );
 
+        // Load the order
+        var order = OrderMgr.getOrder(gVerify.reference);
+
         // If there is a valid response
         if (typeof (gVerify) === 'object' && Object.prototype.hasOwnProperty.call(gVerify, 'id')) {
-            var order = OrderMgr.getOrder(gVerify.reference);
             if (ckoHelper.redirectPaymentSuccess(gVerify)) {
                 // Show order confirmation page
                 paymentHelper.getConfirmationPageRedirect(res, order);
@@ -57,9 +59,9 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
         }
     } else {
         var gResponse = JSON.parse(req.querystring);
-        if (ckoHelper.paymentIsValid(gResponse)) {
+        if (ckoHelper.paymentSuccess(gResponse)) {
             // Load the order
-            var order = OrderMgr.getOrder(gVerify.reference);
+            var order = OrderMgr.getOrder(gResponse.reference);
 
             // Redirect to the confirmation page
             paymentHelper.getConfirmationPageRedirect(res, order);
