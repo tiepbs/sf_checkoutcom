@@ -17,6 +17,7 @@ var savedCardHelper = {
      * @param {string} cardUuid The card uuid
      * @param {string} customerNo The customer number
      * @param {string} methodId The method id
+     * @returns {Object} A card object
      */
     getSavedCard: function(cardUuid, customerNo, methodId) {
         // Get the customer
@@ -40,9 +41,10 @@ var savedCardHelper = {
     },
 
     /**
-     * Get all customer saved cards
+     * Get all customer saved cards.
      * @param {string} customerNo The customer number
-     * @param {string} customerNo The customer number
+     * @param {string} methodId The method ID
+     * @returns {Array} A list of saved cards
      */
     getSavedCards: function(customerNo, methodId) {
         // Prepare the processor id
@@ -91,11 +93,14 @@ var savedCardHelper = {
         return cards;
     },
 
-    /*
-     * Save a card in customer account
+    /**
+     * Save a card in the customer account.
+     * @param {Object} paymentData The payment data
+     * @param {Object} reg The HTTP request data
+     * @returns {string} A card uuid
      */
     saveCard: function(paymentData, req) {
-    // Get the customer profile
+        // Get the customer profile
         var customerNo = req.currentCustomer.profile.customerNo;
         var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
         var processorId = paymentData.paymentMethod.value;
@@ -123,8 +128,9 @@ var savedCardHelper = {
         return uuid;
     },
 
-    /*
-     * Update a card in customer account
+    /**
+     * Update a card in the customer account.
+     * @param {Object} hook The gateway webhook data
      */
     updateSavedCard: function(hook) {
         var condition1 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'card_uuid');
@@ -148,8 +154,9 @@ var savedCardHelper = {
         }
     },
 
-    /*
-     * Delete a card in customer account
+    /**
+     * Delete a card in customer account.
+     * @param {Object} hook The gateway webhook data
      */
     deleteSavedCard: function(hook) {
         var condition1 = Object.prototype.hasOwnProperty.call(hook, 'data') && Object.prototype.hasOwnProperty.call(hook.data, 'metadata');
@@ -182,7 +189,7 @@ var savedCardHelper = {
     },
 };
 
-/*
-* Module exports
-*/
+/**
+ * Module exports
+ */
 module.exports = savedCardHelper;
