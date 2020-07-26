@@ -431,6 +431,7 @@ var ckoHelper = {
             Transaction.wrap(function() {
                 // eslint-disable-next-line
                 if (session.customer.profile !== null) {
+                    // eslint-disable-next-line
                     session.customer.profile.custom.ckoCustomerId = gatewayResponse.card.customerId;
                 }
             });
@@ -696,7 +697,7 @@ var ckoHelper = {
         var captureOnMin = configCaptureTime > 0 ? configCaptureTime : 0.5;
 
         // Convert the capture time from minutes to milliseconds
-        var captureOnMs = now + parseInt(captureOnMin) * 60000;
+        var captureOnMs = now + (parseInt(captureOnMin) * 60000);
 
         // Convert the capture time to ISO 8601 format
         return new Date(captureOnMs).toISOString();
@@ -830,7 +831,7 @@ var ckoHelper = {
         // Prepare some variables
         var currency = args.order.getCurrencyCode();
         var it = args.order.productLineItems.iterator();
-        var products_quantites = [];
+        var productsQuantites = [];
 
         // Iterate through the products
         while (it.hasNext()) {
@@ -848,7 +849,7 @@ var ckoHelper = {
                 total_tax_amount: this.getFormattedPrice(pli.adjustedTax.value, currency),
             };
 
-            products_quantites.push(products);
+            productsQuantites.push(products);
         }
 
         // Set the shipping variables
@@ -863,10 +864,10 @@ var ckoHelper = {
         };
 
         if (args.order.shippingTotalPrice.value > 0) {
-            products_quantites.push(shipping);
+            productsQuantites.push(shipping);
         }
 
-        return products_quantites;
+        return productsQuantites;
     },
 
     /**
