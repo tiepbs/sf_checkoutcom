@@ -104,7 +104,7 @@ server.post('HandleWebhook', function(req, res, next) {
             var func = '';
             var parts = hook.type.split('_');
             for (var i = 0; i < parts.length; i++) {
-                func += (i == 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+                func += (i === 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
             }
 
             // Call the event
