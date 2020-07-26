@@ -663,8 +663,9 @@ var ckoHelper = {
     },
 
     /**
-     * Return Customer FullName.
+     * Return a customer full name.
      * @param {Object} args The method arguments
+     * @returns {string} The customer name
      */
     getCustomerName: function (args) {
         // Load the order information
@@ -678,7 +679,8 @@ var ckoHelper = {
     },
 
     /**
-     * Return capture time.
+     * Return the capture time.
+     * @returns {Object} The capture time
      */
     getCaptureTime: function () {
         // Get the current date/time in milliseconds
@@ -696,20 +698,24 @@ var ckoHelper = {
     },
 
     /**
-     * Build 3ds object.
+     * Build a 3ds object.
+     * @returns {Object} The 3ds data
      */
     get3Ds: function () {
         // 3ds object
-        var ds = {
+        var treeDs = {
             "enabled" : this.getValue('cko3ds'),
             "attempt_n3d" : this.getValue('ckoN3ds')
         }
 
-        return ds;
+        return treeDs;
     },
 
     /**
      * Build metadata object.
+     * @param {Object} data The request data
+     * @param {string} processorId The processor id
+     * @returns {Object} The metadata
      */
     getMetadata: function (data, processorId) {
         // Prepare the base metadata
@@ -730,8 +736,9 @@ var ckoHelper = {
     },
 
     /**
-     * Get Billing Country.
+     * Get the billing country.
      * @param {Object} args The method arguments
+     * @returns {string} The billing country code
      */
     getBillingCountry: function (args) {
         // Load the card and order information
@@ -744,7 +751,11 @@ var ckoHelper = {
         return country;
     },
 
-    // Build the Billing object
+    /**
+     * Get the billing object.
+     * @param {Object} args The method arguments
+     * @returns {Object} The billing object
+     */
     getBilling: function (args) {
         // Get billing address information
         var billingAddress = args.order.getBillingAddress();
@@ -763,7 +774,9 @@ var ckoHelper = {
     },
 
     /**
-     * Return Basket Item object.
+     * Get product quantities from a basket.
+     * @param {Object} basket The basket instance
+     * @returns {Array} The list of quantities
      */
     getBasketObject: function (basket) {
         var currency = basket.getCurrencyCode();
@@ -804,8 +817,9 @@ var ckoHelper = {
     },
 
     /**
-     * Return Basket Item object.
+     * Get product quantities from an order.
      * @param {Object} args The method arguments
+     * @returns {Array} The list of quantities
      */
     getOrderBasketObject: function (args) {
         // Prepare some variables
@@ -852,6 +866,8 @@ var ckoHelper = {
 
     /**
      * Return the basket billing address.
+     * @param {Object} basket The basket instance
+     * @returns {Object} The billing address
      */
     getBasketAddress: function (basket) {
         var address = {
@@ -873,6 +889,7 @@ var ckoHelper = {
     /**
      * Return the order billing address.
      * @param {Object} args The method arguments
+     * @returns {Object} The billing address
      */
     getOrderAddress: function (args) {
         var address = {
