@@ -5,7 +5,7 @@ var URLUtils = require('dw/web/URLUtils');
 var Resource = require('dw/web/Resource');
 
 /**
- * paymentHelper module.
+ * Payment helper module.
  */
 var paymentHelper = {
     /**

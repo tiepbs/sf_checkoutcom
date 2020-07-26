@@ -11,11 +11,13 @@ var Money = require('dw/value/Money');
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /**
- * Transaction helper.
+ * Transaction helper module.
  */
 var transactionHelper = {
-    /*
+    /**
      * Get webhook transaction amount
+     * @param {Object} hook The gateway webhook data
+     * @returns {Object} The formatted amount object
      */
     getHookTransactionAmount : function (hook) {
         var divider = ckoHelper.getCkoFormatedValue(hook.data.currency);
@@ -26,8 +28,9 @@ var transactionHelper = {
         );
     },
 
-    /*
+    /**
      * Create an authorization transaction
+     * @param {Object} hook The gateway webhook data
      */
     createAuthorization: function (hook) {
         // Get the transaction amount
@@ -55,8 +58,11 @@ var transactionHelper = {
         });
     },
 
-    /*
+    /**
      * Get a parent transaction from a payment id
+     * @param {Object} hook The gateway webhook data
+     * @param {string} transactionType The transaction type
+     * @returns {Object} The parent transaction instance
      */
     getParentTransaction: function (hook, transactionType) {
         // Prepare the payload
@@ -89,6 +95,9 @@ var transactionHelper = {
 
     /**
      * Load a transaction by Id.
+     * @param {Object} hook The gateway webhook data
+     * @param {string} orderNo The order number
+     * @returns {Object} The transactionn instance
      */
     loadTransaction: function (transactionId, orderNo) {
         // Query the orders
@@ -119,6 +128,8 @@ var transactionHelper = {
 
     /**
      * Check if a capture transaction can allow refunds.
+     * @param {Object} hook The gateway webhook data
+     * @returns {boolean} Should the refund action be closed
      */
     shouldCloseRefund: function (order) {
         // Prepare the totals
@@ -152,5 +163,4 @@ var transactionHelper = {
 /*
  * Module exports
  */
-
 module.exports = transactionHelper;
