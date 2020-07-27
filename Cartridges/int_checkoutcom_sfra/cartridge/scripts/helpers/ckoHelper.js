@@ -351,9 +351,9 @@ var ckoHelper = {
     },
 
     /**
-     * Strip spaces form a number.
-     * @param {number} num The number to process
-     * @returns {number} The processed number
+     * Strip spaces form a card number.
+     * @param {string} num The number to process
+     * @returns {string} The processed number
      */
     getFormattedNumber: function(num) {
         return num.toString().replace(/\s/g, '');
