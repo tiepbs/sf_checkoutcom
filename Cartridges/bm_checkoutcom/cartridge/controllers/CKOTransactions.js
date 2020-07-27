@@ -9,8 +9,7 @@ var CKOHelper = require('~/cartridge/scripts/helpers/CKOHelper');
 /**
  * Get the transactions list
  */
-function listTransactions()
-{
+function listTransactions() {
     // Render the template
     ISML.renderTemplate('transactions/list');
 }
@@ -18,38 +17,39 @@ function listTransactions()
 /**
  * Get the transactions table data
  */
-function getTransactionsData()
-{
+function getTransactionsData() {
     // Prepare the output array
     var data = CKOHelper.getCkoTransactions();
-    
+
     // Send the AJAX response
-    ISML.renderTemplate('transactions/ajax', {data: JSON.stringify(data) });
+    // eslint-disable-next-line
+    response.writer.println(JSON.stringify(data));
 }
 
 /**
  * Perform a remote Hub Call
  */
-function remoteCall()
-{
+function remoteCall() {
     // Get the operating mode
     var mode = CKOHelper.getValue('ckoMode');
-   
+
     // Get the transaction task
+    // eslint-disable-next-line
     var task = request.httpParameterMap.get('task');
 
     // Prepare the payload
     var gRequest = {
-        amount: CKOHelper.getFormattedPrice(request.httpParameterMap.get('amount').stringValue),
-        chargeId: request.httpParameterMap.get('pid').stringValue
-    }
+        // eslint-disable-next-line
+        amount: CKOHelper.getFormattedPrice(request.httpParameterMap.get('amount').stringValue), // eslint-disable-next-line
+        chargeId: request.httpParameterMap.get('pid').stringValue, // eslint-disable-next-line
+    };
 
     // Set the service parameter
     var serviceName = 'cko.transaction.' + task + '.' + mode + '.service';
 
     // Log the payment request data
-    ckoHelper.log(
-        ckoHelper._('cko.request.data', 'cko') + ' - ' + serviceName,
+    CKOHelper.log(
+        CKOHelper._('cko.request.data', 'cko') + ' - ' + serviceName,
         gRequest
     );
 
@@ -60,13 +60,14 @@ function remoteCall()
     );
 
     // Log the payment response data
-    ckoHelper.log(
-        ckoHelper._('cko.response.data', 'cko') + ' - ' + serviceName,
+    CKOHelper.log(
+        CKOHelper._('cko.response.data', 'cko') + ' - ' + serviceName,
         gResponse
     );
 
     // Return the response
-    ISML.renderTemplate('transactions/ajax', {data: JSON.stringify(gResponse) });
+    // eslint-disable-next-line
+    response.writer.println(JSON.stringify(gResponse));
 }
 
 /*

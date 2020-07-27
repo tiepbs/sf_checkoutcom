@@ -11,13 +11,15 @@ var Money = require('dw/value/Money');
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /**
- * Transaction helper.
+ * Transaction helper module.
  */
 var transactionHelper = {
-    /*
+    /**
      * Get webhook transaction amount
+     * @param {Object} hook The gateway webhook data
+     * @returns {Object} The formatted amount object
      */
-    getHookTransactionAmount : function (hook) {
+    getHookTransactionAmount: function(hook) {
         var divider = ckoHelper.getCkoFormatedValue(hook.data.currency);
         var amount = parseInt(hook.data.amount) / divider;
         return new Money(
@@ -26,10 +28,11 @@ var transactionHelper = {
         );
     },
 
-    /*
+    /**
      * Create an authorization transaction
+     * @param {Object} hook The gateway webhook data
      */
-    createAuthorization: function (hook) {
+    createAuthorization: function(hook) {
         // Get the transaction amount
         var transactionAmount = this.getHookTransactionAmount(hook);
 
@@ -38,8 +41,7 @@ var transactionHelper = {
 
         // Get the payment processor id
         var paymentProcessorId = hook.data.metadata.payment_processor;
-        
-        Transaction.wrap(function () {
+        Transaction.wrap(function() {
             // Create the payment instrument and processor
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
@@ -55,15 +57,18 @@ var transactionHelper = {
         });
     },
 
-    /*
+    /**
      * Get a parent transaction from a payment id
+     * @param {Object} hook The gateway webhook data
+     * @param {string} transactionType The transaction type
+     * @returns {Object} The parent transaction instance
      */
-    getParentTransaction: function (hook, transactionType) {
+    getParentTransaction: function(hook, transactionType) {
         // Prepare the payload
         var mode = ckoHelper.getValue('ckoMode');
         var ckoChargeData = {
-            chargeId: hook.data.id
-        }
+            chargeId: hook.data.id,
+        };
 
         // Get the payment actions
         var paymentActions = ckoHelper.gatewayClientRequest(
@@ -78,34 +83,37 @@ var transactionHelper = {
 
             // Return the requested transaction
             for (var i = 0; i < paymentActionsArray.length; i++) {
-                if (paymentActionsArray[i].type == transactionType) {
+                if (paymentActionsArray[i].type === transactionType) {
                     return this.loadTransaction(paymentActionsArray[i].id, hook.data.reference);
                 }
             }
         }
-        
+
         return null;
     },
 
     /**
      * Load a transaction by Id.
+     * @param {string} transactionId The transaction id
+     * @param {string} orderNo The order number
+     * @returns {Object} The transactionn instance
      */
-    loadTransaction: function (transactionId, orderNo) {
+    loadTransaction: function(transactionId, orderNo) {
         // Query the orders
-        var result  = ckoHelper.getOrders(orderNo);
+        var result = ckoHelper.getOrders(orderNo);
 
         // Loop through the results
-        for each(var item in result) {
+        for (var i = 0; i < result.length; i++) {
             // Get the payment instruments
-            var paymentInstruments = item.getPaymentInstruments();
-            
+            var paymentInstruments = result[i].getPaymentInstruments().toArray();
+
             // Loop through the payment instruments
-            for each(var instrument in paymentInstruments) {
+            for (var j = 0; j < paymentInstruments.length; j++) {
                 // Get the payment transaction
-                var paymentTransaction = instrument.getPaymentTransaction();
+                var paymentTransaction = paymentInstruments[j].getPaymentTransaction();
 
                 // Prepare the filter condition
-                var isIdMatch = paymentTransaction.transactionID == transactionId;
+                var isIdMatch = paymentTransaction.transactionID === transactionId;
 
                 // Add the payment transaction to the output
                 if (isIdMatch) {
@@ -113,44 +121,45 @@ var transactionHelper = {
                 }
             }
         }
-        
+
         return null;
     },
 
     /**
      * Check if a capture transaction can allow refunds.
+     * @param {Object} order The order instance
+     * @returns {boolean} Should the refund action be closed
      */
-    shouldCloseRefund: function (order) {
+    shouldCloseRefund: function(order) {
         // Prepare the totals
         var totalRefunded = 0;
         var totalCaptured = 0;
 
         // Get the payment instruments
-        var paymentInstruments = order.getPaymentInstruments();
+        var paymentInstruments = order.getPaymentInstruments().toArray();
 
         // Loop through the payment instruments
-        for each(var instrument in paymentInstruments) {
+        for (var i = 0; i < paymentInstruments.length; i++) {
             // Get the payment transaction
-            var paymentTransaction = instrument.getPaymentTransaction();
+            var paymentTransaction = paymentInstruments[i].getPaymentTransaction();
 
             // Calculate the total refunds
-            if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CREDIT) {
+            if (paymentTransaction.type.toString() === PaymentTransaction.TYPE_CREDIT) {
                 totalRefunded += parseFloat(paymentTransaction.amount.value);
             }
 
             // Calculate the total captures
-            if (paymentTransaction.type.toString() == PaymentTransaction.TYPE_CAPTURE) {
+            if (paymentTransaction.type.toString() === PaymentTransaction.TYPE_CAPTURE) {
                 totalCaptured += parseFloat(paymentTransaction.amount.value);
             }
         }
-      
+
         // Check if a refund is possible
         return totalRefunded >= totalCaptured;
-    }
+    },
 };
 
 /*
  * Module exports
  */
-
 module.exports = transactionHelper;

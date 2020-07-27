@@ -1,33 +1,30 @@
 'use strict';
 
 // jQuery Ajax helpers on DOM ready
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     launchApplePay();
 }, false);
 
 function getLineItems() {
-	
     return [];
 }
 
 function getSupportedNetworks() {
-	
     return ['amex', 'masterCard', 'visa'];
 }
 
 function getMerchantCapabilities() {
-	
     return ['supportsCredit', 'supportsDebit'];
 }
 
 function performValidation(valURL) {
     var controllerUrl = jQuery('[id="ckoApplePayValidationUrl"]').val();
     var validationUrl = controllerUrl + '?u=' + valURL;
-    
+
     return new Promise(
-        function (resolve, reject) {
+        function(resolve, reject) {
             var xhr = new XMLHttpRequest();
-            xhr.onload = function () {
+            xhr.onload = function() {
                 var data = JSON.parse(this.responseText);
                 resolve(data);
             };
@@ -40,20 +37,19 @@ function performValidation(valURL) {
 
 function sendPaymentRequest(paymentData) {
     return new Promise(
-        function (resolve, reject) {
+        function(resolve, reject) {
             resolve(true);
         }
     );
 }
 
 function launchApplePay() {
-	
     // Check if the session is available
     if (window.ApplePaySession) {
         var merchantIdentifier = jQuery('[id="ckoApplePayMerchantId"]').val();
         var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
         promise.then(
-            function (canMakePayments) {
+            function(canMakePayments) {
                 if (canMakePayments) {
                     jQuery('.ckoApplePayButton').show();
                 } else {
@@ -61,7 +57,7 @@ function launchApplePay() {
                 }
             }
         ).catch(
-            function (error) {
+            function(error) {
                 console.log(error);
             }
         );
@@ -72,8 +68,7 @@ function launchApplePay() {
 
     // Handle the events
     jQuery('.ckoApplePayButton').click(
-        function (evt) {
-        	
+        function(evt) {
             // Prepare the parameters
             var runningTotal = jQuery('[id="ckoApplePayAmount"]').val();
 
@@ -83,31 +78,31 @@ function launchApplePay() {
                 countryCode: jQuery('[id="ckoApplePaySiteCountry"]').val(),
                 total: {
                     label: jQuery('[id="ckoApplePaySiteName"]').val(),
-                    amount: runningTotal
+                    amount: runningTotal,
                 },
                 supportedNetworks: getSupportedNetworks(),
-                merchantCapabilities: getMerchantCapabilities()
+                merchantCapabilities: getMerchantCapabilities(),
             };
 
             // Start the payment session
             var session = new ApplePaySession(1, paymentRequest);
 
             // Merchant Validation
-            session.onvalidatemerchant = function (event) {
+            session.onvalidatemerchant = function(event) {
                 var promise = performValidation(event.validationURL);
                 promise.then(
-                    function (merchantSession) {
+                    function(merchantSession) {
                         session.completeMerchantValidation(merchantSession);
                     }
                 ).catch(
-                    function (error) {
+                    function(error) {
                         console.log(error);
                     }
                 );
-            }
+            };
 
             // Shipping contact
-            session.onshippingcontactselected = function (event) {
+            session.onshippingcontactselected = function(event) {
                 var status = ApplePaySession.STATUS_SUCCESS;
 
                 // Shipping info
@@ -115,68 +110,66 @@ function launchApplePay() {
                 var newTotal = {
                     type: 'final',
                     label: jQuery('[id="ckoApplePaySiteName"]').val(),
-                    amount: runningTotal
+                    amount: runningTotal,
                 };
                 session.completeShippingContactSelection(status, shippingOptions, newTotal, getLineItems());
-            }
+            };
 
             // Shipping method selection
-            session.onshippingmethodselected = function (event) {
+            session.onshippingmethodselected = function(event) {
                 var status = ApplePaySession.STATUS_SUCCESS;
                 var newTotal = {
                     type: 'final',
                     label: jQuery('[id="ckoApplePaySiteName"]').val(),
-                    amount: runningTotal
+                    amount: runningTotal,
                 };
                 session.completeShippingMethodSelection(status, newTotal, getLineItems());
-            }
+            };
 
             // Payment method selection
-            session.onpaymentmethodselected = function (event) {
+            session.onpaymentmethodselected = function(event) {
                 var newTotal = {
                     type: 'final',
                     label: jQuery('[id="ckoApplePaySiteName"]').val(),
-                    amount: runningTotal
+                    amount: runningTotal,
                 };
                 session.completePaymentMethodSelection(newTotal, getLineItems());
-            }
+            };
 
             // Payment method authorization
-            session.onpaymentauthorized = function (event) {
-            	
+            session.onpaymentauthorized = function(event) {
                 // Prepare the payload
                 var payload = event.payment.token;
 
                 // Send the request
                 var promise = sendPaymentRequest(payload);
                 promise.then(
-                    function (success) {
+                    function(success) {
                         var status;
                         if (success) {
                             status = ApplePaySession.STATUS_SUCCESS;
                         } else {
                             status = ApplePaySession.STATUS_FAILURE;
                         }
-                
+
                         session.completePayment(status);
 
                         if (success) {
-                            
                             // Redirect to success page
                             jQuery('[id="dwfrm_applePayForm_data"]').val(JSON.stringify(payload));
                         }
                     }
                 ).catch(
-                    function (error) {
+                    function(error) {
                         console.log(error);
                     }
                 );
-            }
+            };
 
             // Session cancellation
-            session.oncancel = function (event) {
+            session.oncancel = function(event) {
                 console.log(event);
-            }
+            };
 
             // Begin session
             session.begin();

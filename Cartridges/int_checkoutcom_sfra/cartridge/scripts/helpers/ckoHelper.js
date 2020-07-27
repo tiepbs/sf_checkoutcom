@@ -1,10 +1,9 @@
-"use strict"
+'use strict';
 
 /* API Includes */
 var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var Logger = require('dw/system/Logger');
-var BasketMgr = require('dw/order/BasketMgr');
 var SystemObjectMgr = require('dw/object/SystemObjectMgr');
 var Resource = require('dw/web/Resource');
 var Site = require('dw/system/Site');
@@ -12,142 +11,167 @@ var Site = require('dw/system/Site');
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 
-/*
-* Utility functions for my cartridge integration.
-*/
+/**
+ * Utility functions.
+ */
 var ckoHelper = {
-    /*
-     * Get a failed payment error message
+    /**
+     * Get a failed payment error message.
+     * @returns {string} The message string
      */
-    getPaymentFailureMessage: function () {
+    getPaymentFailureMessage: function() {
         return Resource.msg('cko.transaction.failedMessage1', 'cko', null)
         + ' ' + Resource.msg('cko.transaction.failedMessage2', 'cko', null);
     },
 
-    /*
-     * Get a failed order error message
+    /**
+     * Get a failed order error message.
+     * @returns {string} The message string
      */
-    getOrderFailureMessage: function () {
+    getOrderFailureMessage: function() {
         return Resource.msg('cko.transaction.failedMessage1', 'cko', null)
         + ' ' + Resource.msg('cko.transaction.failedMessage3', 'cko', null);
     },
 
 
-    /*
-     * Get user language
+    /**
+     * Get the user language.
+     * @returns {string} The user language code
      */
-    getLanguage: function () {
+    getLanguage: function() {
+        // eslint-disable-next-line
         return request.locale.replace('_', '-');
     },
 
-    /*
-     * Get Site Name
+    /**
+     * Get the site name.
+     * @returns {string} The site name
      */
-    getSiteName: function () {
-        return dw.system.Site.getCurrent().name;
+    getSiteName: function() {
+        return Site.getCurrent().name;
     },
 
-    /*
-     * Get site Hostname
+    /**
+     * Get the site hostname.
+     * @returns {string} The site host name
      */
-    getSiteHostName: function () {
-        return dw.system.Site.getCurrent().httpHostName;
+    getSiteHostName: function() {
+        return Site.getCurrent().httpHostName;
     },
 
-    /*
+    /**
      * Check if the gateway response is valid.
+     * @param {Object} req The HTTP response data
+     * @returns {boolean} Is the private shared key valid
      */
-    isValidResponse: function (req) {
-        var requestKey = req.httpHeaders['authorization'];
+    isValidResponse: function(req) {
+        var requestKey = req.httpHeaders.authorization;
         var privateSharedKey = this.getAccountKeys().privateSharedKey;
 
-        return requestKey == privateSharedKey;
+        return requestKey === privateSharedKey;
     },
 
-    /*
-     * Get value from custom preferences
+    /**
+     * Get value from custom preferences.
+     * @param {string} field The field id
+     * @returns {string} The preference value
      */
-    getValue: function (field) {
-        return dw.system.Site.getCurrent().getCustomPreferenceValue(field);
+    getValue: function(field) {
+        return Site.getCurrent().getCustomPreferenceValue(field);
     },
 
-    /*
-     * Get site country code from locale
+    /**
+     * Get the site country code from locale.
+     * @returns {string} The site  country code
      */
-    getSiteCountryCode: function () {
+    getSiteCountryCode: function() {
         return Site.getCurrent().defaultLocale.split('_')[1];
     },
 
-    /*
+    /**
      * Handles string translation with language resource files.
+     * @param {string} strValue The string value
+     * @param {string} strFile The file name
+     * @returns {string} The translated string value
      */
-    _: function (strValue, strFile) {
+    _: function(strValue, strFile) {
         return Resource.msg(strValue, strFile, null);
     },
 
-    /*
-     * Write gateway information to the website's custom log file
+    /**
+     * Write gateway information to the website's custom log file.
+     * @param {string} dataType The data type
+     * @param {Object} gatewayData The gateway data
      */
-    log: function (dataType, gatewayData) {
-        if (this.getValue('ckoDebugEnabled') == true) {
+    log: function(dataType, gatewayData) {
+        if (this.getValue('ckoDebugEnabled') === true) {
             // Get the logger
             var logger = Logger.getLogger('ckodebug');
 
             // Remove sensitive data
-            gatewayData = this.removeSentisiveData(gatewayData);
+            var cleanData = this.removeSentisiveData(gatewayData);
 
             // Log the data
             if (logger) {
                 logger.debug(
                     dataType + ' : {0}',
-                    JSON.stringify(gatewayData)
+                    JSON.stringify(cleanData)
                 );
             }
         }
     },
 
-    /*
-     * Remove sentitive data from the logs
+    /**
+     * Remove sentitive data from the logs.
+     * @param {Object} rawData The log data
+     * @returns {Object} The filtered data
      */
-    removeSentisiveData: function (data) {
+    removeSentisiveData: function(rawData) {
         // Card data
-        if (data.hasOwnProperty('source')) {
-           if (data.source.hasOwnProperty('number')) data.source.number.replace(/^.{14}/g, '*');
-           if (data.source.hasOwnProperty('cvv')) data.source.cvv.replace(/^.{3}/g, '*');
-           if (data.source.hasOwnProperty('billing_address')) delete data.source.billing_address;
-           if (data.source.hasOwnProperty('phone')) delete data.source.phone;
-           if (data.source.hasOwnProperty('name')) delete data.source.name;
+        var data = rawData;
+        if (Object.prototype.hasOwnProperty.call(data, 'source')) {
+            if (Object.prototype.hasOwnProperty.call(data.source, 'number')) data.source.number.replace(/^.{14}/g, '*');
+            if (Object.prototype.hasOwnProperty.call(data.source, 'cvv')) data.source.cvv.replace(/^.{3}/g, '*');
+            if (Object.prototype.hasOwnProperty.call(data.source, 'billing_address')) delete data.source.billing_address;
+            if (Object.prototype.hasOwnProperty.call(data.source, 'phone')) delete data.source.phone;
+            if (Object.prototype.hasOwnProperty.call(data.source, 'name')) delete data.source.name;
         }
 
         // Customer data
-        if (data.hasOwnProperty('customer')) delete data.customer;
-        if (data.hasOwnProperty('shipping')) delete data.shipping;
-        if (data.hasOwnProperty('billing')) delete data.billing;
+        if (Object.prototype.hasOwnProperty.call(data, 'customer')) delete data.customer;
+        if (Object.prototype.hasOwnProperty.call(data, 'shipping')) delete data.shipping;
+        if (Object.prototype.hasOwnProperty.call(data, 'billing')) delete data.billing;
 
         return data;
     },
 
-    /*
-     * Return order id
+    /**
+     * Return an order id.
+     * @returns {string} The order id
      */
-    getOrderId: function () {
+    getOrderId: function() {
+        // eslint-disable-next-line
         var orderId = (this.getValue('cko3ds')) ? request.httpParameterMap.get('reference').stringValue : request.httpParameterMap.get('reference').stringValue;
         if (orderId === null) {
+            // eslint-disable-next-line
             orderId = session.privacy.ckoOrderId;
         }
 
         return orderId;
     },
 
-    /*
-     * Cartridge metadata.
+    /**
+     * Get the cartridge metadata.
+     * @returns {string} The platform data
      */
-    getCartridgeMeta: function () {
-        return this.getValue("ckoSfraPlatformData");
+    getCartridgeMeta: function() {
+        return this.getValue('ckoSfraPlatformData');
     },
 
-    /*
-     * Get a customer full name
+    /**
+     * Get a customer full name.
+     * @param {Object} customerProfile The customer profile instance
+     * @returns {string} The customer name
      */
     getCustomerFullName: function(customerProfile) {
         var customerName = '';
@@ -157,32 +181,39 @@ var ckoHelper = {
         return customerName;
     },
 
-    /*
-     * Get Account API Keys
+    /**
+     * Get the account API keys.
+     * @returns {Object} The account keys object
      */
-    getAccountKeys: function () {
+    getAccountKeys: function() {
         var keys = {};
-        var str = this.getValue('ckoMode') == 'live' ? 'Live' : 'Sandbox';
+        var str = this.getValue('ckoMode') === 'live' ? 'Live' : 'Sandbox';
 
         keys.publicKey = this.getValue('cko' + str + 'PublicKey');
-        keys.secretKey = this.getValue('cko' +  str + 'SecretKey');
-        keys.privateSharedKey = this.getValue('cko' +  str + 'PrivateSharedKey');
+        keys.secretKey = this.getValue('cko' + str + 'SecretKey');
+        keys.privateSharedKey = this.getValue('cko' + str + 'PrivateSharedKey');
 
         return keys;
     },
 
-    /*
-     * Create an HTTP client to handle request to gateway
+    /**
+     * Create an HTTP client to handle request to gateway.
+     * @param {string} serviceId The service id
+     * @param {Object} data The request data
+     * @param {string} method The HTTP request method
+     * @returns {Object} The HTTP response object
      */
-    gatewayClientRequest: function (serviceId, requestData, method) {
-        var method = method || 'POST';
+    gatewayClientRequest: function(serviceId, data, method) {
+        // eslint-disable-next-line
+        method = method || 'POST';
         var serv = this.getService(serviceId);
+        var requestData = data;
 
         // Prepare the request URL and data
-        if (requestData.hasOwnProperty('chargeId')) {
+        if (Object.prototype.hasOwnProperty.call(requestData, 'chargeId')) {
             var requestUrl = serv.getURL().replace('chargeId', requestData.chargeId);
             serv.setURL(requestUrl);
-            delete requestData['chargeId'];
+            delete requestData.chargeId;
         }
 
         // Set the request method
@@ -190,15 +221,20 @@ var ckoHelper = {
 
         // Call the service
         var resp = serv.call(requestData);
-        if (resp.status != 'OK') {
+        if (resp.status !== 'OK') {
             return resp.error;
         }
 
         return resp.object;
     },
 
-    getService: function (serviceId) {
-        var parts  =  serviceId.split('.');
+    /**
+     * Get an HTTP service.
+     * @param {string} serviceId The service id
+     * @returns {Object} The HTTP service instance
+     */
+    getService: function(serviceId) {
+        var parts = serviceId.split('.');
         var entity = parts[1];
         var action = parts[2];
         var mode = parts[3];
@@ -208,23 +244,27 @@ var ckoHelper = {
         return svcClass[mode]();
     },
 
-    /*
-     * Currency Conversion Ratio
+    /**
+     * Currency conversion mapping.
+     * @param {string} currency The currency code
+     * @returns {number} The conversion factor
      */
-    getCkoFormatedValue: function (currency) {
+    getCkoFormatedValue: function(currency) {
         if (ckoCurrencyConfig.x1.currencies.match(currency)) {
             return ckoCurrencyConfig.x1.multiple;
         } else if (ckoCurrencyConfig.x1000.currencies.match(currency)) {
             return ckoCurrencyConfig.x1000.multiple;
-        } else {
-            return 100;
         }
+        return 100;
     },
 
-    /*
-     * Format price for cko gateway
+    /**
+     * Format a price for a gateway request.
+     * @param {number} price The price to format
+     * @param {string} currency The currency code
+     * @returns {number} The formatted price
      */
-    getFormattedPrice: function (price, currency) {
+    getFormattedPrice: function(price, currency) {
         var ckoFormateBy = this.getCkoFormatedValue(currency);
         var orderTotalFormated = price * ckoFormateBy;
 
@@ -233,22 +273,25 @@ var ckoHelper = {
 
     /**
      * Get the Checkout.com orders.
+     * @param {string} orderNo The order number
+     * @returns {Array} The list of orders
      */
-    getOrders: function (orderNo) {
+    getOrders: function(orderNo) {
         // Prepare the output array
         var data = [];
 
         // Query the orders
-        var result  = SystemObjectMgr.querySystemObjects('Order', 'orderNo = {0}', 'creationDate desc', orderNo);
+        var result = SystemObjectMgr.querySystemObjects('Order', 'orderNo = {0}', 'creationDate desc', orderNo);
 
         // Loop through the results
-        for each(var item in result) {
+        while (result.hasNext()) {
             // Get the payment instruments
+            var item = result.next();
             var paymentInstruments = item.getPaymentInstruments();
 
             // Loop through the payment instruments
-            for each(var instrument in paymentInstruments) {
-                if (this.isCkoItem(instrument.paymentMethod) && !this.containsObject(item, data)) {
+            for (var i = 0; i < paymentInstruments.length; i++) {
+                if (this.isCkoItem(paymentInstruments[i].paymentMethod) && !this.containsObject(item, data)) {
                     data.push(item);
                 }
             }
@@ -259,8 +302,11 @@ var ckoHelper = {
 
     /**
      * Checks if an object already exists in an array.
+     * @param {Object} obj The object
+     * @param {Array} list The list of objects
+     * @returns {boolean} If the object is found
      */
-    containsObject: function (obj, list) {
+    containsObject: function(obj, list) {
         var i;
         for (i = 0; i < list.length; i++) {
             if (list[i] === obj) {
@@ -273,112 +319,131 @@ var ckoHelper = {
 
     /**
      * Checks if a payment instrument is Checkout.com.
+     * @param {Object} item The payment instrument instance
+     * @returns {boolean} If the instance matches conditions
      */
     isCkoItem: function(item) {
         return item.length > 0 && item.indexOf('CHECKOUTCOM_') >= 0;
     },
 
-    /*
-     * Return the customer data
+    /**
+     * Return the customer data.
+     * @param {Object} order The order instance
+     * @returns {Object} The customer data
      */
     getCustomer: function(order) {
         return {
             email: order.customerEmail,
-            name: order.customerName
+            name: order.customerName,
         };
     },
 
-    /*
-     * Return phone object
+    /**
+     * Return a phone object.
+     * @param {Object} billingAddress The billing data
+     * @returns {Object} The phone object
      */
     getPhone: function(billingAddress) {
         return {
-            country_code        : null,
-            number              : billingAddress.getPhone()
+            country_code: null,
+            number: billingAddress.getPhone(),
         };
     },
 
-    /*
-     * Strip spaces form number
+    /**
+     * Strip spaces form a card number.
+     * @param {string} num The number to process
+     * @returns {string} The processed number
      */
-    getFormattedNumber: function (num) {
+    getFormattedNumber: function(num) {
         return num.toString().replace(/\s/g, '');
     },
 
-    /*
-     * Build the shipping data
+    /**
+     * Build the shipping data.
+     * @param {Object} order The order instance
+     * @returns {Object} The shipping data
      */
-    getShipping: function (order) {
+    getShipping: function(order) {
         // Get shipping address
         var shippingAddress = order.getDefaultShipment().getShippingAddress();
 
         // Create the address data
         var shippingDetails = {
-            address_line1       : shippingAddress.getAddress1(),
-            address_line2       : shippingAddress.getAddress2(),
-            city                : shippingAddress.getCity(),
-            state               : shippingAddress.getStateCode(),
-            zip                 : shippingAddress.getPostalCode(),
-            country             : shippingAddress.getCountryCode().value
+            address_line1: shippingAddress.getAddress1(),
+            address_line2: shippingAddress.getAddress2(),
+            city: shippingAddress.getCity(),
+            state: shippingAddress.getStateCode(),
+            zip: shippingAddress.getPostalCode(),
+            country: shippingAddress.getCountryCode().value,
         };
 
         // Build the shipping data
         var shipping = {
-            address             : shippingDetails,
-            phone               : this.getPhone(order.billingAddress)
+            address: shippingDetails,
+            phone: this.getPhone(order.billingAddress),
         };
 
         return shipping;
     },
 
-    /*
-     * Confirm is a payment is valid from API response code
+    /**
+     * Confirm is a payment is valid from API response code.
+     * @param {Object} gatewayResponse The gateway response
+     * @returns {boolean} The payment success or failure
      */
-    paymentSuccess: function (gatewayResponse) {
-        if (gatewayResponse && gatewayResponse.hasOwnProperty('response_code')) {
-            return gatewayResponse.response_code == "10000"
-            || gatewayResponse.response_code == '10100'
-            || gatewayResponse.response_code == '10200';
+    paymentSuccess: function(gatewayResponse) {
+        if (gatewayResponse && Object.prototype.hasOwnProperty.call(gatewayResponse, 'response_code')) {
+            return gatewayResponse.response_code === '10000'
+            || gatewayResponse.response_code === '10100'
+            || gatewayResponse.response_code === '10200';
         }
 
         return false;
     },
 
-    /*
-     * Confirm is a payment is valid from API redirect response code
+    /**
+     * Confirm is a payment is valid from API redirect response code.
+     * @param {Object} gatewayResponse The gateway response
+     * @returns {boolean} Is redirection needed
      */
-    redirectPaymentSuccess: function (gatewayResponse) {
-      if (gatewayResponse.hasOwnProperty('actions')) {
-          return gatewayResponse
-          && (gatewayResponse.actions[0].response_code == "10000"
-          || gatewayResponse.actions[0].response_code == '10100'
-          || gatewayResponse.actions[0].response_code == '10200');
-      }
+    redirectPaymentSuccess: function(gatewayResponse) {
+        if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'actions')) {
+            return gatewayResponse
+          && (gatewayResponse.actions[0].response_code === '10000'
+          || gatewayResponse.actions[0].response_code === '10100'
+          || gatewayResponse.actions[0].response_code === '10200');
+        }
 
-      if (gatewayResponse.source.hasOwnProperty('type') && gatewayResponse.source.type == 'sofort') {
-          return true;
-      }
+        if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'type') && gatewayResponse.source.type === 'sofort') {
+            return true;
+        }
 
-      return false;
+        return false;
     },
 
-    /*
-     * Write order information to session for the current shopper.
+    /**
+     * Write the order information to session for the current shopper.
+     * @param {Object} gatewayResponse The gateway response
      */
-    updateCustomerData: function (gatewayResponse) {
-        if ((gatewayResponse) && gatewayResponse.hasOwnProperty('card')) {
-            Transaction.wrap(function () {
+    updateCustomerData: function(gatewayResponse) {
+        if ((gatewayResponse) && Object.prototype.hasOwnProperty.call(gatewayResponse, 'card')) {
+            Transaction.wrap(function() {
+                // eslint-disable-next-line
                 if (session.customer.profile !== null) {
+                    // eslint-disable-next-line
                     session.customer.profile.custom.ckoCustomerId = gatewayResponse.card.customerId;
                 }
             });
         }
     },
 
-    /*
-     * Get Basket Quantities
+    /**
+     * Get the basket quantities.
+     * @param {Object} args The method arguments
+     * @returns {number} The basked quantities
      */
-    getQuantity : function (args) {
+    getQuantity: function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
         var quantity = order.getProductQuantityTotal();
@@ -386,23 +451,25 @@ var ckoHelper = {
         return quantity;
     },
 
-    /*
-     * Get Billing Descriptor Object from custom preferences
+    /**
+     * Get the billing descriptor object from custom preferences.
+     * @returns {Object} The billing descriptor data
      */
-    getBillingDescriptor : function () {
-
+    getBillingDescriptor: function() {
         var billingDescriptor = {
-            "name"  : this.getValue('ckoBillingDescriptor1'),
-            "city"  : this.getValue('ckoBillingDescriptor2')
-        }
+            name: this.getValue('ckoBillingDescriptor1'),
+            city: this.getValue('ckoBillingDescriptor2'),
+        };
 
         return billingDescriptor;
     },
 
-    /*
-     * Get Products Information
+    /**
+     * Get the products information.
+     * @param {Object} args The method arguments
+     * @returns {Object} The product information
      */
-    getProductInformation : function (args) {
+    getProductInformation: function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
         var it = order.productLineItems.iterator();
@@ -414,14 +481,14 @@ var ckoHelper = {
 
             // Product id
             var product = {
-                "product_id"    : pli.productID,
-                "quantity"      : pli.quantityValue,
-                "price"         : this.getFormattedPrice(
+                product_id: pli.productID,
+                quantity: pli.quantityValue,
+                price: this.getFormattedPrice(
                     pli.adjustedPrice.value.toFixed(2),
                     args.order.getCurrencyCode()
                 ),
-                "description"   : pli.productName
-            }
+                description: pli.productName,
+            };
 
             // Push to products array
             products.push(product);
@@ -438,36 +505,39 @@ var ckoHelper = {
         return products;
     },
 
-    /*
-     * Return tax object
+    /**
+     * Return the tax object.
+     * @param {Object} args The method arguments
+     * @returns {Object} The tax data
      */
-    getTaxObject : function (args) {
+    getTaxObject: function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
 
         // Prepare the tax data
         var tax = {
-            "product_id"    : args.orderNo,
-            "quantity"      : 1,
-            "price"         : this.getFormattedPrice(
+            product_id: args.orderNo,
+            quantity: 1,
+            price: this.getFormattedPrice(
                 order.getTotalTax().valueOf().toFixed(2),
                 args.order.getCurrencyCode()
             ),
-            "description"   : "Order Tax"
-        }
+            description: 'Order Tax',
+        };
 
         // Test the order
         if (order.getTotalTax().valueOf() > 0) {
             return tax;
-        } else {
-            return false;
         }
+        return false;
     },
 
-    /*
-     * return shipping object
+    /**
+     * Return the shipping object.
+     * @param {Object} args The method arguments
+     * @returns {Object} The shipping data
      */
-    getShippingValue : function (args) {
+    getShippingValue: function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -477,22 +547,23 @@ var ckoHelper = {
         // Check if shipping cost is applicable to this order
         if (shipping.getShippingTotalPrice().valueOf() > 0) {
             var shippment = {
-                "product_id"    : shipping.getShippingMethod().getID(),
-                "quantity"      : 1,
-                "price"         : this.getFormattedPrice(shipping.adjustedShippingTotalPrice.value.toFixed(2), this.getCurrency()),
-                "description"   : shipping.getShippingMethod().getDisplayName() + " Shipping : " + shipping.getShippingMethod().getDescription()
-            }
+                product_id: shipping.getShippingMethod().getID(),
+                quantity: 1,
+                price: this.getFormattedPrice(shipping.adjustedShippingTotalPrice.value.toFixed(2), this.getCurrency()),
+                description: shipping.getShippingMethod().getDisplayName() + ' Shipping : ' + shipping.getShippingMethod().getDescription(),
+            };
 
             return shippment;
-        } else {
-            return false;
         }
+        return null;
     },
 
-    /*
-     * Return Order Currency Code
+    /**
+     * Return the order currency code.
+     * @param {Object} args The method arguments
+     * @returns {string} The currency code
      */
-    getCurrencyCode: function (args) {
+    getCurrencyCode: function(args) {
         // Get the order
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -503,10 +574,12 @@ var ckoHelper = {
         return shippingCurrency;
     },
 
-    /*
-     * Get Product Names
+    /**
+     * Get the product names.
+     * @param {Object} args The method arguments
+     * @returns {Array} The products list
      */
-    getProductNames : function (args) {
+    getProductNames: function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -523,10 +596,12 @@ var ckoHelper = {
         return products;
     },
 
-    /*
-     * get Product price array
+    /**
+     * Get the product price array.
+     * @param {Object} args The method arguments
+     * @returns {Array} The prices list
      */
-    getProductPrices : function (args) {
+    getProductPrices: function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -543,10 +618,12 @@ var ckoHelper = {
         return products;
     },
 
-    /*
-     * Get Product IDs
+    /**
+     * Get the product IDs.
+     * @param {Object} args The method arguments
+     * @returns {Array} The product ids list
      */
-    getProductIds : function (args) {
+    getProductIds: function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
         var it = order.productLineItems.iterator();
@@ -559,10 +636,12 @@ var ckoHelper = {
         return productIds;
     },
 
-    /*
-     * Get Each Product Quantity
+    /**
+     * Get each product quantity.
+     * @param {Object} args The method arguments
+     * @returns {Array} The product quantities list
      */
-    getProductQuantity : function (args) {
+    getProductQuantity: function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -570,47 +649,31 @@ var ckoHelper = {
         var it = order.productLineItems.iterator();
 
         // Loop through the items
-        var products_quantites = 0;
+        var productsQuantities = 0;
         while (it.hasNext()) {
             var pli = it.next();
-            products_quantites += pli.quantityValue;
+            productsQuantities += pli.quantityValue;
         }
 
-        return products_quantites;
+        return productsQuantities;
     },
 
-    /*
-     * Get Each Product Quantity
+    /**
+     * Return an order amount.
+     * @param {Object} order The order instance
+     * @returns {number} The amount
      */
-    getProductQuantities : function (args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
-
-        // Prepare the iterator
-        var it = order.productLineItems.iterator();
-
-        // Loop through the items
-        var products_quantites = [];
-        while (it.hasNext()) {
-            var pli = it.next();
-            products_quantites.push(pli.quantityValue);
-        }
-
-        return products_quantites;
-    },
-
-    /*
-     * Return order amount
-     */
-    getAmount: function (order) {
+    getAmount: function(order) {
         var amount = this.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode());
         return amount;
     },
 
-    /*
-     * Return Customer FullName
+    /**
+     * Return a customer full name.
+     * @param {Object} args The method arguments
+     * @returns {string} The customer name
      */
-    getCustomerName: function (args) {
+    getCustomerName: function(args) {
         // Load the order information
         var order = OrderMgr.getOrder(args.orderNo);
 
@@ -621,10 +684,11 @@ var ckoHelper = {
         return fullname;
     },
 
-    /*
-     * Return capture time
+    /**
+     * Return the capture time.
+     * @returns {Object} The capture time
      */
-    getCaptureTime: function () {
+    getCaptureTime: function() {
         // Get the current date/time in milliseconds
         var now = Date.now();
 
@@ -633,37 +697,41 @@ var ckoHelper = {
         var captureOnMin = configCaptureTime > 0 ? configCaptureTime : 0.5;
 
         // Convert the capture time from minutes to milliseconds
-        var captureOnMs = now + parseInt(captureOnMin) * 60000;
+        var captureOnMs = now + (parseInt(captureOnMin) * 60000);
 
         // Convert the capture time to ISO 8601 format
         return new Date(captureOnMs).toISOString();
     },
 
-    /*
-     * Build 3ds object
+    /**
+     * Build a 3ds object.
+     * @returns {Object} The 3ds data
      */
-    get3Ds: function () {
+    get3Ds: function() {
         // 3ds object
-        var ds = {
-            "enabled"               : this.getValue('cko3ds'),
-            "attempt_n3d"           : this.getValue('ckoN3ds')
-        }
+        var treeDs = {
+            enabled: this.getValue('cko3ds'),
+            attempt_n3d: this.getValue('ckoN3ds'),
+        };
 
-        return ds;
+        return treeDs;
     },
 
-    /*
-     * Build metadata object
+    /**
+     * Build metadata object.
+     * @param {Object} data The request data
+     * @param {string} processorId The processor id
+     * @returns {Object} The metadata
      */
-    getMetadata: function (data, processorId) {
+    getMetadata: function(data, processorId) {
         // Prepare the base metadata
         var meta = {
             integration_data: this.getCartridgeMeta(),
-            platform_data: this.getValue('ckoSfraPlatformData')
-        }
+            platform_data: this.getValue('ckoSfraPlatformData'),
+        };
 
         // Add the data info if needed
-        if (data.hasOwnProperty('type')) {
+        if (Object.prototype.hasOwnProperty.call(data, 'type')) {
             meta.udf1 = data.type;
         }
 
@@ -673,44 +741,52 @@ var ckoHelper = {
         return meta;
     },
 
-    /*
-     * Get Billing Country
+    /**
+     * Get the billing country.
+     * @param {Object} args The method arguments
+     * @returns {string} The billing country code
      */
-    getBillingCountry: function (args) {
+    getBillingCountry: function(args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.orderNo);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
-        var country = billingAddress.getCountryCode().value
+        var country = billingAddress.getCountryCode().value;
 
         return country;
     },
 
-    // Build the Billing object
-    getBilling: function (args) {
+    /**
+     * Get the billing object.
+     * @param {Object} args The method arguments
+     * @returns {Object} The billing object
+     */
+    getBilling: function(args) {
         // Get billing address information
         var billingAddress = args.order.getBillingAddress();
 
         // Creating billing address object
         var billingDetails = {
-            address_line1       : billingAddress.getAddress1(),
-            address_line2       : billingAddress.getAddress2(),
-            city                : billingAddress.getCity(),
-            state               : billingAddress.getStateCode(),
-            zip                 : billingAddress.getPostalCode(),
-            country             : billingAddress.getCountryCode().value
+            address_line1: billingAddress.getAddress1(),
+            address_line2: billingAddress.getAddress2(),
+            city: billingAddress.getCity(),
+            state: billingAddress.getStateCode(),
+            zip: billingAddress.getPostalCode(),
+            country: billingAddress.getCountryCode().value,
         };
 
         return billingDetails;
     },
 
-    /*
-     * Return Basket Item object
+    /**
+     * Get product quantities from a basket.
+     * @param {Object} basket The basket instance
+     * @returns {Array} The list of quantities
      */
-    getBasketObject: function (basket) {
+    getBasketObject: function(basket) {
         var currency = basket.getCurrencyCode();
-        var products_quantites = [];
+        var productsQuantities = [];
         var it = basket.productLineItems.iterator();
         while (it.hasNext()) {
             var pli = it.next();
@@ -719,41 +795,43 @@ var ckoHelper = {
             var unitPrice = Math.round(this.getFormattedPrice(pli.adjustedGrossPrice.value.toFixed(2), currency) / productQuantity);
             var totalAmount = this.getFormattedPrice(pli.adjustedGrossPrice.value, currency);
             var products = {
-                "name"              : pli.productName,
-                "quantity"          : productQuantity.toString(),
-                "unit_price"        : unitPrice.toString(),
-                "tax_rate"          : productTaxRate.toString(),
-                "total_amount"      : totalAmount.toString(),
-                "total_tax_amount"  : this.getFormattedPrice(pli.adjustedTax.value, currency)
-            }
+                name: pli.productName,
+                quantity: productQuantity.toString(),
+                unit_price: unitPrice.toString(),
+                tax_rate: productTaxRate.toString(),
+                total_amount: totalAmount.toString(),
+                total_tax_amount: this.getFormattedPrice(pli.adjustedTax.value, currency),
+            };
 
-            products_quantites.push(products);
+            productsQuantities.push(products);
         }
         var shippingTaxRate = basket.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100;
         var shipping = {
-            "name"              : basket.defaultShipment.shippingMethod.displayName + " Shipping",
-            "quantity"          : '1',
-            "unit_price"        : this.getFormattedPrice(basket.shippingTotalGrossPrice.value, currency),
-            "tax_rate"          : shippingTaxRate.toString(),
-            "total_amount"      : this.getFormattedPrice(basket.shippingTotalGrossPrice.value, currency),
-            "total_tax_amount"  : this.getFormattedPrice(basket.shippingTotalTax.value, currency)
-        }
+            name: basket.defaultShipment.shippingMethod.displayName + ' Shipping',
+            quantity: '1',
+            unit_price: this.getFormattedPrice(basket.shippingTotalGrossPrice.value, currency),
+            tax_rate: shippingTaxRate.toString(),
+            total_amount: this.getFormattedPrice(basket.shippingTotalGrossPrice.value, currency),
+            total_tax_amount: this.getFormattedPrice(basket.shippingTotalTax.value, currency),
+        };
 
         if (basket.shippingTotalPrice.value > 0) {
-            products_quantites.push(shipping);
+            productsQuantities.push(shipping);
         }
 
-        return products_quantites;
+        return productsQuantities;
     },
 
-    /*
-     * Return Basket Item object
+    /**
+     * Get product quantities from an order.
+     * @param {Object} args The method arguments
+     * @returns {Array} The list of quantities
      */
-    getOrderBasketObject: function (args) {
+    getOrderBasketObject: function(args) {
         // Prepare some variables
         var currency = args.order.getCurrencyCode();
         var it = args.order.productLineItems.iterator();
-        var products_quantites = [];
+        var productsQuantites = [];
 
         // Iterate through the products
         while (it.hasNext()) {
@@ -763,77 +841,81 @@ var ckoHelper = {
             var unitPrice = Math.round(this.getFormattedPrice(pli.adjustedGrossPrice.value.toFixed(2), currency) / productQuantity);
             var totalAmount = this.getFormattedPrice(pli.adjustedGrossPrice.value, currency);
             var products = {
-                "name"              : pli.productName,
-                "quantity"          : productQuantity.toString(),
-                "unit_price"        : unitPrice.toString(),
-                "tax_rate"          : productTaxRate.toString(),
-                "total_amount"      : totalAmount.toString(),
-                "total_tax_amount"  : this.getFormattedPrice(pli.adjustedTax.value, currency)
-            }
+                name: pli.productName,
+                quantity: productQuantity.toString(),
+                unit_price: unitPrice.toString(),
+                tax_rate: productTaxRate.toString(),
+                total_amount: totalAmount.toString(),
+                total_tax_amount: this.getFormattedPrice(pli.adjustedTax.value, currency),
+            };
 
-            products_quantites.push(products);
+            productsQuantites.push(products);
         }
 
         // Set the shipping variables
         var shippingTaxRate = args.order.defaultShipment.standardShippingLineItem.getTaxRate() * 100 * 100;
         var shipping = {
-            "name"              : args.order.defaultShipment.shippingMethod.displayName + " Shipping",
-            "quantity"          : '1',
-            "unit_price"        : this.getFormattedPrice(args.order.shippingTotalGrossPrice.value, currency),
-            "tax_rate"          : shippingTaxRate.toString(),
-            "total_amount"      : this.getFormattedPrice(args.order.shippingTotalGrossPrice.value, currency),
-            "total_tax_amount"  : this.getFormattedPrice(args.order.shippingTotalTax.value, currency)
-        }
+            name: args.order.defaultShipment.shippingMethod.displayName + ' Shipping',
+            quantity: '1',
+            unit_price: this.getFormattedPrice(args.order.shippingTotalGrossPrice.value, currency),
+            tax_rate: shippingTaxRate.toString(),
+            total_amount: this.getFormattedPrice(args.order.shippingTotalGrossPrice.value, currency),
+            total_tax_amount: this.getFormattedPrice(args.order.shippingTotalTax.value, currency),
+        };
 
         if (args.order.shippingTotalPrice.value > 0) {
-            products_quantites.push(shipping);
+            productsQuantites.push(shipping);
         }
 
-        return products_quantites;
+        return productsQuantites;
     },
 
-    /*
-     * Return the basket billing address
+    /**
+     * Return the basket billing address.
+     * @param {Object} basket The basket instance
+     * @returns {Object} The billing address
      */
-    getBasketAddress: function (basket) {
+    getBasketAddress: function(basket) {
         var address = {
-            given_name                  : basket.billingAddress.firstName,
-            family_name                 : basket.billingAddress.lastName,
-            email                       : null,
-            title                       : basket.billingAddress.title,
-            street_address              : basket.billingAddress.address1,
-            street_address2             : basket.billingAddress.address2,
-            postal_code                 : basket.billingAddress.postalCode,
-            city                        : basket.billingAddress.city,
-            phone                       : basket.billingAddress.phone,
-            country                     : basket.defaultShipment.shippingAddress.countryCode.valueOf()
-        }
+            given_name: basket.billingAddress.firstName,
+            family_name: basket.billingAddress.lastName,
+            email: null,
+            title: basket.billingAddress.title,
+            street_address: basket.billingAddress.address1,
+            street_address2: basket.billingAddress.address2,
+            postal_code: basket.billingAddress.postalCode,
+            city: basket.billingAddress.city,
+            phone: basket.billingAddress.phone,
+            country: basket.defaultShipment.shippingAddress.countryCode.valueOf(),
+        };
 
         return address;
     },
 
     /**
-     * Return the order billing address
+     * Return the order billing address.
+     * @param {Object} args The method arguments
+     * @returns {Object} The billing address
      */
-    getOrderAddress: function (args) {
+    getOrderAddress: function(args) {
         var address = {
-            given_name                  : args.order.defaultShipment.shippingAddress.firstName,
-            family_name                 : args.order.defaultShipment.shippingAddress.lastName,
-            email                       : args.order.customerEmail,
-            title                       : args.order.defaultShipment.shippingAddress.title,
-            street_address              : args.order.defaultShipment.shippingAddress.address1,
-            street_address2             : args.order.defaultShipment.shippingAddress.address2,
-            postal_code                 : args.order.defaultShipment.shippingAddress.postalCode,
-            city                        : args.order.defaultShipment.shippingAddress.city,
-            phone                       : args.order.defaultShipment.shippingAddress.phone,
-            country                     : args.order.defaultShipment.shippingAddress.countryCode.valueOf()
-        }
+            given_name: args.order.defaultShipment.shippingAddress.firstName,
+            family_name: args.order.defaultShipment.shippingAddress.lastName,
+            email: args.order.customerEmail,
+            title: args.order.defaultShipment.shippingAddress.title,
+            street_address: args.order.defaultShipment.shippingAddress.address1,
+            street_address2: args.order.defaultShipment.shippingAddress.address2,
+            postal_code: args.order.defaultShipment.shippingAddress.postalCode,
+            city: args.order.defaultShipment.shippingAddress.city,
+            phone: args.order.defaultShipment.shippingAddress.phone,
+            country: args.order.defaultShipment.shippingAddress.countryCode.valueOf(),
+        };
 
         return address;
-    }
-}
+    },
+};
 
-/*
-* Module exports
-*/
+/**
+ * Module exports
+ */
 module.exports = ckoHelper;

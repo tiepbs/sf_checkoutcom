@@ -1,7 +1,7 @@
 'use strict';
 
 // jQuery Ajax helpers on DOM ready
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
 	
     // Get the card lsit url
     var cardUrl = $('[id="ckoCardListUrl"]').val();
@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
 function getCardsList(dataUrl) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', dataUrl);
-    xhr.onload = function () {
-        if (this.status == 200) {
+    xhr.onload = function() {
+        if (this.status === 200) {
         	
             // Cleanup the response
             var cards = JSON.parse(this.response.replace(/&quot;/g,'"'));
@@ -51,13 +51,13 @@ function getCardData(elt, dataUrl) {
     if (cardUUID.length !== 0) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', dataUrl);
-        xhr.onload = function () {
-            if (this.status == 200) {
+        xhr.onload = function() {
+            if (this.status === 200) {
                 var cards = JSON.parse(this.response.replace(/&quot;/g,'"'));
                 
                 // Find the corresponding card
                 for (var i = 0; i < cards.length; i++) {
-                    if (cards[i].cardId == cardUUID) {
+                    if (cards[i].cardId === cardUUID) {
                         setFields({
                             cardId: cards[i].cardId,
                             cardNumber: cards[i].cardNumber,

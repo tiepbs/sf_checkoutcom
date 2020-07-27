@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
 //  Alternative Payment Form decorator object
 
 // JQuery Ajax helpers on DOM ready
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     alternativePaymentsFilter();
     initApmAccordion();
 }, false);
@@ -13,14 +13,13 @@ document.addEventListener('DOMContentLoaded', function () {
  * Accordion Function
  */
 function initApmAccordion() {
-	var acc = document.getElementsByClassName('cko-apm-accordion');
-	var i;
-	for (i = 0; i < acc.length; i++) {
+    var acc = document.getElementsByClassName('cko-apm-accordion');
+    var i;
+    for (i = 0; i < acc.length; i++) {
 	  acc[i].addEventListener('click', function() {
-
         // Remove all active classes
-        $('.cko-apm-accordion').removeClass('cko-apm-active');
-        $('.cko-apm-panel').css('display', 'none');
+      $('.cko-apm-accordion').removeClass('cko-apm-active');
+      $('.cko-apm-panel').css('display', 'none');
 
 	    /* Toggle between adding and removing the "active" class,
 	    to highlight the button that controls the panel */
@@ -32,19 +31,19 @@ function initApmAccordion() {
 	    currentInput.checked = true;
 
         // Set alternative payment value
-        var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
-        apmSelect.val(currentInput.value);
+      var apmSelect = $('#dwfrm_alternativePaymentForm_alternative__payments');
+      apmSelect.val(currentInput.value);
 	    if (panel) {
-			if (panel.style.minHeight) {
-				panel.style.minHeight = null;
-				panel.style.display = "block";
-			} else {
-				panel.style.minHeight = panel.scrollHeight + "px";
-				panel.style.display = "block";
-			}
+        if (panel.style.minHeight) {
+            panel.style.minHeight = null;
+            panel.style.display = 'block';
+        } else {
+            panel.style.minHeight = panel.scrollHeight + 'px';
+            panel.style.display = 'block';
+        }
 	    }
 	  });
-	}
+    }
 }
 
 
@@ -52,7 +51,6 @@ function initApmAccordion() {
  * Get the APMs filter
  */
 function alternativePaymentsFilter() {
-
 	// Retrieves the Apm Filter Url to controllerUrl variable
     var controllerUrl = $('#ckoApmFilterUrl').val();
 
@@ -60,11 +58,9 @@ function alternativePaymentsFilter() {
     var xhttpFilter = new XMLHttpRequest();
 
     // When request state changes
-    xhttpFilter.onreadystatechange = function () {
-
+    xhttpFilter.onreadystatechange = function() {
     	// If request was successful and return 200
-        if (this.readyState == 4 && this.status == 200) {
-
+        if (this.readyState === 4 && this.status === 200) {
         	// Assign the request response to responseObject variable
             var responseObject = JSON.parse(this.responseText);
 
@@ -82,16 +78,14 @@ function alternativePaymentsFilter() {
             	var condition1 = apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase());
             	var condition2 = apmsFilterObject[apms].countries.includes('*');
             	var condition3 = apmsFilterObject[apms].currencies.includes(filterObject.currency);
-            	
+
             	/*
             	 * If the current apm country-code and currency-code in
             	 * the list of apms, match the current country-code and currency-code
             	 */
                 if ((condition1 || condition2) && condition3) {
-
                 	// Show Apm in template
-                	$('#'+ apms).show();
-
+                	$('#' + apms).show();
                 }
             }
         }
@@ -99,7 +93,6 @@ function alternativePaymentsFilter() {
 
     xhttpFilter.open('GET', controllerUrl, true);
     xhttpFilter.send();
-
 }
 
 
@@ -108,16 +101,13 @@ function alternativePaymentsFilter() {
  */
 function callKlarnaController(controllerUrl) {
     if (controllerUrl) {
-
     	// Creates a new xmlhttp request object
         var xhttp = new XMLHttpRequest();
 
         // When request state changes
-        xhttp.onreadystatechange = function () {
-
+        xhttp.onreadystatechange = function() {
         	// If request was successful and return 200
-            if (this.readyState == 4 && this.status == 200) {
-
+            if (this.readyState === 4 && this.status === 200) {
             	// Klarna session Id
                 var sessionId = JSON.parse(this.responseText).session_id;
 
@@ -134,7 +124,7 @@ function callKlarnaController(controllerUrl) {
                 var addressInfo = JSON.parse(this.responseText).addressInfo;
 
                 // Initialize klarna payment form
-                Klarna.Payments.init({client_token: token});
+                Klarna.Payments.init({ client_token: token });
 
                 // Klarna payment options button
                 var klarnaBox = $('#klarna-buttons');
@@ -146,8 +136,8 @@ function callKlarnaController(controllerUrl) {
                 for (var i = 0; i < categories.length; i++) {
                     var klarnaButton = "<div class='klarnaButton'> " + categories[i].name
                     + " <input type='radio' name='payment_method_categories' value='" + categories[i].identifier + "' id='"
-                    + categories[i].identifier + "' onclick='loadKlarna(`"+ categories[i].identifier
-                    + "`, `" + JSON.stringify(requestObject) +"`,  `" + JSON.stringify(addressInfo) + "` ,`" + sessionId + "` )'><img src='"
+                    + categories[i].identifier + "' onclick='loadKlarna(`" + categories[i].identifier
+                    + '`, `' + JSON.stringify(requestObject) + '`,  `' + JSON.stringify(addressInfo) + '` ,`' + sessionId + "` )'><img src='"
                     + categories[i].asset_urls.descriptive + "' alt='Klarna' id='" + categories[i].identifier
                     + "_image' class='klarnaLogo'> <p id='" + categories[i].identifier
                     + "_aproved' class='klarnaAproved'><span class='klarnaBlack'>Klarna</span><span> &#10003;</span></p> <p class='klarnaFail' id='"
@@ -169,7 +159,6 @@ function callKlarnaController(controllerUrl) {
  * Loads Klarna Payments Widget
  */
 function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId) {
-
     // Converts request string to object
     var requestObject = JSON.parse(requestObject);
 
@@ -181,14 +170,13 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId) {
 
     // Load Klarna content
     Klarna.Payments.load({
-        container                   : '#klarna-payments-container',
-        payment_method_category     : paymentMethod,
-        instance_id                 : sessionId
-        }, function (res) {
-
+        container: '#klarna-payments-container',
+        payment_method_category: paymentMethod,
+        instance_id: sessionId,
+    }, function(res) {
         	// Triggers Klarna Authorization
-            klarnaAuthorizeButton('#klarna-payments-container', sessionId, paymentMethod, addressInfo, requestObject);
-        }
+        klarnaAuthorizeButton('#klarna-payments-container', sessionId, paymentMethod, addressInfo, requestObject);
+    }
     );
 }
 
@@ -196,11 +184,10 @@ function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId) {
  * Klarna Authorize button
  */
 function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject) {
-
     // Build Klarna authorization button
     var authorizeBtn = $('#klarnaConfirmBtn');
     authorizeBtn.show();
-    authorizeBtn.click(function () {
+    authorizeBtn.click(function() {
     	klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, JSON.stringify(billingAddress), JSON.stringify(requestObject));
     	$(this).hide();
     });
@@ -210,7 +197,6 @@ function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billin
  * Klarna Authorize
  */
 function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, requestData) {
-
     // Converts request string to object
     var requestObject = JSON.parse(requestData);
 
@@ -228,26 +214,24 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, req
 
         // Options
         {
-            instance_id         : sessionId,
-            auto_finalize       : false,
-            payment_method_category: paymentMethod
-            },
+            instance_id: sessionId,
+            auto_finalize: false,
+            payment_method_category: paymentMethod,
+        },
         {
-            purchase_country          : requestObject.purchase_country,
-            purchase_currency         : requestObject.currency,
-            locale                    : requestObject.locale,
-            billing_address           : billingAddress,
-            order_amount              : requestObject.amount,
-            order_tax_amount          : requestObject.tax_amount,
-            order_lines               : requestObject.products
+            purchase_country: requestObject.purchase_country,
+            purchase_currency: requestObject.currency,
+            locale: requestObject.locale,
+            billing_address: billingAddress,
+            order_amount: requestObject.amount,
+            order_tax_amount: requestObject.tax_amount,
+            order_lines: requestObject.products,
         },
 
         // Callback
-        function (response) {
-
+        function(response) {
         	// Authorization is Successful
             if (response.approved) {
-
             	// Empty Klarna Payment Options Button
                 $(klarnaContainer).empty();
 
@@ -268,7 +252,6 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, req
 
             // Authorization not Successful
             else {
-
             	// Empty Klarna Payment Options Button
                 $(klarnaContainer).empty();
 
