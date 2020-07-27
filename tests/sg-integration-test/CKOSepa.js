@@ -1,5 +1,7 @@
 const request = require('request-promise');
 const { assert, expect } = require('chai');
+const config = require('../config');
+const Url = config.sgUrl;
 
 describe('CKO Sepa Controller Test', function() {
     this.timeout(25000);
@@ -15,8 +17,9 @@ describe('CKO Sepa Controller Test', function() {
         }
     };
     context('CKO Sepa Mandate', function() {
+        const path = "CKOSepa-Mandate";
         it('CKOSepa-Mandate should return a string that includes: Error', function() {
-            options.uri = 'https://checkout01-tech-prtnr-eu02-dw.demandware.net/on/demandware.store/Sites-SiteGenesisGlobal-Site/en_GB/CKOSepa-Mandate';
+            options.uri = Url + path;
             options.method = 'GET';
             return request(options)
                 .then(function (response) {
@@ -26,8 +29,9 @@ describe('CKO Sepa Controller Test', function() {
     });
 
     context('CKO Sepa HandleMandate', function() {
+        const path = "CKOSepa-HandleMandate";
         it('CKOSepa-HandleMandate should return: undefined', function() {
-            options.uri = 'https://checkout01-tech-prtnr-eu02-dw.demandware.net/on/demandware.store/Sites-SiteGenesisGlobal-Site/en_GB/CKOSepa-HandleMandate';
+            options.uri = Url + path;
             options.method = 'POST';
             return request(options)
                 .then(function (response) {
