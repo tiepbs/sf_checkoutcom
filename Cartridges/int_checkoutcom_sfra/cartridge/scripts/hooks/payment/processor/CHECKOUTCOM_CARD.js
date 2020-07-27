@@ -1,69 +1,65 @@
 'use strict';
 
-var Resource = require('dw/web/Resource');
-
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 
 /**
  * Verifies that the payment data is valid.
+ * @param {Object} basket The basket instance
+ * @param {Object} billingData The billing data
+ * @param {string} processorId The processor id
+ * @param {Object} req The HTTP request data
+ * @returns {Object} The form validation result
  */
 function Handle(basket, billingData, processorId, req) {
-  var fieldErrors = {};
-  var serverErrors = [];
-  var customerNo = null;
+    var fieldErrors = {};
+    var serverErrors = [];
 
-  // Pre authorize the card
-  if (!billingData.selectedCardUuid) {
-    // Prepare the customer number
-    var condition = req.hasOwnProperty('currentCustomer')
-        && req.currentCustomer.hasOwnProperty('profile')
-        && req.currentCustomer.profile.hasOwnProperty('customerNo');
-    if (condition) {
-      customerNo = req.currentCustomer.profile.customerNo;
-    }
-  }
-
-  return {
-    fieldErrors: fieldErrors,
-    serverErrors: serverErrors,
-    error: false,
-  };
+    return {
+        fieldErrors: fieldErrors,
+        serverErrors: serverErrors,
+        error: false,
+    };
 }
 
 /**
- * Authorizes a payment using card details
+ * Authorizes a payment.
+ * @param {Object} orderNumber The order number
+ * @param {Object} billingForm The billing data
+ * @param {string} processorId The processor id
+ * @param {Object} req The HTTP request data
+ * @returns {Object} The payment result
  */
 function Authorize(orderNumber, billingForm, processorId, req) {
-  var serverErrors = [];
-  var fieldErrors = {};
-  var result = {
-    error: false,
-    redirectUrl: false,
-  };
+    var serverErrors = [];
+    var fieldErrors = {};
+    var result = {
+        error: false,
+        redirectUrl: false,
+    };
 
-  // Payment request
-  result = cardHelper.handleRequest(
-    billingForm,
-    processorId,
-    orderNumber,
-    req
-  );
-
-  // Handle errors
-  if (result.error) {
-    serverErrors.push(
-      ckoHelper.getPaymentFailureMessage()
+    // Payment request
+    result = cardHelper.handleRequest(
+        billingForm,
+        processorId,
+        orderNumber,
+        req
     );
-  }
 
-  return {
-    fieldErrors: fieldErrors,
-    serverErrors: serverErrors,
-    error: result.error,
-    redirectUrl: result.redirectUrl,
-  };
+    // Handle errors
+    if (result.error) {
+        serverErrors.push(
+            ckoHelper.getPaymentFailureMessage()
+        );
+    }
+
+    return {
+        fieldErrors: fieldErrors,
+        serverErrors: serverErrors,
+        error: result.error,
+        redirectUrl: result.redirectUrl,
+    };
 }
 
 exports.Handle = Handle;

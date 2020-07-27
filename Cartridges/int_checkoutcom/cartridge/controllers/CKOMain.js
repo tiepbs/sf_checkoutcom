@@ -1,7 +1,8 @@
 'use strict';
 
 // API Includes
-var siteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontControllers');
+var Site = require('dw/system/Site');
+var siteControllerName = Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontControllers');
 var app = require(siteControllerName + '/cartridge/scripts/app');
 var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var ISML = require('dw/template/ISML');
@@ -21,6 +22,21 @@ var ckoApmFilterConfig = require('~/cartridge/scripts/config/ckoApmFilterConfig'
 var ckoMadaConfig = require('~/cartridge/scripts/config/ckoMadaConfig');
 
 /**
+ * Handles a failed payment from the Checkout.com payment gateway
+ */
+function handleFail() {
+    // Load the order
+    // eslint-disable-next-line
+    var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
+
+    // Restore the cart
+    OrderMgr.failOrder(order, true);
+
+    // Send back to the error page
+    ISML.renderTemplate('custom/common/response/failed.isml');
+}
+
+/**
  * Handles responses from the Checkout.com payment gateway
  */
 function handleReturn() {
@@ -29,6 +45,7 @@ function handleReturn() {
     var mode = ckoHelper.getValue('ckoMode');
     var serviceName = 'cko.verify.charges.' + mode + '.service';
     var orderId = ckoHelper.getOrderId();
+    var gVerify;
 
     // If there is a track id
     if (orderId) {
@@ -36,6 +53,7 @@ function handleReturn() {
         var order = OrderMgr.getOrder(orderId);
         if (order) {
             // Check the payment token if exists
+            // eslint-disable-next-line
             var sessionId = request.httpParameterMap.get('cko-session-id').stringValue;
 
             // If there is a payment session id available, verify
@@ -43,17 +61,17 @@ function handleReturn() {
                 // Perform the request to the payment gateway
                 gVerify = ckoHelper.gatewayClientRequest(
                     serviceName,
-                    {'paymentToken': sessionId}
+                    { paymentToken: sessionId }
                 );
-        
+
                 // Log the payment verify data
                 ckoHelper.log(
                     serviceName + ' - ' + ckoHelper._('cko.verify.data', 'cko'),
-                    gRequest
+                    gVerify
                 );
 
                 // If there is a valid response
-                if (typeof(gVerify) === 'object' && gVerify.hasOwnProperty('id')) {
+                if (typeof (gVerify) === 'object' && Object.prototype.hasOwnProperty.call(gVerify, 'id')) {
                     // Log the payment response data
                     ckoHelper.log(
                         serviceName + ' - ' + ckoHelper._('cko.response.data', 'cko'),
@@ -72,18 +90,15 @@ function handleReturn() {
                         ISML.renderTemplate('custom/common/response/failed.isml');
                     }
                 } else {
-
                     // Restore the cart
                     OrderMgr.failOrder(order, true);
 
                     // Send back to the error page
                     ISML.renderTemplate('custom/common/response/failed.isml');
                 }
-            }
-
-            // Else it's a normal transaction
-            else {
+            } else {
                 // Get the response
+                // eslint-disable-next-line
                 gResponse = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
 
                 // Log the payment response data
@@ -96,30 +111,15 @@ function handleReturn() {
                 if (ckoHelper.paymentIsValid(gResponse)) {
                     app.getController('COSummary').ShowConfirmation(order);
                 } else {
-                    ckoHelper.handleFail(gResponse);
+                    handleFail();
                 }
             }
         } else {
-            ckoHelper.handleFail(null);
+            handleFail();
         }
     } else {
-        ckoHelper.handleFail(null);
+        handleFail();
     }
-}
-
-/**
- * Handles a failed payment from the Checkout.com payment gateway
- */
-function handleFail() {
-
-    // Load the order
-    var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
-
-    // Restore the cart
-    OrderMgr.failOrder(order, true);
-
-    // Send back to the error page
-    ISML.renderTemplate('custom/common/response/failed.isml');
 }
 
 /**
@@ -128,25 +128,23 @@ function handleFail() {
 function handleWebhook() {
     var isValidResponse = ckoHelper.isValidResponse();
     if (isValidResponse) {
-
         // Get the response as JSON object
+        // eslint-disable-next-line
         var hook = JSON.parse(request.httpParameterMap.getRequestBodyAsString());
 
         // Check the webhook event
-        if (hook !== null && hook.hasOwnProperty('type')) {
-
+        if (hook !== null && Object.prototype.hasOwnProperty.call(hook, 'type')) {
             // Get a camel case function name from event type
             var func = '';
             var parts = hook.type.split('_');
             for (var i = 0; i < parts.length; i++) {
-                func += (i == 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+                func += (i === 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
             }
-            if (eventsHelper.hasOwnProperty(func)) {
-
+            if (Object.prototype.hasOwnProperty.call(eventsHelper, func)) {
                 // Call the event
                 eventsHelper[func](hook);
             }
-       }
+        }
     }
 }
 
@@ -158,11 +156,12 @@ function getCardsList() {
     var data = [];
 
     // If user logged in
+    // eslint-disable-next-line
     if (customer.authenticated) {
-        var profile = customer.getProfile();
+        var profile = customer.getProfile(); // eslint-disable-line
         if (profile) {
-            applicablePaymentCards = customer.profile.getWallet().getPaymentInstruments();
-            for (let i = 0; i < applicablePaymentCards.length; i++) {
+            applicablePaymentCards = customer.profile.getWallet().getPaymentInstruments(); // eslint-disable-line
+            for (var i = 0; i < applicablePaymentCards.length; i++) {
                 data.push({
                     cardId: applicablePaymentCards[i].getUUID(),
                     cardNumber: applicablePaymentCards[i].getCreditCardNumber(),
@@ -175,7 +174,7 @@ function getCardsList() {
         }
 
         // Send the output for rendering
-        ISML.renderTemplate('custom/ajax/output.isml', {data: JSON.stringify(data)});
+        ISML.renderTemplate('custom/ajax/output.isml', { data: JSON.stringify(data) });
     } else {
         app.getModel('Customer').logout();
         app.getView().render('csrf/csrffailed');
@@ -183,10 +182,10 @@ function getCardsList() {
 }
 
 /**
- * Apms filter helper
+ * Apms filter helper.
+ * @returns {Object} The response object
  */
 function getApmFilter() {
-
     // Prepare some variables
     var basket = BasketMgr.getCurrentBasket();
     var currencyCode = basket.getCurrencyCode();
@@ -194,34 +193,35 @@ function getApmFilter() {
 
     // Prepare the filter object
     var filterObject = {
-        country     : countryCode,
-        currency    : currencyCode
-    }
+        country: countryCode,
+        currency: currencyCode,
+    };
 
     // Prepare the response object
     var responseObject = {
-        'filterObject'          : filterObject,
-        'ckoApmFilterConfig'    : ckoApmFilterConfig
-    }
+        filterObject: filterObject,
+        ckoApmFilterConfig: ckoApmFilterConfig,
+    };
 
     // Write the response
     return ckoHelper.ckoResponse(responseObject);
 }
 
 /**
- * Mada Bins helper
+ * Mada Bins helper.
+ * @returns {Object} The response object
  */
 function getMadaBin() {
-	var madaBins = ckoMadaConfig;
+    var madaBins = ckoMadaConfig;
 
     // Write the response
     return ckoHelper.ckoResponse(madaBins);
 }
 
 // Module exports
-exports.HandleReturn = guard.ensure(['get','https'], handleReturn);
-exports.HandleFail = guard.ensure(['get','https'], handleFail);
+exports.HandleReturn = guard.ensure(['get', 'https'], handleReturn);
+exports.HandleFail = guard.ensure(['get', 'https'], handleFail);
 exports.HandleWebhook = guard.ensure(['post', 'https'], handleWebhook);
-exports.GetCardsList = guard.ensure(['post','https'], getCardsList);
-exports.GetApmFilter = guard.ensure(['get','https'], getApmFilter);
+exports.GetCardsList = guard.ensure(['post', 'https'], getCardsList);
+exports.GetApmFilter = guard.ensure(['get', 'https'], getApmFilter);
 exports.GetMadaBin = guard.ensure(['get', 'https'], getMadaBin);

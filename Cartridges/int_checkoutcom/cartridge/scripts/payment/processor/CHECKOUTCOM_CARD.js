@@ -1,25 +1,26 @@
 'use strict';
 
-// API Includes 
-var PaymentMgr = require('dw/order/PaymentMgr');
+// API Includes
 var Transaction = require('dw/system/Transaction');
 
-// Site controller 
-var SiteControllerName = dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontControllers');
+// Site controller
+var Site = require('dw/system/Site');
+var SiteControllerName = Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontControllers');
 
-// Shopper cart 
+// Shopper cart
 var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
 
-// App 
+// App
 var app = require(SiteControllerName + '/cartridge/scripts/app');
 
-// Utility 
+// Utility
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 
 /**
- * Verifies a credit card against a valid card number and expiration date and possibly invalidates invalid form fields.
- * If the verification was successful a credit card payment instrument is created.
+ * Verifies that the payment data is valid.
+ * @param {Object} args The method arguments
+ * @returns {Object} The form validation result
  */
 function Handle(args) {
     var cart = Cart.get(args.Basket);
@@ -30,21 +31,25 @@ function Handle(args) {
 
     // Prepare card data object
     var cardData = {
-        owner       : paymentForm.get('owner').value(),
-        number      : ckoHelper.getFormattedNumber(paymentForm.get('number').value()),
-        month       : paymentForm.get('expiration.month').value(),
-        year        : paymentForm.get('expiration.year').value(),
-        cvn         : paymentForm.get('cvn').value(),
-        cardType    : paymentForm.get('type').value()
+        owner: paymentForm.get('owner').value(),
+        number: ckoHelper.getFormattedNumber(paymentForm.get('number').value()),
+        month: paymentForm.get('expiration.month').value(),
+        year: paymentForm.get('expiration.year').value(),
+        cvn: paymentForm.get('cvn').value(),
+        cardType: paymentForm.get('type').value(),
     };
 
     // Save card feature
-    if(paymentForm.get('saveCard').value()){
-    	var i, creditCards, newCreditCard;
+    if (paymentForm.get('saveCard').value()) {
+        var i,
+            creditCards,
+            newCreditCard;
 
+        // eslint-disable-next-line
         creditCards = customer.profile.getWallet().getPaymentInstruments(paymentMethod);
 
-        Transaction.wrap(function () {
+        Transaction.wrap(function() {
+            // eslint-disable-next-line
             newCreditCard = customer.profile.getWallet().createPaymentInstrument(paymentMethod);
 
             // copy the credit card details to the payment instrument
@@ -58,6 +63,7 @@ function Handle(args) {
                 var creditcard = creditCards[i];
 
                 if (creditcard.maskedCreditCardNumber === newCreditCard.maskedCreditCardNumber && creditcard.creditCardType === newCreditCard.creditCardType) {
+                    // eslint-disable-next-line
                 	customer.profile.getWallet().removePaymentInstrument(creditcard);
                 }
             }
@@ -65,7 +71,7 @@ function Handle(args) {
     }
 
     // Proceed with transaction
-    Transaction.wrap(function () {
+    Transaction.wrap(function() {
         cart.removeExistingPaymentInstruments(paymentMethod);
         var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
         paymentInstrument.creditCardHolder = cardData.owner;
@@ -75,25 +81,21 @@ function Handle(args) {
         paymentInstrument.creditCardType = cardData.cardType;
     });
 
-    return {success: true};
+    return { success: true };
 }
 
 
-
-
-
-
 /**
- * Authorises a payment using a credit card. The payment is authorised by using the BASIC_CREDIT processor
- * only and setting the order no as the transaction ID. Customisations may use other processors and custom
- * logic to authorise credit card payment.
+ * Authorises a payment.
+ * @param {Object} args The method arguments
+ * @returns {Object} The payment success or failure
  */
 function Authorize(args) {
-
     // Preparing payment parameters
     var paymentInstrument = args.PaymentInstrument;
 
     // Add order number to the session global object
+    // eslint-disable-next-line
     session.privacy.ckoOrderId = args.OrderNo;
 
     // Get card payment form
@@ -101,19 +103,18 @@ function Authorize(args) {
 
     // Build card data object
     var cardData = {
-        'name'          : paymentInstrument.creditCardHolder,
-        'number'        : ckoHelper.getFormattedNumber(paymentForm.get('number').value()),
-        'expiryMonth'   : paymentInstrument.creditCardExpirationMonth,
-        'expiryYear'    : paymentInstrument.creditCardExpirationYear,
-        'cvv'           : paymentForm.get('cvn').value(),
-        'type'          : paymentInstrument.creditCardType
+        name: paymentInstrument.creditCardHolder,
+        number: ckoHelper.getFormattedNumber(paymentForm.get('number').value()),
+        expiryMonth: paymentInstrument.creditCardExpirationMonth,
+        expiryYear: paymentInstrument.creditCardExpirationYear,
+        cvv: paymentForm.get('cvn').value(),
+        type: paymentInstrument.creditCardType,
     };
-    
+
     if (cardHelper.cardAuthorization(cardData, args)) {
-        return {success: true};
-    } else {
-        return {error: true};
+        return { success: true };
     }
+    return { error: true };
 }
 
 // Module exports

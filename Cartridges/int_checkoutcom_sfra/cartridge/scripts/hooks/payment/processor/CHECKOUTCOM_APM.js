@@ -10,82 +10,92 @@ var apmConfig = require('~/cartridge/scripts/config/ckoApmConfig');
 
 /**
  * Verifies that the payment data is valid.
+ * @param {Object} basket The basket instance
+ * @param {Object} billingData The billing data
+ * @param {string} processorId The processor id
+ * @param {Object} req The HTTP request data
+ * @returns {Object} The form validation result
  */
 function Handle(basket, billingData, processorId, req) {
-  var fieldErrors = {};
-  var serverErrors = [];
+    var fieldErrors = {};
+    var serverErrors = [];
 
-  // Conditions
-  var condition1 = billingData.paymentInformation.hasOwnProperty('ckoApm');
-  var condition2 = condition1 && billingData.paymentInformation.ckoApm.value;
-  var condition3 = condition2 && billingData.paymentInformation.ckoApm.value.length > 0;
+    // Conditions
+    var condition1 = Object.prototype.hasOwnProperty.call(billingData.paymentInformation, 'ckoApm');
+    var condition2 = condition1 && billingData.paymentInformation.ckoApm.value;
+    var condition3 = condition2 && billingData.paymentInformation.ckoApm.value.length > 0;
 
-  // Verify the payload
-  if (!condition3) {
-    serverErrors.push(
-      Resource.msg('cko.apm.error', 'cko', null)
-    );
+    // Verify the payload
+    if (!condition3) {
+        serverErrors.push(
+            Resource.msg('cko.apm.error', 'cko', null)
+        );
+
+        return {
+            fieldErrors: fieldErrors,
+            serverErrors: serverErrors,
+            error: true,
+        };
+    }
 
     return {
-      fieldErrors: fieldErrors,
-      serverErrors: serverErrors,
-      error: true,
+        fieldErrors: fieldErrors,
+        serverErrors: serverErrors,
+        error: false,
     };
-  }
-
-  return {
-    fieldErrors: fieldErrors,
-    serverErrors: serverErrors,
-    error: false,
-  };
 }
 
 /**
- * Authorizes a payment
+ * Authorizes a payment.
+ * @param {Object} orderNumber The order number
+ * @param {Object} billingForm The billing data
+ * @param {string} processorId The processor id
+ * @param {Object} req The HTTP request data
+ * @returns {Object} The payment result
  */
 function Authorize(orderNumber, billingForm, processorId, req) {
-  var serverErrors = [];
-  var fieldErrors = {};
-  var result = {
-    error: false,
-    redirectUrl: false,
-  };
+    var serverErrors = [];
+    var fieldErrors = {};
+    var result = {
+        error: false,
+        redirectUrl: false,
+    };
 
-  // Get the order
-  var order = OrderMgr.getOrder(orderNumber);
+    // Get the order
+    var order = OrderMgr.getOrder(orderNumber);
 
-  // Prepare the arguments
-  var args = {
-    order: order,
-    processorId: processorId,
-    paymentData: billingForm.apmForm,
-    req: req,
-  };
+    // Prepare the arguments
+    var args = {
+        order: order,
+        processorId: processorId,
+        paymentData: billingForm.apmForm,
+        req: req,
+    };
 
-  // Get the selected APM request data
-  var func = billingForm.apmForm.ckoSelectedApm.value.toString() + 'Authorization';
-  var apmConfigData = apmConfig[func](args);
+    // Get the selected APM request data
+    var func = billingForm.apmForm.ckoSelectedApm.value.toString() + 'Authorization';
+    var apmConfigData = apmConfig[func](args);
 
-  // Payment request
-  var result = apmHelper.handleRequest(
-    apmConfigData,
-    processorId,
-    orderNumber
-  );
-
-  // Handle errors
-  if (result.error) {
-    serverErrors.push(
-      ckoHelper.getPaymentFailureMessage()
+    // Payment request
+    result = apmHelper.handleRequest(
+        apmConfigData,
+        processorId,
+        orderNumber
     );
-  }
 
-  return {
-    fieldErrors: fieldErrors,
-    serverErrors: serverErrors,
-    error: result.error,
-    redirectUrl: result.redirectUrl,
-  };
+    // Handle errors
+    if (result.error) {
+        serverErrors.push(
+            ckoHelper.getPaymentFailureMessage()
+        );
+    }
+
+    return {
+        fieldErrors: fieldErrors,
+        serverErrors: serverErrors,
+        error: result.error,
+        redirectUrl: result.redirectUrl,
+    };
 }
 
 exports.Handle = Handle;

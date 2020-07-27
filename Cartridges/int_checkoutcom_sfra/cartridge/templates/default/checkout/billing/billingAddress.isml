@@ -10,7 +10,7 @@
                     && pdict.order.billing.billingAddress.address.firstName
                     ? pdict.order.billing.billingAddress.address.firstName
                     : ''}"
-                <isprint value=${billingFields.firstName.attributes} encoding="off"/>
+                <isprint value=${billingFields.firstName.attributes} encoding="on"/>
                 autocomplete="given-name" >
             <div class="invalid-feedback"></div>
         </div>
@@ -25,7 +25,7 @@
                     && pdict.order.billing.billingAddress.address.lastName
                     ? pdict.order.billing.billingAddress.address.lastName
                     : ''}"
-                <isprint value=${billingFields.lastName.attributes} encoding="off"/>
+                <isprint value=${billingFields.lastName.attributes} encoding="on"/>
                 autocomplete="family-name">
             <div class="invalid-feedback"></div>
         </div>
@@ -43,7 +43,7 @@
                     && pdict.order.billing.billingAddress.address.address1
                     ? pdict.order.billing.billingAddress.address.address1
                     : ''}"
-                <isprint value=${billingFields.address1.attributes} encoding="off"/>
+                <isprint value=${billingFields.address1.attributes} encoding="on"/>
                 autocomplete="billing address-line1">
             <div class="invalid-feedback"></div>
         </div>
@@ -61,7 +61,7 @@
                     && pdict.order.billing.billingAddress.address.address2
                     ? pdict.order.billing.billingAddress.address.address2
                     : ''}"
-                <isprint value=${billingFields.address2.attributes} encoding="off"/>
+                <isprint value=${billingFields.address2.attributes} encoding="on"/>
                 autocomplete="billing address-line2">
             <div class="invalid-feedback"></div>
         </div>
@@ -76,7 +76,7 @@
             ${billingFields.country.htmlName}">
             <label class="form-control-label" for="billingCountry">${Resource.msg('field.billing.address.country','address',null)}</label>
             <select class="form-control billingCountry custom-select" id="billingCountry"
-                <isprint value=${billingFields.country.attributes} encoding="off"/>
+                <isprint value=${billingFields.country.attributes} encoding="on"/>
                 autocomplete="billing country">
                     <option label=" "></option>
                     <isloop items=${billingFields.country.options} var="country">
@@ -96,11 +96,11 @@
     </div>
     <div class="col-sm-6">
         <div class="form-group
-            ${billingFields.hasOwnProperty('states') && billingFields.states.stateCode.mandatory === true ? 'required' : ''}
+            ${Object.prototype.hasOwnProperty.call(billingFields, 'states') && billingFields.states.stateCode.mandatory === true ? 'required' : ''}
             ${billingFields.states.stateCode.htmlName}">
             <label class="form-control-label" for="billingState">${Resource.msg('field.billing.address.state','address',null)}</label>
             <select class="form-control billingState custom-select" id="billingState"
-                <isprint value=${billingFields.states.stateCode.attributes} encoding="off"/>
+                <isprint value=${billingFields.states.stateCode.attributes} encoding="on"/>
                 autocomplete="billing address-level1">
                     <isloop items=${billingFields.states.stateCode.options} var="state">
                         <option id="${state.id}"  value="${state.htmlValue}"
@@ -129,7 +129,7 @@
                     && pdict.order.billing.billingAddress.address.city
                     ? pdict.order.billing.billingAddress.address.city
                     : ''}"
-                <isprint value=${billingFields.city.attributes} encoding="off"/>
+                <isprint value=${billingFields.city.attributes} encoding="on"/>
                 autocomplete="billing address-level2">
             <div class="invalid-feedback"></div>
         </div>
@@ -144,7 +144,7 @@
                     && pdict.order.billing.billingAddress.address.postalCode
                     ? pdict.order.billing.billingAddress.address.postalCode
                     : ''}"
-                <isprint value=${billingFields.postalCode.attributes} encoding="off"/>
+                <isprint value=${billingFields.postalCode.attributes} encoding="on"/>
                 autocomplete="billing postal-code">
             <div class="invalid-feedback"></div>
             <span>${Resource.msg('example.postalcode','forms',null)}</span>

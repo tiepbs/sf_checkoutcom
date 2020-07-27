@@ -11,18 +11,20 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper');
 
-// Gateway event functions for the Checkout.com cartridge integration.
+/**
+ * Gateway event functions for the Checkout.com cartridge integration.
+ */
 var eventsHelper = {
-
     /**
-     * Adds the gateway webhook information to the newly created order
+     * Adds the gateway webhook information to the newly created order.
+     * @param {Object} hook The gateway webhook data
+     * @param {string} paymentStatus The payment status
+     * @param {string} orderStatus The order status
      */
-    addWebhookInfo: function (hook, paymentStatus, orderStatus) {
-
+    addWebhookInfo: function(hook, paymentStatus, orderStatus) {
         // Load the order
         var order = OrderMgr.getOrder(hook.data.reference);
         if (order) {
-
             // Prepare the webhook info
             var details = '';
             details += ckoHelper._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
@@ -32,8 +34,7 @@ var eventsHelper = {
             details += ckoHelper._('cko.response.code', 'cko') + ': ' + hook.data.response_code + '\n';
 
             // Process the transaction
-            Transaction.wrap(function () {
-
+            Transaction.wrap(function() {
                 // Add the details to the order
                 order.addNote(ckoHelper._('cko.webhook.info', 'cko'), details);
 
@@ -43,7 +44,7 @@ var eventsHelper = {
                 }
 
                 // Update the order status
-                if ((orderStatus) && (orderStatus.indexOf("CANCELLED") != -1 || orderStatus.indexOf("FAILED") != -1)) {
+                if ((orderStatus) && (orderStatus.indexOf('CANCELLED') !== -1 || orderStatus.indexOf('FAILED') !== -1)) {
                     OrderMgr.failOrder(order, true);
                 }
             });
@@ -51,10 +52,10 @@ var eventsHelper = {
     },
 
     /**
-     * Payment captured event
+     * Payment captured event.
+     * @param {Object} hook The gateway webhook data
      */
-    paymentCaptured: function (hook) {
-
+    paymentCaptured: function(hook) {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', null);
 
@@ -68,7 +69,7 @@ var eventsHelper = {
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
 
         // Create the captured transaction
-        Transaction.wrap(function () {
+        Transaction.wrap(function() {
             // Create the transaction
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
@@ -89,10 +90,10 @@ var eventsHelper = {
     },
 
     /**
-     * Payment authorized event
+     * Payment authorized event.
+     * @param {Object} hook The gateway webhook data
      */
-    paymentApproved: function (hook) {
-
+    paymentApproved: function(hook) {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 
@@ -103,8 +104,7 @@ var eventsHelper = {
         var cardUuid = hook.data.metadata.card_uuid;
         var customerId = hook.data.metadata.customer_id;
         var processorId = hook.data.metadata.payment_processor;
-        if (cardUuid != 'false' && customerId) {
-
+        if (cardUuid !== 'false' && customerId) {
             // Load the saved card
             var savedCard = cardHelper.getSavedCard(
                 cardUuid,
@@ -113,9 +113,8 @@ var eventsHelper = {
             );
 
             if (savedCard) {
-
                 // Add the card source
-                Transaction.wrap(function () {
+                Transaction.wrap(function() {
                     savedCard.setCreditCardToken(hook.data.source.id);
                 });
             }
@@ -123,31 +122,34 @@ var eventsHelper = {
     },
 
     /**
-     * Card verified event
+     * Card verified event.
+     * @param {Object} hook The gateway webhook data
      */
-    cardVerified: function (hook) {
+    cardVerified: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
     },
 
     /**
-     * Authorization failed event
+     * Authorization failed event.
+     * @param {Object} hook The gateway webhook data
      */
-    paymentDeclined: function (hook) {
+    paymentDeclined: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
     },
 
     /**
-     * Capture failed event
+     * Capture failed event.
+     * @param {Object} hook The gateway webhook data
      */
-    paymentCapturedDeclined: function (hook) {
+    paymentCapturedDeclined: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
     },
 
     /**
-     * Payment refunded event
+     * Payment refunded event.
+     * @param {Object} hook The gateway webhook data
      */
-    paymentRefunded: function (hook) {
-
+    paymentRefunded: function(hook) {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_PAID', 'ORDER_STATUS_CANCELLED');
 
@@ -161,8 +163,7 @@ var eventsHelper = {
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
 
         // Create the refunded transaction
-        Transaction.wrap(function () {
-
+        Transaction.wrap(function() {
             // Create the transaction
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
@@ -183,10 +184,10 @@ var eventsHelper = {
     },
 
     /**
-     * Payment voided event
+     * Payment voided event.
+     * @param {Object} hook The gateway webhook data
      */
-    paymentVoided: function (hook) {
-
+    paymentVoided: function(hook) {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_CANCELLED');
 
@@ -200,15 +201,13 @@ var eventsHelper = {
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
 
         // Create the voided transaction
-        Transaction.wrap(function () {
-
+        Transaction.wrap(function() {
             // Create the transaction
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
             paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
             paymentInstrument.paymentTransaction.custom.ckoPaymentId = hook.data.id;
-            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
             paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = false;
             paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Void';
             paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH_REVERSAL);
@@ -223,25 +222,28 @@ var eventsHelper = {
     },
 
     /**
-     * Refund failed event
+     * Refund failed event.
+     * @param {Object} hook The gateway webhook data
      */
-    paymentRefundDeclined: function (hook) {
+    paymentRefundDeclined: function(hook) {
         this.addWebhookInfo(hook, null, null);
     },
 
     /**
-     * Charge void failed event
+     * Charge void failed event.
+     * @param {Object} hook The gateway webhook data
      */
-    paymentVoidDeclined: function (hook) {
+    paymentVoidDeclined: function(hook) {
         this.addWebhookInfo(hook, null, null);
     },
 
     /**
-    * Payment pending event.
-    */
-    paymentExpired: function (hook) {
+     * Payment pending event.
+     * @param {Object} hook The gateway webhook data
+     */
+    paymentExpired: function(hook) {
         this.addWebhookInfo(hook, null, null);
-    }
+    },
 };
 
 // Module exports
