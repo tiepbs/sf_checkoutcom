@@ -12,7 +12,6 @@ server.replace('Get', server.middleware.https, function(req, res, next) {
     var Resource = require('dw/web/Resource');
     var URLUtils = require('dw/web/URLUtils');
     var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
-
     var currentBasket = BasketMgr.getCurrentBasket();
     if (!currentBasket) {
         res.json({
