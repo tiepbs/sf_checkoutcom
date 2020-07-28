@@ -22,7 +22,7 @@ function processForm(paymentForm, viewFormData) {
 
     // Process the card info
     if (!selectedCardUuid || !selectedCardCvv) {
-    // Verify credit card form data
+        // Verify credit card form data
         fieldErrors = COHelpers.validateCreditCard(paymentForm);
         if (Object.keys(fieldErrors).length) {
             return {
@@ -60,7 +60,7 @@ function processForm(paymentForm, viewFormData) {
 
         viewData.saveCard = paymentForm.creditCardFields.saveCard.checked;
     } else {
-    // Saved card
+        // Saved card
         viewData.selectedCardUuid = selectedCardUuid.toString();
         viewData.selectedCardCvv = selectedCardCvv.toString();
     }
