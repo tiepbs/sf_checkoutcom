@@ -14,7 +14,6 @@ function processForm(paymentForm, viewFormData) {
     var selectedCardCvv = paymentForm.savedCardForm.selectedCardCvv.value;
     var fieldErrors = {};
 
-
     var logger = require('dw/system/Logger').getLogger('ckodebug');
     logger.debug('paymentForm {0}', JSON.stringify(paymentForm));
     logger.debug('viewFormData {0}', JSON.stringify(viewFormData));
