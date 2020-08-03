@@ -8,22 +8,25 @@
  */
 function processForm(paymentForm, viewFormData) {
     var viewData = viewFormData;
-    var ckoGooglePayData = paymentForm.googlePayForm.ckoGooglePayData;
+    var ckoGooglePayData = paymentForm.googlePayForm ? paymentForm.googlePayForm.ckoGooglePayData.htmlValue : null;
+    var error = true;
 
-    viewData.paymentMethod = {
-        value: paymentForm.paymentMethod.htmlValue,
-        htmlName: paymentForm.paymentMethod.htmlValue,
-    };
+    if (ckoGooglePayData) {
+        error = false;
+        viewData.paymentMethod = {
+            value: paymentForm.paymentMethod.htmlValue,
+            htmlName: paymentForm.paymentMethod.htmlValue,
+        };
 
-    viewData.paymentInformation = {
-        ckoGooglePayData: {
-            value: ckoGooglePayData.htmlValue,
-            htmlName: ckoGooglePayData.htmlName,
-        },
-    };
-
+        viewData.paymentInformation = {
+            ckoGooglePayData: {
+                value: ckoGooglePayData.htmlValue,
+                htmlName: ckoGooglePayData.htmlName,
+            },
+        };
+    }
     return {
-        error: false,
+        error: error,
         viewData: viewData,
     };
 }
