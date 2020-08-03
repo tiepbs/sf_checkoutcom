@@ -38,14 +38,14 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     var fieldErrors = {};
 
     // Payment request
-    var success = googlePayHelper.handleRequest(
+    var result = googlePayHelper.handleRequest(
         billingForm.googlePayForm.ckoGooglePayData.htmlValue,
         processorId,
         orderNumber
     );
 
     // Handle errors
-    if (!success) {
+    if (result.error) {
         serverErrors.push(
             ckoHelper.getPaymentFailureMessage()
         );
@@ -54,7 +54,8 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
-        error: !success,
+        error: result.error,
+        redirectUrl: result.redirectUrl,
     };
 }
 

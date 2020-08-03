@@ -34,13 +34,9 @@ function Handle(basket, billingData, processorId, req) {
 function Authorize(orderNumber, billingForm, processorId, req) {
     var serverErrors = [];
     var fieldErrors = {};
-    var result = {
-        error: false,
-        redirectUrl: false,
-    };
 
     // Payment request
-    result = cardHelper.handleRequest(
+    var result = cardHelper.handleRequest(
         billingForm,
         processorId,
         orderNumber,

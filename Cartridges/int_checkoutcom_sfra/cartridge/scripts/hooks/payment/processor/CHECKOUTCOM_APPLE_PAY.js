@@ -38,14 +38,14 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     var fieldErrors = {};
 
     // Payment request
-    var success = applePayHelper.handleRequest(
+    var result = applePayHelper.handleRequest(
         billingForm.applePayForm.ckoApplePayData.htmlValue,
         processorId,
         orderNumber
     );
 
     // Handle errors
-    if (!success) {
+    if (result.error) {
         serverErrors.push(
             ckoHelper.getPaymentFailureMessage()
         );
@@ -54,7 +54,8 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
-        error: !success,
+        error: result.error,
+        redirectUrl: result.redirectUrl,
     };
 }
 
