@@ -3,6 +3,10 @@
     var BasketMgr = require('dw/order/BasketMgr');
     var savedCardHelper = require('~/cartridge/scripts/helpers/savedCardHelper');
 </isscript>
+
+<input type="hidden" id="selectedCardUuid" <isprint value=${savedCardFields.selectedCardUuid.attributes} encoding="htmlsinglequote"/> value="">
+<input type="hidden" id="selectedCardCvv" <isprint value=${savedCardFields.selectedCardCvv.attributes} encoding="htmlsinglequote"/> value="">
+
 <isloop items="${pdict.customer.customerPaymentInstruments}" var="paymentInstrument" status="loopState">
     <isif condition="${savedCardHelper.getSavedCard(paymentInstrument.UUID, BasketMgr.currentBasket.getCustomerNo(), paymentOption.ID) && savedCardHelper.getSavedCard(paymentInstrument.UUID, BasketMgr.currentBasket.getCustomerNo(), paymentOption.ID).getCreditCardToken()}">
         <div class="row saved-payment-instrument" data-uuid="${paymentInstrument.UUID}">

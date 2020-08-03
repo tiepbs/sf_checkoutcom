@@ -10,63 +10,70 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
  */
 function processForm(paymentForm, viewFormData) {
     var viewData = viewFormData;
-    var selectedCardUuid = paymentForm.savedCardForm.selectedCardUuid.value;
-    var selectedCardCvv = paymentForm.savedCardForm.selectedCardCvv.value;
+    var selectedCardUuid = paymentForm.savedCardForm ? paymentForm.savedCardForm.selectedCardUuid.htmlValue : null;
+    var selectedCardCvv = paymentForm.savedCardForm ? paymentForm.savedCardForm.selectedCardCvv.htmlValue: null;
     var fieldErrors = {};
 
-    // Add the payment method info
-    viewData.paymentMethod = {
-        value: paymentForm.paymentMethod.value.toString(),
-        htmlName: paymentForm.paymentMethod.htmlName,
-    };
-
-    // Process the card info
-    if (!selectedCardUuid || !selectedCardCvv) {
-    // Verify credit card form data
-        fieldErrors = COHelpers.validateCreditCard(paymentForm);
-        if (Object.keys(fieldErrors).length) {
-            return {
-                fieldErrors: fieldErrors,
-                error: true,
-            };
-        }
-
-        // New card
-        viewData.paymentInformation = {
-            cardType: {
-                value: paymentForm.creditCardFields.cardType.value,
-                htmlName: paymentForm.creditCardFields.cardType.htmlName,
-            },
-            cardNumber: {
-                value: paymentForm.creditCardFields.cardNumber.value,
-                htmlName: paymentForm.creditCardFields.cardNumber.htmlName,
-            },
-            securityCode: {
-                value: paymentForm.creditCardFields.securityCode.value,
-                htmlName: paymentForm.creditCardFields.securityCode.htmlName,
-            },
-            expirationMonth: {
-                value: parseInt(
-                    paymentForm.creditCardFields.expirationMonth.selectedOption,
-                    10
-                ),
-                htmlName: paymentForm.creditCardFields.expirationMonth.htmlName,
-            },
-            expirationYear: {
-                value: parseInt(paymentForm.creditCardFields.expirationYear.value, 10),
-                htmlName: paymentForm.creditCardFields.expirationYear.htmlName,
-            },
+    if (paymentForm && Object.prototype.hasOwnProperty.call(paymentForm, 'paymentMethod')) {
+        // Add the payment method info
+        viewData.paymentMethod = {
+            value: paymentForm.paymentMethod,
+            htmlName: paymentForm.paymentMethod,
         };
 
-        viewData.saveCard = paymentForm.creditCardFields.saveCard.checked;
-    } else {
-    // Saved card
-        viewData.selectedCardUuid = selectedCardUuid.toString();
-        viewData.selectedCardCvv = selectedCardCvv.toString();
+        // Process the card info
+        if (!selectedCardUuid || !selectedCardCvv) {
+            // Verify credit card form data
+            fieldErrors = COHelpers.validateCreditCard(paymentForm);
+            if (Object.keys(fieldErrors).length) {
+                return {
+                    fieldErrors: fieldErrors,
+                    error: true,
+                };
+            }
+
+            // New card
+            viewData.paymentInformation = {
+                cardType: {
+                    value: paymentForm.creditCardFields.cardType.value,
+                    htmlName: paymentForm.creditCardFields.cardType.htmlName,
+                },
+                cardNumber: {
+                    value: paymentForm.creditCardFields.cardNumber.value,
+                    htmlName: paymentForm.creditCardFields.cardNumber.htmlName,
+                },
+                securityCode: {
+                    value: paymentForm.creditCardFields.securityCode.value,
+                    htmlName: paymentForm.creditCardFields.securityCode.htmlName,
+                },
+                expirationMonth: {
+                    value: parseInt(
+                        paymentForm.creditCardFields.expirationMonth.selectedOption,
+                        10
+                    ),
+                    htmlName: paymentForm.creditCardFields.expirationMonth.htmlName,
+                },
+                expirationYear: {
+                    value: parseInt(paymentForm.creditCardFields.expirationYear.value, 10),
+                    htmlName: paymentForm.creditCardFields.expirationYear.htmlName,
+                },
+            };
+
+            viewData.saveCard = paymentForm.creditCardFields.saveCard.checked;
+        } else {
+            // Saved card
+            viewData.selectedCardUuid = selectedCardUuid.toString();
+            viewData.selectedCardCvv = selectedCardCvv.toString();
+        }
+
+        return {
+            error: false,
+            viewData: viewData,
+        };
     }
 
     return {
-        error: false,
+        error: true,
         viewData: viewData,
     };
 }

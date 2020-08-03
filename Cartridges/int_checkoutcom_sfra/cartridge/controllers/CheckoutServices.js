@@ -4,7 +4,7 @@ var server = require('server');
 server.extend(module.superModule);
 var csrfProtection = require('*/cartridge/scripts/middleware/csrf');
 
-server.replace('Get', server.middleware.https, function(req, res, next) {
+server.prepend('Get', server.middleware.https, function(req, res, next) {
     var BasketMgr = require('dw/order/BasketMgr');
     var AccountModel = require('*/cartridge/models/account');
     var OrderModel = require('*/cartridge/models/order');
@@ -48,7 +48,7 @@ server.replace('Get', server.middleware.https, function(req, res, next) {
 /**
  *  Handle Ajax payment (and billing) form submit
  */
-server.replace(
+server.prepend(
     'SubmitPayment',
     server.middleware.https,
     csrfProtection.validateAjaxRequest,
@@ -319,7 +319,7 @@ server.replace(
     }
 );
 
-server.replace('PlaceOrder', server.middleware.https, function(req, res, next) {
+server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
     var BasketMgr = require('dw/order/BasketMgr');
     var OrderMgr = require('dw/order/OrderMgr');
     var PaymentMgr = require('dw/order/PaymentMgr');
@@ -462,17 +462,19 @@ server.replace('PlaceOrder', server.middleware.https, function(req, res, next) {
             errorMessage: ckoHelper.getPaymentFailureMessage(),
         });
 
-        return next();
+        this.emit('route:Complete', req, res);
+        return;
     }
 
     // Handle redirection
     if (handlePaymentResult.redirectUrl) {
         res.json({
             error: false,
-            continueUrl: handlePaymentResult.redirectUrl,
+            continueUrl: handlePaymentResult.redirectUrl
         });
-
-        return next();
+        
+        this.emit('route:Complete', req, res);
+        return;
     }
 
     var fraudDetectionStatus = hooksHelper('app.fraud.detection', 'fraudDetection', currentBasket, require('*/cartridge/scripts/hooks/fraudDetection').fraudDetection);
@@ -491,7 +493,8 @@ server.replace('PlaceOrder', server.middleware.https, function(req, res, next) {
             errorMessage: Resource.msg('error.technical', 'checkout', null),
         });
 
-        return next();
+        this.emit('route:Complete', req, res);
+        return;
     }
 
     if (req.currentCustomer.addressBook) {
