@@ -11,8 +11,8 @@ function processForm(paymentForm, viewFormData) {
     var ckoApplePayData = paymentForm.applePayForm.ckoApplePayData;
 
     viewData.paymentMethod = {
-        value: paymentForm.paymentMethod.value,
-        htmlName: paymentForm.paymentMethod.value,
+        value: paymentForm.paymentMethod.htmlValue,
+        htmlName: paymentForm.paymentMethod.htmlValue,
     };
 
     viewData.paymentInformation = {

@@ -462,17 +462,19 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
             errorMessage: ckoHelper.getPaymentFailureMessage(),
         });
 
-        return next();
+        this.emit('route:Complete', req, res);
+        return;
     }
 
     // Handle redirection
     if (handlePaymentResult.redirectUrl) {
         res.json({
             error: false,
-            continueUrl: handlePaymentResult.redirectUrl,
+            continueUrl: handlePaymentResult.redirectUrl
         });
-
-        return next();
+        
+        this.emit('route:Complete', req, res);
+        return;
     }
 
     var fraudDetectionStatus = hooksHelper('app.fraud.detection', 'fraudDetection', currentBasket, require('*/cartridge/scripts/hooks/fraudDetection').fraudDetection);
@@ -491,7 +493,8 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
             errorMessage: Resource.msg('error.technical', 'checkout', null),
         });
 
-        return next();
+        this.emit('route:Complete', req, res);
+        return;
     }
 
     if (req.currentCustomer.addressBook) {

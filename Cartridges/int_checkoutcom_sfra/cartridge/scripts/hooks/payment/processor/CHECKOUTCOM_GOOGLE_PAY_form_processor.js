@@ -11,8 +11,8 @@ function processForm(paymentForm, viewFormData) {
     var ckoGooglePayData = paymentForm.googlePayForm.ckoGooglePayData;
 
     viewData.paymentMethod = {
-        value: paymentForm.paymentMethod.value,
-        htmlName: paymentForm.paymentMethod.value,
+        value: paymentForm.paymentMethod.htmlValue,
+        htmlName: paymentForm.paymentMethod.htmlValue,
     };
 
     viewData.paymentInformation = {

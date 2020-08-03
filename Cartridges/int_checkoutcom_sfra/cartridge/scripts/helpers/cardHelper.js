@@ -63,7 +63,7 @@ var cardHelper = {
             // Add 3DS redirect URL to session if exists
             var condition1 = Object.prototype.hasOwnProperty.call(gatewayResponse, '_links');
             var condition2 = condition1 && Object.prototype.hasOwnProperty.call(gatewayResponse._links, 'redirect');
-            if (condition1 && condition2) {
+            if (condition2) {
                 result.error = false;
                 // eslint-disable-next-line
                 result.redirectUrl = gatewayResponse._links.redirect.href;
