@@ -522,7 +522,8 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
         continueUrl: URLUtils.url('Order-Confirm').toString(),
     });
 
-    return next();
+    this.emit('route:Complete', req, res);
+    return;
 });
 
 module.exports = server.exports();
