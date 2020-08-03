@@ -2,6 +2,7 @@
 
 /* API Includes */
 var OrderMgr = require('dw/order/OrderMgr');
+var URLUtils = require('dw/web/URLUtils');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -63,7 +64,7 @@ var cardHelper = {
             // Add 3DS redirect URL to session if exists
             var condition1 = Object.prototype.hasOwnProperty.call(gatewayResponse, '_links');
             var condition2 = condition1 && Object.prototype.hasOwnProperty.call(gatewayResponse._links, 'redirect');
-            if (condition1 && condition2) {
+            if (condition2) {
                 result.error = false;
                 // eslint-disable-next-line
                 result.redirectUrl = gatewayResponse._links.redirect.href;
@@ -98,6 +99,8 @@ var cardHelper = {
             shipping: ckoHelper.getShipping(order),
             '3ds': this.get3Ds(),
             risk: { enabled: true },
+            success_url: URLUtils.https('CKOMain-HandleReturn').toString(),
+            failure_url: URLUtils.https('CKOMain-HandleFail').toString(),
             metadata: ckoHelper.getMetadata({}, processorId),
         };
 

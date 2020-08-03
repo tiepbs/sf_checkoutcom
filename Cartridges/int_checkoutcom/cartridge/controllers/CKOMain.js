@@ -111,19 +111,20 @@ function handleReturn() {
                 if (ckoHelper.paymentIsValid(gResponse)) {
                     app.getController('COSummary').ShowConfirmation(order);
                 } else {
-                    handleFail();
+                    handleFail(gResponse);
                 }
             }
         } else {
-            handleFail();
+            handleFail(null);
         }
     } else {
-        handleFail();
+        handleFail(null);
     }
 }
 
 /**
  * Handles webhook responses from the Checkout.com payment gateway
+ * @returns {string} The response string
  */
 function handleWebhook() {
     var isValidResponse = ckoHelper.isValidResponse();
@@ -144,8 +145,14 @@ function handleWebhook() {
                 // Call the event
                 eventsHelper[func](hook);
             }
+        } else {
+            // Write the response
+            return ckoHelper.ckoResponse(null);
         }
     }
+
+    // Write the response
+    return ckoHelper.ckoResponse(null);
 }
 
 /**
@@ -186,25 +193,30 @@ function getCardsList() {
  * @returns {Object} The response object
  */
 function getApmFilter() {
-    // Prepare some variables
-    var basket = BasketMgr.getCurrentBasket();
-    var currencyCode = basket.getCurrencyCode();
-    var countryCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
+    try {
+        // Prepare some variables
+        var basket = BasketMgr.getCurrentBasket();
+        var currencyCode = basket.getCurrencyCode();
+        var countryCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
 
-    // Prepare the filter object
-    var filterObject = {
-        country: countryCode,
-        currency: currencyCode,
-    };
+        // Prepare the filter object
+        var filterObject = {
+            country: countryCode,
+            currency: currencyCode,
+        };
 
-    // Prepare the response object
-    var responseObject = {
-        filterObject: filterObject,
-        ckoApmFilterConfig: ckoApmFilterConfig,
-    };
+        // Prepare the response object
+        var responseObject = {
+            filterObject: filterObject,
+            ckoApmFilterConfig: ckoApmFilterConfig,
+        };
 
-    // Write the response
-    return ckoHelper.ckoResponse(responseObject);
+        // Write the response
+        return ckoHelper.ckoResponse(responseObject);
+    } catch (e) {
+        // Write the response
+        return ckoHelper.ckoResponse(null);
+    }
 }
 
 /**
@@ -212,10 +224,15 @@ function getApmFilter() {
  * @returns {Object} The response object
  */
 function getMadaBin() {
-    var madaBins = ckoMadaConfig;
+    try {
+        var madaBins = ckoMadaConfig;
 
-    // Write the response
-    return ckoHelper.ckoResponse(madaBins);
+        // Write the response
+        return ckoHelper.ckoResponse(madaBins);
+    } catch (e) {
+        // Write the response
+        return ckoHelper.ckoResponse(null);
+    }
 }
 
 // Module exports

@@ -10,6 +10,7 @@
     <fieldset class="payment-form-fields">
 		<input type="hidden" class="form-control"
 				name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+                <isprint value="${pdict.forms.billingForm.paymentMethod.attributes}" encoding="htmlcontent" />
 				value=""
 		>
     	<input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>

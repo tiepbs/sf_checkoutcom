@@ -15,7 +15,7 @@ var paymentHelper = {
      * @returns {string} The redirection URL
      */
     getConfirmationPageRedirect: function(res, order) {
-        return res.redirect(
+        res.redirect(
             URLUtils.url(
                 'Order-Confirm',
                 'ID',
@@ -32,7 +32,7 @@ var paymentHelper = {
      * @returns {string} The redirection URL
      */
     getFailurePageRedirect: function(res) {
-        return res.redirect(
+        res.redirect(
             URLUtils.url(
                 'Checkout-Begin',
                 'stage',
