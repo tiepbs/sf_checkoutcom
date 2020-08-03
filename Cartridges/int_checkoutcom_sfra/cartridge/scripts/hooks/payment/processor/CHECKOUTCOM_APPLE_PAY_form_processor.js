@@ -8,7 +8,6 @@
  */
 function processForm(paymentForm, viewFormData) {
     var viewData = viewFormData;
-    var ckoApplePayData = paymentForm.applePayForm.ckoApplePayData;
     var ckoApplePayData = paymentForm.ckoApplePayData ? paymentForm.applePayForm.ckoApplePayData.htmlValue : null;
     var error = true;
 
