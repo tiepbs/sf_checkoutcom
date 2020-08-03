@@ -178,7 +178,7 @@ var ckoHelper = {
      * @returns {Object} The HTTP response object
      */
     gatewayClientRequest: function(serviceId, data, method) {
-        // eslint-disable-next-line        
+        // eslint-disable-next-line
         method = method || 'POST';
         var serv = this.getService(serviceId);
         var requestData = data;
@@ -330,9 +330,9 @@ var ckoHelper = {
      */
     paymentSuccess: function(gatewayResponse) {
         if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'response_code')) {
-            return gatewayResponse.response_code === 10000 || gatewayResponse.response_code === 10100 || gatewayResponse.response_code === 10200;
+            return gatewayResponse.response_code === '10000' || gatewayResponse.response_code === '10100' || gatewayResponse.response_code === '10200';
         } else if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'actions')) {
-            return gatewayResponse.actions[0].response_code === 10000 || gatewayResponse.actions[0].response_code === 10100 || gatewayResponse.actions[0].response_code === 10200;
+            return gatewayResponse.actions[0].response_code === '10000' || gatewayResponse.actions[0].response_code === '10100' || gatewayResponse.actions[0].response_code === '10200';
         } else if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'source')) {
             return gatewayResponse.source.type === 'sofort' || 'bancontact';
         } else if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'reference')) {
