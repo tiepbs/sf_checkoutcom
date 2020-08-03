@@ -20,24 +20,6 @@ function Handle(basket, billingData, processorId, req) {
     var fieldErrors = {};
     var serverErrors = [];
 
-    // Conditions
-    var condition1 = Object.prototype.hasOwnProperty.call(billingData.paymentInformation, 'ckoApm');
-    var condition2 = condition1 && billingData.paymentInformation.ckoApm.value;
-    var condition3 = condition2 && billingData.paymentInformation.ckoApm.value.length > 0;
-
-    // Verify the payload
-    if (!condition3) {
-        serverErrors.push(
-            Resource.msg('cko.apm.error', 'cko', null)
-        );
-
-        return {
-            fieldErrors: fieldErrors,
-            serverErrors: serverErrors,
-            error: true,
-        };
-    }
-
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
