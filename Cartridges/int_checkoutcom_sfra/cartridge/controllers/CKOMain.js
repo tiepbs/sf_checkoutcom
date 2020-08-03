@@ -28,27 +28,15 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
     var mode = ckoHelper.getValue('ckoMode');
     var output = paymentHelper.getFailurePageRedirect(res);
     var gResponse = {};
-
-    var logger = require('dw/system/Logger').getLogger('ckodebug');
-    logger.debug('xxx req {0}', JSON.stringify(req));
     
     // Check if a session id is available
     if (Object.prototype.hasOwnProperty.call(req, 'querystring') && Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id')) {
-
-        logger.debug('xxx req.querystring {0}', JSON.stringify('req.querystring'));
-        logger.debug('xxx req.querystring {0}', JSON.stringify(req.querystring));
-
         // Parse the response
-        gResponse = JSON.parse(req.querystring);
-    
-        logger.debug('xxx gResponse {0}', JSON.stringify('gResponse'));
-        logger.debug('xxx gResponse{0}', JSON.stringify(gResponse));
-
+        gResponse = req.querystring;
 
         // Reset the session URL
         // eslint-disable-next-line
         session.privacy.redirectUrl = null;
-
 
         // Perform the request to the payment gateway
         var gVerify = ckoHelper.gatewayClientRequest(
@@ -70,15 +58,14 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
 
             // Show order confirmation page
             if (condition) {
-                output = paymentHelper.getConfirmationPageRedirect(res, order);
+                paymentHelper.getConfirmationPageRedirect(res, order);
             }
         }
     } else if (ckoHelper.paymentSuccess(gResponse)) {
         order = OrderMgr.getOrder(gResponse.reference);
-        output = paymentHelper.getConfirmationPageRedirect(res, order);    
+        paymentHelper.getConfirmationPageRedirect(res, order);    
     }
 
-    output();
     return next();
 });
 
