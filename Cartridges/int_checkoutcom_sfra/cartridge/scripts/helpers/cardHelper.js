@@ -98,6 +98,8 @@ var cardHelper = {
             shipping: ckoHelper.getShipping(order),
             '3ds': this.get3Ds(),
             risk: { enabled: true },
+            success_url: URLUtils.https('CKOMain-HandleReturn').toString(),
+            failure_url: URLUtils.https('CKOMain-HandleFail').toString(),
             metadata: ckoHelper.getMetadata({}, processorId),
         };
 
