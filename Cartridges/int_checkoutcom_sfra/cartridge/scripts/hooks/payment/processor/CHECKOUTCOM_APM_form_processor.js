@@ -8,12 +8,10 @@
  */
 function processForm(paymentForm, viewFormData) {
     var viewData = viewFormData;
-    var ckoSelectedApm = paymentForm.apmForm.ckoSelectedApm;
-    var result = {
-        error: false,
-        viewData: viewData,
-    };
-    if (ckoSelectedApm.htmlValue.length > 0) {
+    var ckoSelectedApm = paymentForm.apmForm ? paymentForm.apmForm.ckoSelectedApm.htmlValue : null;
+    var error = true;
+
+    if (ckoSelectedApm && ckoSelectedApm.htmlValue.length > 0) {
         viewData.paymentInformation = {
             ckoApm: {
                 value: ckoSelectedApm.htmlValue,
@@ -21,11 +19,12 @@ function processForm(paymentForm, viewFormData) {
                 data: paymentForm.apmForm,
             },
         };
-    } else {
-        result.error = true;
     }
 
-    return result;
+    return {
+        error: error,
+        viewData: viewData,
+    };
 }
 
 exports.processForm = processForm;

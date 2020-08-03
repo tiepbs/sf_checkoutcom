@@ -8,22 +8,26 @@
  */
 function processForm(paymentForm, viewFormData) {
     var viewData = viewFormData;
-    var ckoApplePayData = paymentForm.applePayForm.ckoApplePayData;
+    var ckoApplePayData = paymentForm.ckoApplePayData ? paymentForm.applePayForm.ckoApplePayData.htmlValue : null;
+    var error = true;
 
-    viewData.paymentMethod = {
-        value: paymentForm.paymentMethod.value,
-        htmlName: paymentForm.paymentMethod.value,
-    };
+    if (ckoGooglePayData) {
+        viewData.paymentMethod = {
+            value: paymentForm.paymentMethod.htmlValue,
+            htmlName: paymentForm.paymentMethod.htmlValue,
+        };
 
-    viewData.paymentInformation = {
-        ckoApplePayData: {
-            value: ckoApplePayData.htmlValue,
-            htmlName: ckoApplePayData.htmlName,
-        },
-    };
+        viewData.paymentInformation = {
+            ckoApplePayData: {
+                value: ckoApplePayData.htmlValue,
+                htmlName: ckoApplePayData.htmlName,
+            },
+        };
+
+    }
 
     return {
-        error: false,
+        error: error,
         viewData: viewData,
     };
 }
