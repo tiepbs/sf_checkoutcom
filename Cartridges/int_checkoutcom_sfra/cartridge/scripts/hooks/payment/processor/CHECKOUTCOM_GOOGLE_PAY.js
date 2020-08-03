@@ -17,7 +17,7 @@ var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
 function Handle(basket, billingData, processorId, req) {
     var cardErrors = {};
     var serverErrors = [];
-    var ckoGooglePayData = billingData.paymentInformation.ckoGooglePayData ? billingData.paymentInformation.ckoGooglePayData.value : null;
+    var ckoGooglePayData = billingData.googlePayForm.ckoGooglePayData ? billingData.paymentInformation.ckoGooglePayData.value : null;
 
     // Verify the payload
     if (!ckoGooglePayData) {

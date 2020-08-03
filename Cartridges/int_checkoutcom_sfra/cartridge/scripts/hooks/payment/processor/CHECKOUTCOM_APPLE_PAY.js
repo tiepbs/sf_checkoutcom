@@ -17,7 +17,7 @@ var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
 function Handle(basket, billingData, processorId, req) {
     var cardErrors = {};
     var serverErrors = [];
-    var ckoApplePayData = billingData.paymentInformation.ckoApplePayData ? billingData.paymentInformation.ckoApplePayData.value : null;
+    var ckoApplePayData = billingData.applePayForm.ckoApplePayData ? billingData.applePayForm.ckoApplePayData.value : null;
 
     // Verify the payload
     if (!ckoApplePayData) {
