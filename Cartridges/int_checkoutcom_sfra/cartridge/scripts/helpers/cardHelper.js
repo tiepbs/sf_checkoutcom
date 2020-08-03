@@ -2,6 +2,7 @@
 
 /* API Includes */
 var OrderMgr = require('dw/order/OrderMgr');
+var URLUtils = require('dw/web/URLUtils');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
