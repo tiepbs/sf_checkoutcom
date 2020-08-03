@@ -20,6 +20,7 @@ var googlePayHelper = {
     handleRequest: function(paymentData, processorId, orderNumber) {
         // Load the order information
         var order = OrderMgr.getOrder(orderNumber);
+        var gatewayResponse = null;
 
         // Prepare the parameters
         var tokenRequest = {
@@ -61,31 +62,37 @@ var googlePayHelper = {
             ckoHelper.log(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
 
             // Perform the request to the payment gateway
-            var gatewayResponse = ckoHelper.gatewayClientRequest(
+            gatewayResponse = ckoHelper.gatewayClientRequest(
                 'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
                 gatewayRequest
             );
 
             // Log the payment response data
             ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
-
-            // Process the response
-            return gatewayResponse && this.handleResponse(gatewayResponse);
         }
 
-        return false;
+        // Process the response
+        return this.handleResponse(gatewayResponse);
     },
 
     /**
      * Handle the payment response.
      * @param {Object} gatewayResponse The gateway response data
-     * @returns {boolean} The payment success or failure
+     * @returns {Object} The payment success or failure
      */
     handleResponse: function(gatewayResponse) {
-        // Update customer data
-        ckoHelper.updateCustomerData(gatewayResponse);
+        // Prepare the result
+        var result = {
+            error: !ckoHelper.paymentSuccess(gatewayResponse),
+            redirectUrl: false,
+        };
 
-        return ckoHelper.paymentSuccess(gatewayResponse);
+        // Update customer data
+        if (gatewayResponse) {
+            ckoHelper.updateCustomerData(gatewayResponse);
+        }
+
+        return result;
     },
 };
 
