@@ -34,8 +34,13 @@ var apmHelper = {
             gatewayRequest
         );
 
-        // Test SEPA
-        if (Object.prototype.hasOwnProperty.call(gatewayRequest, 'type')) {
+        // Test the APM type
+        var condition1 = Object.prototype.hasOwnProperty.call(gatewayRequest, 'type')
+        var condition2 = Object.prototype.hasOwnProperty.call(gatewayRequest, 'source')
+        && Object.prototype.hasOwnProperty.call(gatewayRequest.source, 'type');
+
+        // Set the service id
+        if (condition1 || condition2) {
             if (gatewayRequest.type === 'sepa') {
                 serviceId = 'cko.card.sources.' + ckoHelper.getValue('ckoMode') + '.service';
             }
