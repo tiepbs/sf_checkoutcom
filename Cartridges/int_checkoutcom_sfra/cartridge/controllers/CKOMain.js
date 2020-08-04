@@ -26,7 +26,6 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
     // Prepare some variables
     var order;
     var mode = ckoHelper.getValue('ckoMode');
-    var output = paymentHelper.getFailurePageRedirect(res);
     var gResponse = {};
 
     // Check if a session id is available
@@ -77,6 +76,7 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
     // Load the order
     // eslint-disable-next-line
     if (Object.prototype.hasOwnProperty.call(session.privacy, 'ckoOrderId')) {
+        // eslint-disable-next-line
         var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
         // Restore the cart
@@ -97,7 +97,7 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
  */
 server.post('HandleWebhook', function(req, res, next) {
     if (ckoHelper.isValidResponse(req)) {
-    // Get the response as JSON object
+        // Get the response as JSON object
         var hook = JSON.parse(req.body);
 
         // Check the webhook event
@@ -122,7 +122,7 @@ server.post('HandleWebhook', function(req, res, next) {
             ),
         });
     } else {
-    // Set a failure response
+        // Set a failure response
         res.json({
             response: Resource.msg(
                 'cko.webhook.failure',

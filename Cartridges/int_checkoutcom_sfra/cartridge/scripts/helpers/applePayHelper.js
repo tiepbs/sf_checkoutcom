@@ -21,6 +21,7 @@ var applePayHelper = {
         // Load the order information
         var order = OrderMgr.getOrder(orderNumber);
         var gatewayResponse = null;
+        var gatewayRequest = null;
 
         // Prepare the parameters
         var tokenRequest = {
@@ -42,7 +43,7 @@ var applePayHelper = {
 
         // If the request is valid, process the response
         if (tokenResponse && Object.prototype.hasOwnProperty.call(tokenResponse, 'token')) {
-            var gatewayRequest = {
+            gatewayRequest = {
                 source: {
                     type: 'token',
                     token: tokenResponse.token,

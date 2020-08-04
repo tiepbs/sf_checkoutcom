@@ -463,6 +463,7 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
         });
 
         this.emit('route:Complete', req, res);
+        // eslint-disable-next-line
         return;
     }
 
@@ -474,6 +475,7 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
         });
 
         this.emit('route:Complete', req, res);
+        // eslint-disable-next-line
         return;
     }
 
@@ -494,6 +496,7 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
         });
 
         this.emit('route:Complete', req, res);
+        // eslint-disable-next-line
         return;
     }
 
@@ -523,6 +526,7 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
     });
 
     this.emit('route:Complete', req, res);
+    // eslint-disable-next-line
     return;
 });
 
