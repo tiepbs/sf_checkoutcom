@@ -28,7 +28,7 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
     var mode = ckoHelper.getValue('ckoMode');
     var output = paymentHelper.getFailurePageRedirect(res);
     var gResponse = {};
-    
+
     // Check if a session id is available
     if (Object.prototype.hasOwnProperty.call(req, 'querystring') && Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id')) {
         // Parse the response
@@ -63,7 +63,7 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
         }
     } else if (ckoHelper.paymentSuccess(gResponse)) {
         order = OrderMgr.getOrder(gResponse.reference);
-        paymentHelper.getConfirmationPageRedirect(res, order);    
+        paymentHelper.getConfirmationPageRedirect(res, order);
     }
 
     return next();
@@ -88,7 +88,7 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
     // Send back to the error page
     paymentHelper.getFailurePageRedirect(res);
     this.emit('route:Complete', req, res);
-    return ;
+    return;
 });
 
 /**

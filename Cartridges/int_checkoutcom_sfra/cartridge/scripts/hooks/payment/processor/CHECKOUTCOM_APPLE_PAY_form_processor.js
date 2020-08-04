@@ -23,7 +23,6 @@ function processForm(paymentForm, viewFormData) {
                 htmlName: ckoApplePayData.htmlName,
             },
         };
-
     }
 
     return {
