@@ -11,7 +11,7 @@ function processForm(paymentForm, viewFormData) {
     var ckoApplePayData = paymentForm.ckoApplePayData ? paymentForm.applePayForm.ckoApplePayData.htmlValue : null;
     var error = true;
 
-    if (ckoGooglePayData) {
+    if (ckoApplePayData) {
         viewData.paymentMethod = {
             value: paymentForm.paymentMethod.htmlValue,
             htmlName: paymentForm.paymentMethod.htmlValue,
@@ -23,7 +23,6 @@ function processForm(paymentForm, viewFormData) {
                 htmlName: ckoApplePayData.htmlName,
             },
         };
-
     }
 
     return {

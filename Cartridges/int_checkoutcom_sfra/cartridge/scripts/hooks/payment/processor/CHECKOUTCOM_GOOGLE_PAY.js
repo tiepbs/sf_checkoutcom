@@ -1,7 +1,5 @@
 'use strict';
 
-var Resource = require('dw/web/Resource');
-
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
