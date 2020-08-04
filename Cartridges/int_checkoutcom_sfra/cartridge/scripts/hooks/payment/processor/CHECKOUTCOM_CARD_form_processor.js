@@ -11,7 +11,7 @@ var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
 function processForm(paymentForm, viewFormData) {
     var viewData = viewFormData;
     var selectedCardUuid = paymentForm.savedCardForm ? paymentForm.savedCardForm.selectedCardUuid.htmlValue : null;
-    var selectedCardCvv = paymentForm.savedCardForm ? paymentForm.savedCardForm.selectedCardCvv.htmlValue: null;
+    var selectedCardCvv = paymentForm.savedCardForm ? paymentForm.savedCardForm.selectedCardCvv.htmlValue : null;
     var fieldErrors = {};
 
     if (paymentForm && Object.prototype.hasOwnProperty.call(paymentForm, 'paymentMethod')) {

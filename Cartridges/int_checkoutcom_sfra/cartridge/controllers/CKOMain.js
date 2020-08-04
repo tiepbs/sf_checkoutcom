@@ -26,9 +26,8 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
     // Prepare some variables
     var order;
     var mode = ckoHelper.getValue('ckoMode');
-    var output = paymentHelper.getFailurePageRedirect(res);
     var gResponse = {};
-    
+
     // Check if a session id is available
     if (Object.prototype.hasOwnProperty.call(req, 'querystring') && Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id')) {
         // Parse the response
@@ -63,7 +62,7 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
         }
     } else if (ckoHelper.paymentSuccess(gResponse)) {
         order = OrderMgr.getOrder(gResponse.reference);
-        paymentHelper.getConfirmationPageRedirect(res, order);    
+        paymentHelper.getConfirmationPageRedirect(res, order);
     }
 
     return next();
@@ -77,6 +76,7 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
     // Load the order
     // eslint-disable-next-line
     if (Object.prototype.hasOwnProperty.call(session.privacy, 'ckoOrderId')) {
+        // eslint-disable-next-line
         var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
 
         // Restore the cart
@@ -88,7 +88,7 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
     // Send back to the error page
     paymentHelper.getFailurePageRedirect(res);
     this.emit('route:Complete', req, res);
-    return ;
+    return;
 });
 
 /**
@@ -97,7 +97,7 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
  */
 server.post('HandleWebhook', function(req, res, next) {
     if (ckoHelper.isValidResponse(req)) {
-    // Get the response as JSON object
+        // Get the response as JSON object
         var hook = JSON.parse(req.body);
 
         // Check the webhook event
@@ -122,7 +122,7 @@ server.post('HandleWebhook', function(req, res, next) {
             ),
         });
     } else {
-    // Set a failure response
+        // Set a failure response
         res.json({
             response: Resource.msg(
                 'cko.webhook.failure',

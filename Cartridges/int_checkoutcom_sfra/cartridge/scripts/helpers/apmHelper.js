@@ -35,7 +35,7 @@ var apmHelper = {
         );
 
         // Test the APM type
-        var condition1 = Object.prototype.hasOwnProperty.call(gatewayRequest, 'type')
+        var condition1 = Object.prototype.hasOwnProperty.call(gatewayRequest, 'type');
         var condition2 = Object.prototype.hasOwnProperty.call(gatewayRequest, 'source')
         && Object.prototype.hasOwnProperty.call(gatewayRequest.source, 'type');
 
@@ -91,7 +91,7 @@ var apmHelper = {
             // Handle the redirection logic
             if (condition1) {
                 result.redirectUrl = URLUtils.url('CKOSepa-Mandate').toString()
-                + '?orderNumber='+ orderNumber
+                + '?orderNumber=' + orderNumber
                 + '&sepaResponseId=' + gatewayResponse.id;
             } else if (condition2) {
                 result.redirectUrl = gatewayResponse._links.redirect.href;
