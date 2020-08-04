@@ -62,15 +62,15 @@ var applePayHelper = {
             ckoHelper.log(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
 
             // Perform the request to the payment gateway
-            var gatewayResponse = ckoHelper.gatewayClientRequest(
+            gatewayResponse = ckoHelper.gatewayClientRequest(
                 'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
                 gatewayRequest
             );
-
-            // Log the payment response data
-            ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
         }
-        
+
+        // Log the payment response data
+        ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
+
         // Process the response
         return this.handleResponse(gatewayResponse);
     },

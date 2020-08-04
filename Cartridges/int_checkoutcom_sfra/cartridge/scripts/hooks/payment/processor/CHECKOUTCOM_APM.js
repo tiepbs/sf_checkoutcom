@@ -1,6 +1,5 @@
 'use strict';
 
-var Resource = require('dw/web/Resource');
 var OrderMgr = require('dw/order/OrderMgr');
 
 /** Utility **/
@@ -36,43 +35,36 @@ function Handle(basket, billingData, processorId, req) {
  * @returns {Object} The payment result
  */
 function Authorize(orderNumber, billingForm, processorId, req) {
-    var ckoSelectedApm = billingData.apmForm.ckoSelectedApm ? billingData.apmForm.ckoSelectedApm.value : null;
     var serverErrors = [];
     var fieldErrors = {};
-    var result = {
-        error: true,
-        redirectUrl: false,
+
+    // Get the order
+    var order = OrderMgr.getOrder(orderNumber);
+
+    // Prepare the arguments
+    var args = {
+        order: order,
+        processorId: processorId,
+        paymentData: billingForm.apmForm,
+        req: req,
     };
 
-    if (ckoSelectedApm) {
-        // Get the order
-        var order = OrderMgr.getOrder(orderNumber);
+    // Get the selected APM request data
+    var func = billingForm.apmForm.ckoSelectedApm.htmlValue + 'Authorization';
+    var apmConfigData = apmConfig[func](args);
 
-        // Prepare the arguments
-        var args = {
-            order: order,
-            processorId: processorId,
-            paymentData: billingForm.apmForm,
-            req: req,
-        };
+    // Payment request
+    var result = apmHelper.handleRequest(
+        apmConfigData,
+        processorId,
+        orderNumber
+    );
 
-        // Get the selected APM request data
-        var func = billingForm.apmForm.ckoSelectedApm.value.toString() + 'Authorization';
-        var apmConfigData = apmConfig[func](args);
-
-        // Payment request
-        result = apmHelper.handleRequest(
-            apmConfigData,
-            processorId,
-            orderNumber
+    // Handle errors
+    if (result.error) {
+        serverErrors.push(
+            ckoHelper.getPaymentFailureMessage()
         );
-
-        // Handle errors
-        if (result.error) {
-            serverErrors.push(
-                ckoHelper.getPaymentFailureMessage()
-            );
-        }
     }
 
     return {

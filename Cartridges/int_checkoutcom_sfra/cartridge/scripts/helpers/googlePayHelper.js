@@ -66,10 +66,10 @@ var googlePayHelper = {
                 'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
                 gatewayRequest
             );
-
-            // Log the payment response data
-            ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
         }
+
+        // Log the payment response data
+        ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
 
         // Process the response
         return this.handleResponse(gatewayResponse);
