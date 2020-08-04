@@ -15,27 +15,11 @@ var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
  * @returns {Object} The form validation result
  */
 function Handle(basket, billingData, processorId, req) {
-    var cardErrors = {};
+    var fieldErrors = {};
     var serverErrors = [];
-    var ckoApplePayData = billingData.paymentInformation.ckoApplePayData ? billingData.paymentInformation.ckoApplePayData.value : null;
-
-    // Verify the payload
-    if (!ckoApplePayData) {
-    // Verify the payload
-    if (!billingData.paymentInformation.ckoApplePayData.value || billingData.paymentInformation.ckoApplePayData.value.length === 0) {
-        serverErrors.push(
-            Resource.msg('cko.applepay.error', 'cko', null)
-        );
-
-        return {
-            fieldErrors: [cardErrors],
-            serverErrors: serverErrors,
-            error: true,
-        };
-    }
 
     return {
-        fieldErrors: cardErrors,
+        fieldErrors: fieldErrors,
         serverErrors: serverErrors,
         error: false,
     };
@@ -54,14 +38,14 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     var fieldErrors = {};
 
     // Payment request
-    var success = applePayHelper.handleRequest(
+    var result = applePayHelper.handleRequest(
         billingForm.applePayForm.ckoApplePayData.htmlValue,
         processorId,
         orderNumber
     );
 
     // Handle errors
-    if (!success) {
+    if (result.error) {
         serverErrors.push(
             ckoHelper.getPaymentFailureMessage()
         );
@@ -70,7 +54,8 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
-        error: !success,
+        error: result.error,
+        redirectUrl: result.redirectUrl,
     };
 }
 
