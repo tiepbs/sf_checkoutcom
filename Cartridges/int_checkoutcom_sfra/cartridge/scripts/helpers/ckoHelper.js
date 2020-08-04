@@ -129,18 +129,20 @@ var ckoHelper = {
     removeSentisiveData: function(rawData) {
         // Card data
         var data = rawData;
-        if (Object.prototype.hasOwnProperty.call(data, 'source')) {
-            if (Object.prototype.hasOwnProperty.call(data.source, 'number')) data.source.number.replace(/^.{14}/g, '*');
-            if (Object.prototype.hasOwnProperty.call(data.source, 'cvv')) data.source.cvv.replace(/^.{3}/g, '*');
-            if (Object.prototype.hasOwnProperty.call(data.source, 'billing_address')) delete data.source.billing_address;
-            if (Object.prototype.hasOwnProperty.call(data.source, 'phone')) delete data.source.phone;
-            if (Object.prototype.hasOwnProperty.call(data.source, 'name')) delete data.source.name;
-        }
+        if (data) {
+            if (Object.prototype.hasOwnProperty.call(data, 'source')) {
+                if (Object.prototype.hasOwnProperty.call(data.source, 'number')) data.source.number.replace(/^.{14}/g, '*');
+                if (Object.prototype.hasOwnProperty.call(data.source, 'cvv')) data.source.cvv.replace(/^.{3}/g, '*');
+                if (Object.prototype.hasOwnProperty.call(data.source, 'billing_address')) delete data.source.billing_address;
+                if (Object.prototype.hasOwnProperty.call(data.source, 'phone')) delete data.source.phone;
+                if (Object.prototype.hasOwnProperty.call(data.source, 'name')) delete data.source.name;
+            }
 
-        // Customer data
-        if (Object.prototype.hasOwnProperty.call(data, 'customer')) delete data.customer;
-        if (Object.prototype.hasOwnProperty.call(data, 'shipping')) delete data.shipping;
-        if (Object.prototype.hasOwnProperty.call(data, 'billing')) delete data.billing;
+            // Customer data
+            if (Object.prototype.hasOwnProperty.call(data, 'customer') && data.customer) delete data.customer;
+            if (Object.prototype.hasOwnProperty.call(data, 'shipping') && data.shipping) delete data.shipping;
+            if (Object.prototype.hasOwnProperty.call(data, 'billing') && data.billing) delete data.billing;
+        }
 
         return data;
     },
