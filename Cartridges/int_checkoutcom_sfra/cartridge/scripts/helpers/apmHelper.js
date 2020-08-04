@@ -21,24 +21,39 @@ var apmHelper = {
      */
     handleRequest: function(apmConfigData, processorId, orderNumber) {
         // Prepare required parameters
-        var gatewayResponse;
+        var gatewayResponse = null;
         var order = OrderMgr.getOrder(orderNumber);
+        var serviceId = 'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service';
 
         // Create the payment request
         var gatewayRequest = this.getApmRequest(order, processorId, apmConfigData);
 
-        // Test SEPA
-        if (Object.prototype.hasOwnProperty.call(gatewayRequest, 'type') & gatewayRequest.type === 'sepa') {
-            gatewayResponse = ckoHelper.gatewayClientRequest('cko.card.sources.' + ckoHelper.getValue('ckoMode') + '.service', gatewayRequest);
-        } else {
-            // Test Klarna
-            if (gatewayRequest.source.type === 'klarna') {
-                gatewayRequest.capture = false;
+        // Log the payment request data
+        ckoHelper.log(
+            processorId + ' ' + ckoHelper._('cko.request.data', 'cko'),
+            gatewayRequest
+        );
+
+        // Test the APM type
+        var condition1 = Object.prototype.hasOwnProperty.call(gatewayRequest, 'type')
+        var condition2 = Object.prototype.hasOwnProperty.call(gatewayRequest, 'source')
+        && Object.prototype.hasOwnProperty.call(gatewayRequest.source, 'type');
+
+        // Set the service id
+        if (condition1 || condition2) {
+            if (gatewayRequest.type === 'sepa') {
+                serviceId = 'cko.card.sources.' + ckoHelper.getValue('ckoMode') + '.service';
             }
 
             // Perform the request to the payment gateway
-            gatewayResponse = ckoHelper.gatewayClientRequest('cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service', gatewayRequest);
+            gatewayResponse = ckoHelper.gatewayClientRequest(
+                serviceId,
+                gatewayRequest
+            );
         }
+
+        // Log the payment response data
+        ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
 
         // Process the response
         return this.handleResponse(gatewayResponse, orderNumber);
@@ -57,18 +72,30 @@ var apmHelper = {
             redirectUrl: false,
         };
 
-        // Update customer data
-        ckoHelper.updateCustomerData(gatewayResponse);
+        // Handle the response
+        if (gatewayResponse && Object.prototype.hasOwnProperty.call(gatewayResponse, 'id')) {
+            // Update the response state
+            result.error = false;
 
-        // Add redirect to sepa source reqeust
-        if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'type') && gatewayResponse.type === 'Sepa') {
-            result.error = false;
-            result.redirectUrl = URLUtils.url('CKOSepa-Mandate').toString()
-            + '?orderNumber=' + orderNumber + '&sepaResponseId=' + gatewayResponse.id;
-        } else if (Object.prototype.hasOwnProperty.call(gatewayResponse, '_links') && Object.prototype.hasOwnProperty.call(gatewayResponse._links, 'redirect')) {
-            result.error = false;
-            var gatewayLinks = gatewayResponse._links;
-            result.redirectUrl = gatewayLinks.redirect.href;
+            // Update customer data
+            ckoHelper.updateCustomerData(gatewayResponse);
+
+            // Test the SEPA redirection
+            var condition1 = Object.prototype.hasOwnProperty.call(gatewayResponse, 'type')
+            && gatewayResponse.type === 'Sepa';
+
+            // Test other redirections
+            var condition2 = Object.prototype.hasOwnProperty.call(gatewayResponse, '_links')
+            && Object.prototype.hasOwnProperty.call(gatewayResponse._links, 'redirect');
+
+            // Handle the redirection logic
+            if (condition1) {
+                result.redirectUrl = URLUtils.url('CKOSepa-Mandate').toString()
+                + '?orderNumber='+ orderNumber
+                + '&sepaResponseId=' + gatewayResponse.id;
+            } else if (condition2) {
+                result.redirectUrl = gatewayResponse._links.redirect.href;
+            }
         }
 
         return result;
@@ -116,11 +143,11 @@ var apmHelper = {
                 metadata: ckoHelper.getMetadata({}, processorId),
                 billing_descriptor: ckoHelper.getBillingDescriptor(),
             };
+        }
 
-            // Test Klarna
-            if (chargeData.source.type === 'klarna') {
-                chargeData.capture = false;
-            }
+        // Test Klarna
+        if (chargeData.source.type === 'klarna') {
+            chargeData.capture = false;
         }
 
         return chargeData;

@@ -432,8 +432,8 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
     // Handles payment authorization
     var handlePaymentResult;
     var billingForm = server.forms.getForm('billing');
-    var paymentMethodID = billingForm.paymentMethod.value;
-
+    var paymentMethodID = billingForm.paymentMethod.htmlValue;
+    	
     var processor = PaymentMgr.getPaymentMethod(paymentMethodID).getPaymentProcessor();
     if (HookMgr.hasHook('app.payment.processor.' + processor.ID.toLowerCase())) {
         handlePaymentResult = HookMgr.callHook(
@@ -522,7 +522,8 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
         continueUrl: URLUtils.url('Order-Confirm').toString(),
     });
 
-    return next();
+    this.emit('route:Complete', req, res);
+    return;
 });
 
 module.exports = server.exports();

@@ -15,25 +15,11 @@ var googlePayHelper = require('~/cartridge/scripts/helpers/googlePayHelper');
  * @returns {Object} The form validation result
  */
 function Handle(basket, billingData, processorId, req) {
-    var cardErrors = {};
+    var fieldErrors = {};
     var serverErrors = [];
-    var ckoGooglePayData = billingData.paymentInformation.ckoGooglePayData ? billingData.paymentInformation.ckoGooglePayData.value : null;
-
-    // Verify the payload
-    if (!ckoGooglePayData) {
-        serverErrors.push(
-            Resource.msg('cko.googlepay.error', 'cko', null)
-        );
-
-        return {
-            fieldErrors: [cardErrors],
-            serverErrors: serverErrors,
-            error: true,
-        };
-    }
 
     return {
-        fieldErrors: cardErrors,
+        fieldErrors: fieldErrors,
         serverErrors: serverErrors,
         error: false,
     };
@@ -52,14 +38,14 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     var fieldErrors = {};
 
     // Payment request
-    var success = googlePayHelper.handleRequest(
+    var result = googlePayHelper.handleRequest(
         billingForm.googlePayForm.ckoGooglePayData.htmlValue,
         processorId,
         orderNumber
     );
 
     // Handle errors
-    if (!success) {
+    if (result.error) {
         serverErrors.push(
             ckoHelper.getPaymentFailureMessage()
         );
@@ -68,7 +54,8 @@ function Authorize(orderNumber, billingForm, processorId, req) {
     return {
         fieldErrors: fieldErrors,
         serverErrors: serverErrors,
-        error: !success,
+        error: result.error,
+        redirectUrl: result.redirectUrl,
     };
 }
 
