@@ -23,6 +23,7 @@ var apmHelper = {
         // Prepare required parameters
         var gatewayResponse = null;
         var order = OrderMgr.getOrder(orderNumber);
+        var serviceId = 'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service';
 
         // Create the payment request
         var gatewayRequest = this.getApmRequest(order, processorId, apmConfigData);
@@ -35,11 +36,8 @@ var apmHelper = {
 
         // Test SEPA
         if (Object.prototype.hasOwnProperty.call(gatewayRequest, 'type')) {
-            var serviceId;
             if (gatewayRequest.type === 'sepa') {
                 serviceId = 'cko.card.sources.' + ckoHelper.getValue('ckoMode') + '.service';
-            } else {
-                serviceId = 'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service';
             }
 
             // Perform the request to the payment gateway
