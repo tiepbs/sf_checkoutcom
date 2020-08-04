@@ -70,7 +70,10 @@ var apmHelper = {
         };
 
         // Handle the response
-        if (gatewayResponse) {
+        if (gatewayResponse && Object.prototype.hasOwnProperty.call(gatewayResponse, 'id')) {
+            // Update the response state
+            result.error = false;
+
             // Update customer data
             ckoHelper.updateCustomerData(gatewayResponse);
 
@@ -84,12 +87,10 @@ var apmHelper = {
 
             // Handle the redirection logic
             if (condition1) {
-                result.error = false;
                 result.redirectUrl = URLUtils.url('CKOSepa-Mandate').toString()
                 + '?orderNumber='+ orderNumber
                 + '&sepaResponseId=' + gatewayResponse.id;
             } else if (condition2) {
-                result.error = false;
                 result.redirectUrl = gatewayResponse._links.redirect.href;
             }
         }
@@ -139,11 +140,11 @@ var apmHelper = {
                 metadata: ckoHelper.getMetadata({}, processorId),
                 billing_descriptor: ckoHelper.getBillingDescriptor(),
             };
+        }
 
-            // Test Klarna
-            if (chargeData.source.type === 'klarna') {
-                chargeData.capture = false;
-            }
+        // Test Klarna
+        if (chargeData.source.type === 'klarna') {
+            chargeData.capture = false;
         }
 
         return chargeData;
