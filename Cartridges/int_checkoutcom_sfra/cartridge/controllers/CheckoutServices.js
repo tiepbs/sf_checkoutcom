@@ -429,6 +429,16 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
         return next();
     }
 
+    // Places the order
+    var placeOrderResult = COHelpers.placeOrder(order, fraudDetectionStatus);
+    if (placeOrderResult.error) {
+        res.json({
+            error: true,
+            errorMessage: Resource.msg('error.technical', 'checkout', null)
+        });
+        return next();
+    }
+
     // Handles payment authorization
     var handlePaymentResult;
     var billingForm = server.forms.getForm('billing');
