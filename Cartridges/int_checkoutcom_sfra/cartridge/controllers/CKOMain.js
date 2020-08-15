@@ -94,22 +94,50 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
  * @returns {string} The controller response
  */
 server.get('HandleFail', server.middleware.https, function(req, res, next) {
-    // Load the order
-    // eslint-disable-next-line
-    if (Object.prototype.hasOwnProperty.call(session.privacy, 'ckoOrderId')) {
-        // eslint-disable-next-line
-        var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
+    // Prepare some variables
+    var order;
+    var mode = ckoHelper.getValue('ckoMode');
+    var gResponse = {};
 
-        // Restore the cart
-        if (order) {
-            OrderMgr.failOrder(order, true);
+    // Check if a session id is available
+    var condition1 = Object.prototype.hasOwnProperty.call(req, 'querystring');
+    var condition2 = Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id');
+    if (condition1 && condition2) {
+        // Parse the response
+        gResponse = req.querystring;
+
+        // Reset the session URL
+        // eslint-disable-next-line
+        session.privacy.redirectUrl = null;
+
+        // Perform the request to the payment gateway
+        var gVerify = ckoHelper.gatewayClientRequest(
+            'cko.verify.charges.' + mode + '.service',
+            {
+                paymentToken: req.querystring['cko-session-id'],
+            }
+        );
+
+        // Load the order
+        if (Object.prototype.hasOwnProperty.call(gVerify, 'reference') && gVerify.reference) {
+            // Load the order
+            order = OrderMgr.getOrder(gVerify.reference);
+
+            // If there is a valid response
+            var condition = order && typeof (gVerify) === 'object';
+            if (condition) {
+                // Fail the order
+                OrderMgr.failOrder(order, true);
+
+                // Send back to the error page
+                paymentHelper.getFailurePageRedirect(res);
+                this.emit('route:Complete', req, res);
+                return;
+            }
         }
     }
-
-    // Send back to the error page
-    paymentHelper.getFailurePageRedirect(res);
-    this.emit('route:Complete', req, res);
-    return;
+    
+    return next();
 });
 
 /**
