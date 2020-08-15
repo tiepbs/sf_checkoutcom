@@ -7,6 +7,7 @@ var server = require('server');
 var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
 var Resource = require('dw/web/Resource');
+var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
 
 /* Checkout.com Event functions */
 var eventsHelper = require('~/cartridge/scripts/helpers/eventsHelper');
