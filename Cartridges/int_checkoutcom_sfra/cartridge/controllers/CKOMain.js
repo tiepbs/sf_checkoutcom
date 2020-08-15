@@ -7,6 +7,7 @@ var server = require('server');
 var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
 var Resource = require('dw/web/Resource');
+var Transaction = require('dw/system/Transaction');
 var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
 
 /* Checkout.com Event functions */
@@ -61,14 +62,20 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
                 // Place the order
                 var placeOrderResult = COHelpers.placeOrder(order, { status: '' });
                 if (placeOrderResult.error) {
-                    OrderMgr.failOrder(order, true);
+                    Transaction.wrap(function() {
+                        OrderMgr.failOrder(order, true);
+                    });
                 }
     
                 // Show the order confirmation page
                 paymentHelper.getConfirmationPageRedirect(res, order);
             }
             else {
-                OrderMgr.failOrder(order, true);
+                Transaction.wrap(function() {
+                    OrderMgr.failOrder(order, true);
+                });
+
+                paymentHelper.getFailurePageRedirect(res);
             }
         }
     } else if (ckoHelper.paymentSuccess(gResponse)) {
@@ -76,14 +83,18 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
         order = OrderMgr.getOrder(gResponse.reference);
         var placeOrderResult = COHelpers.placeOrder(order, { status: '' });
         if (placeOrderResult.error) {
-            OrderMgr.failOrder(order, true);
+            Transaction.wrap(function() {
+                OrderMgr.failOrder(order, true);
+            });
+            
+            paymentHelper.getFailurePageRedirect(res);
         }
 
         // Show the order confirmation page
         paymentHelper.getConfirmationPageRedirect(res, order);
     }
     else {
-        OrderMgr.failOrder(order, true);
+        paymentHelper.getFailurePageRedirect(res);
     }
 
     return next();
@@ -106,10 +117,6 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
         // Parse the response
         gResponse = req.querystring;
 
-        // Reset the session URL
-        // eslint-disable-next-line
-        session.privacy.redirectUrl = null;
-
         // Perform the request to the payment gateway
         var gVerify = ckoHelper.gatewayClientRequest(
             'cko.verify.charges.' + mode + '.service',
@@ -117,26 +124,27 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
                 paymentToken: req.querystring['cko-session-id'],
             }
         );
-
+        
         // Load the order
         if (Object.prototype.hasOwnProperty.call(gVerify, 'reference') && gVerify.reference) {
             // Load the order
             order = OrderMgr.getOrder(gVerify.reference);
 
             // If there is a valid response
-            var condition = order && typeof (gVerify) === 'object';
-            if (condition) {
+            if (order) {
                 // Fail the order
                 OrderMgr.failOrder(order, true);
 
                 // Send back to the error page
                 paymentHelper.getFailurePageRedirect(res);
+
                 this.emit('route:Complete', req, res);
+                // eslint-disable-next-line
                 return;
             }
         }
     }
-    
+
     return next();
 });
 
