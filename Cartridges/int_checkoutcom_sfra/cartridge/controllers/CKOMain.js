@@ -29,7 +29,9 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
     var gResponse = {};
 
     // Check if a session id is available
-    if (Object.prototype.hasOwnProperty.call(req, 'querystring') && Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id')) {
+    var condition1 = Object.prototype.hasOwnProperty.call(req, 'querystring');
+    var condition2 = Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id');
+    if (condition1 && condition2) {
         // Parse the response
         gResponse = req.querystring;
 
@@ -54,15 +56,33 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
             var condition = order && typeof (gVerify) === 'object'
             && Object.prototype.hasOwnProperty.call(gVerify, 'id')
             && ckoHelper.redirectPaymentSuccess(gVerify);
-
-            // Show order confirmation page
             if (condition) {
+                // Place the order
+                var placeOrderResult = COHelpers.placeOrder(order, { status: '' });
+                if (placeOrderResult.error) {
+                    OrderMgr.failOrder(order, true);
+                }
+    
+                // Show the order confirmation page
                 paymentHelper.getConfirmationPageRedirect(res, order);
+            }
+            else {
+                OrderMgr.failOrder(order, true);
             }
         }
     } else if (ckoHelper.paymentSuccess(gResponse)) {
+        // Place the order
         order = OrderMgr.getOrder(gResponse.reference);
+        var placeOrderResult = COHelpers.placeOrder(order, { status: '' });
+        if (placeOrderResult.error) {
+            OrderMgr.failOrder(order, true);
+        }
+
+        // Show the order confirmation page
         paymentHelper.getConfirmationPageRedirect(res, order);
+    }
+    else {
+        OrderMgr.failOrder(order, true);
     }
 
     return next();

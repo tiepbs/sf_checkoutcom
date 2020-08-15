@@ -479,7 +479,7 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
         return;
     }
 
-        // Places the order
+    // Places the order
     var fraudDetectionStatus = { status: '' };
     var placeOrderResult = COHelpers.placeOrder(order, fraudDetectionStatus);
     if (placeOrderResult.error) {
