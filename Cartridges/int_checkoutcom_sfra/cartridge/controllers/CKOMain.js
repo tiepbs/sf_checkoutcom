@@ -132,6 +132,9 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
 
             // If there is a valid response
             if (order) {
+                // Restore the cart
+                ckoHelper.checkAndRestoreBasket(order);
+                
                 // Fail the order
                 OrderMgr.failOrder(order, true);
 

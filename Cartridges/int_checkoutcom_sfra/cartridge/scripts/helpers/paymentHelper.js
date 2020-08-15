@@ -31,13 +31,7 @@ var paymentHelper = {
      */
     getFailurePageRedirect: function(res) {        
         res.redirect(
-            URLUtils.url(
-                'Checkout-Begin',
-                'stage',
-                'payment',
-                'paymentError',
-                Resource.msg('error.payment.not.valid', 'checkout', null)
-            ).toString()
+            URLUtils.url('Cart-Show').toString()
         );
     },
 };
