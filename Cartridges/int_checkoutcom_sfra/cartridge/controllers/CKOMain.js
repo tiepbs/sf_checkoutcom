@@ -137,10 +137,6 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
 
                 // Send back to the error page
                 paymentHelper.getFailurePageRedirect(res);
-
-                this.emit('route:Complete', req, res);
-                // eslint-disable-next-line
-                return;
             }
         }
     }
