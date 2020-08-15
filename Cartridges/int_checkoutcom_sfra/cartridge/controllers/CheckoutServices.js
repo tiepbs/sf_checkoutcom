@@ -506,9 +506,7 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
     // Reset usingMultiShip after successful Order placement
     req.session.privacyCache.set('usingMultiShipping', false);
 
-    // TODO: Exposing a direct route to an Order, without at least encoding the orderID
-    //  is a serious PII violation.  It enables looking up every customers orders, one at a
-    //  time.
+    // Redirect to the confirmation page
     res.json({
         error: false,
         orderID: order.orderNo,
