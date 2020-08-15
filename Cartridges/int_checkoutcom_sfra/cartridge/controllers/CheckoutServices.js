@@ -490,7 +490,6 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
         return next();
     }
 
-
     if (req.currentCustomer.addressBook) {
     // save all used shipping addresses to address book of the logged in customer
         var allAddresses = addressHelpers.gatherShippingAddresses(order);
