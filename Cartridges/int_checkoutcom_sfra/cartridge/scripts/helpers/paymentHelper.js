@@ -29,15 +29,9 @@ var paymentHelper = {
      * Get the failure page redirection.
      * @param {Object} res The HTTP response object
      */
-    getFailurePageRedirect: function(res) {
+    getFailurePageRedirect: function(res) {        
         res.redirect(
-            URLUtils.url(
-                'Checkout-Begin',
-                'stage',
-                'payment',
-                'paymentError',
-                Resource.msg('error.payment.not.valid', 'checkout', null)
-            )
+            URLUtils.url('Cart-Show').toString()
         );
     },
 };

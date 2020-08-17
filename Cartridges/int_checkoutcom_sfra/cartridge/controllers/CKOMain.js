@@ -7,6 +7,8 @@ var server = require('server');
 var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
 var Resource = require('dw/web/Resource');
+var Transaction = require('dw/system/Transaction');
+var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
 
 /* Checkout.com Event functions */
 var eventsHelper = require('~/cartridge/scripts/helpers/eventsHelper');
@@ -29,7 +31,9 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
     var gResponse = {};
 
     // Check if a session id is available
-    if (Object.prototype.hasOwnProperty.call(req, 'querystring') && Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id')) {
+    var condition1 = Object.prototype.hasOwnProperty.call(req, 'querystring');
+    var condition2 = Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id');
+    if (condition1 && condition2) {
         // Parse the response
         gResponse = req.querystring;
 
@@ -54,15 +58,43 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
             var condition = order && typeof (gVerify) === 'object'
             && Object.prototype.hasOwnProperty.call(gVerify, 'id')
             && ckoHelper.redirectPaymentSuccess(gVerify);
-
-            // Show order confirmation page
             if (condition) {
+                // Place the order
+                var placeOrderResult = COHelpers.placeOrder(order, { status: '' });
+                if (placeOrderResult.error) {
+                    Transaction.wrap(function() {
+                        OrderMgr.failOrder(order, true);
+                    });
+                }
+    
+                // Show the order confirmation page
                 paymentHelper.getConfirmationPageRedirect(res, order);
+            }
+            else {
+                Transaction.wrap(function() {
+                    OrderMgr.failOrder(order, true);
+                });
+
+                paymentHelper.getFailurePageRedirect(res);
             }
         }
     } else if (ckoHelper.paymentSuccess(gResponse)) {
+        // Place the order
         order = OrderMgr.getOrder(gResponse.reference);
+        var placeOrderResult = COHelpers.placeOrder(order, { status: '' });
+        if (placeOrderResult.error) {
+            Transaction.wrap(function() {
+                OrderMgr.failOrder(order, true);
+            });
+            
+            paymentHelper.getFailurePageRedirect(res);
+        }
+
+        // Show the order confirmation page
         paymentHelper.getConfirmationPageRedirect(res, order);
+    }
+    else {
+        paymentHelper.getFailurePageRedirect(res);
     }
 
     return next();
@@ -73,22 +105,46 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
  * @returns {string} The controller response
  */
 server.get('HandleFail', server.middleware.https, function(req, res, next) {
-    // Load the order
-    // eslint-disable-next-line
-    if (Object.prototype.hasOwnProperty.call(session.privacy, 'ckoOrderId')) {
-        // eslint-disable-next-line
-        var order = OrderMgr.getOrder(session.privacy.ckoOrderId);
+    // Prepare some variables
+    var order;
+    var mode = ckoHelper.getValue('ckoMode');
+    var gResponse = {};
 
-        // Restore the cart
-        if (order) {
-            OrderMgr.failOrder(order, true);
+    // Check if a session id is available
+    var condition1 = Object.prototype.hasOwnProperty.call(req, 'querystring');
+    var condition2 = Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id');
+    if (condition1 && condition2) {
+        // Parse the response
+        gResponse = req.querystring;
+
+        // Perform the request to the payment gateway
+        var gVerify = ckoHelper.gatewayClientRequest(
+            'cko.verify.charges.' + mode + '.service',
+            {
+                paymentToken: req.querystring['cko-session-id'],
+            }
+        );
+        
+        // Load the order
+        if (Object.prototype.hasOwnProperty.call(gVerify, 'reference') && gVerify.reference) {
+            // Load the order
+            order = OrderMgr.getOrder(gVerify.reference);
+
+            // If there is a valid response
+            if (order) {
+                // Restore the cart
+                ckoHelper.checkAndRestoreBasket(order);
+                
+                // Fail the order
+                OrderMgr.failOrder(order, true);
+
+                // Send back to the error page
+                paymentHelper.getFailurePageRedirect(res);
+            }
         }
     }
 
-    // Send back to the error page
-    paymentHelper.getFailurePageRedirect(res);
-    this.emit('route:Complete', req, res);
-    return;
+    return next();
 });
 
 /**
