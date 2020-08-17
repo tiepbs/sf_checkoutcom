@@ -136,8 +136,10 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
                 ckoHelper.checkAndRestoreBasket(order);
                 
                 // Fail the order
-                OrderMgr.failOrder(order, true);
-
+                Transaction.wrap(function() {
+                    OrderMgr.failOrder(order, true);
+                });
+                
                 // Send back to the error page
                 paymentHelper.getFailurePageRedirect(res);
             }
