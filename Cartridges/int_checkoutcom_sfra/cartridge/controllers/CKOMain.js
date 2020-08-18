@@ -29,15 +29,11 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
     var order;
     var placeOrderResult;
     var mode = ckoHelper.getValue('ckoMode');
-    var gResponse = {};
 
     // Check if a session id is available
     var condition1 = Object.prototype.hasOwnProperty.call(req, 'querystring');
     var condition2 = Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id');
     if (condition1 && condition2) {
-        // Parse the response
-        gResponse = req.querystring;
-
         // Reset the session URL
         // eslint-disable-next-line
         session.privacy.redirectUrl = null;
@@ -61,7 +57,7 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
             && ckoHelper.redirectPaymentSuccess(gVerify);
             if (condition) {
                 // Place the order
-                placeOrderResult = COHelpers.placeOrder(order, {status:''});
+                placeOrderResult = COHelpers.placeOrder(order, { status: '' });
                 if (placeOrderResult.error) {
                     Transaction.wrap(function() {
                         OrderMgr.failOrder(order, true);
@@ -78,9 +74,9 @@ server.get('HandleReturn', server.middleware.https, function(req, res, next) {
                 paymentHelper.getFailurePageRedirect(res);
             }
         }
-    } else if (ckoHelper.paymentSuccess(gResponse)) {
+    } else if (condition1 && ckoHelper.paymentSuccess(req.querystring)) {
         // Place the order
-        order = OrderMgr.getOrder(gResponse.reference);
+        order = OrderMgr.getOrder(req.querystring.reference);
         placeOrderResult = COHelpers.placeOrder(order, { status: '' });
         if (placeOrderResult.error) {
             Transaction.wrap(function() {
@@ -107,15 +103,11 @@ server.get('HandleFail', server.middleware.https, function(req, res, next) {
     // Prepare some variables
     var order;
     var mode = ckoHelper.getValue('ckoMode');
-    var gResponse = {};
 
     // Check if a session id is available
     var condition1 = Object.prototype.hasOwnProperty.call(req, 'querystring');
     var condition2 = Object.prototype.hasOwnProperty.call(req.querystring, 'cko-session-id');
     if (condition1 && condition2) {
-        // Parse the response
-        gResponse = req.querystring;
-
         // Perform the request to the payment gateway
         var gVerify = ckoHelper.gatewayClientRequest(
             'cko.verify.charges.' + mode + '.service',
