@@ -919,6 +919,7 @@ var ckoHelper = {
 
     /**
      * Rebuild the basket contents after a failed payment.
+     * @param {Object} order The order
      */
     checkAndRestoreBasket: function(order) {
         var basket = BasketMgr.getCurrentOrNewBasket();
