@@ -919,7 +919,7 @@ var ckoHelper = {
 
     /**
      * Rebuild the basket contents after a failed payment.
-     */  
+     */
     checkAndRestoreBasket: function(order) {
         var basket = BasketMgr.getCurrentOrNewBasket();
         var it;
@@ -984,7 +984,7 @@ var ckoHelper = {
 
             Transaction.commit();
         }
-    }
+    },
 };
 
 /**
