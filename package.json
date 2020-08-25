@@ -28,8 +28,7 @@
   },
   "homepage": "https://github.com/checkout/link_checkoutcom#readme",
   "dependencies": {
-    "lint": "^0.7.0",
-    "sgmf-scripts": "^2.4.1"
+    "lint": "^0.7.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
@@ -43,7 +42,7 @@
     "mocha": "^8.0.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
-    "sgmf-scripts": "^2.3.0",
+    "sgmf-scripts": "^2.4.1",
     "stylelint": "^8.4.0",
     "stylelint-config-standard": "^17.0.0",
     "stylelint-scss": "^2.5.0",
