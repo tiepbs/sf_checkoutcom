@@ -31,6 +31,14 @@
         {
             "name": "app.payment.form.processor.checkoutcom_apm",
             "script": "./hooks/payment/processor/CHECKOUTCOM_APM_form_processor"
+        },
+        {
+            "name": "dw.extensions.applepay.paymentAuthorized.authorizeOrderPayment",
+            "script": "./applePay.js"
+        },
+        {
+            "name": "dw.extensions.applepay.getRequest",
+            "script": "./applePay.js"
         }
     ]
 }
