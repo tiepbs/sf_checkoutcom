@@ -17,7 +17,7 @@ module.exports = [{
     name: 'scss',
     entry: sgmfScripts.createScssPath(),
     output: {
-        path: path.resolve('./cartridges/plugin_applepay/cartridge/static'),
+        path: path.resolve('./Cartridges/int_checkoutcom_sfra/cartridge/static'),
         filename: '[name].css'
     },
     module: {
@@ -43,11 +43,11 @@ module.exports = [{
                         includePaths: [
                             path.resolve(
                                 process.cwd(),
-                                '../storefront-reference-architecture/node_modules/'
+                                '../link_checkoutcom/node_modules/'
                             ),
                             path.resolve(
                                 process.cwd(), // eslint-disable-next-line max-len
-                                '../storefront-reference-architecture/node_modules/flag-icon-css/sass'
+                                '../link_checkoutcom/node_modules/flag-icon-css/sass'
                             )
                         ]
                     }
