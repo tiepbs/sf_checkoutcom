@@ -9,7 +9,7 @@ module.exports = [{
     name: 'js',
     entry: sgmfScripts.createJsPath(),
     output: {
-        path: path.resolve('./cartridges/plugin_applepay/cartridge/static'),
+        path: path.resolve('./Cartridges/int_checkoutcom_sfra/cartridge/static'),
         filename: '[name].js'
     }
 }, {
