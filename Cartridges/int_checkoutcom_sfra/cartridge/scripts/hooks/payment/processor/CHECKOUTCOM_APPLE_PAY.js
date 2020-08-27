@@ -14,7 +14,7 @@ exports.authorizeOrderPayment = function (order, event) {
         // Payment request
         var result = applePayHelper.handleRequest(
             event.payment.token.paymentData,
-            processorId,
+            'CHECKOUTCOM_APPLE_PAY',
             orderNumber
         );
 
