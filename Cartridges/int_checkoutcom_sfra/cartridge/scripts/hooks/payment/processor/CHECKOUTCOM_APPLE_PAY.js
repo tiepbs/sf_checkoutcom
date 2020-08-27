@@ -1,6 +1,6 @@
-var Status = require('dw/system/Status');
-
 'use strict';
+
+var Status = require('dw/system/Status');
 
 /** Utility **/
 var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
