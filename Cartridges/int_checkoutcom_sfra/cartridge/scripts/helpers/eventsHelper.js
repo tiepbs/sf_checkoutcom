@@ -121,7 +121,7 @@ var eventsHelper = {
 
         // Delete the card if needed
         if (hook.data.metadata.payment_processor == 'CHECKOUTCOM_CARD') {
-            savedCardHelper.updateSavedCardhook();
+            savedCardHelper.updateSavedCard(hook);
         }
     },
 
