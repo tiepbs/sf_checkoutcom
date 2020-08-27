@@ -13,7 +13,7 @@ exports.authorizeOrderPayment = function (order, event) {
     if (condition) {
         // Payment request
         var result = applePayHelper.handleRequest(
-            event.token.paymentData,
+            event.payment.token.paymentData,
             processorId,
             orderNumber
         );
