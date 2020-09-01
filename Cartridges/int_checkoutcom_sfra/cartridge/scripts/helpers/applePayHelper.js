@@ -26,7 +26,7 @@ var applePayHelper = {
         // Prepare the parameters
         var tokenRequest = {
             type: 'applepay',
-            token_data: paymentData,
+            token_data: JSON.parse(paymentData),
         };
 
         // Log the payment token request data
@@ -70,7 +70,7 @@ var applePayHelper = {
         }
 
         // Log the payment response data
-        ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
+        ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
 
         // Process the response
         return this.handleResponse(gatewayResponse);
