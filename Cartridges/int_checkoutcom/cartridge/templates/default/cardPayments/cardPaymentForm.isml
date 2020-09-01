@@ -6,7 +6,7 @@
 	var countries = require(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontCore') + '/cartridge/scripts/util/Countries');
 </isscript>
 
-<div id="card_payment_box">	
+<div id="card_payment_box">
 	<isif condition="${pdict.CurrentCustomer.authenticated}">
 		<div id="ckoCardSelector" class="form-row" class="hideCard">
 			<label class="label">${Resource.msg('billing.selectcreditcard','checkout',null)}</label>
@@ -24,13 +24,13 @@
 		<img alt="${Resource.msg('card.schemes', 'checkout', null)}" src="${URLUtils.staticURL('/images/card-schema.png')}">
 	</div>
 	</fieldset>
-	
+
 	<!-- Card owner info -->
 	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.owner}" id="creditCardOwner" type="input" />
-	
+
 	<!-- Card number and icon -->
 	<div class="form-row">
-		<div id="dw_cardTypeDone"> 
+		<div id="dw_cardTypeDone">
 			<img id="default_thumb" src="${URLUtils.staticURL('/images/card-icons/card.svg')}"/>
 			<img id="visacard_thumb" class="schemes_thumb" src="${URLUtils.staticURL('/images/card-icons/visa.svg')}"/>
 			<img id="mastercard_thumb" class="schemes_thumb" src="${URLUtils.staticURL('/images/card-icons/mastercard.svg')}">
@@ -42,7 +42,7 @@
 		</div>
 		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.number}" id="creditCardNumber" type="input"/>
 	</div>
-	
+
 	<!-- Card expiration -->
 	<div class="form-row required">
 		<label>
@@ -51,30 +51,33 @@
 		</label>
 		<isdynamicform formobject="${pdict.CurrentForms.cardPaymentForm.expiration}" formdata="${countries.getCurrent(pdict).dynamicForms.expirationInfo}"/>
 	</div>
-	
+
 	<!-- Card CVN -->
 	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${{label: Resource.msg('billing.linkcvn', 'checkout', null), cid: 'checkout-security-code'}}"/>
-	
+
 	<!-- Save Card -->
 	<isif condition="${pdict.CurrentCustomer.authenticated}">
 		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.saveCard}" type="checkbox"/>
 	</isif>
-	
+
 	<!-- Card type -->
 	<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.type}" id="creditCardType" />
-	
+
 	<!-- MADA -->
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMada'))}">
 		<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.mada}" id="mada" />
 	</isif>
-	
-	
+
+
 	<isif condition="${pdict.CurrentCustomer.authenticated}">
 		<input type="hidden" id="ckoCardListUrl" value="${URLUtils.https('CKOMain-GetCardsList')}" />
 	</isif>
-	
+
 	<!-- APM filter URL -->
 	<input type="hidden" id="ckoApmFilterUrl" value="${URLUtils.https('CKOMain-GetApmFilter')}" />
+
+	<!-- MADA BIN filter URL -->
+  <input type="hidden" id="ckoMadaBinUrl" value="${URLUtils.https('CKOMain-GetMadaBin')}" />
 </div>
 
 <!-- Import card formatting scripts -->
