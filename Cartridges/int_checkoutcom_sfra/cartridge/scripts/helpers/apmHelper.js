@@ -145,11 +145,6 @@ var apmHelper = {
             };
         }
 
-        // Test Klarna
-        if (chargeData.source.type === 'klarna') {
-            chargeData.capture = false;
-        }
-
         return chargeData;
     },
 
