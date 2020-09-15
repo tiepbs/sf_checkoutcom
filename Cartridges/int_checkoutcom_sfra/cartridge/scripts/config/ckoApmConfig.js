@@ -306,7 +306,7 @@ var ckoApmConfig = {
                     type: 'klarna',
                     authorization_token: args.paymentData.klarna_token.value.toString(),
                     locale: ckoHelper.getLanguage(),
-                    purchase_country: ckoHelper.getBilling(args).country,
+                    purchase_country: ckoHelper.getBillingCountry(args),
                     tax_amount: ckoHelper.getFormattedPrice(
                         args.order.totalTax.value,
                         args.order.getCurrencyCode()

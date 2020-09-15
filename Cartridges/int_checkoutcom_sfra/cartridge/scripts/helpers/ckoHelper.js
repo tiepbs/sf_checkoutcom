@@ -890,12 +890,14 @@ var ckoHelper = {
      * @returns {string} The billing country code
      */
     getBillingCountry: function(args) {
-        // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
-
         // Get billing address information
-        var billingAddress = order.getBillingAddress();
-        var country = billingAddress.getCountryCode().value;
+        var country = args.order.getBillingAddress().getCountryCode().value;
+
+        // If billingAddress country property is empty
+        if (country === '') {
+            // return shippingAddress country property
+            country = args.order.defaultShipment.shippingAddress.countryCode.valueOf();
+        }
 
         return country;
     },
