@@ -105,12 +105,14 @@ var ckoHelper = {
      * @param {Object} gatewayData The gateway data
      */
     log: function(dataType, gatewayData) {
+        // Create's a deep copy gatewayData, this will prevent data being deleted.
+        var cloneGatewayData = JSON.parse(JSON.stringify(gatewayData));
         if (this.getValue('ckoDebugEnabled') === true) {
             // Get the logger
             var logger = Logger.getLogger('ckodebug');
 
             // Remove sensitive data
-            var cleanData = this.removeSentisiveData(gatewayData);
+            var cleanData = this.removeSentisiveData(cloneGatewayData);
 
             // Log the data
             if (logger) {
