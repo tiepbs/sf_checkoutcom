@@ -921,6 +921,12 @@ var ckoHelper = {
             country: billingAddress.getCountryCode().value,
         };
 
+        // country property value is empty
+        if (billingDetails.country === '') {
+            // assign value from shipping address
+            billingDetails.country = args.order.defaultShipment.shippingAddress.countryCode.valueOf();
+        }
+
         return billingDetails;
     },
 
