@@ -27,7 +27,7 @@ var applePayHelper = {
         // Prepare the parameters
         var requestData = {
             type: 'applepay',
-            token_data: JSON.parse(ckoApplePayData),
+            token_data: ckoApplePayData,
         };
 
         // Perform the request to the payment gateway
