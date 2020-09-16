@@ -1,4 +1,5 @@
 <fieldset>
+    <isapplepay class="apple-pay-cart btn btn-block"></isapplepay>
     <button id="ckoApplePayButton" type="button" class="apple-pay-button ${'apple-pay-button-' + dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayButton')}"></button>
 	<div class="invalid-field-message"></div>
 
