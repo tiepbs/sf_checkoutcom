@@ -120,7 +120,9 @@ var eventsHelper = {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
 
         // Delete the card if needed
-        savedCardHelper.updateSavedCardhook();
+        if (hook.data.metadata.payment_processor == 'CHECKOUTCOM_CARD') {
+            savedCardHelper.updateSavedCard(hook);
+        }
     },
 
     /**

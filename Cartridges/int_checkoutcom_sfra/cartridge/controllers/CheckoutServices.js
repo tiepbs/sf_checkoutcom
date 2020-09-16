@@ -66,7 +66,7 @@ server.prepend(
         var contactInfoFormErrors = COHelpers.validateFields(paymentForm.contactInfoFields);
 
         var formFieldErrors = [];
-        if (Object.keys(billingFormErrors).length) {
+        if (Object.keys(billingFormErrors).length > 0) {
             formFieldErrors.push(billingFormErrors);
         } else {
             viewData.address = {
@@ -429,7 +429,7 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
         return next();
     }
 
-    // Handles payment authorization
+    // Handles payment authorization 
     var handlePaymentResult;
     var billingForm = server.forms.getForm('billing');
     var paymentMethodID = billingForm.paymentMethod.htmlValue;
