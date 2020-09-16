@@ -1,0 +1,10 @@
+<!-- Ideal APM Option -->
+<div class="cko-apm-accordion">
+	<input id="ideal_apm_radio_btn" type="radio" name="apm_list" value="ideal">
+	<img alt="${Resource.msg('cko.ideal.name','cko',null)}" id="idealpay_thumb" src="${URLUtils.staticURL('/images/apm-icons/idealPay.png')}">
+	${Resource.msg('cko.ideal.name','cko',null)} 
+</div>
+
+<div class="cko-apm-panel">
+	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.ideal_bic}" id="ideal_bic" type="text" dynamicname="true" />
+</div>

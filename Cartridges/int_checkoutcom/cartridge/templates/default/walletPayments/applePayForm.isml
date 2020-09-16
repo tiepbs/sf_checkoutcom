@@ -1,0 +1,19 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/applepay.css')}");
+</style>
+
+<button id="ckoApplePayButton" type="button" class="apple-pay-button ${'apple-pay-button-' + dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayButton')}"></button>
+<div class="ckoApplePayUnavailable">${Resource.msg('cko.applepay.unavailable','cko',null)}</div>
+<div class="ckoApplePayIncompatible">${Resource.msg('cko.applepay.incompatible','cko',null)}</div>
+
+<input type="hidden" id="ckoApplePayEnvironment" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayEnvironment').value)}">
+<input type="hidden" id="ckoApplePayMerchantId" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayMerchantId'))}">
+<input type="hidden" id="ckoApplePayCurrency" value="${pdict.Basket.getCurrencyCode()}">
+<input type="hidden" id="ckoApplePayAmount" value="${pdict.OrderTotal}">
+<input type="hidden" id="ckoApplePaySiteName" value="${dw.system.Site.getCurrent().name}">
+<input type="hidden" id="ckoApplePaySiteCountry" value="${dw.catalog.Store.countryCode}">
+<input type="hidden" id="ckoApplePayValidationUrl" value="${URLUtils.https('Applepay-GetValidation')}">
+
+<isinputfield formfield="${pdict.CurrentForms.applePayForm.data}" id="applePayData" type="hidden"/>
+
+<script src="${URLUtils.staticURL('/js/applepay.js')}"></script>

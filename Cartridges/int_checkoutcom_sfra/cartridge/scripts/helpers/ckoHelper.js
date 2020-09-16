@@ -283,7 +283,6 @@ var ckoHelper = {
             if (Object.prototype.hasOwnProperty.call(data, 'billing_address')) {
                 data.billing_address = this.cleanBillingAddress(data.billing_address);
             }
-        }
 
         return data;
     },
