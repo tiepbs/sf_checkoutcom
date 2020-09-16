@@ -143,6 +143,7 @@ var apmHelper = {
                 metadata: ckoHelper.getMetadata({}, processorId),
                 billing_descriptor: ckoHelper.getBillingDescriptor(),
             };
+        }
 
         return chargeData;
     },
