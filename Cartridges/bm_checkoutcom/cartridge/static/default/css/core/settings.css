@@ -1,0 +1,130 @@
+/* 
+	Styling for CKO BM Cartridge Settings Page
+	Author: ECP TEAM
+*/
+
+.ckoAutoCaptureTime{
+	display: none;
+}
+
+.cko-settings-table-controls{
+    margin-top: 50px;
+}
+
+.cko-settings-table-controls .cko-banner h2{
+	font-size: 1.5em;
+	text-align: center;
+	margin: 30px 10px;
+	
+}
+
+/* Style the buttons that are used to open and close the accordion panel */
+.cko-settings-table-controls .cko-settings-accordion {
+	line-height: 60px !important;
+	background-color: #fff;
+	color: #444;
+	cursor: pointer;
+	border: solid 1px #eee;
+	outline: none;
+	transition: 0.4s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.cko-settings-table-controls .cko-settings-active, .cko-settings-table-controls .cko-settings-accordion:hover {
+  	background-color: #f1f1f1;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.cko-settings-table-controls .cko-settings-panel {
+	width: 60%;
+	max-width: 750px;
+	margin: 20px auto;
+	padding: 10px;
+	border: solid 1px #f1f1f1;
+	display: none;
+	border: solid 1px #eee;
+	padding: 18px 18px;
+	background-color: white;
+	min-height: 0;
+	overflow: hidden;
+	transition: min-height 0.2s ease-out;
+}
+
+.cko-settings-table-controls .cko-settings-accordion h2{
+	font-size: 1.2em;
+	text-align: center;
+	margin: 10px;
+	
+}
+
+.cko-settings-table-controls .cko-apm .cko-settings-panel form div label{
+	padding: 10px;
+}
+
+.cko-settings-table-controls .cko-apm .cko-settings-panel form div input[type=checkbox]{
+	border: solid 1px #aaa;
+	width: 20px;
+	float: left;
+	margin: 2px 10px;
+}
+
+.form-control{
+	height: 30px !important;
+}
+
+.cko-settings-table-controls .cko-settings-panel button{	
+	margin: 30px auto;
+	padding: 10px;
+}
+
+.cko-settings-table-controls #cko-spinner{
+	margin-top: 30px;
+	border: solid 0px #fff;
+	height: 5rem;
+}
+
+.cko-settings-table-controls .spinner-border{
+	width: 3rem; 
+	height: 3rem;
+	display: none;
+}
+
+.cko-settings-table-controls .process-message span{
+	font-size:50px;
+	display: none;
+}
+
+/* Parsley Validator Styles */
+input.parsley-success,
+select.parsley-success,
+textarea.parsley-success {
+  color: #468847;
+  background-color: #DFF0D8;
+  border: 1px solid #D6E9C6;
+}
+
+input.parsley-error,
+select.parsley-error,
+textarea.parsley-error {
+  color: #B94A48;
+  background-color: #F2DEDE;
+  border: 1px solid #EED3D7;
+}
+
+.parsley-errors-list {
+  margin: 2px 0 3px;
+  padding: 0;
+  list-style-type: none;
+  font-size: 0.9em;
+  line-height: 0.9em;
+  opacity: 0;
+  color: #B94A48;
+  transition: all .3s ease-in;
+  -o-transition: all .3s ease-in;
+  -moz-transition: all .3s ease-in;
+  -webkit-transition: all .3s ease-in;
+}
+
+.parsley-errors-list.filled {
+  opacity: 1;
+}

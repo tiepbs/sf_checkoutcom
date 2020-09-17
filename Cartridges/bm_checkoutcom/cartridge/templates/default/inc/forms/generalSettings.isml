@@ -1,0 +1,116 @@
+<form action="${URLUtils.url('CKOSettings-SaveCkoCustomProperties')}" method="POST" name="GlobalForm" data-parsley-validate="">
+
+    <input type="hidden" name="ckoAccountSettingsUrl" class="ckoAccountSettingsUrl" value="${URLUtils.url('CKOSettings-GetCkoCustomProperties')}"/>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.enableLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoEnabled" class="form-control" name="ckoEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.modeLabel', 'cko', null)} : </label> 
+        <select id="ckoMode" class="form-control" name="ckoMode" required="">
+            <option value="${Resource.msg('cko.generalSettings.sandboxModeLabelValue', 'cko', null)}">${Resource.msg('cko.generalSettings.sandboxModeLabel', 'cko', null)}</option>
+            <option value="${Resource.msg('cko.generalSettings.liveModeLabelValue', 'cko', null)}">${Resource.msg('cko.generalSettings.liveModeLabel', 'cko', null)}</option>
+        </select>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.billingDescriptorLine1Label', 'cko', null)} : </label> 
+        <input type="text" id="ckoBillingDescriptor1" class="form-control" name="ckoBillingDescriptor1" required=""/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.billingDescriptorLine2Label', 'cko', null)} : </label> 
+        <input type="text" id="ckoBillingDescriptor2" class="form-control" name="ckoBillingDescriptor2" required=""/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.businessNameLabel', 'cko', null)} : </label> 
+        <input type="text" id="ckoBusinessName" class="form-control" name="ckoBusinessName"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.businessAddressLine1Label', 'cko', null)} : </label> 
+        <input type="text" id="ckoBusinessAddressLine1" class="form-control" name="ckoBusinessAddressLine1"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.businessAddressLine2Label', 'cko', null)} : </label> 
+        <input type="text" id="ckoBusinessAddressLine2" class="form-control" name="ckoBusinessAddressLine2"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.businessCityLabel', 'cko', null)} : </label> 
+        <input type="text" id="ckoBusinessCity" class="form-control" name="ckoBusinessCity" data-parsley-trigger="change"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.businessCountryLabel', 'cko', null)} : </label> 
+        <input type="text" id="ckoBusinessCountry" class="form-control" name="ckoBusinessCountry" data-parsley-trigger="change"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.3dsLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="cko3ds" class="form-control" name="cko3ds"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.n3dsLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoN3ds" class="form-control" name="ckoN3ds"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.autoCaptureLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoAutoCapture" class="form-control" name="ckoAutoCapture"/>
+    </div>
+
+    <div class="form-group required ckoAutoCaptureTime">
+        <label>${Resource.msg('cko.generalSettings.autoCaptureTimeLabel', 'cko', null)} : </label> 
+        <input type="text" id="ckoAutoCaptureTime" class="form-control" name="ckoAutoCaptureTime"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.madaLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoMada" class="form-control" name="ckoMada"/>
+    </div>
+
+<iscomment> 						
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.savedCardLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoSavedCardEnabled" class="form-control" name="ckoSavedCardEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.useSavedCardLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoUseSavedCardEnabled" class="form-control" name="ckoUseSavedCardEnabled"/>
+    </div> 
+</iscomment>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.storefrontCoreLabel', 'cko', null)} : </label> 
+        <input type="text" id="ckoSgStorefrontCore" class="form-control" name="ckoSgStorefrontCore" required=""/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.storefrontControllerLabel', 'cko', null)} : </label> 
+        <input type="text" id="ckoSgStorefrontControllers" class="form-control" name="ckoSgStorefrontControllers" required=""/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.generalSettings.debugLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoDebugEnabled" class="form-control" name="ckoDebugEnabled"/>
+    </div>
+
+    <div class="d-flex justify-content-center cko-spinner" id="cko-spinner">
+        <div class="spinner-border" id="cko-account-keys-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div id="process-message" class="process-message">
+            <span>&#10003;</span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-block btn-secondary">${Resource.msg('cko.generalSettings.submitButton', 'cko', null)}</button>
+
+</form>
