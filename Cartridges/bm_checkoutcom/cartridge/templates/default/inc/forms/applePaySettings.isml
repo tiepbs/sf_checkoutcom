@@ -1,0 +1,41 @@
+<form action="${URLUtils.url('CKOSettings-SaveCkoCustomProperties')}" method="POST" name="ApplePayForm" data-parsley-validate="">
+
+    <input type="hidden" name="ckoAccountSettingsUrl" class="ckoAccountSettingsUrl" value="${URLUtils.url('CKOSettings-GetCkoCustomProperties')}"/>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.applePaySettings.enabledLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoApplePayEnabled" class="form-control" name="ckoApplePayEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.applePaySettings.environmentLabel', 'cko', null)} : </label> 
+        <select class="form-control" id="ckoApplePayEnvironment" name="ckoApplePayEnvironment" required="">
+            <option value="${Resource.msg('cko.applePaySettings.environmentTestValue', 'cko', null)}">${Resource.msg('cko.applePaySettings.environmentTest', 'cko', null)}</option>
+            <option value="${Resource.msg('cko.applePaySettings.environmentProductionValue', 'cko', null)}">${Resource.msg('cko.applePaySettings.environmentProduction', 'cko', null)}</option>
+        </select>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.applePaySettings.merchantIdLabel', 'cko', null)} : </label> 
+        <input type="text" id="ckoApplePayMerchantId" class="form-control" name="ckoApplePayMerchantId" required=""/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.applePaySettings.buttonStyleLabel', 'cko', null)} : </label> 
+        <select class="form-control" id="ckoApplePayButton"  name="ckoApplePayButton" required="">
+            <option value="${Resource.msg('cko.applePaySettings.buttonStyleBlackValue', 'cko', null)}">${Resource.msg('cko.applePaySettings.buttonStyleBlack', 'cko', null)} </option>
+            <option value="${Resource.msg('cko.applePaySettings.buttonStyleWhiteValue', 'cko', null)}">${Resource.msg('cko.applePaySettings.buttonStyleWhite', 'cko', null)} </option>
+        </select>
+    </div>
+
+    <div class="d-flex justify-content-center cko-spinner" id="cko-spinner">
+        <div class="spinner-border" id="cko-account-keys-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div id="process-message" class="process-message">
+            <span>&#10003;</span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-block btn-secondary">${Resource.msg('cko.applePaySettings.submitButton', 'cko', null)}</button>
+</form>

@@ -1,0 +1,50 @@
+<form action="${URLUtils.url('CKOSettings-SaveCkoCustomProperties')}" method="POST" id="accountKeysForm" name="accountKeysForm" data-parsley-validate="">
+
+    <input type="hidden" name="ckoAccountSettingsUrl" class="ckoAccountSettingsUrl" value="${URLUtils.url('CKOSettings-GetCkoCustomProperties')}"/>
+
+    <h1>${Resource.msg('cko.accountKeys.sandboxHeading', 'cko', null)}</h1>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.accountKeys.sandboxSecretKeyLabel', 'cko', null)} :</label> 
+        <input type="input" id="ckoSandboxSecretKey" class="form-control" name="ckoSandboxSecretKey" required=""/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.accountKeys.sandboxPublicKeyLabel', 'cko', null)} :</label> 
+        <input type="input" id="ckoSandboxPublicKey" class="form-control" name="ckoSandboxPublicKey" required=""/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.accountKeys.sandboxPrivateSharedKeyLabel', 'cko', null)} :</label> 
+        <input type="input" id="ckoSandboxPrivateSharedKey" class="form-control" name="ckoSandboxPrivateSharedKey" required=""/>
+    </div>
+
+    <h1>${Resource.msg('cko.accountKeys.liveHeading', 'cko', null)}</h1>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.accountKeys.liveSecretKeyLabel', 'cko', null)} :</label> 
+        <input type="input" id="ckoLiveSecretKey" class="form-control" name="ckoLiveSecretKey"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.accountKeys.livePublicKeyLabel', 'cko', null)} :</label> 
+        <input type="input" id="ckoLivePublicKey" class="form-control" name="ckoLivePublicKey"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.accountKeys.livePrivateSharedKeyLabel', 'cko', null)} :</label> 
+        <input type="input" id="ckoLivePrivateSharedKey" class="form-control" name="ckoLivePrivateSharedKey"/>
+    </div>
+
+    <div class="d-flex justify-content-center cko-spinner" id="cko-spinner">
+        <div class="spinner-border" id="cko-account-keys-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div id="process-message" class="process-message">
+            <span>&#10003;</span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-block btn-secondary" onclick=""> ${Resource.msg('cko.accountKeys.submitButton', 'cko', null)}</button>
+
+</form>

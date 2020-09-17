@@ -1,0 +1,12 @@
+#bm-breadcrumb {
+    margin-bottom: -1.8em;
+    margin-left: -2.2em;
+}
+
+a.breadcrumb {
+    background-color: transparent;
+}
+
+#ckoTabs td {
+    border-bottom: solid 0.01em #dadada;
+}

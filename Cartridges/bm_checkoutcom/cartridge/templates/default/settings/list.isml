@@ -1,0 +1,79 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/core/global.css')}");
+	@import url("${URLUtils.staticURL('/css/core/list.css')}");
+	@import url("${URLUtils.staticURL('/css/core/settings.css')}");
+	@import url("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css");
+</style>
+<isdecorate template="application/MenuFrame">
+    <iscomment> Encoding </iscomment>
+    <iscontent type="text/html" charset="UTF-8"/>
+
+    <iscomment> Modules </iscomment>
+    <isinclude template="inc/Modules"/>
+
+    <iscomment> Breadcrumbs </iscomment>
+    <isbreadcrumb name1="${Resource.msg('cko.checkoutcom.label', 'cko', null)}" url1="${URLUtils.url('SiteNavigationBar-ShowMenuitemOverview', 'CurrentMenuItemId', 'checkoutcom_manager_item')}" name2="${Resource.msg('cko.manage.settings', 'cko', null)}" url2="${URLUtils.url('CKOSettings-ListSettings')}"></isbreadcrumb>
+
+    <iscomment> Tab navigation table </iscomment>
+    <isinclude template="inc/tabs"/>
+
+    <iscomment>	Main content table </iscomment>
+    <div class="cko-settings-table-controls">
+        <div class="cko-banner">
+            <h2>${Resource.msg('cko.settings.title', 'cko', null)}</h2>
+        </div>
+
+        <div class="cko-settings">
+            <div class="cko-keys">
+                <div class="cko-settings-accordion">
+                    <h2>${Resource.msg('cko.settings.accountKeysSettingsTitle', 'cko', null)}</h2>
+                </div>
+                <div class="cko-settings-panel">
+                    <iscomment>	Accounts Keys Form </iscomment>
+                    <isinclude template="inc/forms/accountKeys.isml"/>
+                </div>
+            </div>
+            <div class="cko-apm">
+                <div class="cko-settings-accordion">
+                    <h2>${Resource.msg('cko.settings.apmSettingsTitle', 'cko', null)}</h2>
+                </div>
+                <div class="cko-settings-panel">
+                    <iscomment>	APM Settings Form </iscomment>
+                    <isinclude template="inc/forms/apmSettings.isml"/>
+                </div>
+            </div>
+            <div class="cko-apple-pay">
+                <div class="cko-settings-accordion">
+                    <h2>${Resource.msg('cko.settings.applepaySettingsTitle', 'cko', null)}</h2>
+                </div>
+                <div class="cko-settings-panel">
+                    <iscomment>	Apple Pay Settings Form </iscomment>
+                    <isinclude template="inc/forms/applePaySettings.isml"/>
+                </div>
+            </div>
+            <div class="cko-google-pay">
+                <div class="cko-settings-accordion">
+                    <h2>${Resource.msg('cko.settings.googlepaySettingsTitle', 'cko', null)}</h2>
+                </div>
+                <div class="cko-settings-panel">
+                    <iscomment> Google Pay Settings Form </iscomment>
+                    <isinclude template="inc/forms/googlePaySettings.isml"/>
+                </div>
+            </div>
+            <div class="cko-general-settings">
+                <div class="cko-settings-accordion">
+                    <h2>${Resource.msg('cko.settings.generalSettingsTitle', 'cko', null)}</h2>
+                </div>
+                <div class="cko-settings-panel">
+                    <iscomment> Global Settings Form </iscomment>
+                    <isinclude template="inc/forms/generalSettings.isml"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</isdecorate>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
+<script src="${URLUtils.staticURL('/js/core/settings.js')}"></script>

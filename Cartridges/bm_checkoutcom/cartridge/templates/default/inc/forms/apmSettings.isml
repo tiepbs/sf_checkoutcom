@@ -1,0 +1,110 @@
+
+<form action="${URLUtils.url('CKOSettings-SaveCkoCustomProperties')}" method="POST" name="AccountKeysForm">
+
+    <input type="hidden" name="ckoAccountSettingsUrl" class="ckoAccountSettingsUrl" value="${URLUtils.url('CKOSettings-GetCkoCustomProperties')}"/>
+
+    <h1>${Resource.msg('cko.apmSettings.heading', 'cko', null)}</h1>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.ideal', 'cko', null)} :</label> 
+        <input type="checkbox" id="ckoIdealEnabled" class="form-control" name="ckoIdealEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.boleto', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoBoletoEnabled" class="form-control" name="ckoBoletoEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.bancontact', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoBancontactEnabled" class="form-control" name="ckoBancontactEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.benefitPay', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoBenefitEnabled" class="form-control" name="ckoBenefitEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.giropay', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoGiroEnabled" class="form-control" name="ckoGiroEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.eps', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoEpsEnabled" class="form-control" name="ckoEpsEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.sofort', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoSofortEnabled" class="form-control" name="ckoSofortEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.knet', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoKnetEnabled" class="form-control" name="ckoKnetEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.qpay', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoQpayEnabled" class="form-control" name="ckoQpayEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.fawry', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoFawryEnabled" class="form-control" name="ckoFawryEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.sepa', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoSepaEnabled" class="form-control" name="ckoSepaEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.multibanco', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoMultibancoEnabled" class="form-control" name="ckoMultibancoEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.poli', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoPoliEnabled" class="form-control" name="ckoPoliEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.p24', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoP24Enabled" class="form-control" name="ckoP24Enabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.klarna', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoKlarnaEnabled" class="form-control" name="ckoKlarnaEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.paypal', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoPaypalEnabled" class="form-control" name="ckoPaypalEnabled"/>
+    </div>
+
+<iscomment> 						
+   <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.oxxo', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoOxxoEnabled" class="form-control" name="ckoOxxoEnabled"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.apmSettings.alipay', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoAlipayEnabled" class="form-control" name="ckoAlipayEnabled"/>
+    </div> 
+</iscomment>
+
+    <div class="d-flex justify-content-center cko-spinner" id="cko-spinner">
+        <div class="spinner-border" id="cko-account-keys-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div id="process-message" class="process-message">
+            <span>&#10003;</span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-block btn-secondary">${Resource.msg('cko.apmSettings.submitButton', 'cko', null)}</button>
+</form>

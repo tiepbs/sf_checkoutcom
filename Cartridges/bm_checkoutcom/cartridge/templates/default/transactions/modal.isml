@@ -1,0 +1,112 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/core/modal.css')}");
+</style>
+
+<!-- Capture window -->
+<div id="capture_modal" class="ckoModal">
+	<div class="modal-content">
+		<span class="close">&times;</span>
+		<div>
+			<h1>${Resource.msg('cko.transaction.capture', 'cko', null)}</h1>
+			<hr>
+			<div class="alert alert-danger alert-dismissible ckoErrorMessage" role="alert">
+				<div class="msg">${Resource.msg('cko.transaction.fail', 'cko', null)}</div>
+				<button type="button" class="close" data-dismiss="alert" aria-label="${Resource.msg('cko.modal.close', 'cko', null)}">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div>
+				<p><span class="label">${Resource.msg('cko.order.number', 'cko', null)}:</span><span id="capture_order_no"></span></p>
+				<p><span class="label">${Resource.msg('cko.transaction.id', 'cko', null)}:</span><span id="capture_transaction_id"></span></p>
+				<p><span class="label">${Resource.msg('cko.payment.id', 'cko', null)}:</span><span id="capture_payment_id"></span></p>
+				<p><span class="label">${Resource.msg('cko.full.amount', 'cko', null)}:</span><span id="capture_full_amount"></span></p>
+			</div>
+			<div class="input-row">
+				<p>
+					<input type="text" id="capture_value" name="capture_value">
+					<span id="capture_currency"></span>
+				</p>
+			</div>
+			<div>
+				<button class="btn btn-primary submit" type="button">
+					${Resource.msg('cko.form.submit', 'cko', null)}
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Void window -->
+<div id="void_modal" class="ckoModal">
+	<div class="modal-content">
+		<span class="close">&times;</span>
+		<div>
+			<h1>${Resource.msg('cko.transaction.void', 'cko', null)}</h1>
+			<hr>
+			<div class="alert alert-danger alert-dismissible ckoErrorMessage" role="alert">
+				<div class="msg">${Resource.msg('cko.transaction.fail', 'cko', null)}</div>
+				<button type="button" class="close" data-dismiss="alert" aria-label="${Resource.msg('cko.modal.close', 'cko', null)}">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div>
+				<p><span class="label">${Resource.msg('cko.order.number', 'cko', null)}:</span><span id="void_order_no"></span></p>
+				<p><span class="label">${Resource.msg('cko.transaction.id', 'cko', null)}:</span><span id="void_transaction_id"></span></p>
+				<p><span class="label">${Resource.msg('cko.payment.id', 'cko', null)}:</span><span id="void_payment_id"></span></p>
+				<p><span class="label">${Resource.msg('cko.full.amount', 'cko', null)}:</span><span id="void_full_amount"></span></p>
+			</div>
+			<div class="input-row">
+				<p>
+					<input type="text" id="void_value" name="void_value">
+					<span id="void_currency"></span>
+				</p>
+			</div>
+			<div>
+				<button class="btn btn-primary submit" type="button">
+					${Resource.msg('cko.form.submit', 'cko', null)}
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Refund window -->
+<div id="refund_modal" class="ckoModal">
+	<div class="modal-content">
+		<span class="close">&times;</span>
+		<div>
+			<h1>${Resource.msg('cko.transaction.refund', 'cko', null)}</h1>
+			<hr>
+			<div class="alert alert-danger alert-dismissible ckoErrorMessage" role="alert">
+				<div class="msg">${Resource.msg('cko.transaction.fail', 'cko', null)}</div>
+				<button type="button" class="close" data-dismiss="alert" aria-label="${Resource.msg('cko.modal.close', 'cko', null)}">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div>
+				<p><span class="label">${Resource.msg('cko.order.number', 'cko', null)}:</span><span id="refund_order_no"></span></p>
+				<p><span class="label">${Resource.msg('cko.transaction.id', 'cko', null)}:</span><span id="refund_transaction_id"></span></p>
+				<p><span class="label">${Resource.msg('cko.payment.id', 'cko', null)}:</span><span id="refund_payment_id"></span></p>
+				<p><span class="label">${Resource.msg('cko.full.amount', 'cko', null)}:</span><span id="refund_full_amount"></span></p>
+				<p><span class="label">${Resource.msg('cko.refundable.amount', 'cko', null)}:</span><span id="refund_refundable_amount"></span></p>
+			</div>
+			<div class="input-row">
+				<p>
+					<input type="text" id="refund_value" name="refund_value">
+					<span id="refund_currency"></span>
+				</p>
+			</div>
+			<div>
+				<button class="btn btn-primary submit" type="button">
+					${Resource.msg('cko.form.submit', 'cko', null)}
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Transaction action controller URL -->
+<input type="hidden" id="actionControllerUrl" value="${URLUtils.url('CKOTransactions-RemoteCall')}">
+
+<!-- Scripts-->
+<script src="${URLUtils.staticURL('/js/core/actions.js')}"></script>
