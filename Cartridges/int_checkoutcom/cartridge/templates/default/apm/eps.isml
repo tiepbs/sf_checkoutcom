@@ -1,0 +1,6 @@
+<!-- EPS pay APM Option -->
+<div class="cko-apm-accordion">
+	<input id="epsPay_apm_radio_btn" type="radio" name="apm_list" value="eps">
+	<img alt="${Resource.msg('cko.eps.name','cko',null)}" id="epsPay_thumb" src="${URLUtils.staticURL('/images/apm-icons/eps.png')}">
+	${Resource.msg('cko.eps.name','cko',null)} 
+</div>

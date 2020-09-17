@@ -1,0 +1,28 @@
+{
+	"hooks": [
+		{
+			"name": "app.payment.processor.CHECKOUTCOM_CARD",
+			"script": "./payment/processor/CHECKOUTCOM_CARD"		
+		},	
+		{
+			"name": "app.payment.processor.CHECKOUTCOM_APM",
+			"script": "./payment/processor/CHECKOUTCOM_APM"		
+		},	
+		{
+			"name": "app.payment.processor.CHECKOUTCOM_GOOGLE_PAY",
+			"script": "./payment/processor/CHECKOUTCOM_GOOGLE_PAY"		
+		},
+		{
+			"name": "app.payment.processor.CHECKOUTCOM_APPLE_PAY",
+			"script": "./payment/processor/CHECKOUTCOM_APPLE_PAY"		
+		},
+        {
+            "name": "app.payment.processor.getRequest",
+            "script": "./payment/processor/CHECKOUTCOM_APPLE_PAY"
+        },
+        {
+            "name": "app.payment.processor.paymentAuthorized.authorizeOrderPayment",
+            "script": "./payment/processor/CHECKOUTCOM_APPLE_PAY"
+        }
+	]
+}

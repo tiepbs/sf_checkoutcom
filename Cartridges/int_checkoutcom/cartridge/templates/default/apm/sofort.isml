@@ -1,0 +1,6 @@
+<!-- Sofort pay APM Option -->
+<div class="cko-apm-accordion">
+	<input id="sofort_apm_radio_btn" type="radio" name="apm_list" value="sofort">
+	<img alt="${Resource.msg('cko.sofort.name','cko',null)}" id="sofort_thumb" src="${URLUtils.staticURL('/images/apm-icons/sofort.jpg')}">
+	${Resource.msg('cko.sofort.name','cko',null)}
+</div>
