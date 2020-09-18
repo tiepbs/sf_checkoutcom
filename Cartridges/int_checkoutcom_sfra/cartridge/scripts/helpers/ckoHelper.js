@@ -558,8 +558,10 @@ var ckoHelper = {
           || gatewayResponse.actions[0].response_code === '10200');
         }
 
-        if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'type') && gatewayResponse.source.type === 'sofort') {
+        if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'source')) {
+          if (Object.prototype.hasOwnProperty.call(gatewayResponse.source, 'type') && gatewayResponse.source.type === 'sofort') {
             return true;
+          }
         }
 
         return false;
