@@ -74,7 +74,7 @@ function launchApplePay() {
         promise.then(
             function(canMakePayments) {
                 if (canMakePayments) {
-                    jQuery('.ckoApplePayButton').show();
+                    jQuery('#ckoApplePayButton').show();
                 } else {
                     jQuery('.ckoApplePayUnavailable').show();
                 }
@@ -85,7 +85,7 @@ function launchApplePay() {
             }
         );
     } else {
-        jQuery('.ckoApplePayButton').hide();
+        jQuery('#ckoApplePayButton').hide();
         jQuery('.ckoApplePayIncompatible').show();
     }
 
