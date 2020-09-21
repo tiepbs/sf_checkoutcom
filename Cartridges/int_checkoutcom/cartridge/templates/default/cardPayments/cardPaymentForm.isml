@@ -73,9 +73,6 @@
 		<input type="hidden" id="ckoCardListUrl" value="${URLUtils.https('CKOMain-GetCardsList')}" />
 	</isif>
 
-	<!-- APM filter URL -->
-	<input type="hidden" id="ckoApmFilterUrl" value="${URLUtils.https('CKOMain-GetApmFilter')}" />
-
 	<!-- MADA BIN filter URL -->
   <input type="hidden" id="ckoMadaBinUrl" value="${URLUtils.https('CKOMain-GetMadaBin')}" />
 </div>
