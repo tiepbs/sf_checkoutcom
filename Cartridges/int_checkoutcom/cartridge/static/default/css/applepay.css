@@ -43,10 +43,9 @@
 }
 
 /* make ApplePay button larger*/
-.ckoApplePayButton {
-    display: none;
+#ckoApplePayButton {
     width: 25em;
-    height: 10em;
+    height: 3em;
 }
 
 .ckoApplePayUnavailable, .ckoApplePayIncompatible {
@@ -55,7 +54,7 @@
 
 /* For mobile */
 @media only screen and (max-width: 600px) {
-    .ckoApplePayButton {
+    #ckoApplePayButton {
         width: 100%;
     }
 }
