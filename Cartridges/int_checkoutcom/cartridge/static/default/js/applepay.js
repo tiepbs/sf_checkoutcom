@@ -35,6 +35,25 @@ function performValidation(valURL) {
     );
 }
 
+async function performHttpRequest(validURL) {
+    if (validURL) {
+        return new Promise(
+            function(resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function() {
+                    var data = JSON.parse(this.responseText);
+                    resolve(data);
+                };
+                xhr.onerror = reject;
+                xhr.open('GET', validURL);
+                xhr.send();
+            }
+        );
+    } else {
+        return null;
+    }
+}
+
 function sendPaymentRequest(paymentData) {
     return new Promise(
         function(resolve, reject) {
@@ -43,13 +62,16 @@ function sendPaymentRequest(paymentData) {
     );
 }
 
-function launchApplePay() {
+async function launchApplePay() {
+    // Get the applepay order url
+    var applePayOrderUrl = jQuery('[id="ckoApplePayOrderUrl"]').val();
+    // Get the appplepay order object
+    var orderObject = await performHttpRequest(applePayOrderUrl);
     // Check if the session is available
     if (window.ApplePaySession) {
-        var merchantIdentifier = jQuery('[id="ckoApplePayMerchantId"]').val();
+        var merchantIdentifier = 'www.checkout.com';
         var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
-        promise.then(
-            function(canMakePayments) {
+        promise.then( function(canMakePayments) {
                 if (canMakePayments) {
                     jQuery('#ckoApplePayButton').show();
                 } else {
@@ -67,23 +89,20 @@ function launchApplePay() {
     }
 
     // Handle the events
-    jQuery('#ckoApplePayButton').click(
-        function(evt) {
-            // Prepare the parameters
-            var runningTotal = jQuery('[id="ckoApplePayAmount"]').val();
-
+    jQuery('#ckoApplePayButton').click( async function(evt) {
+            // Order country code
+            var countryCode = orderObject.countryCode;
             // Build the payment request
             var paymentRequest = {
-                currencyCode: jQuery('[id="ckoApplePayCurrency"]').val(),
-                countryCode: jQuery('[id="ckoApplePaySiteCountry"]').val(),
+                currencyCode: orderObject.currencyCode,
+                countryCode: countryCode.toUpperCase(),
                 total: {
                     label: jQuery('[id="ckoApplePaySiteName"]').val(),
-                    amount: runningTotal,
+                    amount: orderObject.amount,
                 },
                 supportedNetworks: getSupportedNetworks(),
                 merchantCapabilities: getMerchantCapabilities(),
             };
-
             // Start the payment session
             var session = new ApplePaySession(1, paymentRequest);
 
