@@ -17,22 +17,18 @@ function applePayOrder() {
     // Prepare the basket
     var basket = BasketMgr.getCurrentBasket();
     if (basket) {
-        // Prepare the variables
-        var countryCode = ckoHelper.getBasketCountyCode(basket);
-        var currency = basket.getCurrencyCode();
-        var locale = ckoHelper.getLanguage();
-        var total = basket.getTotalGrossPrice().value;
-        var products = ckoHelper.getBasketObject(basket);
-        var billing = ckoHelper.getBasketAddress(basket);
 
         // Prepare the request object
         var orderObject = {
-            countryCode: countryCode,
-            currencyCode: currency,
-            locale: locale,
-            amount: total,
-            products: products,
-            billing_address: billing,
+            countryCode: ckoHelper.getBasketCountyCode(basket),
+            merchantId: ckoHelper.getValue('ckoApplePayMerchantId'),
+            applepayEnvironment: ckoHelper.getValue('ckoApplePayEnvironment'),
+            siteName: ckoHelper.getSiteName(),
+            currencyCode: basket.getCurrencyCode(),
+            locale: ckoHelper.getLanguage(),
+            amount: basket.getTotalGrossPrice().value,
+            products: ckoHelper.getBasketObject(basket),
+            billing_address: ckoHelper.getBasketAddress(basket),
         };
 
         // Write the session
