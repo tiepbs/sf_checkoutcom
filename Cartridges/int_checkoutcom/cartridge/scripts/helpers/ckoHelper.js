@@ -334,7 +334,7 @@ var ckoHelper = {
         } else if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'actions')) {
             return gatewayResponse.actions[0].response_code === "10000" || gatewayResponse.actions[0].response_code === "10100" || gatewayResponse.actions[0].response_code === "10200";
         } else if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'source')) {
-            return gatewayResponse.source.type === 'sofort' || 'bancontact';
+            return gatewayResponse.source.type === "sofort" || "bancontact" || "token";
         } else if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'reference')) {
             return gatewayResponse.reference === this.getOrderId();
         }
@@ -737,6 +737,31 @@ var ckoHelper = {
 
         // Add the payment processor to the metadata
         meta.payment_processor = paymentProcessor.getID();
+
+        return meta;
+
+    },
+
+    /**
+     * Build metadata object.
+     * @param {Object} data The request data
+     * @param {string} processorId The processor id
+     * @returns {Object} The metadata
+     */
+    getApplePayMetadata: function(data, processorId) {
+        // Prepare the base metadata
+        var meta = {
+            integration_data: this.getCartridgeMeta(),
+            platform_data: this.getValue('ckoSgPlatformData'),
+        };
+
+        // Add the data info if needed
+        if (Object.prototype.hasOwnProperty.call(data, 'type')) {
+            meta.udf1 = data.type;
+        }
+
+        // Add the payment processor to the metadata
+        meta.payment_processor = processorId;
 
         return meta;
     },
