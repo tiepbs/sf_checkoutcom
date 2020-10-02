@@ -2,50 +2,77 @@ var Status = require('dw/system/Status');
 var PaymentInstrument = require('dw/order/PaymentInstrument');
 var Logger = require('dw/system/Logger');
 var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
+var OrderMgr = require('dw/order/OrderMgr');
+var Order = require('dw/order/Order');
+var PaymentMgr = require('dw/order/PaymentMgr');
 
 exports.authorizeOrderPayment = function (order, event) {
     var condition = Object.prototype.hasOwnProperty.call(event, 'isTrusted')
     && event.isTrusted === true
     && order;
 
+    var paymentInstruments = order.getPaymentInstruments(
+        PaymentInstrument.METHOD_DW_APPLE_PAY).toArray();
+    if (!paymentInstruments.length) {
+        Logger.error('Unable to find Apple Pay payment instrument for order.');
+        return null;
+    }
+
     if (condition) {
 
-        // Preparing payment parameters
-        var paymentInstruments = order.getPaymentInstruments(
-        PaymentInstrument.METHOD_DW_APPLE_PAY).toArray();
-
-        if (!paymentInstruments.length) {
-            Logger.error('Unable to find Apple Pay payment instrument for order.');
-            return null;
-        }
-        var paymentInstrument = paymentInstruments[0];
-
-        // Add order number to the session global object
-        // eslint-disable-next-line
-        session.privacy.ckoOrderId = order.orderNo;
-
-        // Add the payload data
-        paymentInstrument.paymentTransaction.custom.ckoApplePayData = event.payment.token.paymentData;
-
-        // Make the charge request
-        var chargeResponse = applePayHelper.handleRequest(
+        // Payment request
+        var result = applePayHelper.handleRequest(
             event.payment.token.paymentData,
             'CHECKOUTCOM_APPLE_PAY',
             order.orderNo
         );
-        if (chargeResponse) {
-            // Create the authorization transaction
-            Transaction.wrap(function() {
-                paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-                paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-                paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-                paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-                paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-                paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-            });
+
+        if (result) {
+            var paymentInstrument = paymentInstruments[0];
+            var paymentTransaction = paymentInstrument.getPaymentTransaction();
+            paymentTransaction.setTransactionID('#');
 
             return new Status(Status.OK);
         }
+
     }
+};
+
+exports.placeOrder = function (order) {
+
+    var paymentInstruments = order.getPaymentInstruments(
+        PaymentInstrument.METHOD_DW_APPLE_PAY).toArray();
+    if (!paymentInstruments.length) {
+        Logger.error('Unable to find Apple Pay payment instrument for order.');
+        return null;
+    }
+
+    var paymentInstrument = paymentInstruments[0];
+    var paymentTransaction = paymentInstrument.getPaymentTransaction();
+    paymentTransaction.setTransactionID('#');
+
+    // Get Previews Notes and Remove them
+    var orderNotes = order.getNotes();
+
+    // Remove sfcc notes
+    if (orderNotes.length > 0) {
+        for (var i = 0; i < orderNotes.length; i ++) {
+            var currentNote = orderNotes.get(i);
+            var subject = currentNote.subject;
+            if (subject == "Payment Authorization Warning!") {
+                order.removeNote(currentNote);
+            }
+        }
+    }
+    
+    // Get Previews Notes and Remove them
+    var orderNotes = order.getNotes();
+
+    var placeOrderStatus = OrderMgr.placeOrder(order);
+    if (placeOrderStatus === Status.ERROR) {
+        OrderMgr.failOrder(order);
+        throw new Error('Failed to place order.');
+    }
+    order.setConfirmationStatus(Order.CONFIRMATION_STATUS_CONFIRMED);
+    order.setExportStatus(Order.EXPORT_STATUS_READY);
 };
