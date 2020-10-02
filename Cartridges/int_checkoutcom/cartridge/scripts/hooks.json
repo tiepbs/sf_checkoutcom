@@ -5,6 +5,10 @@
 			"script": "./payment/processor/CHECKOUTCOM_APPLE_PAY.js"
 		},
 		{
+			"name": "dw.extensions.applepay.paymentAuthorized.placeOrder",
+			"script": "./payment/processor/CHECKOUTCOM_APPLE_PAY.js"
+		},
+		{
 			"name": "app.payment.processor.CHECKOUTCOM_CARD",
 			"script": "./payment/processor/CHECKOUTCOM_CARD"		
 		},	
