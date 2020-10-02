@@ -16,7 +16,7 @@ function initCheckoutcomCardValidation() {
 }
 
 function cardFormValidation() {
-    $('button.submit-payment').off('click touch').one('click touch', function(e) {
+    $('button.submit-payment').off('click touch').on('click touch', function(e) {
     // Reset the form error messages
         resetFormErrors();
 
@@ -43,10 +43,11 @@ function cardFormValidation() {
         });
 
         // Prevent submission
-        if (cardFields.length > 0) {
-            // Prevent the default button click behaviour
-            e.preventDefault();
-            e.stopImmediatePropagation();
+        for (var i = 0; i < cardFields.length; i++) {
+            if (cardFields[i].error == 1) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
         }
     });
 }
