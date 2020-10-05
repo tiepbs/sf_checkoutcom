@@ -178,7 +178,7 @@ var eventsHelper = {
             var parentTransaction = transactionHelper.getParentTransaction(hook, 'Authorization');
             if (parentTransaction) {
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
-                parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(transactionAmount);
+                parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(order);
             }
         });
     },

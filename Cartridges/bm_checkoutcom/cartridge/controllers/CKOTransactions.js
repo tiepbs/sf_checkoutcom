@@ -37,10 +37,16 @@ function remoteCall() {
     // eslint-disable-next-line
     var task = request.httpParameterMap.get('task');
 
+    // Get the transaction currency
+    var currency = request.httpParameterMap.get('currency');
+
+    // Get the transaction formated amount
+    var formatedAmount = CKOHelper.getFormattedPrice(request.httpParameterMap.get('amount').stringValue, currency);
+
     // Prepare the payload
     var gRequest = {
         // eslint-disable-next-line
-        amount: CKOHelper.getFormattedPrice(request.httpParameterMap.get('amount').stringValue), // eslint-disable-next-line
+        amount: formatedAmount, // eslint-disable-next-line
         chargeId: request.httpParameterMap.get('pid').stringValue, // eslint-disable-next-line
     };
 
@@ -52,7 +58,7 @@ function remoteCall() {
         CKOHelper._('cko.request.data', 'cko') + ' - ' + serviceName,
         gRequest
     );
-
+ 
     // Perform the request
     var gResponse = CKOHelper.getGatewayClient(
         serviceName,
