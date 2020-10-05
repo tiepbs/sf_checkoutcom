@@ -9,7 +9,7 @@
 	<group formid="expiration"> 
 		<!-- Field for credit card expiration month -->
 	    <field formid="month" label="resource.month" type="integer" mandatory="true" binding="creditCardExpirationMonth"
-	      	missing-error="creditcard.monthmissingerror" value-error="creditcard.yearvalueerror">
+	      	missing-error="creditcard.monthmissingerror" value-error="creditcard.year.value.error">
 	        <options>
 	            <option label="month.january" 	value="01"/>
 	            <option label="month.february" 	value="02"/>
