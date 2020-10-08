@@ -1,12 +1,18 @@
 {
   "name": "link_checkoutcom",
-  "packageName": "link_checkoutcom",
+  "packageName": "int_checkoutcom_sfra",
   "version": "20.1.0",
   "description": "Checkout.com payment integrations for SFCC",
   "main": "index.js",
+  "paths": {
+    "base": "../link_checkoutcom/cartridges/app_storefront_base/",
+    "int_checkoutcom_sfra": "./int_checkoutcom_sfra/",
+    "int_checkoutcom": "./int_checkoutcom/"
+  },
   "scripts": {
     "compile:scss": "sgmf-scripts --compile css",
     "compile:js": "sgmf-scripts --compile js",
+    "compile:fonts": "node bin/Makefile compileFonts",
     "build": "npm run compile:js && npm run compile:scss",
     "upload:sfra": "sgmf-scripts --uploadCartridge ../Cartridges/int_checkoutcom_sfra",
     "upload:sg": "sgmf-scripts --uploadCartridge ../Cartridges/int_checkoutcom",
@@ -31,13 +37,19 @@
   },
   "homepage": "https://github.com/checkout/link_checkoutcom#readme",
   "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.1.0",
+    "bootstrap": "4.3.1",
+    "flag-icon-css": "^2.9.0",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.5.0",
     "lint": "^0.7.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
-    "cleave.js": "1.5.0",
-    "css-loader": "^4.3.0",
+    "cleave.js": "^1.5.3",
+    "css-loader": "^0.28.11",
     "eslint": "^3.19.0",
     "eslint-auto-fix": "^1.0.3",
     "eslint-config-airbnb-base": "^5.0.3",
