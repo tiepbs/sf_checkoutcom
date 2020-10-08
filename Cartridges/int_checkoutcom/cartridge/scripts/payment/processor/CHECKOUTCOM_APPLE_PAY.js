@@ -11,13 +11,6 @@ exports.authorizeOrderPayment = function (order, event) {
     && event.isTrusted === true
     && order;
 
-    var paymentInstruments = order.getPaymentInstruments(
-        PaymentInstrument.METHOD_DW_APPLE_PAY).toArray();
-    if (!paymentInstruments.length) {
-        Logger.error('Unable to find Apple Pay payment instrument for order.');
-        return null;
-    }
-
     if (condition) {
 
         // Payment request
@@ -28,11 +21,9 @@ exports.authorizeOrderPayment = function (order, event) {
         );
 
         if (result) {
-            var paymentInstrument = paymentInstruments[0];
-            var paymentTransaction = paymentInstrument.getPaymentTransaction();
-            paymentTransaction.setTransactionID('#');
-
             return new Status(Status.OK);
+        } else {
+            return new Status(Status.ERROR);
         }
 
     }
@@ -42,10 +33,6 @@ exports.placeOrder = function (order) {
 
     var paymentInstruments = order.getPaymentInstruments(
         PaymentInstrument.METHOD_DW_APPLE_PAY).toArray();
-    if (!paymentInstruments.length) {
-        Logger.error('Unable to find Apple Pay payment instrument for order.');
-        return null;
-    }
 
     var paymentInstrument = paymentInstruments[0];
     var paymentTransaction = paymentInstrument.getPaymentTransaction();
