@@ -72,21 +72,28 @@ function alternativePaymentsFilter() {
 
             // Assign the apms filter Object from the response object to apmfilterObject variable
             var apmsFilterObject = responseObject.ckoApmFilterConfig;
+            var anyApmEnabled = false;
 
             // Loops through the apmfilterObject
             for (var apms in apmsFilterObject) {
-            	var condition1 = apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase());
-            	var condition2 = apmsFilterObject[apms].countries.includes('*');
-            	var condition3 = apmsFilterObject[apms].currencies.includes(filterObject.currency);
+                var condition1 = apmsFilterObject[apms].countries.includes(filterObject.country.toUpperCase());
+                var condition2 = apmsFilterObject[apms].countries.includes('*');
+                var condition3 = apmsFilterObject[apms].currencies.includes(filterObject.currency);
+                var condition4 = apmsFilterObject[apms].enabled;
 
             	/*
             	 * If the current apm country-code and currency-code in
             	 * the list of apms, match the current country-code and currency-code
             	 */
-                if ((condition1 || condition2) && condition3) {
+                if ((condition1 || condition2) && condition3 && condition4) {
+                    anyApmEnabled = true;
                 	// Show Apm in template
                 	$('#' + apms).show();
                 }
+            }
+            // Hide the option to select APMs if none are available
+            if(!anyApmEnabled) {
+                document.getElementById('is-CHECKOUTCOM_APM').parentElement.parentElement.style.display = 'none';
             }
         }
     };
