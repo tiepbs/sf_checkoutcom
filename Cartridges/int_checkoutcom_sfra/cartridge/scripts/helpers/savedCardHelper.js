@@ -133,24 +133,26 @@ var savedCardHelper = {
      * @param {Object} hook The gateway webhook data
      */
     updateSavedCard: function(hook) {
-        var condition1 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'card_uuid');
-        var condition2 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'customer_id');
-        if (condition1 && condition2) {
-            // Get the card
-            var card = this.getSavedCard(
-                hook.data.metadata.card_uuid,
-                hook.data.metadata.customer_id,
-                hook.data.metadata.payment_processor
-            );
-
-            // Create a stored payment instrument
-            if (card) {
-                Transaction.wrap(function() {
-                    card.setCreditCardToken(hook.data.source.id);
-                });
+        if (hook) {
+            var condition1 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'card_uuid');
+            var condition2 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'customer_id');
+            if (condition1 && condition2) {
+                // Get the card
+                var card = this.getSavedCard(
+                    hook.data.metadata.card_uuid,
+                    hook.data.metadata.customer_id,
+                    hook.data.metadata.payment_processor
+                );
+    
+                // Create a stored payment instrument
+                if (card) {
+                    Transaction.wrap(function() {
+                        card.setCreditCardToken(hook.data.source.id);
+                    });
+                }
+            } else {
+                this.deleteSavedCard();
             }
-        } else {
-            this.deleteSavedCard();
         }
     },
 
@@ -159,32 +161,34 @@ var savedCardHelper = {
      * @param {Object} hook The gateway webhook data
      */
     deleteSavedCard: function(hook) {
-        var condition1 = Object.prototype.hasOwnProperty.call(hook, 'data') && Object.prototype.hasOwnProperty.call(hook.data, 'metadata');
-        var condition2 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'card_uuid');
-        var condition3 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'customer_id');
-        if (condition1 && condition2 && condition3) {
-            // Set the customer and card uuiid
-            var customerId = hook.data.metadata.customer_id;
-            var cardUuid = hook.data.metadata.card_uuid;
-
-            // Get the customer
-            var customer = CustomerMgr.getCustomerByCustomerNumber(customerId);
-
-            // Get the customer wallet
-            var wallet = customer.getProfile().getWallet();
-
-            // Get the existing payment instruments
-            var paymentInstruments = wallet.getPaymentInstruments();
-
-            // Remove  the relevand payment instruments
-            Transaction.wrap(function() {
-                for (var i = 0; i < paymentInstruments.length; i++) {
-                    var card = paymentInstruments[i];
-                    if (card.getUUID() === cardUuid) {
-                        wallet.removePaymentInstrument(card);
+        if (hook) {
+            var condition1 = Object.prototype.hasOwnProperty.call(hook, 'data') && Object.prototype.hasOwnProperty.call(hook.data, 'metadata');
+            var condition2 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'card_uuid');
+            var condition3 = Object.prototype.hasOwnProperty.call(hook.data.metadata, 'customer_id');
+            if (condition1 && condition2 && condition3) {
+                // Set the customer and card uuiid
+                var customerId = hook.data.metadata.customer_id;
+                var cardUuid = hook.data.metadata.card_uuid;
+    
+                // Get the customer
+                var customer = CustomerMgr.getCustomerByCustomerNumber(customerId);
+    
+                // Get the customer wallet
+                var wallet = customer.getProfile().getWallet();
+    
+                // Get the existing payment instruments
+                var paymentInstruments = wallet.getPaymentInstruments();
+    
+                // Remove  the relevand payment instruments
+                Transaction.wrap(function() {
+                    for (var i = 0; i < paymentInstruments.length; i++) {
+                        var card = paymentInstruments[i];
+                        if (card.getUUID() === cardUuid) {
+                            wallet.removePaymentInstrument(card);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     },
 };
