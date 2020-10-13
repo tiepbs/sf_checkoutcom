@@ -68,6 +68,7 @@
                 <attribute attribute-id="ckoPaymentId"/>
                 <attribute attribute-id="ckoParentTransactionId"/>
                 <attribute attribute-id="ckoTransactionType"/>
+                <attribute attribute-id="ckoTransactionOpened"/>
                 <attribute attribute-id="ckoGooglePayData"/>
                 <attribute attribute-id="ckoApplePayData"/>
            </attribute-group>
@@ -75,6 +76,10 @@
     </type-extension>
     <type-extension type-id="SitePreferences">
         <custom-attribute-definitions>
+            <attribute-definition attribute-id="ckoVersion">
+                <type>string</type>
+                <default-value>2.0.0</default-value>
+            </attribute-definition>
             <attribute-definition attribute-id="ckoSgPlatformData">
                 <type>string</type>
                 <default-value>Checkout.com Site Genesis Cartridge - Version: 20.1.0</default-value>
