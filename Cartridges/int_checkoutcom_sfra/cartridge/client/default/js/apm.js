@@ -85,7 +85,9 @@ $('button.submit-payment').off('click touch').on('click touch', function(e) {
         var func = apmId + 'FormValidation';
 
         // Run the form validation
-        errors = validations[apmId].formValidation();
+        if(apmId != 'klarna') {
+            errors = validations[apmId].formValidation();
+        }
 
         if (errors.length > 0) {
             // Prevent the default button click behaviour
