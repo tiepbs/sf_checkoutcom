@@ -1,6 +1,6 @@
 'use strict';
 
-var processInclude = require('base/util');
+var processInclude = require('./util');
 var validations = {
     sepa: require('./apm/sepa.js'),
     ideal: require('./apm/ideal.js'),
