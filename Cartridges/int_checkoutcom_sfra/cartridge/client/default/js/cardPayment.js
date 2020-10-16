@@ -1,5 +1,7 @@
 'use strict';
 
+require('./checkoutcom.js');
+
 function initCheckoutcomCardValidation() {
     // Is card payment
     var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() === 'CHECKOUTCOM_CARD';
@@ -18,7 +20,7 @@ function initCheckoutcomCardValidation() {
 function cardFormValidation() {
     $('button.submit-payment').off('click touch').on('click touch', function(e) {
     // Reset the form error messages
-        resetFormErrors();
+    checkoutcom.resetFormErrors();
 
         // Prepare the errors array
         var cardFields = [];
@@ -141,12 +143,12 @@ function getFormattedNumber(num) {
  */
 function savedCardFormValidation() {
     // Enable the saved card selection
-    savedCardSelection();
+    require('./savedCardPayment').savedCardSelection();
 
     // Submit event
     $('button.submit-payment').off('click touch').one('click touch', function(e) {
     // Reset the form error messages
-        resetFormErrors();
+        checkoutcom.resetFormErrors();
 
         // Prepare some variables
         var savedCard = $('.saved-payment-instrument');
@@ -179,3 +181,9 @@ function savedCardFormValidation() {
         });
     });
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    initCheckoutcomCardValidation();
+});
+
