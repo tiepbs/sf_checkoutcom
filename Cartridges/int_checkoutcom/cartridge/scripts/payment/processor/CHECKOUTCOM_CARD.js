@@ -39,6 +39,13 @@ function Handle(args) {
         cardType: paymentForm.get('type').value(),
     };
 
+    if (cardData.year == new Date().getFullYear() && cardData.month < new Date().getMonth() + 1) {
+        paymentForm.get('expiration.month').invalidateFormElement();
+        paymentForm.get('expiration.year').invalidateFormElement();
+
+        return {error: true};
+    }
+    
     // Save card feature
     if (paymentForm.get('saveCard').value()) {
         var i,

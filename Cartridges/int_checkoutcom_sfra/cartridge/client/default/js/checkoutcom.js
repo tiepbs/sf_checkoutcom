@@ -37,7 +37,7 @@ function initTabs() {
 
             // Run the APM filter if relevant
             if (methodId === 'CHECKOUTCOM_APM') {
-                filterApm();
+                require('./apm.js').filterApm();
             }
 
             // Initialize the form validation

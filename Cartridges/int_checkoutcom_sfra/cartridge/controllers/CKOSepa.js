@@ -105,6 +105,7 @@ server.post('HandleMandate', server.middleware.https, function(req, res, next) {
                             ),
                             currency: order.getCurrencyCode(),
                             reference: orderId,
+                            metadata: ckoHelper.getMetadata({}, 'CHECKOUTCOM_APM')
                         };
 
                         // Handle the SEPA request

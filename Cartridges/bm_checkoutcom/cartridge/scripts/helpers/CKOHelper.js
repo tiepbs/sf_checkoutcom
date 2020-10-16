@@ -9,6 +9,9 @@ var Resource = require('dw/web/Resource');
 var Logger = require('dw/system/Logger');
 var Site = require('dw/system/Site');
 
+// Card Currency Config
+var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
+
 /**
  * Helper functions for the Checkout.com cartridge integration.
  */
@@ -182,7 +185,7 @@ var CKOHelper = {
      */
     getProcessorId: function(instrument) {
         var paymentMethod = PaymentMgr.getPaymentMethod(instrument.getPaymentMethod());
-        if (paymentMethod) {
+        if (paymentMethod && paymentMethod.getPaymentProcessor()) {
             return paymentMethod.getPaymentProcessor().getID();
         }
         return '';
@@ -312,8 +315,31 @@ var CKOHelper = {
      * @param {number} amount The amount to format
      * @returns {number} The formatted amount
      */
-    getFormattedPrice: function(amount) {
-        return amount * 100;
+    getFormattedPrice: function(amount, currency) {
+        var totalFormated;
+        if (currency) {
+            var ckoFormateBy = this.getCkoFormatedValue(currency);
+            totalFormated = amount * ckoFormateBy;
+    
+            return totalFormated.toFixed();
+        } else {
+            totalFormated = amount * 100;
+            return totalFormated.toFixed();
+        }
+    },
+
+    /**
+     * Currency conversion mapping.
+     * @param {string} currency The currency code
+     * @returns {number} The conversion factor
+     */
+    getCkoFormatedValue: function(currency) {
+        if (ckoCurrencyConfig.x1.currencies.match(currency)) {
+            return ckoCurrencyConfig.x1.multiple;
+        } else if (ckoCurrencyConfig.x1000.currencies.match(currency)) {
+            return ckoCurrencyConfig.x1000.multiple;
+        }
+        return 100;
     },
 
     /**

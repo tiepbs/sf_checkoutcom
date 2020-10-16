@@ -101,6 +101,7 @@ function handleMandate() {
                         amount: ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
                         currency: ckoHelper.getCurrency(),
                         reference: orderId,
+                        metadata: ckoHelper.getMetadata({}, 'CHECKOUTCOM_APM')
                     };
 
                     // Reset the response in session

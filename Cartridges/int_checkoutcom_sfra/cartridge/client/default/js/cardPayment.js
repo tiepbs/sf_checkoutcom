@@ -1,5 +1,7 @@
 'use strict';
 
+require('./checkoutcom.js');
+
 function initCheckoutcomCardValidation() {
     // Is card payment
     var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() === 'CHECKOUTCOM_CARD';
@@ -16,9 +18,9 @@ function initCheckoutcomCardValidation() {
 }
 
 function cardFormValidation() {
-    $('button.submit-payment').off('click touch').one('click touch', function(e) {
+    $('button.submit-payment').off('click touch').on('click touch', function(e) {
     // Reset the form error messages
-        resetFormErrors();
+    checkoutcom.resetFormErrors();
 
         // Prepare the errors array
         var cardFields = [];
@@ -37,16 +39,17 @@ function cardFormValidation() {
 
         // Handle errors
         $.each(cardFields, function(i, field) {
-            if (field.error === 1) {
+            if (field && field.error === 1) {
                 $('#' + field.id).next('.invalid-feedback').show();
             }
         });
 
         // Prevent submission
-        if (cardFields.length > 0) {
-            // Prevent the default button click behaviour
-            e.preventDefault();
-            e.stopImmediatePropagation();
+        for (var i = 0; i < cardFields.length; i++) {
+            if (cardFields[i].error == 1) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
         }
     });
 }
@@ -80,7 +83,7 @@ function checkCardExpirationMonth() {
     };
 
     // Check expiration month
-    if (targetField.val() === '') {
+    if (targetField.val() === '' || ($('#expirationYear').val() == new Date().getFullYear() && targetField.val() < new Date().getMonth() + 1)) {
         $('.dwfrm_billing_creditCardFields_expirationMonth .invalid-field-message').text(
             window.ckoLang.cardExpirationMonthInvalid
         );
@@ -140,12 +143,12 @@ function getFormattedNumber(num) {
  */
 function savedCardFormValidation() {
     // Enable the saved card selection
-    savedCardSelection();
+    require('./savedCardPayment').savedCardSelection();
 
     // Submit event
     $('button.submit-payment').off('click touch').one('click touch', function(e) {
     // Reset the form error messages
-        resetFormErrors();
+        checkoutcom.resetFormErrors();
 
         // Prepare some variables
         var savedCard = $('.saved-payment-instrument');
@@ -178,3 +181,9 @@ function savedCardFormValidation() {
         });
     });
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    initCheckoutcomCardValidation();
+});
+

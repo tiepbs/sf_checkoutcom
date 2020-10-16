@@ -76,7 +76,7 @@ var applePayHelper = {
         ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayRequest);
 
         // Process the response
-        this.handleResponse(gatewayResponse);
+        return this.handleResponse(gatewayResponse);
     },
 
     /**
