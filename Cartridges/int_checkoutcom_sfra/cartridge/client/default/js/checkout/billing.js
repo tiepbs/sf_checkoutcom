@@ -248,9 +248,13 @@ module.exports = {
     selectSavedPaymentInstrument: function () {
         $(document).on('click', '.saved-payment-instrument', function (e) {
             e.preventDefault();
-            $('.saved-payment-security-code').val('');
-            $('.saved-payment-instrument').removeClass('selected-payment');
-            $(this).addClass('selected-payment');
+
+            if(!$(this).hasClass("selected-payment")) {
+                $('.saved-payment-security-code').val('');
+                $('.saved-payment-instrument').removeClass('selected-payment');
+                $(this).addClass('selected-payment');
+            }
+            
             $('.saved-payment-instrument .card-image').removeClass('checkout-hidden');
             $('.saved-payment-instrument .security-code-input').addClass('checkout-hidden');
             $('.saved-payment-instrument.selected-payment' +
