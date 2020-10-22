@@ -73,12 +73,13 @@ function initFormValidation() {
         window[func]();
     }
 }
-
-function resetFormErrors() {
-    $('.invalid-feedback').hide();
-    $('.credit-card-content .is-invalid').each(function() {
-        $(this).removeClass('is-invalid');
-    });
+module.exports = {
+    resetFormErrors: function() {
+        $('.invalid-feedback').hide();
+        $('.credit-card-content .is-invalid').each(function() {
+            $(this).removeClass('is-invalid');
+        });
+    }
 }
 
 function loadTranslations() {

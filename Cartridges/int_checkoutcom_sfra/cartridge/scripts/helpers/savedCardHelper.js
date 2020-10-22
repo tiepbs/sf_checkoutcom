@@ -103,7 +103,7 @@ var savedCardHelper = {
         // Get the customer profile
         var customerNo = req.currentCustomer.profile.customerNo;
         var customerProfile = CustomerMgr.getCustomerByCustomerNumber(customerNo).getProfile();
-        var processorId = paymentData.paymentMethod.value;
+        var processorId = paymentData.paymentMethod.htmlValue;
 
         // Build the customer full name
         var fullName = ckoHelper.getCustomerFullName(customerProfile);
