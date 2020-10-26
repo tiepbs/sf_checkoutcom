@@ -30,7 +30,7 @@ server.get('KlarnaSession', function(req, res, next) {
         var total = ckoHelper.getFormattedPrice(basket.getTotalGrossPrice().value, currency);
         var tax = ckoHelper.getFormattedPrice(basket.getTotalTax().value, currency);
         var products = ckoHelper.getBasketObject(basket);
-        var billing = ckoHelper.getBasketAddress(basket);
+        var billing = ckoHelper.getBillingAddress();
 
         // Prepare the request object
         var requestObject = {
@@ -51,7 +51,7 @@ server.get('KlarnaSession', function(req, res, next) {
 
         // Store variables in session
         gSession.requestObject = requestObject;
-        gSession.addressInfo = ckoHelper.getBasketAddress(basket);
+        gSession.addressInfo = billing;
 
         // Write the session
         if (gSession) {
