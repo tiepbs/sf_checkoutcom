@@ -13,7 +13,7 @@ var Site = require('dw/system/Site');
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 
 /* Sensitive Data Helper */
-var sensitiveDataHelper = require('~/cartridge/scripts/helpers/sensitveDataHelper.js');
+var sensitiveDataHelper = require('~/cartridge/scripts/helpers/sensitiveDataHelper.js');
 
 /**
  * Utility functions.
