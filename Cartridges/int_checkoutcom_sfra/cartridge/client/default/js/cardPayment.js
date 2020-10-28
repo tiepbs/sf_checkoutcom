@@ -1,9 +1,7 @@
 'use strict';
 
 var checkoutcom = require('./checkoutcom.js');
-
-// Enable the saved card selection
-require('./savedCardPayment');
+var cleave = require('./components/cleave');
 
 function initCheckoutcomCardValidation() {
     $('button.submit-payment').off('click touch').on('click touch', function(e) {
@@ -26,7 +24,7 @@ function initCheckoutcomCardValidation() {
             var cardFields = [];
 
             // Card number validation
-            cardFields.push(checkCardNumber());
+            cleave.handleCreditCardNumber('#cardNumber', '#cardType');
 
             // Card expiration month validation
             cardFields.push(checkCardExpirationMonth());
@@ -87,26 +85,6 @@ function initCheckoutcomCardValidation() {
     });
 }
 
-function checkCardNumber() {
-    // Set the target field
-    var targetField = $('#cardNumber');
-    var field = {
-        id: targetField.attr('id'),
-        error: 0,
-    };
-
-    // Check value length
-    if (getFormattedNumber(targetField.val()).length < 16) {
-        $('.dwfrm_billing_creditCardFields_cardNumber .invalid-field-message').text(
-            window.ckoLang.cardNumberInvalid
-        );
-        targetField.addClass('is-invalid');
-        field.error = 1;
-    }
-
-    return field;
-}
-
 function checkCardExpirationMonth() {
     // Set the target field
     var targetField = $('#expirationMonth');
@@ -165,10 +143,6 @@ function checkCardCvv() {
     }
 
     return field;
-}
-
-function getFormattedNumber(num) {
-    return num.replace(/\s/g, '');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
