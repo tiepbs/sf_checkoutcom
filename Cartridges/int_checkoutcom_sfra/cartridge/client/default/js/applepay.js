@@ -6,6 +6,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Launch Apple Pay
     launchApplePay();
+    if (window.dw &&
+        window.dw.applepay &&
+        window.ApplePaySession &&
+        window.ApplePaySession.canMakePayments()) {
+        $('body').addClass('apple-pay-enabled');
+    }
 }, false);
 
 $('button.submit-payment').off('click touch').on('click touch', function(e) {
