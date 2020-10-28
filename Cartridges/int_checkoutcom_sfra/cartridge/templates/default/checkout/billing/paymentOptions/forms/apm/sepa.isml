@@ -1,3 +1,9 @@
+<!-- Sepa APM option -->
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/apm/sepa.js');
+</isscript>
+
 <button class="cko-apm-accordion">
 	<input id="sepa_apm_radio_btn" type="radio">
 	<img alt="${Resource.msg('cko.sepa.name','cko',null)}" id="sepa_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/sepa.png')}"/>

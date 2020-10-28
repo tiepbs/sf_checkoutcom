@@ -1,11 +1,20 @@
 'use strict';
 
+/**
+ * jQuery Ajax helpers on DOM ready.
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    initKlarnaEvent();
+}, false);
+
 /*
  * Load Klarna
  */
-$('.cko-apm-accordion.klarna').on('click touch', function() {
-    callKlarnaController();
-});
+function initKlarnaEvent() {
+    $('.cko-apm-accordion.klarna').on('click touch', function() {
+        callKlarnaController();
+    });
+}
 
 /*
  * Get the Klarna controller
@@ -33,24 +42,16 @@ function callKlarnaController() {
                 var klarnaBox = $('#klarna-buttons');
                 klarnaBox.empty();
                 for (var i = 0; i < categories.length; i++) {
-                    var klarnaButton = "<div class='klarna-button' data-identifier='" + categories[i].identifier + "' data-reqobj='" 
-                    + JSON.stringify(requestObject) + "' data-addInfo='" + JSON.stringify(addressInfo) + "' data-sessId='" + sessionId + "'>"
-                    + categories[i].name
+                    var klarnaButton = "<div class='klarna-button'> " + categories[i].name
                     + " <input type='radio' name='payment_method_categories' value='" + categories[i].identifier + "' id='"
-                    + categories[i].identifier + "'><img src='"
+                    + categories[i].identifier + "' onclick='loadKlarna(`" + categories[i].identifier
+                    + '`, `' + JSON.stringify(requestObject) + '`,  `' + JSON.stringify(addressInfo) + '` ,`' + sessionId + "` )'><img src='"
                     + categories[i].asset_urls.descriptive + "' id='" + categories[i].identifier
                     + "_image'><p id='" + categories[i].identifier
                     + "_aproved'><span>&#10003;</span> Approved By <span>Klarna</span></p><p style='color: #990000; float: right; display: none;' id='"
                     + categories[i].identifier + "_rejected'><span style='font-size:20px;'>&#10007;</span>Rejected By <span style='color: black;'>Klarna</span></p><div>";
                     klarnaBox.append(klarnaButton);
                 }
-                $('.klarna-button').on('click touch', function() {
-                    var paymentMethod = this.dataset.identifier,
-                        requestObject = this.dataset.reqobj,
-                        addressInfo   = this.dataset.addinfo,
-                        sessionId     = this.dataset.sessid;
-                    loadKlarnaWidget(paymentMethod, requestObject, addressInfo, sessionId);
-                });
             }
         };
         xhttp.open('GET', controllerUrl, true);
@@ -61,7 +62,7 @@ function callKlarnaController() {
 /*
  * Load Klarna Widget
  */
-function loadKlarnaWidget(paymentMethod, requestObject, addressInfo, sessionId) {
+function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId) {
     // Prepare parameters
     var requestObject = JSON.parse(requestObject);
     var addressInfo = JSON.parse(addressInfo);
@@ -88,15 +89,12 @@ function loadKlarnaWidget(paymentMethod, requestObject, addressInfo, sessionId) 
  */
 function klarnaAuthorizeButton(klarnaContainer, sessionId, paymentMethod, billingAddress, requestObject) {
     // Prepare paramters
-    var authorizeBtn = "<button id='klarna_authorize_btn' type='button'>Authorize</button>";
+    var authorizeBtn = "<button id='klarna_authorize_btn' type='button' onclick='klarnaAuthorize(`" + sessionId
+    + '`, `' + klarnaContainer + '`, `' + paymentMethod + '`, ` ' + JSON.stringify(billingAddress) + ' ` , ` ' + JSON.stringify(requestObject) + " `)'>Authorize</button>";
     var klarna = $(klarnaContainer);
 
     // Append the button
     klarna.append(authorizeBtn);
-
-    $('#klarna_authorize_btn').on('click touch', function() {
-        klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, JSON.stringify(billingAddress), JSON.stringify(requestObject));
-    });
 }
 
 /*

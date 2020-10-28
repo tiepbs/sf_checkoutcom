@@ -1,3 +1,9 @@
+<!-- Ideal APM option -->
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/apm/ideal.js');
+</isscript>
+
 <button class="cko-apm-accordion">
 	<input id="ideal_apm_radio_btn" type="radio">
 	<img alt="${Resource.msg('cko.ideal.name','cko',null)}" id="ideal_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/ideal.png')}">

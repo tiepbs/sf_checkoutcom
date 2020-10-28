@@ -3,7 +3,7 @@
 /**
  * Utility functions.
  */
-var sensitiveDataHelper = {
+var sensitveDataHelper = {
 
     /**
      * Hide sensitive data from the source_data object
@@ -139,4 +139,4 @@ var sensitiveDataHelper = {
 /**
  * Module exports
  */
-module.exports = sensitiveDataHelper;
+module.exports = sensitveDataHelper;

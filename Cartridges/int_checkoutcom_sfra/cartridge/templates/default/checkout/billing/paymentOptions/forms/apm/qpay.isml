@@ -1,3 +1,9 @@
+<!-- Qpay APM option -->
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/apm/qpay.js');
+</isscript>
+
 <button class="cko-apm-accordion">
 	<input id="qpay_apm_radio_btn" type="radio">
 	<img alt="${Resource.msg('cko.qpay.name','cko',null)}" id="qpay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/qpay.png')}"/>

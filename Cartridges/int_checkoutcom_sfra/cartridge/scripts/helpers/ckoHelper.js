@@ -13,7 +13,7 @@ var Site = require('dw/system/Site');
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 
 /* Sensitive Data Helper */
-var sensitiveDataHelper = require('~/cartridge/scripts/helpers/sensitiveDataHelper.js');
+var sensitiveDataHelper = require('~/cartridge/scripts/helpers/sensitveDataHelper.js');
 
 /**
  * Utility functions.
@@ -924,12 +924,18 @@ var ckoHelper = {
      * @returns {Object} The billing address
      */
     getBillingAddress: function() {
+        var basket = BasketMgr.getCurrentBasket();
         var form = session.getForms();
         var shippingForm = form.shipping; 
         var addressFields = shippingForm.shippingAddress.addressFields;
 
         // Address line 2
         var address2 = addressFields.address2.htmlValue;
+
+        // Address Coutry 
+        var country1 = addressFields.country.htmlValue;
+        var country2 = basket.defaultShipment.shippingAddress.countryCode.valueOf();
+
         var address = {
             given_name: addressFields.firstName.htmlValue,
             family_name: addressFields.lastName.htmlValue,
@@ -940,7 +946,7 @@ var ckoHelper = {
             postal_code: addressFields.postalCode.htmlValue,
             city: addressFields.city.htmlValue,
             phone: addressFields.phone.htmlValue,
-            country: addressFields.country.htmlValue,
+            country: country1 ? country1 : country2,
         };
 
         return address;
@@ -952,12 +958,17 @@ var ckoHelper = {
      * @returns {Object} The billing address
      */
     getOrderAddress: function(args) {
+        var basket = BasketMgr.getCurrentBasket();
         var form = session.getForms();
         var shippingForm = form.shipping; 
         var addressFields = shippingForm.shippingAddress.addressFields;
 
         // Address line 2
         var address2 = addressFields.address2.htmlValue;
+
+        // Address Coutry 
+        var country1 = addressFields.country.htmlValue;
+        var country2 = args.order.defaultShipment.shippingAddress.countryCode.valueOf();
 
         var address = {
             given_name: addressFields.firstName.htmlValue,
@@ -969,7 +980,7 @@ var ckoHelper = {
             postal_code: addressFields.postalCode.htmlValue,
             city: addressFields.city.htmlValue,
             phone: addressFields.phone.htmlValue,
-            country: addressFields.country.htmlValue,
+            country: country1 ? country1 : country2,
         };
 
         return address;

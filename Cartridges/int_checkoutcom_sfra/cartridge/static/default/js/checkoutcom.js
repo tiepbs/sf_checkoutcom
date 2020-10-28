@@ -37,7 +37,7 @@ function initTabs() {
 
             // Run the APM filter if relevant
             if (methodId === 'CHECKOUTCOM_APM') {
-                require('./apm.js').filterApm();
+                filterApm();
             }
 
             // Initialize the form validation
@@ -71,14 +71,6 @@ function initFormValidation() {
     var func = 'init' + selectedOption + 'Validation';
     if (typeof window[func] === 'function') {
         window[func]();
-    }
-}
-module.exports = {
-    resetFormErrors: function() {
-        $('.invalid-feedback').hide();
-        $('.credit-card-content .is-invalid').each(function() {
-            $(this).removeClass('is-invalid');
-        });
     }
 }
 

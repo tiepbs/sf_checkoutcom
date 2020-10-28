@@ -1,56 +1,47 @@
 'use strict';
 
-var checkoutcom = require('./checkoutcom.js');
-var cleave = require('./components/cleave');
-
 function initCheckoutcomCardValidation() {
     $('button.submit-payment').off('click touch').on('click touch', function(e) {
-        // Reset the form error messages
-        checkoutcom.resetFormErrors();
+
         // Is card payment
         var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() === 'CHECKOUTCOM_CARD';
 
         // Is card form
         var condition2 = $('.saved-card-tab').hasClass('active');
 
-        // Run the default form validation
-        if (condition1 && !condition2) {
+        // Reset the form error messages
+        resetFormErrors();
 
-            // Empty saved card fields in case they were populated
-            // Set the selected card uuid
-            $('input[name="dwfrm_billing_savedCardForm_selectedCardUuid"]').val('');
-            $('input[name="dwfrm_billing_savedCardForm_selectedCardCvv"]').val('');
-            // Prepare the errors array
-            var cardFields = [];
+        // Prepare the errors array
+        var cardFields = [];
 
-            // Card number validation
-            cleave.handleCreditCardNumber('#cardNumber', '#cardType');
+        // Card number validation
+        cardFields.push(checkCardNumber());
 
-            // Card expiration month validation
-            cardFields.push(checkCardExpirationMonth());
+        // Card expiration month validation
+        cardFields.push(checkCardExpirationMonth());
 
-            // Card expiration year validation
-            cardFields.push(checkCardExpirationYear());
+        // Card expiration year validation
+        cardFields.push(checkCardExpirationYear());
 
-            // Security code validation
-            cardFields.push(checkCardCvv());
+        // Security code validation
+        cardFields.push(checkCardCvv());
 
-            // Handle errors
-            $.each(cardFields, function(i, field) {
-                if (field && field.error === 1) {
-                    $('#' + field.id).next('.invalid-feedback').show();
-                }
-            });
+        // Handle errors
+        $.each(cardFields, function(i, field) {
+            if (field && field.error === 1) {
+                $('#' + field.id).next('.invalid-feedback').show();
+            }
+        });
 
-            // Prevent submission
-            for (var i = 0; i < cardFields.length; i++) {
-                if (cardFields[i].error == 1) {
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-                }
+        // Prevent submission
+        for (var i = 0; i < cardFields.length; i++) {
+            if (cardFields[i].error == 1) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
             }
             // Validate saved card form
-        } else if (condition1 && condition2) {
+            else if (condition1 && condition2) {
             // Prepare some variables
             var savedCard = $('.saved-payment-instrument');
             var buttonEvent = e;
@@ -80,6 +71,9 @@ function initCheckoutcomCardValidation() {
                     self.find('.invalid-feedback').show();
                 }
             });
+
+            }
+
         }
 
     });
@@ -145,7 +139,77 @@ function checkCardCvv() {
     return field;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    initCheckoutcomCardValidation();
-});
+function getFormattedNumber(num) {
+    return num.replace(/\s/g, '');
+}
 
+function resetFormErrors() {
+    $('.invalid-feedback').hide();
+    $('.credit-card-content .is-invalid').each(function() {
+        $(this).removeClass('is-invalid');
+    });
+}
+
+function checkCardNumber() {
+    // Set the target field
+    var targetField = $('#cardNumber');
+    var field = {
+        id: targetField.attr('id'),
+        error: 0,
+    };
+
+    // Check value length
+    if (getFormattedNumber(targetField.val()).length < 16) {
+        $('.dwfrm_billing_creditCardFields_cardNumber .invalid-field-message').text(
+            window.ckoLang.cardNumberInvalid
+        );
+        targetField.addClass('is-invalid');
+        field.error = 1;
+    }
+
+    return field;
+}
+
+/**
+ * Validate the save card form
+ */
+function savedCardFormValidation() {
+    // Enable the saved card selection
+    savedCardSelection();
+
+    // Submit event
+    $('button.submit-payment').off('click touch').one('click touch', function(e) {
+    // Reset the form error messages
+        resetFormErrors();
+
+        // Prepare some variables
+        var savedCard = $('.saved-payment-instrument');
+        var buttonEvent = e;
+
+        // Implement the event
+        savedCard.each(function(i) {
+            // Prepare the variables
+            var self = $(this);
+            var cvvField = self.find('input.saved-payment-security-code');
+
+            // The saved card is selected
+            var condition1 = self.hasClass('selected-payment');
+
+            // Field is empty
+            var condition2 = cvvField.val() === '';
+
+            // Field is numeric
+            var condition3 = cvvField.val() % 1 === 0;
+
+            // Field validation
+            if (condition1 && (condition2 || !condition3)) {
+                // Prevent the default button click behaviour
+                buttonEvent.preventDefault();
+                buttonEvent.stopImmediatePropagation();
+
+                // Show the CVV error
+                self.find('.invalid-feedback').show();
+            }
+        });
+    });
+}
