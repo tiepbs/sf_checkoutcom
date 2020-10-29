@@ -1,15 +1,24 @@
 'use strict';
 
 function initCheckoutcomCardValidation() {
-    $('button.submit-payment').off('click touch').on('click touch', function(e) {
+    // Is card payment
+    var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() === 'CHECKOUTCOM_CARD';
 
-        // Is card payment
-        var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() === 'CHECKOUTCOM_CARD';
+    // Is card form
+    var condition2 = $('.saved-card-tab').hasClass('active');
 
-        // Is card form
-        var condition2 = $('.saved-card-tab').hasClass('active');
+    // Run the default form validation
+    if (condition1 && !condition2) {
+        cardFormValidation();
+    } else if (condition1 && condition2) {
+        savedCardFormValidation();
+    }
+}
 
-        // Reset the form error messages
+function cardFormValidation() {
+    $('button.submit-payment').on('click touch').one('click touch', function(e) {
+    
+    // Reset the form error messages
         resetFormErrors();
 
         // Prepare the errors array
@@ -29,53 +38,15 @@ function initCheckoutcomCardValidation() {
 
         // Handle errors
         $.each(cardFields, function(i, field) {
-            if (field && field.error === 1) {
+            console.log(0.2);
+            if (field.error === 1) {
                 $('#' + field.id).next('.invalid-feedback').show();
-            }
-        });
-
-        // Prevent submission
-        for (var i = 0; i < cardFields.length; i++) {
-            if (cardFields[i].error == 1) {
+                
+                // Prevent the default button click behaviour
                 e.preventDefault();
                 e.stopImmediatePropagation();
             }
-            // Validate saved card form
-            else if (condition1 && condition2) {
-            // Prepare some variables
-            var savedCard = $('.saved-payment-instrument');
-            var buttonEvent = e;
-
-            // Implement the event
-            savedCard.each(function(i) {
-                // Prepare the variables
-                var self = $(this);
-                var cvvField = self.find('input.saved-payment-security-code');
-
-                // The saved card is selected
-                var condition1 = self.hasClass('selected-payment');
-
-                // Field is empty
-                var condition2 = cvvField.val() === '';
-
-                // Field is numeric
-                var condition3 = cvvField.val() % 1 === 0;
-
-                // Field validation
-                if (condition1 && (condition2 || !condition3)) {
-                    // Prevent the default button click behaviour
-                    buttonEvent.preventDefault();
-                    buttonEvent.stopImmediatePropagation();
-
-                    // Show the CVV error
-                    self.find('.invalid-feedback').show();
-                }
-            });
-
-            }
-
-        }
-
+        });
     });
 }
 
@@ -174,9 +145,6 @@ function checkCardNumber() {
  * Validate the save card form
  */
 function savedCardFormValidation() {
-    // Enable the saved card selection
-    savedCardSelection();
-
     // Submit event
     $('button.submit-payment').off('click touch').one('click touch', function(e) {
     // Reset the form error messages
