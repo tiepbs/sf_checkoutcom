@@ -11,7 +11,8 @@
 </button>
 <div class="cko-apm-panel">
     <div class="q_pay" id="qpay_pay_box">
-        ${Resource.msg('cko.qpay.nationalid','cko',null)} <input id="qpay_national_id" name="${apmFields.qpay_national_id.htmlName}" encoding="htmlsinglequote"/> type="text">
+        ${Resource.msg('cko.qpay.nationalid','cko',null)} 
+        <input type="text" id="qpay_national_id" name="${apmFields.qpay_national_id.htmlName}" encoding="htmlsinglequote"/>
         <div class="invalid-field-message"></div>
     </div>
 </div>

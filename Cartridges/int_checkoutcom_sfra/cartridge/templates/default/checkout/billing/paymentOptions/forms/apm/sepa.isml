@@ -12,7 +12,8 @@
 
 <div class="cko-apm-panel">
     <div class="sepa_pay" id="sepa_pay_box">
-        ${Resource.msg('cko.sepa.iban','cko',null)} <input id="sepa_iban" name="${apmFields.sepa_iban.htmlName}" type="text">
+        ${Resource.msg('cko.sepa.iban','cko',null)} 
+        <input id="sepa_iban" name="${apmFields.sepa_iban.htmlName}" type="text"/>
         <div class="invalid-field-message"></div>
     </div>
 </div>

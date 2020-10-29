@@ -12,7 +12,8 @@
 
 <div class="cko-apm-panel">
     <div class="ideal_pay" id="ideal_pay_box">
-        ${Resource.msg('cko.ideal.bic','cko',null)} <input id="ideal_bic" type="text" name="${apmFields.ideal_bic.htmlName}">
+        ${Resource.msg('cko.ideal.bic','cko',null)} 
+        <input id="ideal_bic" type="text" name="${apmFields.ideal_bic.htmlName}"/>
         <div class="invalid-field-message"></div>
     </div>
 </div>
