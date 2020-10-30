@@ -139,37 +139,31 @@ function checkCardNumber() {
         error: 0,
     };
 
-    var cleaveCreditCard = new Cleave(targetField, {
-        creditCard: true,
-        onCreditCardTypeChanged: function(type) {
-            // card is valid
-            if (!type) {
-                $('.dwfrm_billing_creditCardFields_cardNumber .invalid-field-message').text(
-                    window.ckoLang.cardNumberInvalid
-                );
-                targetField.addClass('is-invalid');
-                field.error = 1;
-            }
-
-        },
-    });
+    if (targetField.val() === '') {
+        $('.dwfrm_billing_creditCardFields_cardNumber .invalid-field-message').text(
+            window.ckoLang.cardNumberInvalid
+        );
+        targetField.addClass('is-invalid');
+        field.error = 1;  
+    } else {
+        var cleaveCreditCard = new Cleave(targetField, {
+            creditCard: true,
+            onCreditCardTypeChanged: function(type) {
+                // card is valid
+                if (!type) {
+                    $('.dwfrm_billing_creditCardFields_cardNumber .invalid-field-message').text(
+                        window.ckoLang.cardNumberInvalid
+                    );
+                    targetField.addClass('is-invalid');
+                    field.error = 1;
+                }
+    
+            },
+        });
+    }
 
     return field;
 }
-
-// function checkCardNumber() {
-//     // Set the target field
-//     var targetField = $('#cardNumber');
-//     var field = {
-//         id: targetField.attr('id'),
-//         error: 0,
-//     };
-
-//     // Check card is valid
-//     validateCard(targetField);
-
-//     return field;
-// }
 
 /**
  * Validate the save card form
