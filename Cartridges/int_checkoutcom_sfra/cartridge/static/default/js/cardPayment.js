@@ -57,8 +57,15 @@ function checkCardExpirationMonth() {
         error: 0,
     };
 
+    var currentDate = new Date();
+    var currentYear = currentDate.getFullYear();
+    var currentMonth = currentDate.getMonth();
+    var year = $('#expirationYear').val();
+
+    var isValidMonth = targetField.val() >= currentMonth  ? true : year > currentYear ;
+
     // Check expiration month
-    if (targetField.val() === '' || ($('#expirationYear').val() == new Date().getFullYear() && targetField.val() < new Date().getMonth() + 1)) {
+    if (targetField.val() === '' || isValidMonth) {
         $('.dwfrm_billing_creditCardFields_expirationMonth .invalid-field-message').text(
             window.ckoLang.cardExpirationMonthInvalid
         );
@@ -77,8 +84,11 @@ function checkCardExpirationYear() {
         error: 0,
     };
 
+    var currentDate = new Date();
+    var currentYear = currentDate.getFullYear();
+    
     // Check expiration year
-    if (targetField.val() === '') {
+    if (targetField.val() === '' || targetField.val() < currentYear) {
         $('.dwfrm_billing_creditCardFields_expirationYear .invalid-field-message').text(
             window.ckoLang.cardExpirationYearInvalid
         );
