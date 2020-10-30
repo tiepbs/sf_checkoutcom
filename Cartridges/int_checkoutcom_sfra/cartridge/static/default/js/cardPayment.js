@@ -59,13 +59,15 @@ function checkCardExpirationMonth() {
 
     var currentDate = new Date();
     var currentYear = currentDate.getFullYear();
-    var currentMonth = currentDate.getMonth();
+    var currentMonth = currentDate.getMonth() + 1;
     var year = $('#expirationYear').val();
 
-    var isValidMonth = targetField.val() >= currentMonth  ? true : year > currentYear ;
+    var isValidMonth1 = targetField.val() < currentMonth ;
+    var isValidYear = year > currentYear;
+    var isValidMonth2 = isValidMonth1 ? isValidYear : true;
 
     // Check expiration month
-    if (targetField.val() === '' || isValidMonth) {
+    if (targetField.val() === '' || !isValidMonth2) {
         $('.dwfrm_billing_creditCardFields_expirationMonth .invalid-field-message').text(
             window.ckoLang.cardExpirationMonthInvalid
         );
