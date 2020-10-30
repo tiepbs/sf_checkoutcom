@@ -1,51 +1,51 @@
 'use strict';
 
 function initCheckoutcomCardValidation() {
-    // Is card payment
-    var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() === 'CHECKOUTCOM_CARD';
+    $('button.submit-payment').on('click touch', function(e) {
 
-    // Is card form
-    var condition2 = $('.saved-card-tab').hasClass('active');
+        // Is card payment
+        var condition1 = $('input[name="dwfrm_billing_paymentMethod"]').val() === 'CHECKOUTCOM_CARD';
 
-    // Run the default form validation
-    if (condition1 && !condition2) {
-        cardFormValidation();
-    } else if (condition1 && condition2) {
-        savedCardFormValidation();
-    }
+        // Is card form
+        var condition2 = $('.saved-card-tab').hasClass('active');
+
+        // Run the default form validation
+        if (condition1 && !condition2) {
+            cardFormValidation(e);
+        } else if (condition1 && condition2) {
+            savedCardFormValidation(e);
+        }
+    });
 }
 
-function cardFormValidation() {
-    $('button.submit-payment').on('click touch').one('click touch', function(e) {
-    
+function cardFormValidation(e) {
     // Reset the form error messages
-        resetFormErrors();
+    resetFormErrors();
 
-        // Prepare the errors array
-        var cardFields = [];
+    // Prepare the errors array
+    var cardFields = [];
 
-        // Card number validation
-        cardFields.push(checkCardNumber());
+    // Card number validation
+    cardFields.push(checkCardNumber());
 
-        // Card expiration month validation
-        cardFields.push(checkCardExpirationMonth());
+    // Card expiration month validation
+    cardFields.push(checkCardExpirationMonth());
 
-        // Card expiration year validation
-        cardFields.push(checkCardExpirationYear());
+    // Card expiration year validation
+    cardFields.push(checkCardExpirationYear());
 
-        // Security code validation
-        cardFields.push(checkCardCvv());
+    // Security code validation
+    cardFields.push(checkCardCvv());
 
-        // Handle errors
-        $.each(cardFields, function(i, field) {
-            if (field.error === 1) {
-                $('#' + field.id).next('.invalid-feedback').show();
-                
-                // Prevent the default button click behaviour
-                e.preventDefault();
-                e.stopImmediatePropagation();
-            }
-        });
+    // Handle errors
+    $.each(cardFields, function(i, field) {
+        if (field.error === 1) {
+            $('#' + field.id).next('.invalid-feedback').show();
+            
+            // Prevent the default button click behaviour
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
     });
 }
 
@@ -170,40 +170,37 @@ function checkCardNumber() {
 /**
  * Validate the save card form
  */
-function savedCardFormValidation() {
-    // Submit event
-    $('button.submit-payment').off('click touch').one('click touch', function(e) {
+function savedCardFormValidation(e) {
     // Reset the form error messages
-        resetFormErrors();
+    resetFormErrors();
 
-        // Prepare some variables
-        var savedCard = $('.saved-payment-instrument');
-        var buttonEvent = e;
+    // Prepare some variables
+    var savedCard = $('.saved-payment-instrument');
+    var buttonEvent = e;
 
-        // Implement the event
-        savedCard.each(function(i) {
-            // Prepare the variables
-            var self = $(this);
-            var cvvField = self.find('input.saved-payment-security-code');
+    // Implement the event
+    savedCard.each(function(i) {
+        // Prepare the variables
+        var self = $(this);
+        var cvvField = self.find('input.saved-payment-security-code');
 
-            // The saved card is selected
-            var condition1 = self.hasClass('selected-payment');
+        // The saved card is selected
+        var condition1 = self.hasClass('selected-payment');
 
-            // Field is empty
-            var condition2 = cvvField.val() === '';
+        // Field is empty
+        var condition2 = cvvField.val() === '';
 
-            // Field is numeric
-            var condition3 = cvvField.val() % 1 === 0;
+        // Field is numeric
+        var condition3 = cvvField.val() % 1 === 0;
 
-            // Field validation
-            if (condition1 && (condition2 || !condition3)) {
-                // Prevent the default button click behaviour
-                buttonEvent.preventDefault();
-                buttonEvent.stopImmediatePropagation();
+        // Field validation
+        if (condition1 && (condition2 || !condition3)) {
+            // Prevent the default button click behaviour
+            buttonEvent.preventDefault();
+            buttonEvent.stopImmediatePropagation();
 
-                // Show the CVV error
-                self.find('.invalid-feedback').show();
-            }
-        });
+            // Show the CVV error
+            self.find('.invalid-feedback').show();
+        }
     });
 }
