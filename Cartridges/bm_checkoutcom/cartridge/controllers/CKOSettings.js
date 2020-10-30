@@ -31,14 +31,16 @@ function listSettings() {
  */
 function saveCkoCustomPropertie() {
     Transaction.begin();
+    var result;
     try {
-        var ckoObject = CKOHelper.storeCkoCustomProperties(propertiesObject, requestObject);
-        Transaction.commit();
-        CKOHelper.logThis(CKOHelper._('cko.ckoCustomSettings.success', 'cko'), JSON.stringify(ckoObject));
+        result = CKOHelper.storeCkoCustomProperties(propertiesObject, requestObject);
     } catch (e) {
+        result = e.message;
         Transaction.rollback();
-        CKOHelper.logThis(CKOHelper._('cko.ckoCustomSettings.error', 'cko'), JSON.stringify(e));
+        response.getWriter().println(result);
     }
+    Transaction.commit();
+    response.getWriter().println(result);
 }
 
 /**

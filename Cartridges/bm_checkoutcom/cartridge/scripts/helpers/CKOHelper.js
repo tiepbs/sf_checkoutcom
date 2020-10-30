@@ -398,17 +398,18 @@ var CKOHelper = {
                     var value = requestObject[element];
                     if (value === undefined || value === '') {
                         // eslint-disable-next-line
-                        dw.system.Site.getCurrent().setCustomPreferenceValue(element, '');
+                        // dw.system.Site.getCurrent().setCustomPreferenceValue(element, '');
                     } else {
                         // eslint-disable-next-line
         				dw.system.Site.getCurrent().setCustomPreferenceValue(element, value);
                     }
                 }
             });
-            return 1;
+            var message = {error: false, message: 'properties saved successfully'};
+            return message;
         } catch (e) {
-            var error = { error: 'Error', message: e.message };
-            return JSON.stringify(error);
+            var message = { error: true, message: e.message };
+            return message;
         }
     },
 
