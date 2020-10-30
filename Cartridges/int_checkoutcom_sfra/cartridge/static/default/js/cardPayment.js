@@ -38,7 +38,6 @@ function cardFormValidation() {
 
         // Handle errors
         $.each(cardFields, function(i, field) {
-            console.log(0.2);
             if (field.error === 1) {
                 $('#' + field.id).next('.invalid-feedback').show();
                 
@@ -122,6 +121,7 @@ function resetFormErrors() {
 }
 
 function checkCardNumber() {
+
     // Set the target field
     var targetField = $('#cardNumber');
     var field = {
@@ -129,17 +129,37 @@ function checkCardNumber() {
         error: 0,
     };
 
-    // Check value length
-    if (getFormattedNumber(targetField.val()).length < 16) {
-        $('.dwfrm_billing_creditCardFields_cardNumber .invalid-field-message').text(
-            window.ckoLang.cardNumberInvalid
-        );
-        targetField.addClass('is-invalid');
-        field.error = 1;
-    }
+    var cleaveCreditCard = new Cleave(targetField, {
+        creditCard: true,
+        onCreditCardTypeChanged: function(type) {
+            // card is valid
+            if (!type) {
+                $('.dwfrm_billing_creditCardFields_cardNumber .invalid-field-message').text(
+                    window.ckoLang.cardNumberInvalid
+                );
+                targetField.addClass('is-invalid');
+                field.error = 1;
+            }
+
+        },
+    });
 
     return field;
 }
+
+// function checkCardNumber() {
+//     // Set the target field
+//     var targetField = $('#cardNumber');
+//     var field = {
+//         id: targetField.attr('id'),
+//         error: 0,
+//     };
+
+//     // Check card is valid
+//     validateCard(targetField);
+
+//     return field;
+// }
 
 /**
  * Validate the save card form
