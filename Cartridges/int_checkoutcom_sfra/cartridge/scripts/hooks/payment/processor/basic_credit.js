@@ -8,51 +8,12 @@ var PaymentStatusCodes = require('dw/order/PaymentStatusCodes');
 var Resource = require('dw/web/Resource');
 var Transaction = require('dw/system/Transaction');
 
-/** CKO Util */
-var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
-var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
-var Site = require('dw/system/Site');
-
 /**
  * Creates a token. This should be replaced by utilizing a tokenization provider
  * @returns {string} a token
  */
-function createToken(paymentData) {
-    // Prepare the parameters
-    var requestData = {
-        type: 'card',
-        number: paymentData.cardNumber.toString(),
-        expiry_month: paymentData.expirationMonth,
-        expiry_year: paymentData.expirationYear,
-        name: paymentData.name
-    };
-
-    // Perform the request to the payment gateway - get the card token
-    var tokenResponse = ckoHelper.gatewayClientRequest(
-        'cko.network.token.' + ckoHelper.getValue('ckoMode') + '.service',
-        JSON.stringify(requestData)
-    );
-    
-    if(tokenResponse && tokenResponse != 400) {
-        requestData = {
-            source: {
-                type: "token",
-                token: tokenResponse.token
-            },
-            currency: Site.getCurrent().getCurrencyCode(),
-            risk: { enabled: false },
-            billing_descriptor: ckoHelper.getBillingDescriptor()
-        }
-    }
-
-    var idResponse = ckoHelper.gatewayClientRequest(
-        'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
-        requestData
-    );
-
-    if (idResponse && idResponse != 400) {
-        return idResponse.source.id;
-    }
+function createToken() {
+    return Math.random().toString(36).substr(2);
 }
 
 /**
@@ -160,27 +121,11 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
         paymentInstrument.setCreditCardType(cardType);
         paymentInstrument.setCreditCardExpirationMonth(expirationMonth);
         paymentInstrument.setCreditCardExpirationYear(expirationYear);
-
-        // Create card token if save card is true
-        if (paymentInformation.saveCard.value) {
-            paymentInstrument.setCreditCardToken(
-                paymentInformation.creditCardToken
-                    ? paymentInformation.creditCardToken
-                    : createToken({
-                        name: currentBasket.billingAddress.fullName,
-                        cardNumber: paymentInformation.cardNumber.value,
-                        cardType: paymentInformation.cardType.value,
-                        expirationMonth: paymentInformation.expirationMonth.value,
-                        expirationYear: paymentInformation.expirationYear.value,
-                    })
-            );
-        };
-        paymentInstrument.custom.ckoPaymentData = JSON.stringify({
-            'securityCode': cardSecurityCode,
-            'storedPaymentUUID': paymentInformation.storedPaymentUUID,
-            'saveCard': paymentInformation.saveCard.value,
-            'customerNo': req.currentCustomer.profile.customerNo
-        });
+        paymentInstrument.setCreditCardToken(
+            paymentInformation.creditCardToken
+                ? paymentInformation.creditCardToken
+                : createToken()
+        );
     });
 
     return { fieldErrors: cardErrors, serverErrors: serverErrors, error: false };
@@ -201,26 +146,10 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
     var error = false;
 
     try {
-        var ckoPaymentRequest = cardHelper.handleRequest(orderNumber, paymentInstrument, paymentProcessor);
-
-        // Handle errors
-        if (ckoPaymentRequest.error) {
-            error = true;
-            serverErrors.push(
-                ckoHelper.getPaymentFailureMessage()
-            );
-            Transaction.wrap(function () {
-                paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-                paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-                paymentInstrument.custom.ckoPaymentData = "";
-            });
-        } else {
-            Transaction.wrap(function () {
-                paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-                paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-                paymentInstrument.custom.ckoPaymentData = "";
-            });
-        }
+        Transaction.wrap(function () {
+            paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
+            paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
+        });
     } catch (e) {
         error = true;
         serverErrors.push(

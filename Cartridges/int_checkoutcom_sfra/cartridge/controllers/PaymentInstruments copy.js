@@ -5,6 +5,7 @@ var server = require('server');
 var csrfProtection = require('*/cartridge/scripts/middleware/csrf');
 var userLoggedIn = require('*/cartridge/scripts/middleware/userLoggedIn');
 var consentTracking = require('*/cartridge/scripts/middleware/consentTracking');
+var savedCardHelper = require('*/cartridge/scripts/helpers/savedCardHelper');
 
 /**
  * Checks if a credit card is valid or not
@@ -153,6 +154,7 @@ server.get(
         for (var j = 0, k = months.length; j < k; j++) {
             months[j].selected = false;
         }
+
         res.render('account/payment/addPayment', {
             paymentForm: paymentForm,
             expirationYears: creditCardExpirationYears,
@@ -200,18 +202,19 @@ server.post('SavePayment', csrfProtection.validateAjaxRequest, function (req, re
             var wallet = customer.getProfile().getWallet();
 
             Transaction.wrap(function () {
-                var paymentInstrument = wallet.createPaymentInstrument(dwOrderPaymentInstrument.METHOD_CREDIT_CARD);
+                var paymentInstrument = wallet.createPaymentInstrument('CHECKOUTCOM_CARD');
                 paymentInstrument.setCreditCardHolder(formInfo.name);
                 paymentInstrument.setCreditCardNumber(formInfo.cardNumber);
                 paymentInstrument.setCreditCardType(formInfo.cardType);
                 paymentInstrument.setCreditCardExpirationMonth(formInfo.expirationMonth);
                 paymentInstrument.setCreditCardExpirationYear(formInfo.expirationYear);
 
-                var processor = PaymentMgr.getPaymentMethod(dwOrderPaymentInstrument.METHOD_CREDIT_CARD).getPaymentProcessor();
+                var processor = PaymentMgr.getPaymentMethod('CHECKOUTCOM_CARD').getPaymentProcessor();
                 var token = HookMgr.callHook(
                     'app.payment.processor.' + processor.ID.toLowerCase(),
                     'createToken',
-                    result
+                    result,
+                    req
                 );
 
                 paymentInstrument.setCreditCardToken(token);
