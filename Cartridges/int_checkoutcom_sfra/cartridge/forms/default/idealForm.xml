@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
+	
+	<!-- Field for Ideal -->
+    <field formid="ideal_bic" type="string" mandatory="false" max-length="40" binding="ideal_bic"/>	
+</form>

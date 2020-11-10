@@ -1,3 +1,12 @@
+<isscript>
+    // CSS and JS
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/checkoutcom.js');
+    assets.addCss('/css/checkoutcom.css');
+    var translationStrings = JSON.stringify({googlePayDataInvalid: dw.web.Resource.msg('cko.googlepaydata.invalid', 'cko', null), applePayDataInvalid: dw.web.Resource.msg('cko.applepaydata.invalid', 'cko', null), apmFieldInvalid: dw.web.Resource.msg('cko.apmfield.invalid', 'cko', null)});
+</isscript>
+<input type="hidden" id="translationStrings" value="${translationStrings}">
+
 <div class="form-nav billing-nav payment-information"
      data-payment-method-id="CREDIT_CARD"
      data-is-new-payment="${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? false : true}"
