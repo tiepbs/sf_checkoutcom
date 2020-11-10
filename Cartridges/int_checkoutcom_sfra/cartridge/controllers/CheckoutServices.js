@@ -484,6 +484,16 @@ server.post('PlaceOrder', server.middleware.https, function (req, res, next) {
         return next();
     }
 
+    // 3DS and APMs Redirect
+    if (handlePaymentResult.redirectUrl) {
+        res.json({
+            error: false,
+            continueUrl: handlePaymentResult.redirectUrl,
+        });
+
+        return next();
+    }
+
     // Places the order
     var placeOrderResult = COHelpers.placeOrder(order, fraudDetectionStatus);
     if (placeOrderResult.error) {

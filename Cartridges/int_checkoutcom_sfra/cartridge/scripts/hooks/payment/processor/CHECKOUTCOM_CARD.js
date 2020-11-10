@@ -228,7 +228,7 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
         );
     }
 
-    return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error };
+    return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error, redirectUrl: ckoPaymentRequest.redirectUrl };
 }
 
 exports.Handle = Handle;

@@ -176,6 +176,7 @@ server.get(
     }
 );
 
+////////////////////////////////////////////       Modified         ///////////////////////////////////////////////
 server.post('SavePayment', csrfProtection.validateAjaxRequest, function (req, res, next) {
     var formErrors = require('*/cartridge/scripts/formErrors');
     var HookMgr = require('dw/system/HookMgr');

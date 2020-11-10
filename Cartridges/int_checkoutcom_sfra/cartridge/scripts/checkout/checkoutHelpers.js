@@ -470,6 +470,7 @@ function createOrder(currentBasket) {
     return order;
 }
 
+//////////////////////////////     Modified ////////////////////////////////////////////////
 /**
  * handles the payment authorization for each payment instrument
  * @param {dw.order.Order} order - the order object
@@ -519,6 +520,8 @@ function handlePayments(order, orderNumber) {
                         Transaction.wrap(function () { OrderMgr.failOrder(order, true); });
                         result.error = true;
                         break;
+                    } else {
+                        result = authorizationResult;
                     }
                 }
             }
