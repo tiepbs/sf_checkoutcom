@@ -5,11 +5,6 @@
         <isinclude template="checkout/billing/paymentOptions/creditCardTab" />
     </isif>
 
-    <iscomment> Card Payment </iscomment>
-    <iscomment> <isif condition="${paymentOption.ID === 'CREDIT_CARD'}">
-        <isinclude template="checkout/billing/paymentOptions/creditCardTab" />
-    </isif> </iscomment>
-
     <iscomment> Google Pay </iscomment>
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnabled')}">
         <isinclude template="checkout/billing/paymentOptions/tabs/googlePayTab"/>
