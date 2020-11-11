@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+
     <type-extension type-id="Profile">
         <custom-attribute-definitions>
             <attribute-definition attribute-id="ckoCustomerId">
@@ -17,6 +18,7 @@
             </attribute-group>
         </group-definitions>
     </type-extension>
+
     <type-extension type-id="PaymentTransaction">
         <custom-attribute-definitions>
             <attribute-definition attribute-id="ckoPaymentId">
@@ -74,6 +76,194 @@
            </attribute-group>
         </group-definitions>
     </type-extension>
+
+    <type-extension type-id="CustomerPaymentInstrument">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="ckoCreditCardType">
+                <display-name xml:lang="x-default">ckoCreditCardType</display-name>
+                <description xml:lang="x-default">Checkout.com Credit card type</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="ckoPaymentData">
+                <display-name xml:lang="x-default">ckoPaymentData</display-name>
+                <description xml:lang="x-default">Checkout.com PaymentData</description>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <field-length>0</field-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="ckoPayment">
+                <display-name xml:lang="x-default">ckoPayment</display-name>
+                <attribute attribute-id="ckoCreditCardType"/>
+                <attribute attribute-id="ckoPaymentData"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="OrderPaymentInstrument">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="ckoPaymentData">
+                <display-name xml:lang="x-default">ckoPaymentData</display-name>
+                <description xml:lang="x-default">Checkout.comPaymentData 3D Secure</description>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <field-length>0</field-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="ckoPayment">
+                <display-name xml:lang="x-default">ckoPayment</display-name>
+                <attribute attribute-id="ckoPaymentData"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="PaymentTransaction">
+        <system-attribute-definitions>
+            <attribute-definition attribute-id="UUID">
+                <min-length>0</min-length>
+                <field-length>28</field-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="creationDate"/>
+            <attribute-definition attribute-id="lastModified"/>
+            <attribute-definition attribute-id="transactionID">
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="type">
+                <value-definitions immutable="true">
+                    <value-definition>
+                        <display xml:lang="x-default">Authorization</display>
+                        <value>TYPE_AUTH</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Authorization Reversal</display>
+                        <value>TYPE_AUTH_REVERSAL</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Capture</display>
+                        <value>TYPE_CAPTURE</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Credit</display>
+                        <value>TYPE_CREDIT</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+        </system-attribute-definitions>
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="AmountPaid">
+                <display-name xml:lang="x-default">Amount Paid</display-name>
+                <type>double</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="approvalStatus">
+                <display-name xml:lang="x-default">Approval Status</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="authAmount">
+                <display-name xml:lang="x-default">Auth Amount</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="authCode">
+                <display-name xml:lang="x-default">Authorization Code</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="cardType">
+                <display-name xml:lang="x-default">Card Type</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="requestId">
+                <display-name xml:lang="x-default">Request ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="requestToken">
+                <display-name xml:lang="x-default">Request Token</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="Cko_log">
+                <display-name xml:lang="x-default">Cko Log</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="cko_authResult">
+                <display-name xml:lang="x-default">Cko_authResult</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+             <attribute-definition attribute-id="Cko_merchantReference">
+                <display-name xml:lang="x-default">Cko_merchantReference</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+             <attribute-definition attribute-id="Cko_merchantReturnData">
+                <display-name xml:lang="x-default">Cko_merchantReturnData</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+             <attribute-definition attribute-id="Cko_merchantSig">
+                <display-name xml:lang="x-default">Cko_merchantSig</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+             <attribute-definition attribute-id="Cko_paymentMethod">
+                <display-name xml:lang="x-default">Cko_paymentMethod</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+             <attribute-definition attribute-id="Cko_pspReference">
+                <display-name xml:lang="x-default">Cko_pspReference</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+             <attribute-definition attribute-id="Cko_shopperLocale">
+                <display-name xml:lang="x-default">Cko_shopperLocale</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+             <attribute-definition attribute-id="Cko_skinCode">
+                <display-name xml:lang="x-default">Cko_skinCode</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+    </type-extension>
+
     <type-extension type-id="SitePreferences">
         <custom-attribute-definitions>
             <attribute-definition attribute-id="ckoVersion">
@@ -542,6 +732,7 @@
                 </value-definitions>
             </attribute-definition>
         </custom-attribute-definitions>
+
         <group-definitions>
             <attribute-group group-id="CKO [1] Sandbox Keys">
                 <display-name xml:lang="x-default">Checkout.com Sandbox API Keys</display-name>
@@ -616,5 +807,6 @@
                 <attribute attribute-id="ckoApplePayButton"/>
             </attribute-group>
        </group-definitions>
+       
     </type-extension>
 </metadata>

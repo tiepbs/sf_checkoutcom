@@ -5,10 +5,13 @@
     <include formid="contactInfoFields" name="contactInfo"/>
     <field formid="paymentMethod" type="string" mandatory="true" />
     <include formid="creditCardFields" name="creditCard"/>
-    <include formid="savedCardForm" name="savedCardForm"/>
     <include formid="googlePayForm" name="googlePayForm"/>
     <include formid="applePayForm" name="applePayForm"/>
     <include formid="apmForm" name="apmForm"/>
+    <include formid="boletoForm" name="boletoForm"/>
+    <include formid="idealForm" name="idealForm"/>
+    <include formid="klarnaForm" name="klarnaForm"/>
+    <include formid="qpayForm" name="qpayForm"/>
     <include formid="sepaForm" name="sepaForm"/>
     <field formid="subscribe" type="boolean" checked="false" default-value="false" mandatory="false" />
 </form>

@@ -4,7 +4,7 @@
  * jQuery Ajax helpers on DOM ready.
  */
 document.addEventListener('DOMContentLoaded', function() {
-    initBoletoFieldFormatters();
+    // initBoletoFieldFormatters();
 }, false);
 
 function boletoFormValidation() {
@@ -26,11 +26,11 @@ function boletoFormValidation() {
     return errors;
 }
 
-function initBoletoFieldFormatters() {
-    // Boleto birth date formatter
-    var cleave = new Cleave('#boleto_birthDate', {
-        date: true,
-        delimiter: '-',
-        datePattern: ['Y', 'm', 'd'],
-    });
-}
+// function initBoletoFieldFormatters() {
+//     // Boleto birth date formatter
+//     var cleave = new Cleave('#boleto_birthDate', {
+//         date: true,
+//         delimiter: '-',
+//         datePattern: ['Y', 'm', 'd'],
+//     });
+// }

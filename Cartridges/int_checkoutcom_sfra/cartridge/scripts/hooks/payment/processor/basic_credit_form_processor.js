@@ -33,18 +33,6 @@ function processForm(req, paymentForm, viewFormData) {
     };
 
     viewData.paymentInformation = {
-        saveCard: {
-            value: paymentForm.creditCardFields.saveCard.value,
-            htmlName: paymentForm.creditCardFields.saveCard.htmlName  
-        },
-        firstName: {
-            value: paymentForm.addressFields.firstName.value,
-            htmlName: paymentForm.addressFields.firstName.htmlName  
-        },
-        lastName: {
-            value: paymentForm.addressFields.lastName.value,
-            htmlName: paymentForm.addressFields.lastName.htmlName 
-        },
         cardType: {
             value: paymentForm.creditCardFields.cardType.value,
             htmlName: paymentForm.creditCardFields.cardType.htmlName
@@ -86,15 +74,12 @@ function processForm(req, paymentForm, viewFormData) {
             return viewData.storedPaymentUUID === item.UUID;
         });
 
-        viewData.paymentInformation.firstName.value = paymentForm.addressFields.firstName.htmlValue;
-        viewData.paymentInformation.lastName.value = paymentForm.addressFields.lastName.htmlValue;
         viewData.paymentInformation.cardNumber.value = paymentInstrument.creditCardNumber;
         viewData.paymentInformation.cardType.value = paymentInstrument.creditCardType;
         viewData.paymentInformation.securityCode.value = req.form.securityCode;
         viewData.paymentInformation.expirationMonth.value = paymentInstrument.creditCardExpirationMonth;
         viewData.paymentInformation.expirationYear.value = paymentInstrument.creditCardExpirationYear;
         viewData.paymentInformation.creditCardToken = paymentInstrument.raw.creditCardToken;
-        viewData.paymentInformation.storedPaymentUUID = viewData.storedPaymentUUID;
     }
 
     return {

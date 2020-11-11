@@ -1,3 +1,4 @@
+<isset name="sepaForm" value="${pdict.forms.billingForm.sepaForm}" scope="page"/>
 <iscomment> Sepa APM option </iscomment>
 <isscript>
     var assets = require('*/cartridge/scripts/assets.js');
@@ -13,7 +14,7 @@
 <div class="cko-apm-panel">
     <div class="sepa_pay" id="sepa_pay_box">
         ${Resource.msg('cko.sepa.iban','cko',null)} 
-        <input id="sepa_iban" name="${apmFields.sepa_iban.htmlName}" type="text"/>
+        <input id="sepa_iban" name="${sepaForm.sepa_iban.htmlName}" type="text"/>
         <div class="invalid-field-message"></div>
     </div>
 </div>

@@ -1,4 +1,6 @@
+<isset name="boletoForm" value="${pdict.forms.billingForm.boletoForm}" scope="page"/>
 <iscomment> Boleto APM option </iscomment>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
 <isscript>
     var assets = require('*/cartridge/scripts/assets.js');
     assets.addJs('/js/apm/boleto.js');
@@ -13,10 +15,8 @@
 
 <div class="cko-apm-panel">
    <div class="boleto_pay" id="boleto_pay_box">
-        ${Resource.msg('cko.boleto.birthdate','cko',null)} 
-        <input id="boleto_birthDate" name="${apmFields.boleto_birthDate.htmlName}" type="text" placeholder="${Resource.msg('cko.boleto.dateformat','cko',null)}"/>
         ${Resource.msg('cko.boleto.cpfe','cko',null)} 
-        <input id="boleto_cpf" name="${apmFields.boleto_cpf.htmlName}" type="text"/>
+        <input id="boleto_cpf" name="${boletoForm.boleto_cpf.htmlName}" type="text"/>
         <div class="invalid-field-message"></div>
     </div>
 </div>

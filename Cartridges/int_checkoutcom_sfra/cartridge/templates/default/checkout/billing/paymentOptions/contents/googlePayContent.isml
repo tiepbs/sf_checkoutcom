@@ -14,6 +14,6 @@
         <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
         <isset name="googlePayFields" value="${pdict.forms.billingForm.googlePayForm}" scope="page"/>
 
-        <isinclude template="checkout/billing/paymentOptions/forms/googlePayForm" />
+        <isinclude template="checkout/billing/forms/googlePayForm" />
     </fieldset>
 </div>

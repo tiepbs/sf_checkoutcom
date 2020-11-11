@@ -1,4 +1,9 @@
-<input type="hidden" class="form-control" id="cardType" <isprint value=${creditFields.cardType.attributes} encoding="htmlsinglequote"/> value="">
+<isset name="creditFields" value="${pdict.forms.billingForm.creditCardFields}" scope="page"/>
+
+<!--- Hidden input for credit card type --->
+<input type="hidden" class="form-control" id="cardType"
+       name="${creditFields.cardType.htmlName}"
+       value="">
 
 <div class="row">
     <div class="col-12">
@@ -12,13 +17,11 @@
                         && pdict.order.billing.payment.selectedPaymentInstruments.length > 0
                         ? pdict.order.billing.payment.selectedPaymentInstruments[0].maskedCreditCardNumber||''
                         : ''}"
-                    <isprint value=${creditFields.cardNumber.attributes} encoding="htmlsinglequote"/>
+                    <isprint value=${creditFields.cardNumber.attributes} encoding="off"/>
                     autocomplete="cc-number"
                     aria-describedby="cardNumberInvalidMessage"
                 >
-                <div class="invalid-feedback" id="cardNumberInvalidMessage">
-                    ${Resource.msg('cko.cardnumber.invalid', 'cko', null)}
-                </div>
+                <div class="invalid-feedback" id="cardNumberInvalidMessage"></div>
             </div>
         </div>
     </div>
@@ -31,23 +34,21 @@
             ${creditFields.expirationMonth.htmlName}">
             <label class="form-control-label" for="expirationMonth">${Resource.msg('field.credit.card.expiration.month','creditCard',null)}</label>
             <select class="form-control expirationMonth custom-select" id="expirationMonth"
-                <isprint value=${creditFields.expirationMonth.attributes} encoding="htmlsinglequote"/> 
+                <isprint value=${creditFields.expirationMonth.attributes} encoding="off"/> 
                 autocomplete="cc-exp-month"
                 aria-describedby="expirationMonthInvalidMessage">
                 <isloop items=${creditFields.expirationMonth.options} var="month">
                     <option id="${month.id}" value="${month.htmlValue}"
                         <isif condition="${pdict.order.billing.payment.selectedPaymentInstruments
                             && pdict.order.billing.payment.selectedPaymentInstruments.length > 0
-                            && month.id === pdict.order.billing.payment.selectedPaymentInstruments[0].expirationMonth}">
+                            && month.id == pdict.order.billing.payment.selectedPaymentInstruments[0].expirationMonth}">
                             selected
                         </isif> >
                         ${month.label}
                     </option>
                 </isloop>
             </select>
-            <div class="invalid-feedback" id="expirationMonthInvalidMessage">
-                ${Resource.msg('cko.cardexpirationmonth.invalid', 'cko', null)}
-            </div>
+            <div class="invalid-feedback" id="expirationMonthInvalidMessage"></div>
         </div>
     </div>
     <div class="col-6">
@@ -56,7 +57,7 @@
             ${creditFields.expirationYear.htmlName}">
             <label class="form-control-label" for="expirationYear">${Resource.msg('field.credit.card.expiration.year','creditCard',null)}</label>
             <select class="form-control expirationYear custom-select" id="expirationYear"
-                <isprint value=${creditFields.expirationYear.attributes} encoding="htmlsinglequote"/>
+                <isprint value=${creditFields.expirationYear.attributes} encoding="off"/>
                 autocomplete="cc-exp-year"
                 aria-describedby="expirationYearInvalidMessage">
                 <option value="${pdict.forms.billingForm.creditCardFields.expirationYear.options[0].htmlValue}">${pdict.forms.billingForm.creditCardFields.expirationYear.options[0].label}</option>
@@ -64,15 +65,13 @@
                     <option id="${year.toFixed(0)}" value="${year.toFixed(0)}"
                         <isif condition="${pdict.order.billing.payment.selectedPaymentInstruments
                             && pdict.order.billing.payment.selectedPaymentInstruments.length > 0
-                            && year === pdict.order.billing.payment.selectedPaymentInstruments[0].expirationYear}">
+                            && year == pdict.order.billing.payment.selectedPaymentInstruments[0].expirationYear}">
                                 selected
                         </isif> >
                     <isprint value="${year}" formatter="####" /></option>
                 </isloop>
             </select>
-            <div class="invalid-feedback" id="expirationYearInvalidMessage">
-                ${Resource.msg('cko.cardexpirationyear.invalid', 'cko', null)}
-            </div>
+            <div class="invalid-feedback" id="expirationYearInvalidMessage"></div>
         </div>
     </div>
 </div>
@@ -93,11 +92,9 @@
             </button>
 
             <input type="text" class="form-control securityCode" id="securityCode"
-                <isprint value=${creditFields.securityCode.attributes} encoding="htmlsinglequote"/>
+                <isprint value=${creditFields.securityCode.attributes} encoding="off"/>
                 aria-describedby="securityCodeInvalidMessage" >
-            <div class="invalid-feedback" id="securityCodeInvalidMessage">
-                ${Resource.msg('cko.cardsecuritycode.invalid', 'cko', null)}
-            </div>
+            <div class="invalid-feedback" id="securityCodeInvalidMessage"></div>
         </div>
     </div>
 </div>
@@ -106,7 +103,7 @@
     <div class="col">
         <isif condition="${pdict.customer.registeredUser}">
             <div class="save-credit-card custom-control custom-checkbox ">
-                <input type="checkbox" class="custom-control-input" id="saveCreditCard" name="${creditFields.saveCard.htmlName}" value="true">
+                <input type="checkbox" class="custom-control-input" id="saveCreditCard" name="${creditFields.saveCard.htmlName}" value="true" checked>
                 <label class="custom-control-label" for="saveCreditCard">
                     ${creditFields.saveCard.label}
                 </label>

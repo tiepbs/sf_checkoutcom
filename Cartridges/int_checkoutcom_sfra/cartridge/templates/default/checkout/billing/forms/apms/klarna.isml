@@ -1,3 +1,4 @@
+<isset name="klarnaForm" value="${pdict.forms.billingForm.klarnaForm}" scope="page"/>
 <iscomment> Klarna APM option </iscomment>
 <isscript>
     var assets = require('*/cartridge/scripts/assets.js');
@@ -17,13 +18,13 @@
         <div class="klarna-payments-con" id="klarna-payments-container"></div>
 
         <iscomment> field for Klarna token </iscomment>
-        <input type="hidden" id="klarna_token" name="${apmFields.klarna_token.htmlName}" value=""/>
+        <input type="hidden" class="form-control" id="klarna_token" name="${klarnaForm.klarna_token.htmlName}" value="">
 
         <iscomment> field for Klarna approved </iscomment>
-        <input type="hidden" id="klarna_approved" name="${apmFields.klarna_approved.htmlName}" value=""/>
+        <input type="hidden" class="form-control" id="klarna_approved" name="${klarnaForm.klarna_approved.htmlName}" value=""/>
 
         <iscomment> field for Klarna finalize required </iscomment>
-        <input type="hidden" id="klarna_finalize_required" name="${apmFields.klarna_finalize_required.htmlName}" value=""/>
+        <input type="hidden" class="form-control" id="klarna_finalize_required" name="${klarnaForm.klarna_finalize_required.htmlName}" value=""/>
     </div>
 </div>
 

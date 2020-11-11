@@ -15,6 +15,6 @@
         <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
         <isset name="applePayFields" value="${pdict.forms.billingForm.applePayForm}" scope="page"/>
 
-        <isinclude template="checkout/billing/paymentOptions/forms/applePayForm" />
+        <isinclude template="checkout/billing/forms/applePayForm" />
     </fieldset>
 </div>

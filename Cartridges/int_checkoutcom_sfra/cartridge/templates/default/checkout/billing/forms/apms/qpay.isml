@@ -1,3 +1,4 @@
+<isset name="qpayForm" value="${pdict.forms.billingForm.qpayForm}" scope="page"/>
 <iscomment> Qpay APM option </iscomment>
 <isscript>
     var assets = require('*/cartridge/scripts/assets.js');
@@ -12,7 +13,7 @@
 <div class="cko-apm-panel">
     <div class="q_pay" id="qpay_pay_box">
         ${Resource.msg('cko.qpay.nationalid','cko',null)} 
-        <input type="text" id="qpay_national_id" name="${apmFields.qpay_national_id.htmlName}" encoding="htmlsinglequote"/>
+        <input type="text" id="qpay_national_id" name="${qpayForm.qpay_national_id.htmlName}" encoding="htmlsinglequote"/>
         <div class="invalid-field-message"></div>
     </div>
 </div>
