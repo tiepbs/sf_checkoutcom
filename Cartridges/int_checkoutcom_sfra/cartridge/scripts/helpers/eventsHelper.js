@@ -34,7 +34,7 @@ var eventsHelper = {
             details += ckoHelper._('cko.response.code', 'cko') + ': ' + hook.data.response_code + '\n';
 
             // Process the transaction
-            Transaction.wrap(function() {
+            // Transaction.wrap(function() {
                 // Add the details to the order
                 order.addNote(ckoHelper._('cko.webhook.info', 'cko'), details);
 
@@ -47,7 +47,7 @@ var eventsHelper = {
                 if ((orderStatus) && (orderStatus.indexOf('CANCELLED') !== -1 || orderStatus.indexOf('FAILED') !== -1)) {
                     OrderMgr.failOrder(order, true);
                 }
-            });
+            // });
         }
     },
 
@@ -69,7 +69,7 @@ var eventsHelper = {
         var paymentProcessorId = hook.data.metadata.payment_processor;
 
         // Create the captured transaction
-        Transaction.wrap(function() {
+        // Transaction.wrap(function() {
             // Create the transaction
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
@@ -86,7 +86,7 @@ var eventsHelper = {
                 parentTransaction.custom.ckoTransactionOpened = false;
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
             }
-        });
+        // });
     },
 
     /**
@@ -151,7 +151,7 @@ var eventsHelper = {
         var paymentProcessorId = hook.data.metadata.payment_processor;
 
         // Create the refunded transaction
-        Transaction.wrap(function() {
+        // Transaction.wrap(function() {
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
             paymentInstrument.paymentTransaction.transactionID = hook.data.action_id;
@@ -167,7 +167,7 @@ var eventsHelper = {
                 parentTransaction.custom.ckoTransactionOpened = !transactionHelper.shouldCloseRefund(order);
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
             }
-        });
+        // });
     },
 
     /**
@@ -188,7 +188,7 @@ var eventsHelper = {
         var paymentProcessorId = hook.data.metadata.payment_processor;
 
         // Create the voided transaction
-        Transaction.wrap(function() {
+        // Transaction.wrap(function() {
             // Create the transaction
             var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
             var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.paymentMethod).getPaymentProcessor();
@@ -205,7 +205,7 @@ var eventsHelper = {
                 parentTransaction.custom.ckoTransactionOpened = false;
                 paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = parentTransaction.transactionID;
             }
-        });
+        // });
     },
 
     /**
