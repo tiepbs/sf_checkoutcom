@@ -13,6 +13,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 var Site = require('dw/system/Site');
 
+
 /**
  * Creates a token. This should be replaced by utilizing a tokenization provider
  * @returns {string} a token

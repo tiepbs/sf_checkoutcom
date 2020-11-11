@@ -622,8 +622,15 @@ function savePaymentInstrumentToWallet(billingData, currentBasket, customer) {
         var processor = PaymentMgr.getPaymentMethod(PaymentInstrument.METHOD_CREDIT_CARD).getPaymentProcessor();
         var token = HookMgr.callHook(
             'app.payment.processor.' + processor.ID.toLowerCase(),
-            'createMockToken'
+            'createToken',
+            {
+                cardNumber: billingData.paymentInformation.cardNumber.value,
+                expirationMonth: billingData.paymentInformation.expirationMonth.value,
+                expirationYear: billingData.paymentInformation.expirationYear.value,
+                name: currentBasket.billingAddress.fullName
+            }
         );
+
 
         storedPaymentInstrument.setCreditCardToken(token);
 
