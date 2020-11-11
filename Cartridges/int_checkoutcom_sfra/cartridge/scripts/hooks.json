@@ -1,22 +1,6 @@
 {
     "hooks": [
         {
-            "name": "app.payment.processor.default",
-            "script": "./hooks/payment/processor/default"
-        },
-        {
-            "name": "app.payment.processor.basic_credit",
-            "script": "./hooks/payment/processor/basic_credit"
-        },
-        {
-            "name": "app.payment.form.processor.basic_credit",
-            "script": "./hooks/payment/processor/basic_credit_form_processor"
-        },
-        {
-            "name": "app.payment.form.processor.default_form_processor",
-            "script": "./hooks/payment/processor/default_form_processor"
-        },
-        {
             "name": "app.payment.processor.checkoutcom_card",
             "script": "./hooks/payment/processor/CHECKOUTCOM_CARD"
         },
