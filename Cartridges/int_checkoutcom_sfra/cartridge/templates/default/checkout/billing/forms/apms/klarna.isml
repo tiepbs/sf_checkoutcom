@@ -1,0 +1,32 @@
+<isset name="klarnaForm" value="${pdict.forms.billingForm.klarnaForm}" scope="page"/>
+<iscomment> Klarna APM option </iscomment>
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/apm/klarna.js');
+    assets.addCss('/css/apm/klarna.css');
+</isscript>
+
+<button class="cko-apm-accordion klarna">
+    <input id="klarna_apm_radio_btn" type="radio"/>
+    <img alt="${Resource.msg('cko.klarna.name','cko',null)}" id="klarna_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}"/>
+    ${Resource.msg('cko.klarna.name','cko',null)}
+</button>
+
+<div class="cko-apm-panel">
+    <div class="klarna_pay" id="klarna_pay_box">
+        <div class="klarna-btn" id="klarna-buttons"></div>
+        <div class="klarna-payments-con" id="klarna-payments-container"></div>
+
+        <iscomment> field for Klarna token </iscomment>
+        <input type="hidden" class="form-control" id="klarna_token" name="${klarnaForm.klarna_token.htmlName}" value="">
+
+        <iscomment> field for Klarna approved </iscomment>
+        <input type="hidden" class="form-control" id="klarna_approved" name="${klarnaForm.klarna_approved.htmlName}" value=""/>
+
+        <iscomment> field for Klarna finalize required </iscomment>
+        <input type="hidden" class="form-control" id="klarna_finalize_required" name="${klarnaForm.klarna_finalize_required.htmlName}" value=""/>
+    </div>
+</div>
+
+<input type="hidden" id="ckoKlarnaController" value="${URLUtils.url('CKOKlarna-KlarnaSession')}"/>
+<script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>

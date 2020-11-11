@@ -176,6 +176,7 @@ server.get(
     }
 );
 
+////////////////////////////////////////////       Modified         ///////////////////////////////////////////////
 server.post('SavePayment', csrfProtection.validateAjaxRequest, function (req, res, next) {
     var formErrors = require('*/cartridge/scripts/formErrors');
     var HookMgr = require('dw/system/HookMgr');
@@ -200,17 +201,18 @@ server.post('SavePayment', csrfProtection.validateAjaxRequest, function (req, re
             var wallet = customer.getProfile().getWallet();
 
             Transaction.wrap(function () {
-                var paymentInstrument = wallet.createPaymentInstrument('CHECKOUTCOM_CARD');
+                var paymentInstrument = wallet.createPaymentInstrument(dwOrderPaymentInstrument.METHOD_CREDIT_CARD);
                 paymentInstrument.setCreditCardHolder(formInfo.name);
                 paymentInstrument.setCreditCardNumber(formInfo.cardNumber);
                 paymentInstrument.setCreditCardType(formInfo.cardType);
                 paymentInstrument.setCreditCardExpirationMonth(formInfo.expirationMonth);
                 paymentInstrument.setCreditCardExpirationYear(formInfo.expirationYear);
 
-                var processor = PaymentMgr.getPaymentMethod('CHECKOUTCOM_CARD').getPaymentProcessor();
+                var processor = PaymentMgr.getPaymentMethod(dwOrderPaymentInstrument.METHOD_CREDIT_CARD).getPaymentProcessor();
                 var token = HookMgr.callHook(
                     'app.payment.processor.' + processor.ID.toLowerCase(),
-                    'createToken'
+                    'createToken',
+                    result
                 );
 
                 paymentInstrument.setCreditCardToken(token);

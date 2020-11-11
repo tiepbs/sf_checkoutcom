@@ -1,0 +1,19 @@
+<script type="text/javascript" src="https://pay.google.com/gp/p/js/pay.js"></script>
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/googlepay.js');
+    assets.addCss('/css/googlepay.css');
+</isscript>
+
+<div class="tab-pane google-pay-content" id="google-pay-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+		<input type="hidden" class="form-control"
+				name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+				value=""
+		>
+        <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
+        <isset name="googlePayFields" value="${pdict.forms.billingForm.googlePayForm}" scope="page"/>
+
+        <isinclude template="checkout/billing/forms/googlePayForm" />
+    </fieldset>
+</div>

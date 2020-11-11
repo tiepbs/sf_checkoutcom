@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
-	<!-- Fields for the saved card data -->          
-    <field formid="selectedCardUuid" type="string" binding="selectedCardUuid" />
-    <field formid="selectedCardCvv" type="string" binding="selectedCardCvv" />
-</form>

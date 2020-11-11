@@ -7,11 +7,19 @@
 
 <div class="summary-details billing">
      <isinclude template="checkout/addressSummary" />
-     <span class="order-summary-email">${pdict.order.orderEmail}</span>
-	<br/>
-	<isif condition="${pdict.order.billing.billingAddress.address !== null}">
-    	<span class="order-summary-phone">${pdict.order.billing.billingAddress.address.phone}</span>
-    	<iselse>
-    	<span class="order-summary-phone"></span>
+     <isif condition="${pdict.order.orderEmail !== null}">
+        <span class="order-summary-email">${pdict.order.orderEmail}</span>
 	</isif>
+    <br/>
+    <isif condition="${pdict.order.billing.billingAddress.address !== null}">
+        <span class="order-summary-phone">${pdict.order.billing.billingAddress.address.phone}</span>
+        <iselse>
+        <span class="order-summary-phone"></span>
+    </isif>
+</div>
+
+<!--- Payment information --->
+<div class="summary-details">
+    <span class="summary-section-label payment-info-label">${Resource.msg('label.order.payment.info', 'confirmation', null)}</span><br/>
+    <isinclude template="checkout/billing/paymentOptions/paymentOptionsSummary" />
 </div>

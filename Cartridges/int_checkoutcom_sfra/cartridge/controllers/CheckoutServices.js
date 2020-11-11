@@ -1,10 +1,11 @@
 'use strict';
 
 var server = require('server');
-server.extend(module.superModule);
+
 var csrfProtection = require('*/cartridge/scripts/middleware/csrf');
 
-server.prepend('Get', server.middleware.https, function(req, res, next) {
+
+server.get('Get', server.middleware.https, function (req, res, next) {
     var BasketMgr = require('dw/order/BasketMgr');
     var AccountModel = require('*/cartridge/models/account');
     var OrderModel = require('*/cartridge/models/order');
@@ -12,11 +13,12 @@ server.prepend('Get', server.middleware.https, function(req, res, next) {
     var Resource = require('dw/web/Resource');
     var URLUtils = require('dw/web/URLUtils');
     var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
+
     var currentBasket = BasketMgr.getCurrentBasket();
     if (!currentBasket) {
         res.json({
             redirectUrl: URLUtils.url('Cart-Show').toString(),
-            error: true,
+            error: true
         });
 
         return next();
@@ -39,7 +41,7 @@ server.prepend('Get', server.middleware.https, function(req, res, next) {
         order: basketModel,
         customer: new AccountModel(req.currentCustomer),
         error: !allValid,
-        message: allValid ? '' : Resource.msg('error.message.shipping.addresses', 'checkout', null),
+        message: allValid ? '' : Resource.msg('error.message.shipping.addresses', 'checkout', null)
     });
 
     return next();
@@ -48,11 +50,11 @@ server.prepend('Get', server.middleware.https, function(req, res, next) {
 /**
  *  Handle Ajax payment (and billing) form submit
  */
-server.prepend(
+server.post(
     'SubmitPayment',
     server.middleware.https,
     csrfProtection.validateAjaxRequest,
-    function(req, res, next) {
+    function (req, res, next) {
         var PaymentManager = require('dw/order/PaymentMgr');
         var HookManager = require('dw/system/HookMgr');
         var Resource = require('dw/web/Resource');
@@ -66,7 +68,7 @@ server.prepend(
         var contactInfoFormErrors = COHelpers.validateFields(paymentForm.contactInfoFields);
 
         var formFieldErrors = [];
-        if (Object.keys(billingFormErrors).length > 0) {
+        if (Object.keys(billingFormErrors).length) {
             formFieldErrors.push(billingFormErrors);
         } else {
             viewData.address = {
@@ -76,7 +78,7 @@ server.prepend(
                 address2: { value: paymentForm.addressFields.address2.value },
                 city: { value: paymentForm.addressFields.city.value },
                 postalCode: { value: paymentForm.addressFields.postalCode.value },
-                countryCode: { value: paymentForm.addressFields.country.value },
+                countryCode: { value: paymentForm.addressFields.country.value }
             };
 
             if (Object.prototype.hasOwnProperty.call(paymentForm.addressFields, 'states')) {
@@ -88,14 +90,13 @@ server.prepend(
             formFieldErrors.push(contactInfoFormErrors);
         } else {
             viewData.email = {
-                value: paymentForm.contactInfoFields.email.value,
+                value: paymentForm.contactInfoFields.email.value
             };
 
             viewData.phone = { value: paymentForm.contactInfoFields.phone.value };
         }
 
         var paymentMethodIdValue = paymentForm.paymentMethod.value;
-
         if (!PaymentManager.getPaymentMethod(paymentMethodIdValue).paymentProcessor) {
             throw new Error(Resource.msg(
                 'error.payment.processor.missing',
@@ -107,10 +108,10 @@ server.prepend(
         var paymentProcessor = PaymentManager.getPaymentMethod(paymentMethodIdValue).getPaymentProcessor();
 
         var paymentFormResult;
-
         if (HookManager.hasHook('app.payment.form.processor.' + paymentProcessor.ID.toLowerCase())) {
             paymentFormResult = HookManager.callHook('app.payment.form.processor.' + paymentProcessor.ID.toLowerCase(),
                 'processForm',
+                req,
                 paymentForm,
                 viewData
             );
@@ -128,14 +129,14 @@ server.prepend(
                 form: paymentForm,
                 fieldErrors: formFieldErrors,
                 serverErrors: paymentFormResult.serverErrors ? paymentFormResult.serverErrors : [],
-                error: true,
+                error: true
             });
             return next();
         }
 
         res.setViewData(paymentFormResult.viewData);
 
-        this.on('route:BeforeComplete', function(req, res) { // eslint-disable-line no-shadow
+        this.on('route:BeforeComplete', function (req, res) { // eslint-disable-line no-shadow
             var BasketMgr = require('dw/order/BasketMgr');
             var HookMgr = require('dw/system/HookMgr');
             var PaymentMgr = require('dw/order/PaymentMgr');
@@ -147,7 +148,9 @@ server.prepend(
             var basketCalculationHelpers = require('*/cartridge/scripts/helpers/basketCalculationHelpers');
             var hooksHelper = require('*/cartridge/scripts/helpers/hooks');
             var validationHelpers = require('*/cartridge/scripts/helpers/basketValidationHelpers');
+
             var currentBasket = BasketMgr.getCurrentBasket();
+
             var billingData = res.getViewData();
 
             if (!currentBasket) {
@@ -158,7 +161,7 @@ server.prepend(
                     cartError: true,
                     fieldErrors: [],
                     serverErrors: [],
-                    redirectUrl: URLUtils.url('Cart-Show').toString(),
+                    redirectUrl: URLUtils.url('Cart-Show').toString()
                 });
                 return;
             }
@@ -172,19 +175,20 @@ server.prepend(
                     cartError: true,
                     fieldErrors: [],
                     serverErrors: [],
-                    redirectUrl: URLUtils.url('Cart-Show').toString(),
+                    redirectUrl: URLUtils.url('Cart-Show').toString()
                 });
                 return;
             }
 
             var billingAddress = currentBasket.billingAddress;
             var billingForm = server.forms.getForm('billing');
-            var paymentMethodID = billingForm.paymentMethod.value;
+            var paymentMethodID = billingData.paymentMethod.value;
+            var result;
 
             billingForm.creditCardFields.cardNumber.htmlValue = '';
             billingForm.creditCardFields.securityCode.htmlValue = '';
 
-            Transaction.wrap(function() {
+            Transaction.wrap(function () {
                 if (!billingAddress) {
                     billingAddress = currentBasket.createBillingAddress();
                 }
@@ -200,7 +204,7 @@ server.prepend(
                 }
                 billingAddress.setCountryCode(billingData.address.countryCode.value);
 
-                if (billingForm.savedCardForm.selectedCardUuid.htmlValue.length > 0) {
+                if (billingData.storedPaymentUUID) {
                     billingAddress.setPhone(req.currentCustomer.profile.phone);
                     currentBasket.setCustomerEmail(req.currentCustomer.profile.email);
                 } else {
@@ -222,13 +226,15 @@ server.prepend(
                     form: billingForm,
                     fieldErrors: [noPaymentMethod],
                     serverErrors: [],
-                    error: true,
+                    error: true
                 });
                 return;
             }
 
+            var processor = PaymentMgr.getPaymentMethod(paymentMethodID).getPaymentProcessor();
+
             // check to make sure there is a payment processor
-            if (!PaymentMgr.getPaymentMethod(paymentMethodID).paymentProcessor) {
+            if (!processor) {
                 throw new Error(Resource.msg(
                     'error.payment.processor.missing',
                     'checkout',
@@ -236,14 +242,12 @@ server.prepend(
                 ));
             }
 
-            var processor = PaymentMgr.getPaymentMethod(paymentMethodID).getPaymentProcessor();
-            var result;
             if (HookMgr.hasHook('app.payment.processor.' + processor.ID.toLowerCase())) {
                 result = HookMgr.callHook('app.payment.processor.' + processor.ID.toLowerCase(),
                     'Handle',
                     currentBasket,
-                    billingData,
-                    processor.ID,
+                    billingData.paymentInformation,
+                    paymentMethodID,
                     req
                 );
             } else {
@@ -251,20 +255,31 @@ server.prepend(
             }
 
             // need to invalidate credit card fields
-            if (result.error === true) {
+            if (result.error) {
                 delete billingData.paymentInformation;
 
                 res.json({
                     form: billingForm,
                     fieldErrors: result.fieldErrors,
                     serverErrors: result.serverErrors,
-                    error: true,
+                    error: true
                 });
                 return;
             }
 
+            if (HookMgr.hasHook('app.payment.form.processor.' + processor.ID.toLowerCase())) {
+                HookMgr.callHook('app.payment.form.processor.' + processor.ID.toLowerCase(),
+                    'savePaymentInformation',
+                    req,
+                    currentBasket,
+                    billingData
+                );
+            } else {
+                HookMgr.callHook('app.payment.form.processor.default', 'savePaymentInformation');
+            }
+
             // Calculate the basket
-            Transaction.wrap(function() {
+            Transaction.wrap(function () {
                 basketCalculationHelpers.calculateTotals(currentBasket);
             });
 
@@ -278,7 +293,7 @@ server.prepend(
                     form: paymentForm,
                     fieldErrors: [],
                     serverErrors: [Resource.msg('error.technical', 'checkout', null)],
-                    error: true,
+                    error: true
                 });
                 return;
             }
@@ -289,7 +304,7 @@ server.prepend(
                 usingMultiShipping = false;
             }
 
-            hooksHelper('app.customer.subscription', 'subscribeTo', [paymentForm.subscribe.checked, paymentForm.contactInfoFields.email.htmlValue], function() {});
+            hooksHelper('app.customer.subscription', 'subscribeTo', [paymentForm.subscribe.checked, paymentForm.contactInfoFields.email.htmlValue], function () {});
 
             var currentLocale = Locale.getLocale(req.locale.id);
 
@@ -311,7 +326,7 @@ server.prepend(
                 customer: accountModel,
                 order: basketModel,
                 form: billingForm,
-                error: false,
+                error: false
             });
         });
 
@@ -319,11 +334,10 @@ server.prepend(
     }
 );
 
-server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
+
+server.post('PlaceOrder', server.middleware.https, function (req, res, next) {
     var BasketMgr = require('dw/order/BasketMgr');
     var OrderMgr = require('dw/order/OrderMgr');
-    var PaymentMgr = require('dw/order/PaymentMgr');
-    var HookMgr = require('dw/system/HookMgr');
     var Resource = require('dw/web/Resource');
     var Transaction = require('dw/system/Transaction');
     var URLUtils = require('dw/web/URLUtils');
@@ -332,7 +346,7 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
     var COHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
     var validationHelpers = require('*/cartridge/scripts/helpers/basketValidationHelpers');
     var addressHelpers = require('*/cartridge/scripts/helpers/addressHelpers');
-    var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
+
     var currentBasket = BasketMgr.getCurrentBasket();
 
     if (!currentBasket) {
@@ -341,7 +355,7 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
             cartError: true,
             fieldErrors: [],
             serverErrors: [],
-            redirectUrl: URLUtils.url('Cart-Show').toString(),
+            redirectUrl: URLUtils.url('Cart-Show').toString()
         });
         return next();
     }
@@ -353,7 +367,7 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
             cartError: true,
             fieldErrors: [],
             serverErrors: [],
-            redirectUrl: URLUtils.url('Cart-Show').toString(),
+            redirectUrl: URLUtils.url('Cart-Show').toString()
         });
         return next();
     }
@@ -363,7 +377,7 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
             error: true,
             cartError: true,
             redirectUrl: URLUtils.url('Error-ErrorCode', 'err', '01').toString(),
-            errorMessage: Resource.msg('error.technical', 'checkout', null),
+            errorMessage: Resource.msg('error.technical', 'checkout', null)
         });
 
         return next();
@@ -373,7 +387,7 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
     if (validationOrderStatus.error) {
         res.json({
             error: true,
-            errorMessage: validationOrderStatus.message,
+            errorMessage: validationOrderStatus.message
         });
         return next();
     }
@@ -384,9 +398,9 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
             error: true,
             errorStage: {
                 stage: 'shipping',
-                step: 'address',
+                step: 'address'
             },
-            errorMessage: Resource.msg('error.no.shipping.address', 'checkout', null),
+            errorMessage: Resource.msg('error.no.shipping.address', 'checkout', null)
         });
         return next();
     }
@@ -397,24 +411,38 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
             error: true,
             errorStage: {
                 stage: 'payment',
-                step: 'billingAddress',
+                step: 'billingAddress'
             },
-            errorMessage: Resource.msg('error.no.billing.address', 'checkout', null),
+            errorMessage: Resource.msg('error.no.billing.address', 'checkout', null)
         });
         return next();
     }
 
     // Calculate the basket
-    Transaction.wrap(function() {
+    Transaction.wrap(function () {
         basketCalculationHelpers.calculateTotals(currentBasket);
     });
+
+    // Re-validates existing payment instruments
+    var validPayment = COHelpers.validatePayment(req, currentBasket);
+    if (validPayment.error) {
+        res.json({
+            error: true,
+            errorStage: {
+                stage: 'payment',
+                step: 'paymentInstrument'
+            },
+            errorMessage: Resource.msg('error.payment.not.valid', 'checkout', null)
+        });
+        return next();
+    }
 
     // Re-calculate the payments.
     var calculatedPaymentTransactionTotal = COHelpers.calculatePaymentTransaction(currentBasket);
     if (calculatedPaymentTransactionTotal.error) {
         res.json({
             error: true,
-            errorMessage: Resource.msg('error.technical', 'checkout', null),
+            errorMessage: Resource.msg('error.technical', 'checkout', null)
         });
         return next();
     }
@@ -424,98 +452,86 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
     if (!order) {
         res.json({
             error: true,
-            errorMessage: ckoHelper.getOrderFailureMessage(),
+            errorMessage: Resource.msg('error.technical', 'checkout', null)
         });
         return next();
     }
 
-    // Handles payment authorization 
-    var handlePaymentResult;
-    var billingForm = server.forms.getForm('billing');
-    var paymentMethodID = billingForm.paymentMethod.htmlValue;
-
-    var processor = PaymentMgr.getPaymentMethod(paymentMethodID).getPaymentProcessor();
-    if (HookMgr.hasHook('app.payment.processor.' + processor.ID.toLowerCase())) {
-        handlePaymentResult = HookMgr.callHook(
-            'app.payment.processor.' + processor.ID.toLowerCase(),
-            'Authorize',
-            order.orderNo,
-            billingForm,
-            processor.ID,
-            req
-        );
-    } else {
-        handlePaymentResult = HookMgr.callHook(
-            'app.payment.processor.default',
-            'Authorize'
-        );
+    // Handles payment authorization
+    var handlePaymentResult = COHelpers.handlePayments(order, order.orderNo);
+    if (handlePaymentResult.error) {
+        res.json({
+            error: true,
+            errorMessage: Resource.msg('error.technical', 'checkout', null)
+        });
+        return next();
     }
 
-    // Handle error
-    if (handlePaymentResult.error === true) {
-        Transaction.wrap(function() {
-            OrderMgr.failOrder(order, true);
-        });
+    var fraudDetectionStatus = hooksHelper('app.fraud.detection', 'fraudDetection', currentBasket, require('*/cartridge/scripts/hooks/fraudDetection').fraudDetection);
+    if (fraudDetectionStatus.status === 'fail') {
+        Transaction.wrap(function () { OrderMgr.failOrder(order, true); });
+
+        // fraud detection failed
+        req.session.privacyCache.set('fraudDetectionStatus', true);
 
         res.json({
             error: true,
-            errorMessage: ckoHelper.getPaymentFailureMessage(),
+            cartError: true,
+            redirectUrl: URLUtils.url('Error-ErrorCode', 'err', fraudDetectionStatus.errorCode).toString(),
+            errorMessage: Resource.msg('error.technical', 'checkout', null)
         });
 
-        this.emit('route:Complete', req, res);
-        // eslint-disable-next-line
-        return;
+        return next();
     }
 
-    // Handle redirection
+    // 3DS and APMs Redirect
     if (handlePaymentResult.redirectUrl) {
         res.json({
             error: false,
             continueUrl: handlePaymentResult.redirectUrl,
         });
 
-        this.emit('route:Complete', req, res);
-        // eslint-disable-next-line
-        return;
+        return next();
     }
 
     // Places the order
-    var fraudDetectionStatus = { status: '' };
     var placeOrderResult = COHelpers.placeOrder(order, fraudDetectionStatus);
     if (placeOrderResult.error) {
         res.json({
             error: true,
-            errorMessage: Resource.msg('error.technical', 'checkout', null),
+            errorMessage: Resource.msg('error.technical', 'checkout', null)
         });
         return next();
     }
 
     if (req.currentCustomer.addressBook) {
-    // save all used shipping addresses to address book of the logged in customer
+        // save all used shipping addresses to address book of the logged in customer
         var allAddresses = addressHelpers.gatherShippingAddresses(order);
-        allAddresses.forEach(function(address) {
+        allAddresses.forEach(function (address) {
             if (!addressHelpers.checkIfAddressStored(address, req.currentCustomer.addressBook.addresses)) {
                 addressHelpers.saveAddress(address, req.currentCustomer, addressHelpers.generateAddressName(address));
             }
         });
     }
 
-    COHelpers.sendConfirmationEmail(order, req.locale.id);
+    if (order.getCustomerEmail()) {
+        COHelpers.sendConfirmationEmail(order, req.locale.id);
+    }
 
     // Reset usingMultiShip after successful Order placement
     req.session.privacyCache.set('usingMultiShipping', false);
 
-    // Redirect to the confirmation page
+    // TODO: Exposing a direct route to an Order, without at least encoding the orderID
+    //  is a serious PII violation.  It enables looking up every customers orders, one at a
+    //  time.
     res.json({
         error: false,
         orderID: order.orderNo,
         orderToken: order.orderToken,
-        continueUrl: URLUtils.url('Order-Confirm').toString(),
+        continueUrl: URLUtils.url('Order-Confirm').toString()
     });
 
-    this.emit('route:Complete', req, res);
-    // eslint-disable-next-line
-    return;
+    return next();
 });
 
 module.exports = server.exports();

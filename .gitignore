@@ -4,3 +4,5 @@ link-checkoutcom.code-workspace
 dw.json
 node_modules/
 .vscode/
+cartridges/app_storefront_base
+cartridges/*/cartridge/static

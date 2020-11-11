@@ -1,10 +1,8 @@
 'use strict';
 
-var processInclude = require('./util');
-processInclude(require('./components/toolTip'));
+require('base/checkout');
 
 $(document).ready(function () {
-    processInclude(require('./checkout/checkout'));
     if (window.dw &&
         window.dw.applepay &&
         window.ApplePaySession &&

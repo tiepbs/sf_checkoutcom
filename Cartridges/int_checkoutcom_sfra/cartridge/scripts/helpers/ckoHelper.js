@@ -12,6 +12,9 @@ var Site = require('dw/system/Site');
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
 
+/* Sensitive Data Helper */
+var sensitiveDataHelper = require('~/cartridge/scripts/helpers/sensitiveDataHelper.js');
+
 /**
  * Utility functions.
  */
@@ -125,136 +128,6 @@ var ckoHelper = {
     },
 
     /**
-     * Hide sensitive data from the source_data object
-     * @param {Object} sourceData object from request/response
-     * @returns {Object} filtered data
-     */
-    cleanSourceDataObject: function(sourceData) {
-        if (Object.prototype.hasOwnProperty.call(sourceData, 'first_name'))
-            sourceData.first_name = String.prototype.replace.call(sourceData.first_name, /\w/gi, '*');
-
-        if (Object.prototype.hasOwnProperty.call(sourceData, 'last_name'))
-            sourceData.last_name = String.prototype.replace.call(sourceData.last_name, /\w/gi, '*');
-
-        if (Object.prototype.hasOwnProperty.call(sourceData, 'account_iban'))
-            sourceData.account_iban = String.prototype.replace.call(sourceData.account_iban, /\w/gi, '*');
-
-        return sourceData;
-    },
-
-    /**
-     * Hide sensitive data from the souce object
-     * @param {Object} source object from request/response
-     * @returns {Object} filtered data
-     */
-    cleanSourceObject: function(source) {
-        if (Object.prototype.hasOwnProperty.call(source, 'fingerprint')) {
-            source.fingerprint = String.prototype.replace.call(source.fingerprint, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(source, 'authorization_token')) {
-            source.authorization_token = String.prototype.replace.call(source.authorization_token, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(source, 'id')) {
-            source.id = String.prototype.replace.call(source.id, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(source, 'phone')) {
-            source.phone.number = String.prototype.replace.call(source.phone.number, /\d/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(source, 'billing_address')) {
-            source.billing_address = this.cleanBillingAddress(source.billing_address);
-        }
-        if (Object.prototype.hasOwnProperty.call(source, 'number')) {
-            source.number = String.prototype.replace.call(source.number, /\d/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(source, 'cvv')) {
-            source.cvv = String.prototype.replace.call(source.cvv, /\d/gi, '*');
-        }
-
-        return source;
-    },
-
-    /**
-     * Hide sensitive data from the billingAddress object
-     * @param {Object} billingAddress object from request/response
-     * @returns {Object} filtered data
-     */
-    cleanBillingAddress: function(billingAddress) {
-        if (Object.prototype.hasOwnProperty.call(billingAddress, 'given_name')) {
-            billingAddress.given_name = String.prototype.replace.call(billingAddress.given_name, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(billingAddress, 'family_name')) {
-            billingAddress.family_name = String.prototype.replace.call(billingAddress.family_name, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(billingAddress, 'email')) {
-            billingAddress.email = String.prototype.replace.call(billingAddress.email, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(billingAddress, 'street_address')) {
-            billingAddress.street_address = String.prototype.replace.call(billingAddress.street_address, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(billingAddress, 'street_address2')) {
-            billingAddress.street_address2 = String.prototype.replace.call(billingAddress.street_address2, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(billingAddress, 'postal_code')) {
-            billingAddress.postal_code = String.prototype.replace.call(billingAddress.postal_code, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(billingAddress, 'phone')) {
-            billingAddress.phone = String.prototype.replace.call(billingAddress.phone, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(billingAddress, 'address_line1')) {
-            billingAddress.address_line1 = String.prototype.replace.call(billingAddress.address_line1, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(billingAddress, 'address_line2')) {
-            billingAddress.address_line2 = String.prototype.replace.call(billingAddress.address_line2, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(billingAddress, 'city')) {
-            billingAddress.city = String.prototype.replace.call(billingAddress.city, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(billingAddress, 'zip')) {
-            billingAddress.zip = String.prototype.replace.call(billingAddress.zip, /\w/gi, '*');
-        }
-
-        return billingAddress;
-    },
-
-    /**
-     * Hide sensitive data from the customer object
-     * @param {Object} customer object from request/response
-     * @returns {Object} filtered data
-     */
-    cleanCustomerObject: function(customer) {
-        if (Object.prototype.hasOwnProperty.call(customer, 'id')) {
-            customer.id = String.prototype.replace.call(customer.id, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(customer, 'email')) {
-            customer.email = String.prototype.replace.call(customer.email, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(customer, 'name')) {
-            customer.name = String.prototype.replace.call(customer.name, /\w/gi, '*');
-        }
-
-        return customer;
-    },
-
-    /**
-     * Hide sensitive data from the shipping object
-     * @param {Object} shipping object from request/response
-     * @returns {Object} filtered data
-     */
-    cleanShippingObject: function(shipping) {
-        if (Object.prototype.hasOwnProperty.call(shipping, 'address')) {
-            shipping.address.address_line1 = String.prototype.replace.call(shipping.address.address_line1, /\w/gi, '*');
-            shipping.address.address_line2 = String.prototype.replace.call(shipping.address.address_line2, /\w/gi, '*');
-            shipping.address.city = String.prototype.replace.call(shipping.address.city, /\w/gi, '*');
-            shipping.address.zip = String.prototype.replace.call(shipping.address.zip, /\w/gi, '*');
-        }
-        if (Object.prototype.hasOwnProperty.call(shipping, 'phone')) {
-            shipping.phone.number = String.prototype.replace.call(shipping.phone.number, /\d/gi, '*');
-        }
-
-        return shipping;
-    },
-
-    /**
      * Remove sentitive data from the logs.
      * @param {Object} rawData The log data
      * @returns {Object} The filtered data
@@ -266,22 +139,22 @@ var ckoHelper = {
                     data.response_data.mandate_reference = String.prototype.replace.call(data.response_data.mandate_reference, /\w/gi, '*');
             }
             if (Object.prototype.hasOwnProperty.call(data, 'source_data')) {
-                data.source_data = this.cleanSourceDataObject(data.source_data);
+                data.source_data = sensitiveDataHelper.cleanSourceDataObject(data.source_data);
             }
             if (Object.prototype.hasOwnProperty.call(data, 'source')) {
-                data.source = this.cleanSourceObject(data.source);
+                data.source = sensitiveDataHelper.cleanSourceObject(data.source);
             }
 
             if (Object.prototype.hasOwnProperty.call(data, 'customer')) {
-                data.customer = this.cleanCustomerObject(data.customer);
+                data.customer = sensitiveDataHelper.cleanCustomerObject(data.customer);
             }
 
             if (Object.prototype.hasOwnProperty.call(data, 'shipping')) {
-                data.shipping = this.cleanShippingObject(data.shipping);
+                data.shipping = sensitiveDataHelper.cleanShippingObject(data.shipping);
             }
 
             if (Object.prototype.hasOwnProperty.call(data, 'billing_address')) {
-                data.billing_address = this.cleanBillingAddress(data.billing_address);
+                data.billing_address = sensitiveDataHelper.cleanBillingAddress(data.billing_address);
             }
         }
 
@@ -839,7 +712,7 @@ var ckoHelper = {
 
         // Get the capture time configured, or min time 0.5 minute if 0
         var configCaptureTime = this.getValue('ckoAutoCaptureTime');
-        var captureOnMin = configCaptureTime > 0 ? configCaptureTime : 0.5;
+        var captureOnMin = configCaptureTime < 2 ? 2 : configCaptureTime;
 
         // Convert the capture time from minutes to milliseconds
         var captureOnMs = now + (parseInt(captureOnMin) * 60000);
@@ -1047,21 +920,67 @@ var ckoHelper = {
 
     /**
      * Return the order billing address.
+     * @param {Object} billing The method arguments
+     * @returns {Object} The billing address
+     */
+    getBillingAddress: function() {
+        var basket = BasketMgr.getCurrentBasket();
+        var form = session.getForms();
+        var shippingForm = form.shipping; 
+        var addressFields = shippingForm.shippingAddress.addressFields;
+
+        // Address line 2
+        var address2 = addressFields.address2.htmlValue;
+
+        // Address Coutry 
+        var country1 = addressFields.country.htmlValue;
+        var country2 = basket.defaultShipment.shippingAddress.countryCode.valueOf();
+
+        var address = {
+            given_name: addressFields.firstName.htmlValue,
+            family_name: addressFields.lastName.htmlValue,
+            email: null,
+            title: null,
+            street_address: addressFields.address1.htmlValue,
+            street_address2: address2 ? address2 : null,
+            postal_code: addressFields.postalCode.htmlValue,
+            city: addressFields.city.htmlValue,
+            phone: addressFields.phone.htmlValue,
+            country: country1 ? country1 : country2,
+        };
+
+        return address;
+    },
+
+    /**
+     * Return the order billing address.
      * @param {Object} args The method arguments
      * @returns {Object} The billing address
      */
     getOrderAddress: function(args) {
+        var basket = BasketMgr.getCurrentBasket();
+        var form = session.getForms();
+        var shippingForm = form.shipping; 
+        var addressFields = shippingForm.shippingAddress.addressFields;
+
+        // Address line 2
+        var address2 = addressFields.address2.htmlValue;
+
+        // Address Coutry 
+        var country1 = addressFields.country.htmlValue;
+        var country2 = args.order.defaultShipment.shippingAddress.countryCode.valueOf();
+
         var address = {
-            given_name: args.order.defaultShipment.shippingAddress.firstName,
-            family_name: args.order.defaultShipment.shippingAddress.lastName,
+            given_name: addressFields.firstName.htmlValue,
+            family_name: addressFields.lastName.htmlValue,
             email: args.order.customerEmail,
-            title: args.order.defaultShipment.shippingAddress.title,
-            street_address: args.order.defaultShipment.shippingAddress.address1,
-            street_address2: args.order.defaultShipment.shippingAddress.address2,
-            postal_code: args.order.defaultShipment.shippingAddress.postalCode,
-            city: args.order.defaultShipment.shippingAddress.city,
-            phone: args.order.defaultShipment.shippingAddress.phone,
-            country: args.order.defaultShipment.shippingAddress.countryCode.valueOf(),
+            title: null,
+            street_address: addressFields.address1.htmlValue,
+            street_address2: address2 ? address2 : null,
+            postal_code: addressFields.postalCode.htmlValue,
+            city: addressFields.city.htmlValue,
+            phone: addressFields.phone.htmlValue,
+            country: country1 ? country1 : country2,
         };
 
         return address;

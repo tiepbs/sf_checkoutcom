@@ -1,18 +1,21 @@
 <isloop items="${pdict.order.billing.payment.applicablePaymentMethods}" var="paymentOption">
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_CARD' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
-        <isinclude template="checkout/billing/paymentOptions/tabs/cardTab"/>
-        <isif condition="${(pdict.customer.customerPaymentInstruments)}">
-            <isif condition="${(pdict.customer.customerPaymentInstruments.length > 0)}">
-                <isinclude template="checkout/billing/paymentOptions/tabs/savedCardTab"/>
-            </isif>
-        </isif>
+    
+    <iscomment> Card Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'CREDIT_CARD'}">
+        <isinclude template="checkout/billing/paymentOptions/creditCardTab" />
     </isif>
+
+    <iscomment> Google Pay </iscomment>
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnabled')}">
         <isinclude template="checkout/billing/paymentOptions/tabs/googlePayTab"/>
     </isif>
+
+    <iscomment> Apple Pay </iscomment>
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayEnabled')}">
         <isinclude template="checkout/billing/paymentOptions/tabs/applePayTab"/>
     </isif>
+
+    <iscomment> Alternative Payments </iscomment>
     <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APM' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
         <isinclude template="checkout/billing/paymentOptions/tabs/apmTab"/>
     </isif>

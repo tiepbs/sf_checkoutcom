@@ -14,22 +14,18 @@ var savedCardHelper = require('~/cartridge/scripts/helpers/savedCardHelper');
 var cardHelper = {
     /**
      * Handle the payment request.
-     * @param {Object} paymentData The payment data
-     * @param {string} processorId The processor ID
+     * @param {Object} paymentInstrument The payment data
+     * @param {string} paymentProcessor The processor ID
      * @param {string} orderNumber The order number
-     * @param {Object} req The HTTP request data
      * @returns {boolean} The request success or failure
      */
-    handleRequest: function(paymentData, processorId, orderNumber, req) {
-        // Order number
-        // eslint-disable-next-line
-        orderNumber = orderNumber || null;
+    handleRequest: function(orderNumber, paymentInstrument, paymentProcessor) {
 
         // Build the request data
-        var gatewayRequest = this.buildRequest(paymentData, processorId, orderNumber, req);
+        var gatewayRequest = this.buildRequest(orderNumber, paymentInstrument, paymentProcessor.ID);
 
         // Log the payment request data
-        ckoHelper.log(processorId + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
+        ckoHelper.log(paymentProcessor.ID + ' ' + ckoHelper._('cko.request.data', 'cko'), gatewayRequest);
 
         // Perform the request to the payment gateway
         var gatewayResponse = ckoHelper.gatewayClientRequest(
@@ -38,7 +34,7 @@ var cardHelper = {
         );
 
         // Log the payment response data
-        ckoHelper.log(processorId + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
+        ckoHelper.log(paymentProcessor.ID + ' ' + ckoHelper._('cko.response.data', 'cko'), gatewayResponse);
 
         // Process the response
         return this.handleResponse(gatewayResponse);
@@ -53,6 +49,8 @@ var cardHelper = {
         // Prepare the result
         var result = {
             error: !ckoHelper.paymentSuccess(gatewayResponse),
+            message: gatewayResponse.response_summary,
+            code: gatewayResponse.response_code,
             redirectUrl: false,
         };
 
@@ -76,22 +74,21 @@ var cardHelper = {
 
     /**
      * Build the gateway request.
-     * @param {Object} paymentData The payment data
-     * @param {string} processorId The processor ID
+     * @param {Object} paymentInstrument The payment data
+     * @param {string} paymentProcessor The processor ID
      * @param {string} orderNumber The order number
-     * @param {Object} req The HTTP request data
      * @returns {Object} The payment request data
      */
-    buildRequest: function(paymentData, processorId, orderNumber, req) {
+    buildRequest: function(orderNumber, paymentInstrument, paymentProcessor) {
         // Load the order
         var order = OrderMgr.getOrder(orderNumber);
 
         // Prepare the charge data
         var chargeData = {
-            source: this.getCardSource(paymentData, order, processorId),
+            source: this.getCardSource(paymentInstrument),
             amount: ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), order.getCurrencyCode()),
             currency: order.getCurrencyCode(),
-            reference: order.orderNo,
+            reference: orderNumber,
             capture: ckoHelper.getValue('ckoAutoCapture'),
             capture_on: ckoHelper.getCaptureTime(),
             customer: ckoHelper.getCustomer(order),
@@ -101,20 +98,17 @@ var cardHelper = {
             risk: { enabled: false },
             success_url: URLUtils.https('CKOMain-HandleReturn').toString(),
             failure_url: URLUtils.https('CKOMain-HandleFail').toString(),
-            metadata: ckoHelper.getMetadata({}, processorId),
+            metadata: ckoHelper.getMetadata({}, paymentProcessor),
         };
 
+        var paymentData = JSON.parse(paymentInstrument.custom.ckoPaymentData);
+
         // Handle the save card request
-        if (paymentData.creditCardFields.saveCard.value) {
-            // Save the card
-            var uuid = savedCardHelper.saveCard(
-                paymentData,
-                req
-            );
+        if (paymentData.saveCard) {
 
             // Update the metadata
-            chargeData.metadata.card_uuid = uuid;
-            chargeData.metadata.customer_id = req.currentCustomer.profile.customerNo;
+            chargeData.metadata.card_uuid = paymentData.storedPaymentUUID;
+            chargeData.metadata.customer_id = paymentData.customerNo;
         }
 
         return chargeData;
@@ -122,40 +116,28 @@ var cardHelper = {
 
     /**
      * Get a card source.
-     * @param {Object} paymentData The payment data
-     * @param {Object} order The order instance
-     * @param {string} processorId The processor ID
+     * @param {Object} paymentInstrument The payment data
      * @returns {Object} The card source
      */
-    getCardSource: function(paymentData, order, processorId) {
+    getCardSource: function(paymentInstrument) {
         // Replace selectedCardUuid by get saved card token from selectedCardUuid
         var cardSource;
-        var selectedCardUuid = paymentData.savedCardForm.selectedCardUuid.value;
-        var selectedCardCvv = paymentData.savedCardForm.selectedCardCvv.value;
+        var paymentData = JSON.parse(paymentInstrument.custom.ckoPaymentData);
 
-        // If the saved card data is valid
-        var condition1 = selectedCardCvv && selectedCardCvv.length > 0;
-        var condition2 = selectedCardUuid && selectedCardUuid.length > 0;
-        if (condition1 && condition2) {
-            // Get the saved card
-            var savedCard = savedCardHelper.getSavedCard(
-                selectedCardUuid.toString(),
-                order.getCustomerNo(),
-                processorId
-            );
+        if (paymentData.securityCode && paymentData.saveCard) {
 
             cardSource = {
                 type: 'id',
-                id: savedCard.getCreditCardToken(),
-                cvv: selectedCardCvv.toString(),
+                id: paymentInstrument.creditCardToken,
+                cvv: paymentData.securityCode,
             };
         } else {
             cardSource = {
                 type: 'card',
-                number: ckoHelper.getFormattedNumber(paymentData.creditCardFields.cardNumber.value.toString()),
-                expiry_month: paymentData.creditCardFields.expirationMonth.value.toString(),
-                expiry_year: paymentData.creditCardFields.expirationYear.value.toString(),
-                cvv: paymentData.creditCardFields.securityCode.value.toString(),
+                number: paymentInstrument.creditCardNumber,
+                expiry_month: paymentInstrument.creditCardExpirationMonth,
+                expiry_year: paymentInstrument.creditCardExpirationYear,
+                cvv: paymentData.securityCode,
             };
         }
 

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
+    
+    <!-- Field for Klarna -->
+    <field formid="klarna_token" type="string" max-length="40" binding="klarna_token"/>
+    <field formid="klarna_approved" type="string" max-length="40" binding="klarna_approved"/>
+    <field formid="klarna_finalize_required" type="string" max-length="40" binding="klarna_finalize_required"/>
+</form>
