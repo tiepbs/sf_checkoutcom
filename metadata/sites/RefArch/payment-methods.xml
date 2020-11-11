@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <payment-settings xmlns="http://www.demandware.com/xml/impex/paymentsettings/2009-09-15">
-    <payment-method method-id="CHECKOUTCOM_CARD">
+    <payment-method method-id="CREDIT_CARD">
         <name xml:lang="x-default">Checkout.com Card</name>
         <enabled-flag>false</enabled-flag>
         <processor-id>CHECKOUTCOM_CARD</processor-id>
