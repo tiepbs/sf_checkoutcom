@@ -470,7 +470,7 @@ function createOrder(currentBasket) {
     return order;
 }
 
-//////////////////////////////     Modified ////////////////////////////////////////////////
+//////////////////////////////     Modified    ////////////////////////////////////////////////
 /**
  * handles the payment authorization for each payment instrument
  * @param {dw.order.Order} order - the order object
