@@ -191,24 +191,28 @@ server.post('HandleWebhook', function(req, res, next) {
 server.get('GetApmFilter', server.middleware.https, function(req, res, next) {
     // Prepare some variables
     var basket = BasketMgr.getCurrentBasket();
-    var currencyCode = basket.getCurrencyCode();
-    var countryCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
+    if (basket) {
+        var currencyCode = basket.getCurrencyCode();
+        var countryCode = basket.defaultShipment.shippingAddress.countryCode.valueOf();
+    
+        // Prepare the filter object
+        var filterObject = {
+            country: countryCode,
+            currency: currencyCode,
+        };
+    
+        // Prepare the response object
+        var responseObject = {
+            filterObject: filterObject,
+            ckoApmFilterConfig: ckoApmFilterConfig,
+        };
+    
+        // Write the response
+        res.json(responseObject);
+    }
 
-    // Prepare the filter object
-    var filterObject = {
-        country: countryCode,
-        currency: currencyCode,
-    };
-
-    // Prepare the response object
-    var responseObject = {
-        filterObject: filterObject,
-        ckoApmFilterConfig: ckoApmFilterConfig,
-    };
-
-    // Write the response
-    res.json(responseObject);
     return next();
+
 });
 
 /*
