@@ -29,6 +29,8 @@
 
 
 #apmsBox div img {
+    max-height: 100%;
+    max-width: 100%;
     width: 10%;
     display: inline;
     vertical-align: middle;
@@ -47,12 +49,10 @@
 
 .klarnaForm{
 	padding-top: 0.5em;
-	min-width: 30em;
 	border-radius: 0.1em;
 }
 
 .klarnaContainer{
-	min-width: 30em;
 	padding: 0.7em;
 }
 
@@ -87,7 +87,10 @@
 
 .klarnaAproved{
 	color: #EB6F93;
+	width: 70%;
 	float: right;
+	text-align: right;
+	line-height: 2rem;
 	display: none;
 }
 
