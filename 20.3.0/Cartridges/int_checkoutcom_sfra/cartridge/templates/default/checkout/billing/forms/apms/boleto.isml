@@ -1,0 +1,22 @@
+<isset name="boletoForm" value="${pdict.forms.billingForm.boletoForm}" scope="page"/>
+<iscomment> Boleto APM option </iscomment>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/apm/boleto.js');
+    assets.addCss('/css/apm/boleto.css');
+</isscript>
+
+<button class="cko-apm-accordion">
+    <input id="boleto_apm_radio_btn" type="radio"/>
+    <img alt="${Resource.msg('cko.boleto.name','cko',null)}" id="boletopay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/boleto.png')}"/>
+    ${Resource.msg('cko.boleto.name','cko',null)}
+</button>
+
+<div class="cko-apm-panel">
+   <div class="boleto_pay" id="boleto_pay_box">
+        ${Resource.msg('cko.boleto.cpfe','cko',null)} 
+        <input id="boleto_cpf" name="${boletoForm.boleto_cpf.htmlName}" type="text"/>
+        <div class="invalid-field-message"></div>
+    </div>
+</div>

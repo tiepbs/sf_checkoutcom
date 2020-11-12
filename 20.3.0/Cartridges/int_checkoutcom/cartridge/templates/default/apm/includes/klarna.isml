@@ -1,0 +1,27 @@
+<!-- Klarna pay APM Option -->
+<div class="cko-apm-accordion" onclick="callKlarnaController('${URLUtils.url('CKOKlarna-KlarnaSession')}')">
+	<input id="klarna_apm_radio_btn" type="radio" name="apm_list" value="klarna" onclick="callKlarnaController('${URLUtils.url('CKOKlarna-KlarnaSession')}')">
+	<img alt="${Resource.msg('cko.klarna.name','cko',null)}" id="klarnapay_thumb" src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}"/>
+	${Resource.msg('cko.klarna.name','cko',null)}
+</div>
+
+<div class="cko-apm-panel">
+
+	<div class="klarnaForm">
+	  	<div id="klarna-buttons"></div>
+	
+		<div id="klarna-payments-container" class="klarnaContainer">
+		</div>
+		
+		<div>
+			<button id='klarnaConfirmBtn' type='button'>${Resource.msg('cko.klarna.confirmation','cko',null)}</button>
+		</div>
+		<!-- field for Klarna token -->
+		<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.klarna_token}" />
+		<!-- field for Klarna approved -->
+		<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.klarna_approved}" />
+		<!-- field for Klarna finalize required -->
+		<isinputfield type="hidden" formfield="${pdict.CurrentForms.alternativePaymentForm.klarna_finalize_required}" />
+	</div>
+	
+</div>

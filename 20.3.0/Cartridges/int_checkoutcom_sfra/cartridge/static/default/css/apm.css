@@ -1,0 +1,42 @@
+/* APM list */
+.cko-apm-accordion {
+    background-color: #ffffff;
+    color: #444;
+    cursor: pointer;
+    padding: 1em;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+.cko-apm-accordion img {
+    display: inline-block;
+    margin-left: 0.7em;
+    margin-right: 0.7em;
+    width: 7%;
+}
+
+.apm-list-item {
+    display: none;
+    border-bottom: solid 0.1em #cccccc;
+}
+
+.cko-apm-active, .cko-apm-accordion:hover {
+    background-color: #f1f1f1;
+}
+
+.cko-apm-panel {
+    padding: 0em 1em 0em 1em;
+    width: 100%;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.cko-apm-panel > div {
+	padding-top: 1.5em;
+	padding-bottom: 1.2em;
+}
