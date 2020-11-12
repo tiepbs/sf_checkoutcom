@@ -1,79 +1,65 @@
-'use strict';
-
-// API Includes
-var PaymentMgr = require('dw/order/PaymentMgr');
-var Transaction = require('dw/system/Transaction');
-var PaymentTransaction = require('dw/order/PaymentTransaction');
-
-// Site controller
-var Site = require('dw/system/Site');
-var SiteControllerName = Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontControllers');
-
-// Shopper cart
-var Cart = require(SiteControllerName + '/cartridge/scripts/models/CartModel');
-
-// App
-var app = require(SiteControllerName + '/cartridge/scripts/app');
-
-// Utility
+var Status = require('dw/system/Status');
+var PaymentInstrument = require('dw/order/PaymentInstrument');
+var Logger = require('dw/system/Logger');
 var applePayHelper = require('~/cartridge/scripts/helpers/applePayHelper');
+var OrderMgr = require('dw/order/OrderMgr');
+var Order = require('dw/order/Order');
+var PaymentMgr = require('dw/order/PaymentMgr');
 
-/**
- * Verifies that the payment data is valid.
- * @param {Object} args The method arguments
- * @returns {Object} The form validation result
- */
-function Handle(args) {
-    var cart = Cart.get(args.Basket);
-    var paymentMethod = args.PaymentMethodID;
+exports.authorizeOrderPayment = function (order, event) {
+    var condition = Object.prototype.hasOwnProperty.call(event, 'isTrusted')
+    && event.isTrusted === true
+    && order;
 
-    // get the payload data
-    var applePayData = app.getForm('applePayForm').get('data').value();
+    if (condition) {
 
-    // proceed with transaction
-    Transaction.wrap(function() {
-        cart.removeExistingPaymentInstruments(paymentMethod);
-        var paymentInstrument = cart.createPaymentInstrument(paymentMethod, cart.getNonGiftCertificateAmount());
-        paymentInstrument.paymentTransaction.custom.ckoApplePayData = applePayData;
-    });
+        // Payment request
+        var result = applePayHelper.handleRequest(
+            event.payment.token.paymentData,
+            'CHECKOUTCOM_APPLE_PAY',
+            order.orderNo
+        );
 
-    return { success: true };
-}
+        if (result) {
+            return new Status(Status.OK);
+        } else {
+            return new Status(Status.ERROR);
+        }
 
-/**
- * Authorises a payment.
- * @param {Object} args The method arguments
- * @returns {Object} The payment success or failure
- */
-function Authorize(args) {
-    // Preparing payment parameters
-    var paymentInstrument = args.PaymentInstrument;
-    var paymentProcessor = PaymentMgr.getPaymentMethod(paymentInstrument.getPaymentMethod()).getPaymentProcessor();
-
-    // Add order number to the session global object
-    // eslint-disable-next-line
-    session.privacy.ckoOrderId = args.OrderNo;
-
-    // Make the charge request
-    var chargeResponse = applePayHelper.handleRequest(args);
-    if (chargeResponse) {
-        // Create the authorization transaction
-        Transaction.wrap(function() {
-            paymentInstrument.paymentTransaction.transactionID = chargeResponse.action_id;
-            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
-            paymentInstrument.paymentTransaction.custom.ckoPaymentId = chargeResponse.id;
-            paymentInstrument.paymentTransaction.custom.ckoParentTransactionId = null;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
-            paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Authorization';
-            paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH);
-        });
-
-        return { authorized: true };
     }
+};
 
-    return { error: true };
-}
+exports.placeOrder = function (order) {
 
-// Module exports
-exports.Handle = Handle;
-exports.Authorize = Authorize;
+    var paymentInstruments = order.getPaymentInstruments(
+        PaymentInstrument.METHOD_DW_APPLE_PAY).toArray();
+
+    var paymentInstrument = paymentInstruments[0];
+    var paymentTransaction = paymentInstrument.getPaymentTransaction();
+    paymentTransaction.setTransactionID('#');
+
+    // Get Previews Notes and Remove them
+    var orderNotes = order.getNotes();
+
+    // Remove sfcc notes
+    if (orderNotes.length > 0) {
+        for (var i = 0; i < orderNotes.length; i ++) {
+            var currentNote = orderNotes.get(i);
+            var subject = currentNote.subject;
+            if (subject == "Payment Authorization Warning!") {
+                order.removeNote(currentNote);
+            }
+        }
+    }
+    
+    // Get Previews Notes and Remove them
+    var orderNotes = order.getNotes();
+
+    var placeOrderStatus = OrderMgr.placeOrder(order);
+    if (placeOrderStatus === Status.ERROR) {
+        OrderMgr.failOrder(order);
+        throw new Error('Failed to place order.');
+    }
+    order.setConfirmationStatus(Order.CONFIRMATION_STATUS_CONFIRMED);
+    order.setExportStatus(Order.EXPORT_STATUS_READY);
+};

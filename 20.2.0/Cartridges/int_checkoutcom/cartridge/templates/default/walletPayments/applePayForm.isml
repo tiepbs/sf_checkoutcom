@@ -1,5 +1,8 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/applepay.css')}");
+</style>
 
-<isapplepay class="apple-pay-cart btn btn-block"></isapplepay>
+<isapplepay id="ckoApplePayButton" class="apple-pay-cart btn btn-block"></isapplepay>
 
 <input type="hidden" id="ckoApplePayEnvironment" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayEnvironment').value)}">
 <input type="hidden" id="ckoApplePayMerchantId" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayMerchantId'))}">

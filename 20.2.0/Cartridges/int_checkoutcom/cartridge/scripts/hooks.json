@@ -1,6 +1,14 @@
 {
 	"hooks": [
 		{
+			"name": "dw.extensions.applepay.paymentAuthorized.authorizeOrderPayment",
+			"script": "./payment/processor/CHECKOUTCOM_APPLE_PAY.js"
+		},
+		{
+			"name": "dw.extensions.applepay.paymentAuthorized.placeOrder",
+			"script": "./payment/processor/CHECKOUTCOM_APPLE_PAY.js"
+		},
+		{
 			"name": "app.payment.processor.CHECKOUTCOM_CARD",
 			"script": "./payment/processor/CHECKOUTCOM_CARD"		
 		},	
@@ -11,10 +19,6 @@
 		{
 			"name": "app.payment.processor.CHECKOUTCOM_GOOGLE_PAY",
 			"script": "./payment/processor/CHECKOUTCOM_GOOGLE_PAY"		
-		},
-		{
-			"name": "app.payment.processor.CHECKOUTCOM_APPLE_PAY",
-			"script": "./payment/processor/CHECKOUTCOM_APPLE_PAY"		
-		}	
+		}
 	]
 }
