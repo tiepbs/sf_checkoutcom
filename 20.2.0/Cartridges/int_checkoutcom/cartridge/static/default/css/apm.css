@@ -87,7 +87,10 @@
 
 .klarnaAproved{
 	color: #EB6F93;
+	width: 70%;
 	float: right;
+	text-align: right;
+	line-height: 2rem;
 	display: none;
 }
 

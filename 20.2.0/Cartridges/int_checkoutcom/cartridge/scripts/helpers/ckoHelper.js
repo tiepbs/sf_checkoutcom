@@ -374,11 +374,11 @@ var ckoHelper = {
      */
     paymentSuccess: function(gatewayResponse) {
         if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'response_code')) {
-            return gatewayResponse.response_code === '10000' || gatewayResponse.response_code === '10100' || gatewayResponse.response_code === '10200';
+            return gatewayResponse.response_code === "10000" || gatewayResponse.response_code === "10100" || gatewayResponse.response_code === "10200";
         } else if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'actions')) {
-            return gatewayResponse.actions[0].response_code === '10000' || gatewayResponse.actions[0].response_code === '10100' || gatewayResponse.actions[0].response_code === '10200';
+            return gatewayResponse.actions[0].response_code === "10000" || gatewayResponse.actions[0].response_code === "10100" || gatewayResponse.actions[0].response_code === "10200";
         } else if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'source')) {
-            return gatewayResponse.source.type === 'sofort' || 'bancontact';
+            return gatewayResponse.source.type === "sofort" || "bancontact" || "token";
         } else if (Object.prototype.hasOwnProperty.call(gatewayResponse, 'reference')) {
             return gatewayResponse.reference === this.getOrderId();
         }

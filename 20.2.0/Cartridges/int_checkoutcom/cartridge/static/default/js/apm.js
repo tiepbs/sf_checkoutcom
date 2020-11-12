@@ -139,9 +139,9 @@ function callKlarnaController(controllerUrl) {
                     + categories[i].identifier + "' onclick='loadKlarna(`" + categories[i].identifier
                     + '`, `' + JSON.stringify(requestObject) + '`,  `' + JSON.stringify(addressInfo) + '` ,`' + sessionId + "` )'><img src='"
                     + categories[i].asset_urls.descriptive + "' alt='Klarna' id='" + categories[i].identifier
-                    + "_image' class='klarnaLogo'> <p id='" + categories[i].identifier
-                    + "_aproved' class='klarnaAproved'><span> &#10003;</span><span class='klarnaBlack'>Klarna</span></p> <p class='klarnaFail' id='"
-                    + categories[i].identifier + "_rejected'><span> &#10007;</span><span class='klarnaBlack'>Klarna</span></p><div>";
+                    + "_image' class='klarnaLogo'> <div id='" + categories[i].identifier
+                    + "_aproved' class='klarnaAproved'><span> &#10003;</span><span class='klarnaBlack'>Klarna</span></div> <div class='klarnaFail' id='"
+                    + categories[i].identifier + "_rejected'><span> &#10007;</span><span class='klarnaBlack'>Klarna</span></div><div>";
                     klarnaBox.append(klarnaButton);
                 }
             }
