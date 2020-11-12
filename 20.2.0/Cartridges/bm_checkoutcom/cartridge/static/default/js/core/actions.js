@@ -157,6 +157,9 @@ function performAction(task) {
     // Set the transaction id
     var paymentId = jQuery('[id="' + task + '_payment_id"]').text();
 
+    // Set the currency
+    var currency = jQuery('[id="' + task + '_currency"]').text();
+
     // Set the transaction value field id
     var amount = jQuery('[id="' + task + '_value"]').val();
 
@@ -165,6 +168,7 @@ function performAction(task) {
         pid: paymentId,
         task: task,
         amount: amount,
+        currency: currency
     };
 
     // Send the AJAX request
