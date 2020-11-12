@@ -134,14 +134,14 @@ function callKlarnaController(controllerUrl) {
 
                 // Builds and show klarna payment options buttons
                 for (var i = 0; i < categories.length; i++) {
-                    var klarnaButton = "<div class='klarnaButton'> " + categories[i].name
-                    + " <input type='radio' name='payment_method_categories' value='" + categories[i].identifier + "' id='"
+                    var klarnaButton = "<div class='klarnaButton'> <p>" + categories[i].name
+                    + "</p><input type='radio' name='payment_method_categories' value='" + categories[i].identifier + "' id='"
                     + categories[i].identifier + "' onclick='loadKlarna(`" + categories[i].identifier
                     + '`, `' + JSON.stringify(requestObject) + '`,  `' + JSON.stringify(addressInfo) + '` ,`' + sessionId + "` )'><img src='"
                     + categories[i].asset_urls.descriptive + "' alt='Klarna' id='" + categories[i].identifier
                     + "_image' class='klarnaLogo'> <p id='" + categories[i].identifier
-                    + "_aproved' class='klarnaAproved'><span class='klarnaBlack'>Klarna</span><span> &#10003;</span></p> <p class='klarnaFail' id='"
-                    + categories[i].identifier + "_rejected'><span class='klarnaBlack'>Klarna</span><span> &#10007;</span></p><div>";
+                    + "_aproved' class='klarnaAproved'><span> &#10003;</span><span class='klarnaBlack'>Klarna</span></p> <p class='klarnaFail' id='"
+                    + categories[i].identifier + "_rejected'><span> &#10007;</span><span class='klarnaBlack'>Klarna</span></p><div>";
                     klarnaBox.append(klarnaButton);
                 }
             }
