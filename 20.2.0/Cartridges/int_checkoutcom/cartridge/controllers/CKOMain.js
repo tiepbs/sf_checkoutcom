@@ -8,6 +8,7 @@ var guard = require(siteControllerName + '/cartridge/scripts/guard');
 var ISML = require('dw/template/ISML');
 var OrderMgr = require('dw/order/OrderMgr');
 var BasketMgr = require('dw/order/BasketMgr');
+var Transaction = require('dw/system/Transaction');
 
 // Checkout.com Event functions
 var eventsHelper = require('~/cartridge/scripts/helpers/eventsHelper');
@@ -142,8 +143,10 @@ function handleWebhook() {
                 func += (i === 0) ? parts[i] : parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
             }
             if (Object.prototype.hasOwnProperty.call(eventsHelper, func)) {
-                // Call the event
-                eventsHelper[func](hook);
+                Transaction.wrap(function() {
+                    // Call the event
+                    eventsHelper[func](hook);
+                });
             }
         } else {
             // Write the response
