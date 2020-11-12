@@ -60,8 +60,10 @@ function launchApplePay() {
             }
         );
     } else {
-        document.getElementById('is-CHECKOUTCOM_APPLE_PAY').parentElement.parentElement.style.display = 'none';
-        jQuery('.ckoApplePayButton').hide();
+        if (document.getElementById('is-CHECKOUTCOM_APPLE_PAY')) {
+            document.getElementById('is-CHECKOUTCOM_APPLE_PAY').parentElement.parentElement.style.display = 'none';
+            jQuery('.ckoApplePayButton').hide();
+        }
     }
 
     // Handle the events
