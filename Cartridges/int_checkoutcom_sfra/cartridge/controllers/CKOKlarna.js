@@ -51,7 +51,8 @@ server.get('KlarnaSession', function(req, res, next) {
 
         // Store variables in session
         gSession.requestObject = requestObject;
-        gSession.addressInfo = billing;
+        // gSession.addressInfo = billing;
+        gSession.addressInfo = ckoHelper.getBillingAddress();
 
         // Write the session
         if (gSession) {
