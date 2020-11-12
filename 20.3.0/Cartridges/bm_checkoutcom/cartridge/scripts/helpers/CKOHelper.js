@@ -186,7 +186,9 @@ var CKOHelper = {
     getProcessorId: function(instrument) {
         var paymentMethod = PaymentMgr.getPaymentMethod(instrument.getPaymentMethod());
         if (paymentMethod && paymentMethod.getPaymentProcessor()) {
-            return paymentMethod.getPaymentProcessor().getID();
+            if (paymentMethod.getPaymentProcessor()) {
+                return paymentMethod.getPaymentProcessor().getID();
+            }
         }
         return '';
     },
