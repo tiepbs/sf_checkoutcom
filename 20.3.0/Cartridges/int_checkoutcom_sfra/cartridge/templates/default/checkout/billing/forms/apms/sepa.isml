@@ -1,0 +1,20 @@
+<isset name="sepaForm" value="${pdict.forms.billingForm.sepaForm}" scope="page"/>
+<iscomment> Sepa APM option </iscomment>
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/apm/sepa.js');
+</isscript>
+
+<button class="cko-apm-accordion">
+    <input id="sepa_apm_radio_btn" type="radio"/>
+    <img alt="${Resource.msg('cko.sepa.name','cko',null)}" id="sepa_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/sepa.png')}"/>
+    ${Resource.msg('cko.sepa.name','cko',null)}
+</button>
+
+<div class="cko-apm-panel">
+    <div class="sepa_pay" id="sepa_pay_box">
+        ${Resource.msg('cko.sepa.iban','cko',null)} 
+        <input id="sepa_iban" name="${sepaForm.sepa_iban.htmlName}" type="text"/>
+        <div class="invalid-field-message"></div>
+    </div>
+</div>

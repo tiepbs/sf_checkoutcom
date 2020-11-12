@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payment-settings xmlns="http://www.demandware.com/xml/impex/paymentsettings/2009-09-15">
+    <payment-method method-id="CHECKOUTCOM_CARD">
+        <name xml:lang="x-default">Checkout.com Card</name>
+        <enabled-flag>false</enabled-flag>
+        <processor-id>CHECKOUTCOM_CARD</processor-id>
+    </payment-method>
+    <payment-method method-id="CHECKOUTCOM_APM">
+        <name xml:lang="x-default">Checkout.com APM</name>
+        <enabled-flag>false</enabled-flag>
+        <processor-id>CHECKOUTCOM_APM</processor-id>
+    </payment-method>
+    <payment-method method-id="CHECKOUTCOM_GOOGLE_PAY">
+        <name xml:lang="x-default">Checkout.com Google Pay</name>
+        <enabled-flag>false</enabled-flag>
+        <processor-id>CHECKOUTCOM_GOOGLE_PAY</processor-id>
+    </payment-method>
+    <payment-method method-id="CHECKOUTCOM_APPLE_PAY">
+        <name xml:lang="x-default">Checkout.com Apple Pay</name>
+        <enabled-flag>false</enabled-flag>
+        <processor-id>CHECKOUTCOM_APPLE_PAY</processor-id>
+    </payment-method>
+</payment-settings>

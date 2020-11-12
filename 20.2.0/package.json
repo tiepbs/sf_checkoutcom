@@ -1,0 +1,53 @@
+{
+  "name": "link_checkoutcom",
+  "packageName": "link_checkoutcom",
+  "version": "20.2.0",
+  "description": "Checkout.com payment integrations for SFCC",
+  "main": "index.js",
+  "scripts": {
+    "upload:sfra": "sgmf-scripts --uploadCartridge ../Cartridges/int_checkoutcom_sfra",
+    "upload:sg": "sgmf-scripts --uploadCartridge ../Cartridges/int_checkoutcom",
+    "upload:bm": "sgmf-scripts --uploadCartridge ../Cartridges/bm_checkoutcom",
+    "lint": "npm run lint:css && npm run lint:js",
+    "lint:css": "sgmf-scripts --lint css",
+    "lint:js": "sgmf-scripts --lint js",
+    "lint:fix": "eslint --fix Cartridges/**",
+    "lint:autofix": "npx eslint-auto-fix \"Cartridges/**/*.js\" --verbose --fix-on-startup",
+    "lint:check": "eslint --ignore-path .gitignore .",
+    "test:sfra": "mocha ./tests/sfra-integration-test",
+    "test:sg": "mocha ./tests/sg-integration-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/checkout/link_checkoutcom.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/checkout/link_checkoutcom/issues"
+  },
+  "homepage": "https://github.com/checkout/link_checkoutcom#readme",
+  "dependencies": {
+    "lint": "^0.7.0",
+    "sgmf-scripts": "^2.4.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "chai": "^4.2.0",
+    "eslint": "^3.19.0",
+    "eslint-auto-fix": "^1.0.3",
+    "eslint-config-airbnb-base": "^5.0.3",
+    "eslint-config-strongloop": "^2.1.0",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-sitegenesis": "~1.0.0",
+    "mocha": "^8.0.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
+    "sgmf-scripts": "^2.3.0",
+    "stylelint": "^8.4.0",
+    "stylelint-config-standard": "^17.0.0",
+    "stylelint-scss": "^2.5.0",
+    "superagent": "^5.3.1"
+  },
+  "parser": "babel-eslint"
+}

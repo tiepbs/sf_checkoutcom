@@ -1,0 +1,14 @@
+<fieldset>
+    <isapplepay class="apple-pay-cart btn btn-block"></isapplepay>
+
+    <div class="invalid-field-message"></div>
+    
+    <input type="hidden" id="ckoApplePayEnvironment" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayEnvironment'))}"/>
+    <input type="hidden" id="ckoApplePayMerchantId" value="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayMerchantId'))}"/>
+    <input type="hidden" id="ckoApplePayCurrency" value="${session.getCurrency().getCurrencyCode()}"/>
+    <input type="hidden" id="ckoApplePayAmount" value="${pdict.order.totals.grandTotal.replace(/[^\d\.\,\s]+/g, '')}"/>
+    <input type="hidden" id="ckoApplePaySiteName" value="${dw.system.Site.getCurrent().name}"/>
+    <input type="hidden" id="ckoApplePaySiteCountry" value="${ckoHelper.getSiteCountryCode()}"/>
+    <input type="hidden" id="ckoApplePayValidationUrl" value="${URLUtils.https('Applepay-GetValidation')}"/>
+    <input type="hidden" id="ckoApplePayData" <isprint value=${applePayFields.ckoApplePayData.attributes} encoding="htmlsinglequote"/>
+</fieldset>

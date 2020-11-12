@@ -1,0 +1,19 @@
+<isset name="qpayForm" value="${pdict.forms.billingForm.qpayForm}" scope="page"/>
+<iscomment> Qpay APM option </iscomment>
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('/js/apm/qpay.js');
+</isscript>
+
+<button class="cko-apm-accordion">
+    <input id="qpay_apm_radio_btn" type="radio"/>
+    <img alt="${Resource.msg('cko.qpay.name','cko',null)}" id="qpay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/qpay.png')}"/>
+    ${Resource.msg('cko.qpay.name','cko',null)} 
+</button>
+<div class="cko-apm-panel">
+    <div class="q_pay" id="qpay_pay_box">
+        ${Resource.msg('cko.qpay.nationalid','cko',null)} 
+        <input type="text" id="qpay_national_id" name="${qpayForm.qpay_national_id.htmlName}" encoding="htmlsinglequote"/>
+        <div class="invalid-field-message"></div>
+    </div>
+</div>
