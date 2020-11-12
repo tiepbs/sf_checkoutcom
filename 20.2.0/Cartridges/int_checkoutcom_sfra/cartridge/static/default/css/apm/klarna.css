@@ -46,6 +46,10 @@
     display: none;
 }
 
+.ckoaproved{
+    color: #EB6F93;
+}
+
 .klarnaFail{
     color: #990000 !important;
     float: right;

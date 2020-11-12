@@ -100,8 +100,8 @@ function callKlarnaController() {
                     + '`, `' + JSON.stringify(requestObject) + '`,  `' + JSON.stringify(addressInfo) + '` ,`' + sessionId + "` )'><img src='"
                     + categories[i].asset_urls.descriptive + "' id='" + categories[i].identifier
                     + "_image'><p id='" + categories[i].identifier
-                    + "_aproved' class='klarnaAproved'><span>&#10003;</span> Approved By <span>Klarna</span></p><p class='klarnaFail' id='"
-                    + categories[i].identifier + "_rejected'><span>&#10007;</span>Rejected By <span>Klarna</span></p><div>";
+                    + "_aproved' class='klarnaAproved'><span>&#10003;</span><span>Klarna</span></p><p class='klarnaFail' id='"
+                    + categories[i].identifier + "_rejected'><span class='ckoaproved'>&#10007;</span><span>Klarna</span></p><div>";
                     klarnaBox.append(klarnaButton);
                 }
             }
