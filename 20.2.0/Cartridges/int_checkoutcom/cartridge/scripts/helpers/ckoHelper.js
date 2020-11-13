@@ -786,6 +786,30 @@ var ckoHelper = {
     },
 
     /**
+     * Build metadata object.
+     * @param {Object} data The request data
+     * @param {string} processorId The processor id
+     * @returns {Object} The metadata
+     */
+    getMetadata: function(data, processorId) {
+        // Prepare the base metadata
+        var meta = {
+            integration_data: this.getCartridgeMeta(),
+            platform_data: this.getValue('ckoSgPlatformData'),
+        };
+
+        // Add the data info if needed
+        if (Object.prototype.hasOwnProperty.call(data, 'type')) {
+            meta.udf1 = data.type;
+        }
+
+        // Add the payment processor to the metadata
+        meta.payment_processor = processorId;
+
+        return meta;
+    },
+
+    /**
      * Build the metadata string.
      * @param {Object} data The request data
      * @param {string} args The method arguments
