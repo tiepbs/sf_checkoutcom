@@ -40,7 +40,7 @@ function createToken(paymentData) {
                 type: "token",
                 token: tokenResponse.token
             },
-            currency: Site.getCurrent().getCurrencyCode(),
+            currency: Site.getCurrent().getDefaultCurrency(),
             risk: { enabled: false },
             billing_descriptor: ckoHelper.getBillingDescriptor()
         }

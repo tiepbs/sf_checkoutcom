@@ -209,6 +209,14 @@ var eventsHelper = {
     },
 
     /**
+     * Payment capture pending event.
+     * @param {Object} hook The gateway webhook data
+     */
+    paymentCapturePending: function(hook) {
+        this.addWebhookInfo(hook, null, null);
+    },
+
+    /**
      * Refund failed event.
      * @param {Object} hook The gateway webhook data
      */
