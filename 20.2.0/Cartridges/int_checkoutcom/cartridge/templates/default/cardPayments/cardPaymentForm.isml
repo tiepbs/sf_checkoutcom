@@ -76,8 +76,6 @@
 	<!-- MADA BIN filter URL -->
   	<input type="hidden" id="ckoMadaBinUrl" value="${URLUtils.https('CKOMain-GetMadaBin')}" />
 	
-	<!-- APM filter URL -->
-	<input type="hidden" id="ckoApmFilterUrl" value="${URLUtils.https('CKOMain-GetApmFilter')}" />
 </div>
 
 <!-- Import card formatting scripts -->
