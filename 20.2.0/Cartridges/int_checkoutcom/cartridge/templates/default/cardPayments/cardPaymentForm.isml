@@ -72,6 +72,9 @@
 	<isif condition="${pdict.CurrentCustomer.authenticated}">
 		<input type="hidden" id="ckoCardListUrl" value="${URLUtils.https('CKOMain-GetCardsList')}" />
 	</isif>
+
+	<!-- MADA BIN filter URL -->
+  	<input type="hidden" id="ckoMadaBinUrl" value="${URLUtils.https('CKOMain-GetMadaBin')}" />
 	
 	<!-- APM filter URL -->
 	<input type="hidden" id="ckoApmFilterUrl" value="${URLUtils.https('CKOMain-GetApmFilter')}" />
