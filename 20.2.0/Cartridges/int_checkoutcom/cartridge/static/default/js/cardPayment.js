@@ -16,7 +16,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add expiration years
     setExpirationYears();
+
+    // Clear form
+    clearForm();
 });
+
+/**
+ * Clear Credit Card form
+ */
+var clearForm = function() {
+    // Owner input
+    $('#dwfrm_cardPaymentForm_owner').val('');
+    // Cvn input
+    $('.cvn :input').val('');
+}
 
 /**
  * Sets schema box
