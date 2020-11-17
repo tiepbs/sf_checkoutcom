@@ -110,34 +110,45 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
     var func = formData.type.value + 'Authorization';
     var apmConfigData = apmConfig[func](args);
 
-    try {
-        var ckoPaymentRequest = apmHelper.handleRequest(apmConfigData, paymentProcessor.ID, orderNumber);
+    var ckoPaymentRequest = apmHelper.handleRequest(apmConfigData, paymentProcessor.ID, orderNumber);
 
-        // Handle errors
-        if (ckoPaymentRequest.error) {
+    if (ckoPaymentRequest) {
+        try {
+            // Handle errors
+            if (ckoPaymentRequest.error) {
+                error = true;
+                serverErrors.push(
+                    ckoHelper.getPaymentFailureMessage()
+                );
+                Transaction.wrap(function() {
+                    paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
+                    paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
+                    // eslint-disable-next-line
+                    paymentInstrument.custom.ckoPaymentData = '';
+                });
+            } else {
+                Transaction.wrap(function() {
+                    paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
+                    paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
+                    // eslint-disable-next-line
+                    paymentInstrument.custom.ckoPaymentData = '';
+                });
+            }
+        } catch (e) {
             error = true;
             serverErrors.push(
-                ckoHelper.getPaymentFailureMessage()
+                Resource.msg('error.technical', 'checkout', null)
             );
-            Transaction.wrap(function() {
-                paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-                paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-                // eslint-disable-next-line
-                paymentInstrument.custom.ckoPaymentData = '';
-            });
-        } else {
-            Transaction.wrap(function() {
-                paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-                paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-                // eslint-disable-next-line
-                paymentInstrument.custom.ckoPaymentData = '';
-            });
         }
-    } catch (e) {
+    } else {
+
         error = true;
         serverErrors.push(
             Resource.msg('error.technical', 'checkout', null)
         );
+
+        // eslint-disable-next-line
+        return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error };
     }
 
     // eslint-disable-next-line
