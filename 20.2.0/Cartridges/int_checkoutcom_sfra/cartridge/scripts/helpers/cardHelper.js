@@ -82,6 +82,7 @@ var cardHelper = {
     buildRequest: function(orderNumber, paymentInstrument, paymentProcessor) {
         // Load the order
         var order = OrderMgr.getOrder(orderNumber);
+        var paymentData = JSON.parse(paymentInstrument.custom.ckoPaymentData);
 
         // Prepare the charge data
         var chargeData = {
@@ -94,14 +95,12 @@ var cardHelper = {
             customer: ckoHelper.getCustomer(order),
             billing_descriptor: ckoHelper.getBillingDescriptor(),
             shipping: ckoHelper.getShipping(order),
-            '3ds': this.get3Ds(),
+            '3ds': (paymentData.madaCard === true) ? { enabled: true } : this.get3Ds(),
             risk: { enabled: false },
             success_url: URLUtils.https('CKOMain-HandleReturn').toString(),
             failure_url: URLUtils.https('CKOMain-HandleFail').toString(),
             metadata: ckoHelper.getMetadata({}, paymentProcessor),
         };
-
-        var paymentData = JSON.parse(paymentInstrument.custom.ckoPaymentData);
 
         // Handle the save card request
         if (paymentData.saveCard) {

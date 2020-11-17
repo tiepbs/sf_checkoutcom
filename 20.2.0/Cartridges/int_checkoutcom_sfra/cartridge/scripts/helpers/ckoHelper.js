@@ -11,6 +11,7 @@ var Site = require('dw/system/Site');
 
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
+var madaBins = require('~/cartridge/scripts/config/ckoMadaConfig');
 
 /* Sensitive Data Helper */
 var sensitiveDataHelper = require('~/cartridge/scripts/helpers/sensitiveDataHelper.js');
@@ -755,6 +756,31 @@ var ckoHelper = {
         meta.payment_processor = processorId;
 
         return meta;
+    },
+
+    /**
+     * Returns true if card is a mada card
+     * @param {string} card number 
+     * @returns {boolean} card type
+     */
+    isMadaCard: function(card) {
+        // First 6 card number
+        var cardNumber = card.slice(0,6);
+        // First card number
+        var firstNumber = card.charAt(0);
+        
+        switch(firstNumber) {
+            case '4':
+                return madaBins.four.some(function(element){ return element === cardNumber });
+            case '5':
+                return madaBins.five.some(function(element){ return element === cardNumber });
+            case '6':
+                return madaBins.six.some(function(element){ return element === cardNumber });
+            case '9':
+                return madaBins.nine.some(function(element){ return element === cardNumber });
+            default:
+                return false
+        }
     },
 
     /**
