@@ -79,6 +79,8 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
     var cardType = paymentInformation.cardType.value;
     var paymentCard = PaymentMgr.getPaymentCard(cardType);
 
+    // Validate Mada Card
+    var madaCard = false;
 
     // Validate payment instrument
     if (paymentMethodID === PaymentInstrument.METHOD_CREDIT_CARD) {
@@ -106,6 +108,9 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
                 cardNumber,
                 cardSecurityCode
             );
+
+            // Validate Mada Card
+            madaCard = ckoHelper.isMadaCard(cardNumber);
         } else {
             cardErrors[paymentInformation.cardNumber.htmlName] =
                 Resource.msg('error.invalid.card.number', 'creditCard', null);
@@ -181,6 +186,7 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
             'storedPaymentUUID': paymentInformation.storedPaymentUUID,
             'saveCard': paymentInformation.saveCard.value,
             'customerNo': req.currentCustomer.raw.registered ? req.currentCustomer.profile.customerNo : null ,
+            'madaCard': madaCard
         });
     });
 
