@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <form xmlns="http://www.demandware.com/xml/form/2008-04-19">
-    
+
     <!-- Field for Sepa -->
     <field formid="sepa_iban" type="string" mandatory="false" max-length="40" binding="sepa_iban"/>
 
