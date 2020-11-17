@@ -140,15 +140,26 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
             serverErrors.push(
                 Resource.msg('error.technical', 'checkout', null)
             );
+
+            Transaction.wrap(function () {
+                paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
+                paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
+                paymentInstrument.custom.ckoPaymentData = "";
+            });
         }
     } else {
+
+        error = true;
+        serverErrors.push(
+            Resource.msg('error.technical', 'checkout', null)
+        );
 
         Transaction.wrap(function () {
             paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
             paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
             paymentInstrument.custom.ckoPaymentData = "";
         });
-        
+
         return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error};
     }
 
