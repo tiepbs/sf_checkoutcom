@@ -147,6 +147,13 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
             Resource.msg('error.technical', 'checkout', null)
         );
 
+        Transaction.wrap(function() {
+            paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
+            paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
+            // eslint-disable-next-line
+            paymentInstrument.custom.ckoPaymentData = '';
+        });
+
         // eslint-disable-next-line
         return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error };
     }
