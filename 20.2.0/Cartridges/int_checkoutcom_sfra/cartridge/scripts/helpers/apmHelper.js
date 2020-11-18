@@ -143,11 +143,11 @@ var apmHelper = {
                 metadata: ckoHelper.getMetadata({}, processorId),
                 billing_descriptor: ckoHelper.getBillingDescriptor(),
             };
-        }
 
-        // Test Klarna
-        if (chargeData.source.type === 'klarna') {
-            chargeData.capture = false;
+            // Test Klarna
+            if (chargeData.source.type === 'klarna') {
+                chargeData.capture = false;
+            }
         }
 
         return chargeData;
