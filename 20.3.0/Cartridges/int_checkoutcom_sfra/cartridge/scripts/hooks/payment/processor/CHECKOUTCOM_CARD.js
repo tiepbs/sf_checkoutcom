@@ -18,14 +18,18 @@ var Site = require('dw/system/Site');
  * Creates a token. This should be replaced by utilizing a tokenization provider
  * @returns {string} a token
  */
-function createToken(paymentData) {
+function createToken() {
+    var paymentForm = session.getForms();
+    var cardForm = paymentForm.creditCard;
+    var requestData;
+
     // Prepare the parameters
-    var requestData = {
+    requestData = {
         type: 'card',
-        number: paymentData.cardNumber.toString(),
-        expiry_month: paymentData.expirationMonth,
-        expiry_year: paymentData.expirationYear,
-        name: paymentData.name
+        number: cardForm.cardNumber.value,
+        expiry_month: cardForm.expirationMonth.value,
+        expiry_year: cardForm.expirationYear.value,
+        name: cardForm.cardOwner.value,
     };
 
     // Perform the request to the payment gateway - get the card token
@@ -33,27 +37,29 @@ function createToken(paymentData) {
         'cko.network.token.' + ckoHelper.getValue('ckoMode') + '.service',
         JSON.stringify(requestData)
     );
-    
-    if(tokenResponse && tokenResponse != 400) {
+
+    if (tokenResponse && tokenResponse !== 400) {
         requestData = {
             source: {
-                type: "token",
-                token: tokenResponse.token
+                type: 'token',
+                token: tokenResponse.token,
             },
             currency: Site.getCurrent().getDefaultCurrency(),
             risk: { enabled: false },
-            billing_descriptor: ckoHelper.getBillingDescriptor()
+            billing_descriptor: ckoHelper.getBillingDescriptor(),
+        };
+
+        var idResponse = ckoHelper.gatewayClientRequest(
+            'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
+            requestData
+        );
+    
+        if (idResponse && idResponse !== 400 && idResponse !== 422) {
+            return idResponse.source.id;
         }
     }
 
-    var idResponse = ckoHelper.gatewayClientRequest(
-        'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service',
-        requestData
-    );
-
-    if (idResponse && idResponse != 400) {
-        return idResponse.source.id;
-    }
+    return '';
 }
 
 /**
@@ -172,13 +178,7 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
             paymentInstrument.setCreditCardToken(
                 paymentInformation.creditCardToken
                     ? paymentInformation.creditCardToken
-                    : createToken({
-                        name: currentBasket.billingAddress.fullName,
-                        cardNumber: paymentInformation.cardNumber.value,
-                        cardType: paymentInformation.cardType.value,
-                        expirationMonth: paymentInformation.expirationMonth.value,
-                        expirationYear: paymentInformation.expirationYear.value,
-                    })
+                    : createToken()
             );
         };
         paymentInstrument.custom.ckoPaymentData = JSON.stringify({
