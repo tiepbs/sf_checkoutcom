@@ -2,10 +2,6 @@
 	@import url("${URLUtils.staticURL('/css/card.css')}");
 </style>
 
-<isscript>
-	var countries = require(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontCore') + '/cartridge/scripts/util/Countries');
-</isscript>
-
 <div id="card_payment_box">
 	<isif condition="${pdict.CurrentCustomer.authenticated}">
 		<div id="ckoCardSelector" class="form-row" class="hideCard">
@@ -25,8 +21,8 @@
 	</div>
 	</fieldset>
 
-	<!-- Card owner info -->
-	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.owner}" id="creditCardOwner" type="input" />
+	<iscomment> Card owner info </iscomment>
+	<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.owner}" type="input" rowclass="owner"  id="creditCardOwner"/>
 
 	<!-- Card number and icon -->
 	<div class="form-row">
@@ -40,7 +36,7 @@
 			<img id="dinersclub_thumb" class="schemes_thumb" src="${URLUtils.staticURL('/images/card-icons/diners_club.svg')}">
 			<img id="madacard_thumb" class="schemes_thumb" src="${URLUtils.staticURL('/images/card-icons/mada.svg')}">
 		</div>
-		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.number}" id="creditCardNumber" type="input"/>
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.number}" type="input" rowclass="number" dynamicname="true" id="creditCardNumber"/>
 	</div>
 
 	<!-- Card expiration -->
@@ -49,23 +45,35 @@
 			<span class="required-indicator">${Resource.msg('billing.requiredindicator', 'checkout', null)}</span>
 			<span>${Resource.msg('billing.creditcardlistexpdate', 'checkout', null)}</span>
 		</label>
-		<isdynamicform formobject="${pdict.CurrentForms.cardPaymentForm.expiration}" formdata="${countries.getCurrent(pdict).dynamicForms.expirationInfo}"/>
+		<isscript>
+			var countries = require(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSgStorefrontCore') + '/cartridge/scripts/util/Countries');
+		</isscript>
+		<isdynamicform formobject="${pdict.CurrentForms.billing.paymentMethods.creditCard.expiration}" formdata="${countries.getCurrent(pdict).dynamicForms.expirationInfo}"/>
 	</div>
 
 	<!-- Card CVN -->
-	<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${{label: Resource.msg('billing.linkcvn', 'checkout', null), cid: 'checkout-security-code'}}"/>
+	<isscript>
+        var help = {
+            label: Resource.msg('billing.linkcvn', 'checkout', null),
+            cid: 'checkout-security-code'
+        };
+    </isscript>
+	<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${help}"/>
 
-	<!-- Save Card -->
+	<iscomment> Save Card </iscomment>
 	<isif condition="${pdict.CurrentCustomer.authenticated}">
-		<isinputfield formfield="${pdict.CurrentForms.cardPaymentForm.saveCard}" type="checkbox"/>
-	</isif>
+        <isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.saveCard}" type="checkbox"/>
+    </isif>
 
-	<!-- Card type -->
-	<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.type}" id="creditCardType" />
+	<iscomment> Card type </iscomment>
+	<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.type}" type="hidden" id="creditCardType"/>
 
-	<!-- MADA -->
+	<iscomment> Mada Card type </iscomment>
+	<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.madaCardType}" type="hidden" id="madaCardType"/>
+
+	<iscomment> MADA </iscomment>
 	<isif condition="${(dw.system.Site.getCurrent().getCustomPreferenceValue('ckoMada'))}">
-		<isinputfield type="hidden" formfield="${pdict.CurrentForms.cardPaymentForm.mada}" id="mada" />
+		<isinputfield type="hidden" formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.mada}" id="mada" />
 	</isif>
 
 

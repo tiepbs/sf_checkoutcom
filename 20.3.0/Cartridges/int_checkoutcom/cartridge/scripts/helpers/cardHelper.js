@@ -15,13 +15,13 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var cardHelper = {
     /**
      * Creates Site Genesis Transaction Object.
-     * @param {Object} payObject The payment data
+     * @param {Object} paymentInstrument The payment instrument
      * @param {Object} args The request parameters
      * @returns {Object} The payment result
      */
-    cardAuthorization: function(payObject, args) {
+    cardAuthorization: function(paymentInstrument, args) {
         // Perform the charge
-        var cardRequest = this.handleCardRequest(payObject, args);
+        var cardRequest = this.handleCardRequest(paymentInstrument, args);
 
         // Handle apm result
         if (cardRequest) {
@@ -44,17 +44,17 @@ var cardHelper = {
 
     /**
      * Handle full charge Request to CKO API.
-     * @param {Object} cardData The card data
+     * @param {Object} paymentInstrument The card paymentInstrument
      * @param {Object} args The request data
      * @returns {Object} The gateway response
      */
-    handleCardRequest: function(cardData, args) {
+    handleCardRequest: function(paymentInstrument, args) {
         // Prepare the parameters
         var order = OrderMgr.getOrder(args.OrderNo);
         var serviceName = 'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service';
 
         // Create billing address object
-        var gatewayRequest = this.getCardRequest(cardData, args);
+        var gatewayRequest = this.getCardRequest(paymentInstrument, args);
 
         // Log the payment response data
         ckoHelper.log(
@@ -125,17 +125,18 @@ var cardHelper = {
 
     /**
      * Build the gateway request.
-     * @param {Object} cardData The card data
+     * @param {Object} paymentInstrument The card data
      * @param {Object} args The request data
      * @returns {Object} The card request data
      */
-    getCardRequest: function(cardData, args) {
+    getCardRequest: function(paymentInstrument, args) {
         // Load the card and order information
         var order = OrderMgr.getOrder(args.OrderNo);
+        var paymentData = JSON.parse(paymentInstrument.custom.ckoPaymentData);
 
         // Prepare the charge data
         var chargeData = {
-            source: this.getSourceObject(cardData, args),
+            source: this.getSourceObject(paymentInstrument, args),
             amount: ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), ckoHelper.getCurrency()),
             currency: ckoHelper.getCurrency(),
             reference: args.OrderNo,
@@ -144,13 +145,13 @@ var cardHelper = {
             customer: ckoHelper.getCustomer(args),
             billing_descriptor: ckoHelper.getBillingDescriptorObject(),
             shipping: this.getShippingObject(args),
-            '3ds': (cardData.type === 'mada') ? { enabled: true } : this.get3Ds(),
+            '3ds': paymentData.madaCard === 'yes' ? { enabled: true } : this.get3Ds(),
             risk: { enabled: false },
             success_url: URLUtils.https('CKOMain-HandleReturn').toString(),
             failure_url: URLUtils.https('CKOMain-HandleFail').toString(),
             payment_ip: ckoHelper.getHost(args),
-            metadata: ckoHelper.getMetadataObject(cardData, args),
-            udf5: ckoHelper.getMetadataString(cardData, args),
+            metadata: ckoHelper.getMetadataObject(paymentInstrument, args),
+            udf5: ckoHelper.getMetadataString(paymentInstrument, args),
         };
 
         return chargeData;
@@ -158,19 +159,20 @@ var cardHelper = {
 
     /**
      * Build Gateway Source Object.
-     * @param {Object} cardData The card data
+     * @param {Object} paymentInstrument The card paymentInstrument
      * @param {Object} args The request data
      * @returns {Object} The source object
      */
-    getSourceObject: function(cardData, args) {
+    getSourceObject: function(paymentInstrument, args) {
+        var paymentData = JSON.parse(paymentInstrument.custom.ckoPaymentData);
         // Source object
         var source = {
             type: 'card',
-            number: cardData.number,
-            expiry_month: cardData.expiryMonth,
-            expiry_year: cardData.expiryYear,
-            name: cardData.name,
-            cvv: cardData.cvv,
+            number: paymentInstrument.creditCardNumber,
+            expiry_month: paymentInstrument.creditCardExpirationMonth,
+            expiry_year: paymentInstrument.creditCardExpirationYear,
+            name: paymentInstrument.creditCardHolder,
+            cvv: paymentData.cvn,
             billing_address: this.getBillingObject(args),
             phone: ckoHelper.getPhoneObject(args),
         };
