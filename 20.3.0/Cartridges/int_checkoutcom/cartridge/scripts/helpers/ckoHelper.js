@@ -715,11 +715,11 @@ var ckoHelper = {
 
     /**
      * Build the metadata object.
-     * @param {Object} data The request data
+     * @param {Object} paymentInstrument The request paymentInstrument
      * @param {string} args The method arguments
      * @returns {Object} The metadata
      */
-    getMetadataObject: function(data, args) {
+    getMetadataObject: function(paymentInstrument, args) {
         // Prepare the base metadata
         var meta = {
             integration_data: this.getCartridgeMeta(),
@@ -727,7 +727,7 @@ var ckoHelper = {
         };
 
         // Add the data info if needed
-        if (Object.prototype.hasOwnProperty.call(data, 'type')) {
+        if (Object.prototype.hasOwnProperty.call(paymentInstrument, 'type')) {
             meta.udf1 = data.type;
         }
 
@@ -792,16 +792,16 @@ var ckoHelper = {
 
     /**
      * Build the metadata string.
-     * @param {Object} data The request data
+     * @param {Object} paymentInstrument The request paymentInstrument
      * @param {string} args The method arguments
      * @returns {string} The metadata
      */
-    getMetadataString: function(data, args) {
+    getMetadataString: function(paymentInstrument, args) {
         // Prepare the base metadata
         var meta = 'integration_data' + this.getCartridgeMeta() + 'platform_data' + this.getValue('ckoSgPlatformData');
 
         // Add the data info if needed
-        if (Object.prototype.hasOwnProperty.call(data, 'type')) {
+        if (Object.prototype.hasOwnProperty.call(paymentInstrument, 'type')) {
             meta += 'udf1' + data.type;
         }
 
