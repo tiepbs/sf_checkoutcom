@@ -11,6 +11,7 @@ var Site = require('dw/system/Site');
 
 /* Card Currency Config */
 var ckoCurrencyConfig = require('~/cartridge/scripts/config/ckoCurrencyConfig');
+var madaBins = require('~/cartridge/scripts/config/ckoMadaConfig');
 
 /* Sensitive Data Helper */
 var sensitiveDataHelper = require('~/cartridge/scripts/helpers/sensitiveDataHelper.js');
