@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setBox();
 
     // Set schema image
-    setSchema('#dwfrm_cardPaymentForm_number');
+    setSchema($('.number :input'));
 
     // Checks if card is mada and set schema image
     setMada();
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 var clearForm = function() {
     // Owner input
-    $('#dwfrm_cardPaymentForm_owner').val('');
+    $('.owner :input').val('');
     // Cvn input
     $('.cvn :input').val('');
 }
@@ -35,13 +35,14 @@ var clearForm = function() {
  * Sets schema box
  */
 var setBox = function() {
+    var id = "#" + $('.number :input').attr('id');
     // Card number input styling
-    $('#dwfrm_cardPaymentForm_number').css('padding', '0');
-    $('#dwfrm_cardPaymentForm_number').css('padding-left', '40px');
+    $(id).css('padding', '0');
+    $(id).css('padding-left', '40px');
 
     // Get object
     var box = document.getElementById('dw_cardTypeDone');
-    var input = document.getElementById('dwfrm_cardPaymentForm_number');
+    var input = document.getElementById($('.number :input').attr('id'));
     if (input) {
         $(input.parentNode).prepend(box);
     }
@@ -57,7 +58,7 @@ var setExpirationYears = function() {
 
     // Add the select list options
     for (var i = 0; i < 10; i++) {
-        $('#dwfrm_cardPaymentForm_expiration_year').append(
+        $('#dwfrm_billing_paymentMethods_creditCard_expiration_year').append(
             new Option(
                 currentYear + i,
                 currentYear + i
@@ -81,11 +82,11 @@ var setSchema = function(inputId) {
                 ckoIsSet = true;
 
                 // Get element cardType from form
-                var cardType = document.getElementById('dwfrm_cardPaymentForm_type');
+                var cardType = document.getElementById('dwfrm_billing_paymentMethods_creditCard_type');
 
                 // If element cardType exist set value to type
                 if (cardType) {
-                    cardType.value = type;
+                    cardType.value = ucfirst(type);
                 }
 
                 // Set card shema image
@@ -192,8 +193,8 @@ var ckoMadaFilter = function(cardNumber, bins) {
  */
 var setMada = function() {
     // Is mada enabled by shop
-    var mada = document.getElementById('dwfrm_cardPaymentForm_mada');
-    var input = document.getElementById('dwfrm_cardPaymentForm_number');
+    var mada = document.getElementById('dwfrm_billing_paymentMethods_creditCard_mada');
+    var input = document.getElementById($('.number :input').attr('id'));
     if (mada) {
         input.addEventListener('keyup', function() {
             var value = this.value;
@@ -218,11 +219,11 @@ var setMada = function() {
                         // If result match mada card
                         if (result) {
                         	// Get element cardType from form
-                        	var cardType = document.getElementById('dwfrm_cardPaymentForm_type');
+                        	var cardType = document.getElementById('dwfrm_billing_paymentMethods_creditCard_madaCardType');
 
                         	// If element cardType exist set value to type
                         	if (cardType) {
-                        		cardType.value = result;
+                        		cardType.value = true;
                         	}
 
                         	// Get card schema
@@ -248,4 +249,9 @@ var setMada = function() {
             }
         });
     }
+};
+
+//Convert the first char of a string to uppercase
+function ucfirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
 };
