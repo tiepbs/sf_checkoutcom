@@ -10,6 +10,33 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var savedCardHelper = require('~/cartridge/scripts/helpers/savedCardHelper');
 var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper');
 
+function setPaymentStatus(order) {
+    var paymentInstruments = order.getPaymentInstruments().toArray(),
+        amountPaid = 0,
+        orderTotal = order.getTotalGrossPrice().getValue();
+    
+    for(var i=0; i<paymentInstruments.length; i++) {
+        var paymentTransaction = paymentInstruments[i].paymentTransaction;
+        if(paymentTransaction.type.value === 'CAPTURE') {
+            amountPaid += paymentTransaction.amount.value;
+            if(amountPaid > orderTotal) {
+                amountPaid = orderTotal;
+            }
+        } else if(paymentTransaction.type.value === 'CREDIT') {
+            amountPaid -= paymentTransaction.amount.value;
+        }
+    }
+    
+    if(amountPaid === orderTotal) {
+        order.setPaymentStatus(order.PAYMENT_STATUS_PAID);
+    } else if(amountPaid >= 0.01) {
+        order.setPaymentStatus(order.PAYMENT_STATUS_PARTPAID);
+    } else {
+        order.setPaymentStatus(order.PAYMENT_STATUS_NOTPAID);
+    }
+
+}
+
 /**
  * Gateway event functions for the Checkout.com cartridge integration.
  */
@@ -74,6 +101,8 @@ var eventsHelper = {
         paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
         paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Capture';
         paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CAPTURE);
+
+        setPaymentStatus(order);
 
         // Update the parent transaction state
         var parentTransaction = transactionHelper.getParentTransaction(hook, 'Authorization');
@@ -154,6 +183,8 @@ var eventsHelper = {
         paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Refund';
         paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CREDIT);
 
+        setPaymentStatus(order);
+
         // Update the parent transaction state
         var parentTransaction = transactionHelper.getParentTransaction(hook, 'Capture');
         if (parentTransaction) {
@@ -188,6 +219,8 @@ var eventsHelper = {
         paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = false;
         paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Void';
         paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH_REVERSAL);
+
+        setPaymentStatus(order);
 
         // Update the parent transaction state
         var parentTransaction = transactionHelper.getParentTransaction(hook, 'Authorization');
