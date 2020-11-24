@@ -10,6 +10,13 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
 var savedCardHelper = require('~/cartridge/scripts/helpers/savedCardHelper');
 var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper');
 
+/**
+ * Sets the payment status of an order based on the amount paid
+ * The total amount paid is calculated by checking each transaction and adding/subtracting
+ * based on the type of the transaction.
+ * @param {dw.order.Order} order - The order the customer placed
+ */
+
 function setPaymentStatus(order) {
     var paymentInstruments = order.getPaymentInstruments().toArray(),
         amountPaid = 0,
