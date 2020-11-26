@@ -97,7 +97,7 @@ var eventsHelper = {
         var order = OrderMgr.getOrder(hook.data.reference);
 
         // Get the payment processor id
-        var paymentProcessorId = hook.data.metadata.payment_processor;
+        var paymentProcessorId = order.getPaymentInstrument().getPaymentMethod();
 
         // Create the captured transaction
         var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
@@ -178,7 +178,7 @@ var eventsHelper = {
         var order = OrderMgr.getOrder(hook.data.reference);
 
         // Get the payment processor id
-        var paymentProcessorId = hook.data.metadata.payment_processor;
+        var paymentProcessorId = order.getPaymentInstrument().getPaymentMethod();
 
         // Create the refunded transaction
         var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
@@ -215,7 +215,7 @@ var eventsHelper = {
         var order = OrderMgr.getOrder(hook.data.reference);
 
         // Get the payment processor id
-        var paymentProcessorId = hook.data.metadata.payment_processor;
+        var paymentProcessorId = order.getPaymentInstrument().getPaymentMethod();
 
         // Create the voided transaction
         var paymentInstrument = order.createPaymentInstrument(paymentProcessorId, transactionAmount);
