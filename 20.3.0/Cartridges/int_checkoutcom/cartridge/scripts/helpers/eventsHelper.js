@@ -93,7 +93,7 @@ var eventsHelper = {
         var order = OrderMgr.getOrder(hook.data.reference);
 
         // Get the payment processor id
-        var paymentProcessorId = hook.data.metadata.payment_processor;
+        var paymentProcessorId = order.getPaymentInstrument().getPaymentMethod();
 
         // Get the  transaction amount
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
@@ -132,7 +132,7 @@ var eventsHelper = {
         // Handle card saving
         var cardUuid = hook.data.metadata.card_uuid;
         var customerId = hook.data.metadata.customer_id;
-        var processorId = hook.data.metadata.payment_processor;
+        var processorId = order.getPaymentInstrument().getPaymentMethod();
         if (cardUuid !== 'false' && customerId) {
             // Load the saved card
             var savedCard = cardHelper.getSavedCard(
@@ -184,7 +184,7 @@ var eventsHelper = {
         var order = OrderMgr.getOrder(hook.data.reference);
 
         // Get the payment processor id
-        var paymentProcessorId = hook.data.metadata.payment_processor;
+        var paymentProcessorId = order.getPaymentInstrument().getPaymentMethod();
 
         // Get the  transaction amount
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
