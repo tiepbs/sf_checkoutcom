@@ -6,18 +6,100 @@
     </isif>
 
     <iscomment> Google Pay </iscomment>
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY'}">
-        <isinclude template="checkout/billing/paymentOptions/contents/googlePayContent" />
+    <isif condition="${paymentOption.ID === 'GOOGLE_PAY'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/wallets/googlePay" />
     </isif>
 
     <iscomment> Apple Pay </iscomment>
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY'}">
-        <isinclude template="checkout/billing/paymentOptions/contents/applePayContent" />
+    <isif condition="${paymentOption.ID === 'DW_APPLE_PAY'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/wallets/applePay" />
     </isif>
 
-    <iscomment> Alternative Payment </iscomment>
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APM'}">
-        <isinclude template="checkout/billing/paymentOptions/contents/apmContent" />
+    <iscomment> Klarna Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'KLARNA'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/klarna" />
     </isif>
+
+    <iscomment> Paypal Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'PAYPAL'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/paypal" />
+    </isif>
+
+    <iscomment> Przelewy24 Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'PRZELEWY24'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/przelewy24" />
+    </isif>
+
+    <iscomment> Poli Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'POLI'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/poli" />
+    </isif>
+
+    <iscomment> Multibanco Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'MULTIBANCO'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/multibanco" />
+    </isif>
+
+    <iscomment> Sepa Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'SEPA'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/sepa" />
+    </isif>
+
+    <iscomment> Fawry Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'FAWRY'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/fawry" />
+    </isif>
+
+    <iscomment> Qpay Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'QPAY'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/qpay" />
+    </isif>
+
+    <iscomment> Knet Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'KNET'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/knet" />
+    </isif>
+
+    <iscomment> Sofort Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'SOFORT'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/sofort" />
+    </isif>
+
+    <iscomment> Alipay Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'ALIPAY'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/alipay" />
+    </isif>
+
+    <iscomment> Eps Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'EPS'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/eps" />
+    </isif>
+
+    <iscomment> Giropay Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'GIROPAY'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/giropay" />
+    </isif>
+
+    <iscomment> Benefitpay Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'BENEFITPAY'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/benefitpay" />
+    </isif>
+
+    <iscomment> Bancontact Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'BANCONTACT'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/bancontact" />
+    </isif>
+
+    <iscomment> Boleto Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'BOLETO'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/boleto" />
+    </isif> 
+
+    <iscomment> Ideal Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'IDEAL'}">
+        <isinclude template="checkout/billing/paymentOptions/contents/apms/ideal" />
+    </isif> 
 
 </isloop>
+
+    

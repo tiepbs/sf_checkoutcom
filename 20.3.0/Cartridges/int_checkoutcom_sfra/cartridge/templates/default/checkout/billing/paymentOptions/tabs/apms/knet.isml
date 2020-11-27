@@ -1,0 +1,11 @@
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link knet-tab" data-toggle="tab" href="#knet-content" role="tab">
+        <img class="knet-apm-option"
+            src="${URLUtils.staticURL('/images/apm-icons/knet.jpg')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>

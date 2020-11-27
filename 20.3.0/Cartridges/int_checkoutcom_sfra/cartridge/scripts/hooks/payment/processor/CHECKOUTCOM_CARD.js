@@ -19,8 +19,8 @@ var Site = require('dw/system/Site');
  * @returns {string} a token
  */
 function createToken() {
-    var paymentForm = session.getForms();
-    var cardForm = paymentForm.creditCard;
+    var paymentForm = session.getForms().billing;
+    var cardForm = paymentForm.creditCardFields;
     var requestData;
 
     // Prepare the parameters

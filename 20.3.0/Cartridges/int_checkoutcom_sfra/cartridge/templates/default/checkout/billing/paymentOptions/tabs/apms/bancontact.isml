@@ -1,0 +1,11 @@
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link bancontact-tab" data-toggle="tab" href="#bancontact-content" role="tab">
+        <img class="bancontact-apm-option"
+            src="${URLUtils.staticURL('/images/apm-icons/bancontact.png')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>

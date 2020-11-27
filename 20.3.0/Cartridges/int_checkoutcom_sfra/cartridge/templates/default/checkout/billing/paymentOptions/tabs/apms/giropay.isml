@@ -1,0 +1,11 @@
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link giropay-tab" data-toggle="tab" href="#giropay-content" role="tab">
+        <img class="giropay-apm-option"
+            src="${URLUtils.staticURL('/images/apm-icons/giropay.jpg')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>

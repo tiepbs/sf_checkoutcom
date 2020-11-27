@@ -1,0 +1,11 @@
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link poli-tab" data-toggle="tab" href="#poli-content" role="tab">
+        <img class="poli-apm-option"
+            src="${URLUtils.staticURL('/images/apm-icons/poli.png')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>

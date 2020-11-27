@@ -29,8 +29,8 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
     var serverErrors = [];
 
     // Validate payment instrument
-    if (paymentMethodID === 'CHECKOUTCOM_APM') {
-        var apmPaymentMethod = PaymentMgr.getPaymentMethod('CHECKOUTCOM_APM');
+    if (paymentMethodID) { 
+        var apmPaymentMethod = PaymentMgr.getPaymentMethod(paymentMethodID);
 
         if (!apmPaymentMethod) {
             // Invalid Payment Method
@@ -38,24 +38,16 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
             
             return { fieldErrors: [], serverErrors: [invalidPaymentMethod], error: true };
         }
-    }
-
-    if (!paymentInformation.type.value) {
+    } else {
         // Invalid Payment Type
         var invalidPaymentMethod = Resource.msg('error.payment.not.valid', 'checkout', null);
 
         return { fieldErrors: [], serverErrors: [invalidPaymentMethod], error: true };
-
-        // Invalid Payment Type
-        // apmErrors[paymentInformation.type.htmlName] =
-        // Resource.msg('error.invalid.type.value', paymentInformation.type.htmlValue, null);
-
-        // return { fieldErrors: [apmErrors], serverErrors: serverErrors, error: true };
     }
 
     Transaction.wrap(function () {
         var paymentInstruments = currentBasket.getPaymentInstruments(
-            'CHECKOUTCOM_APM'
+            paymentMethodID
         );
 
         // Remove any apm payment instruments
@@ -73,7 +65,7 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
         });
 
         var paymentInstrument = currentBasket.createPaymentInstrument(
-            'CHECKOUTCOM_APM', currentBasket.totalGrossPrice
+            paymentMethodID, currentBasket.totalGrossPrice
         );
 
         paymentInstrument.custom.ckoPaymentData = JSON.stringify(paymentInformation);
@@ -108,7 +100,7 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
     };
 
     // Get the selected APM request data
-    var func = formData.type.value + 'Authorization';
+    var func = paymentInstrument.paymentMethod.toLowerCase() + 'Authorization';
     var apmConfigData = apmConfig[func](args);
 
     var ckoPaymentRequest = apmHelper.handleRequest(apmConfigData, paymentProcessor.ID, orderNumber);

@@ -1,0 +1,25 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/googlepay.css')}");
+</style>
+
+<div class="tab-pane google-pay-content" id="google-pay-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+        <input type="hidden" class="form-control"
+				name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+				value="GOOGLE_PAY"
+		/>
+
+        <div class="row">
+            <div class="col-sm-9  col-md-9 wallet-row-box">
+                <isprint value="${Resource.msg('cko.googlepay.name','cko',null)}" />
+            </div>
+            <div class="col-sm-3 col-md-3 wallet-row-image">
+                <img alt="${Resource.msg('cko.googlepay.name','cko',null)}" id="googlepay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/wallet-icons/googlepay.png')}"/>
+            </div>
+        </div>
+
+        <isinclude template="checkout/billing/forms/googlePayForm" />
+    </fieldset>
+</div>
+
+<script src="https://pay.google.com/gp/p/js/pay.js"></script>

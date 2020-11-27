@@ -1,0 +1,23 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
+
+<iscomment> Przelewy24 </iscomment>
+<div class="tab-pane active przelewy24-content" id="przelewy24-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+
+        <iscomment> payment method is przelewy24 </iscomment>
+        <input type="hidden" class="form-control"
+               name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+               value="PRZELEWY24"
+        />
+        <div class="row">
+            <div class="col-sm-9  col-md-9 apm-row-box">
+                <isprint value="${Resource.msg('cko.p24.name','cko',null)}" />
+            </div>
+            <div class="col-sm-3 col-md-3 przelewy24-image">
+                <img alt="${Resource.msg('cko.p24.name','cko',null)}" id="przelewy24_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/p24.jpg')}"/>
+            </div>
+        </div>
+    </fieldset>
+</div>
