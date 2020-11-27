@@ -83,12 +83,6 @@ function callKlarnaController() {
                 var requestObject = JSON.parse(this.responseText).requestObject;
                 var addressInfo = JSON.parse(this.responseText).addressInfo;
 
-                // console.log("SessionId: " + sessionId);
-                // console.log("token: " + token);
-                // console.log("categories: " + JSON.stringify(categories));
-                // console.log("requestObject: " + JSON.stringify(requestObject));
-                // console.log("addressInfo: " + JSON.stringify(addressInfo));
-
                 Klarna.Payments.init(
                     // Options
                     {
@@ -121,10 +115,7 @@ function callKlarnaController() {
  * Load Klarna Widget
  */
 function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId) {
-    // console.log("PaymentMethod: " + paymentMethod);
-    // console.log("requestObject: " + requestObject);
-    // console.log("addressInfo: " + addressInfo);
-    // console.log("sessionId: " + sessionId);
+    
     // Prepare parameters
     var requestObject = JSON.parse(requestObject);
     var addressInfo = JSON.parse(addressInfo);
