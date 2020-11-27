@@ -1,0 +1,11 @@
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link paypal-tab" data-toggle="tab" href="#paypal-content" role="tab">
+        <img class="paypal-apm-option"
+            src="${URLUtils.staticURL('/images/apm-icons/paypal.jpg')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>

@@ -1,0 +1,17 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/apm/klarna.css')}");
+</style>
+
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link klarna-tab" data-toggle="tab" href="#klarna-content" role="tab">
+        <img class="credit-card-option"
+            src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>
+
+<script src="${URLUtils.staticURL('/js/apm/klarna.js')}"></script>

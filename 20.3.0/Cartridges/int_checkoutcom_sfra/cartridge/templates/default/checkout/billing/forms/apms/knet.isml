@@ -1,6 +1,0 @@
-<iscomment> Knet APM option </iscomment>
-<button class="cko-apm-accordion">
-    <input id="knet_apm_radio_btn" type="radio"/>
-    <img alt="${Resource.msg('cko.knet.name','cko',null)}" id="knet_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/knet.jpg')}"/>
-    ${Resource.msg('cko.knet.name','cko',null)}
-</button>

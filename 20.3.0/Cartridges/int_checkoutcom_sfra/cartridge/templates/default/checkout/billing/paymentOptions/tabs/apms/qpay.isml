@@ -1,0 +1,15 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
+
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link qpay-tab" data-toggle="tab" href="#qpay-content" role="tab">
+        <img class="qpay-apm-option"
+            src="${URLUtils.staticURL('/images/apm-icons/qpay.png')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>

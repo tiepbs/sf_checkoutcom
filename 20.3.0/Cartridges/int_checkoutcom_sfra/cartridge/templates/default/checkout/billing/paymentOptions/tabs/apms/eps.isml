@@ -1,0 +1,11 @@
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link eps-tab" data-toggle="tab" href="#eps-content" role="tab">
+        <img class="eps-apm-option"
+            src="${URLUtils.staticURL('/images/apm-icons/eps.png')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>

@@ -9,32 +9,29 @@
  */
 function processForm(req, paymentForm, viewFormData) {
     var viewData = viewFormData;
-    var ckoSelectedApm = paymentForm.apmForm ? paymentForm.apmForm.ckoSelectedApm.htmlValue : null;
+    var ckoSelectedApm = paymentForm.paymentMethod.value.toLowerCase();
     var error = true;
     var fieldErrors = {};
 
-    if (ckoSelectedApm) {
+    if (paymentForm.paymentMethod.value) {
         error = false;
         viewData.paymentMethod = {
-            value: paymentForm.paymentMethod.htmlValue,
-            htmlName: paymentForm.paymentMethod.htmlName,
+            value: paymentForm.paymentMethod.value,
+            htmlName: paymentForm.paymentMethod.htmlName
         };
 
-        var apmForm = ckoSelectedApm + 'Form';
-        var apmData = paymentForm[apmForm];
+        var apm = ckoSelectedApm + 'Form';
+        var apmForm = paymentForm[apm];
         viewData.paymentInformation = {};
 
-        if (apmData) {
-            viewData.paymentInformation.type = {
-                value: ckoSelectedApm,
-                htmlName: apmData.htmlName,
-            };
-            Object.keys(apmData).forEach(function(key) {
-                var type = typeof apmData[key];
-                if (type === 'object' && apmData[key] != null) {
+        // If this apm have a form
+        if (apmForm) {
+            Object.keys(apmForm).forEach(function(key) {
+                var type = typeof apmForm[key];
+                if (type === 'object' && apmForm[key] != null) {
                     viewData.paymentInformation[key] = {
-                        value: apmData[key].htmlValue,
-                        htmlName: apmData[key].htmlName,
+                        value: apmForm[key].htmlValue,
+                        htmlName: apmForm[key].htmlName,
                     };
                 }
             });

@@ -1,0 +1,11 @@
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link przelewy24-tab" data-toggle="tab" href="#przelewy24-content" role="tab">
+        <img class="credit-card-option"
+            src="${URLUtils.staticURL('/images/apm-icons/p24.jpg')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>

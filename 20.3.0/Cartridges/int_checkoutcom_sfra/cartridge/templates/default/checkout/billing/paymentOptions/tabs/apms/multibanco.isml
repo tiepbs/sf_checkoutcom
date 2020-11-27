@@ -1,0 +1,11 @@
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link multibanco-tab" data-toggle="tab" href="#multibanco-content" role="tab">
+        <img class="multibanco-apm-option"
+            src="${URLUtils.staticURL('/images/apm-icons/multibanco.png')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>

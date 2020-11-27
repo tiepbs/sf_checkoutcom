@@ -1,0 +1,11 @@
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link fawry-tab" data-toggle="tab" href="#fawry-content" role="tab">
+        <img class="fawry-apm-option"
+            src="${URLUtils.staticURL('/images/apm-icons/fawry.jpg')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>
