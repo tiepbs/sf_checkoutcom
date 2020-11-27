@@ -6,12 +6,12 @@
     </isif>
 
     <iscomment> Google Pay </iscomment>
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnabled')}">
+    <isif condition="${paymentOption.ID === 'GOOGLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
         <isinclude template="checkout/billing/paymentOptions/tabs/wallets/googlePay"/>
     </isif>
 
     <iscomment> Apple Pay </iscomment>
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayEnabled')}">
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
         <isinclude template="checkout/billing/paymentOptions/tabs/wallets/applePay"/>
     </isif>
 
