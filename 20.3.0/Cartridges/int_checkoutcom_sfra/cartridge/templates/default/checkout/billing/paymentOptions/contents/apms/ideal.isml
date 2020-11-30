@@ -1,0 +1,34 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
+
+<isset name="idaelForm" value="${pdict.forms.billingForm.idealForm}" scope="page"/>
+
+<iscomment> Ideal </iscomment>
+<div class="tab-pane active ideal-content" id="ideal-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+
+        <iscomment> payment method is ideal </iscomment>
+        <input type="hidden" class="form-control"
+               name="${pdict.forms.billingForm.paymentMethod.htmlName}" 
+               value="IDEAL"
+        />
+
+        <div class="row">
+            <div class="col-sm-9  col-md-9 apm-row-box">
+                <isprint value="${Resource.msg('cko.ideal.name','cko',null)}" />
+            </div>
+            <div class="col-sm-3 col-md-3 apm-row-image">
+                <img alt="${Resource.msg('cko.ideal.name','cko',null)}" id="ideal_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/ideal.png')}"/>
+            </div>
+        </div>
+
+        <iscomment> field for Ideal Bic </iscomment>
+        <isprint value="${Resource.msg('cko.ideal.bic','cko',null)} "/>
+        <input type="text" class="form-control" id="ideal_bic" name="${idealForm.ideal_bic.htmlName}" value=""/>
+        <div class="invalid-field-message"></div>
+
+    </fieldset>
+</div>
+
+<script src="${URLUtils.staticURL('/js/apm/ideal.js')}"></script>

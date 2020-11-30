@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
  * Load Klarna
  */
 function initKlarnaEvent() {
-    $('.cko-apm-accordion.klarna').on('click touch', function() {
+    $('.klarna-tab').on('click touch', function() {
         resetFormErrors();
 
         // valid email address
@@ -100,8 +100,8 @@ function callKlarnaController() {
                     + '`, `' + JSON.stringify(requestObject) + '`,  `' + JSON.stringify(addressInfo) + '` ,`' + sessionId + "` )'><img src='"
                     + categories[i].asset_urls.descriptive + "' id='" + categories[i].identifier
                     + "_image'><p id='" + categories[i].identifier
-                    + "_aproved'><span>&#10003;</span> Approved By <span>Klarna</span></p><p style='color: #990000; float: right; display: none;' id='"
-                    + categories[i].identifier + "_rejected'><span style='font-size:20px;'>&#10007;</span>Rejected By <span style='color: black;'>Klarna</span></p><div>";
+                    + "_aproved'><span>&#10003;</span><span>Klarna</span></p><p style='color: #990000; float: right; display: none;' id='"
+                    + categories[i].identifier + "_rejected'><span style='font-size:20px;'>&#10007;</span><span style='color: black;'>Klarna</span></p><div>";
                     klarnaBox.append(klarnaButton);
                 }
             }
@@ -115,6 +115,7 @@ function callKlarnaController() {
  * Load Klarna Widget
  */
 function loadKlarna(paymentMethod, requestObject, addressInfo, sessionId) {
+    
     // Prepare parameters
     var requestObject = JSON.parse(requestObject);
     var addressInfo = JSON.parse(addressInfo);
@@ -178,6 +179,8 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, req
         },
         // Callback
         function(response) {
+            console.log(response);
+
             if (response.approved) {
                 $(klarnaContainer).empty();
                 $('#' + paymentMethod + '_image').hide();

@@ -1,0 +1,34 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/apm/boleto.css')}");
+</style>
+
+<isset name="boletoForm" value="${pdict.forms.billingForm.boletoForm}" scope="page"/>
+
+<iscomment> Boleto </iscomment>
+<div class="tab-pane active boleto-content" id="boleto-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+
+        <iscomment> payment method is boleto </iscomment>
+        <input type="hidden" class="form-control"
+               name="${pdict.forms.billingForm.paymentMethod.htmlName}" 
+               value="BOLETO"
+        />
+
+        <div class="row">
+            <div class="col-sm-9  col-md-9 apm-row-box">
+                <isprint value="${Resource.msg('cko.boleto.name','cko',null)}" />
+            </div>
+            <div class="col-sm-3 col-md-3 apm-row-image">
+                <img alt="${Resource.msg('cko.boleto.name','cko',null)}" id="boleto_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/boleto.png')}"/>
+            </div>
+        </div>
+
+        <iscomment> field for Boleto cpfe </iscomment>
+        <isprint value="${Resource.msg('cko.boleto.cpfe','cko',null)}"/>
+        <input type="text" class="form-control" id="boleto_cpf" name="${boletoForm.boleto_cpf.htmlName}" value=""/>
+        <div class="invalid-field-message"></div>
+
+    </fieldset>
+</div>
+
+<script src="${URLUtils.staticURL('/js/apm/boleto.js')}"></script>

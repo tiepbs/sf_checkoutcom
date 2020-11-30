@@ -1,0 +1,17 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
+
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link sepa-tab" data-toggle="tab" href="#sepa-content" role="tab">
+        <img class="sepa-apm-option"
+            src="${URLUtils.staticURL('/images/apm-icons/sepa.png')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>
+
+<script src="${URLUtils.staticURL('/js/apm/sepa.js')}"></script>

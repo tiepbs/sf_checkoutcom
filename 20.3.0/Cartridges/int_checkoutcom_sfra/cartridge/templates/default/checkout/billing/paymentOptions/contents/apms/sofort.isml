@@ -1,0 +1,24 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
+
+<iscomment> Paypal </iscomment>
+<div class="tab-pane active sofort-content" id="sofort-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+
+        <iscomment> payment method is paypal </iscomment>
+        <input type="hidden" class="form-control"
+               name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+               value="SOFORT"
+        />
+        
+        <div class="row">
+            <div class="col-sm-9  col-md-9 apm-row-box">
+                <isprint value="${Resource.msg('cko.sofort.name','cko',null)}" />
+            </div>
+            <div class="col-sm-3 col-md-3 apm-row-image">
+                <img alt="${Resource.msg('cko.sofort.name','cko',null)}" id="sofort_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/sofort.jpg')}"/>
+            </div>
+        </div>
+    </fieldset>
+</div>

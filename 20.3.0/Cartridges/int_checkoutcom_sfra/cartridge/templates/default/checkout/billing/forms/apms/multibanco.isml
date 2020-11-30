@@ -1,6 +1,0 @@
-<iscomment> Multibanco APM option </iscomment>
-<button class="cko-apm-accordion">
-    <input id="multibanco_apm_radio_btn" type="radio" />
-    <img alt="${Resource.msg('cko.multibanco.name','cko',null)}" id="multibanco_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/multibanco.png')}"/>
-    ${Resource.msg('cko.multibanco.name','cko',null)}
-</button>

@@ -1,0 +1,31 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
+
+<isset name="qpayForm" value="${pdict.forms.billingForm.qpayForm}" scope="page"/>
+
+<iscomment> Qpay </iscomment>
+<div class="tab-pane active qpay-content" id="qpay-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+
+        <iscomment> payment method is qpay </iscomment>
+        <input type="hidden" class="form-control"
+               name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+               value="QPAY"
+        />
+
+        <div class="row">
+            <div class="col-sm-9  col-md-9 apm-row-box">
+                <isprint value="${Resource.msg('cko.qpay.name','cko',null)}" />
+            </div>
+            <div class="col-sm-3 col-md-3 apm-row-image">
+                <img alt="${Resource.msg('cko.qpay.name','cko',null)}" id="qpay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/qpay.png')}"/>
+            </div>
+        </div>
+
+        <iscomment> field for Qpay national ID </iscomment> 
+        <isprint value="${Resource.msg('cko.qpay.nationalid','cko',null)}" />
+        <input type="text" class="form-control" id="qpay_national_id" name="${qpayForm.qpay_national_id.htmlName}" value="" encoding="htmlsinglequote"/>
+        <div class="invalid-field-message"></div>
+    </fieldset>
+</div>

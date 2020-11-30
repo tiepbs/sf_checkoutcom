@@ -1,0 +1,15 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
+
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link boleto-tab" data-toggle="tab" href="#boleto-content" role="tab">
+        <img class="boleto-apm-option"
+            src="${URLUtils.staticURL('/images/apm-icons/boleto.png')}"
+            height="32"
+            alt="${paymentOption.name}"
+            title="${paymentOption.name}"
+        /> 
+        ${paymentOption.name}
+    </a>
+</li>

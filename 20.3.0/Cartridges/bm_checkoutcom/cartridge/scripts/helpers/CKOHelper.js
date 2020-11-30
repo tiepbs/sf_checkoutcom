@@ -175,7 +175,7 @@ var CKOHelper = {
      * @returns {boolean} The status of the current payment instrument
      */
     isCkoItem: function(item) {
-        return item.length > 0 && item.indexOf('CHECKOUTCOM_') >= 0;
+        return item.length > 0 && (item.indexOf('CHECKOUTCOM_') >= 0 || item.indexOf('CREDIT_CARD') >= 0 || item.indexOf('DW_APPLE_PAY') >= 0);
     },
 
     /**

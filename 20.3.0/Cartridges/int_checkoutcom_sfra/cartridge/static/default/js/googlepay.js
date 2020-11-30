@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initCheckoutcomGooglePayValidation() {
     $('button.submit-payment').off('click touch').one('click touch', function(e) {
-        if ($('input[name="dwfrm_billing_paymentMethod"]').val() === 'CHECKOUTCOM_GOOGLE_PAY') {
+        if ($('input[name="dwfrm_billing_paymentMethod"]').val() === 'GOOGLE_PAY') {
             // Prevent the default button click behaviour
             e.preventDefault();
             e.stopImmediatePropagation();

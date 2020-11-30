@@ -6,17 +6,98 @@
     </isif>
 
     <iscomment> Google Pay </iscomment>
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_GOOGLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoGooglePayEnabled')}">
-        <isinclude template="checkout/billing/paymentOptions/tabs/googlePayTab"/>
+    <isif condition="${paymentOption.ID === 'GOOGLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/wallets/googlePay"/>
     </isif>
 
     <iscomment> Apple Pay </iscomment>
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoApplePayEnabled')}">
-        <isinclude template="checkout/billing/paymentOptions/tabs/applePayTab"/>
+    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/wallets/applePay"/>
     </isif>
 
-    <iscomment> Alternative Payments </iscomment>
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APM' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
-        <isinclude template="checkout/billing/paymentOptions/tabs/apmTab"/>
+    <iscomment> Klarna Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'KLARNA' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/klarna"/>
     </isif>
+
+    <iscomment> Paypal Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'PAYPAL' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/paypal"/>
+    </isif>
+
+    <iscomment> Przelewy24 Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'PRZELEWY24' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/apms/przelewy24"/>
+    </isif>
+
+    <iscomment> Poli Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'POLI' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/poli"/>
+    </isif>
+
+    <iscomment> Multibanco Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'MULTIBANCO' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/multibanco"/>
+    </isif>
+
+    <iscomment> Sepa Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'SEPA' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/sepa"/>
+    </isif>
+
+    <iscomment> Fawry Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'FAWRY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/fawry"/>
+    </isif>
+    
+    <iscomment> Qpay Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'QPAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/qpay"/>
+    </isif>
+
+    <iscomment> Knet Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'KNET' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/knet"/>
+    </isif>
+
+    <iscomment> Sofort Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'SOFORT' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/sofort"/>
+    </isif>
+
+    <iscomment> Alipay Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'ALIPAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/alipay"/>
+    </isif>
+
+    <iscomment> Eps Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'EPS' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/eps"/>
+    </isif>
+
+    <iscomment> Giropay Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'GIROPAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/giropay"/>
+    </isif>
+
+    <iscomment> Benefitpay Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'BENEFITPAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/benefitpay"/>
+    </isif>
+
+    <iscomment> Bancontact Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'BANCONTACT' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/bancontact"/>
+    </isif>
+
+    <iscomment> Boleto Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'BOLETO' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/boleto"/>
+    </isif>
+
+    <iscomment> Ideal Payment </iscomment>
+    <isif condition="${paymentOption.ID === 'IDEAL' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+        <isinclude template="checkout/billing/paymentOptions/tabs/apms/ideal"/>
+    </isif>
+
 </isloop>

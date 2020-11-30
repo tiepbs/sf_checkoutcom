@@ -1,0 +1,23 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
+
+<iscomment> Poli </iscomment>
+<div class="tab-pane active poli-content" id="poli-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+
+        <iscomment> payment method is poli </iscomment>
+        <input type="hidden" class="form-control"
+               name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+               value="POLI"
+        />
+        <div class="row">
+            <div class="col-sm-9  col-md-9 apm-row-box">
+                <isprint value="${Resource.msg('cko.poli.name','cko',null)}" />
+            </div>
+            <div class="col-sm-3 col-md-3 poli-image">
+                <img alt="${Resource.msg('cko.poli.name','cko',null)}" id="poli_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/poli.png')}"/>
+            </div>
+        </div>
+    </fieldset>
+</div>

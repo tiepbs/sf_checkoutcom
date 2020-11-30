@@ -1,0 +1,23 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
+
+<iscomment> Knet </iscomment>
+<div class="tab-pane active knet-content" id="knet-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+
+        <iscomment> payment method is knet </iscomment>
+        <input type="hidden" class="form-control"
+               name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+               value="KNET"
+        />
+        <div class="row">
+            <div class="col-sm-9  col-md-9 apm-row-box">
+                <isprint value="${Resource.msg('cko.knet.name','cko',null)}" />
+            </div>
+            <div class="col-sm-3 col-md-3 knet-image">
+                <img alt="${Resource.msg('cko.knet.name','cko',null)}" id="knet_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/knet.jpg')}"/>
+            </div>
+        </div>
+    </fieldset>
+</div>

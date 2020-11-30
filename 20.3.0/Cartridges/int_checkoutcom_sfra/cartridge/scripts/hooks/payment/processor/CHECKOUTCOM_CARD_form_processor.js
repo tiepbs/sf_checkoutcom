@@ -29,7 +29,7 @@ function processForm(req, paymentForm, viewFormData) {
 
     viewData.paymentMethod = {
         value: paymentForm.paymentMethod.value,
-        htmlName: paymentForm.paymentMethod.value
+        htmlName: paymentForm.paymentMethod.htmlName
     };
 
     viewData.paymentInformation = {

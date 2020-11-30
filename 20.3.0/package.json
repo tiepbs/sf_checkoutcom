@@ -1,7 +1,7 @@
 {
   "name": "link_checkoutcom",
   "packageName": "link_checkoutcom",
-  "version": "20.1.0",
+  "version": "20.3.0",
   "description": "Checkout.com payment integrations for SFCC",
   "main": "index.js",
   "scripts": {

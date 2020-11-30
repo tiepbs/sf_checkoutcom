@@ -11,6 +11,40 @@ var cardHelper = require('~/cartridge/scripts/helpers/cardHelper');
 var transactionHelper = require('~/cartridge/scripts/helpers/transactionHelper');
 
 /**
+ * Sets the payment status of an order based on the amount paid
+ * The total amount paid is calculated by checking each transaction and adding/subtracting
+ * based on the type of the transaction.
+ * @param {dw.order.Order} order - The order the customer placed
+ */
+
+function setPaymentStatus(order) {
+    var paymentInstruments = order.getPaymentInstruments().toArray(),
+        amountPaid = 0,
+        orderTotal = order.getTotalGrossPrice().getValue();
+    
+    for(var i=0; i<paymentInstruments.length; i++) {
+        var paymentTransaction = paymentInstruments[i].paymentTransaction;
+        if(paymentTransaction.type.value === 'CAPTURE') {
+            amountPaid += paymentTransaction.amount.value;
+            if(amountPaid > orderTotal) {
+                amountPaid = orderTotal;
+            }
+        } else if(paymentTransaction.type.value === 'CREDIT') {
+            amountPaid -= paymentTransaction.amount.value;
+        }
+    }
+    
+    if(amountPaid === orderTotal) {
+        order.setPaymentStatus(order.PAYMENT_STATUS_PAID);
+    } else if(amountPaid >= 0.01) {
+        order.setPaymentStatus(order.PAYMENT_STATUS_PARTPAID);
+    } else {
+        order.setPaymentStatus(order.PAYMENT_STATUS_NOTPAID);
+    }
+
+}
+
+/**
  * Gateway event functions for the Checkout.com cartridge integration.
  */
 var eventsHelper = {
@@ -59,7 +93,7 @@ var eventsHelper = {
         var order = OrderMgr.getOrder(hook.data.reference);
 
         // Get the payment processor id
-        var paymentProcessorId = hook.data.metadata.payment_processor;
+        var paymentProcessorId = order.getPaymentInstrument().getPaymentMethod();
 
         // Get the  transaction amount
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
@@ -73,6 +107,8 @@ var eventsHelper = {
         paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = true;
         paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Capture';
         paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CAPTURE);
+
+        setPaymentStatus(order);
 
         // Update the parent transaction state
         var parentTransaction = transactionHelper.getParentTransaction(hook, 'Authorization');
@@ -96,7 +132,7 @@ var eventsHelper = {
         // Handle card saving
         var cardUuid = hook.data.metadata.card_uuid;
         var customerId = hook.data.metadata.customer_id;
-        var processorId = hook.data.metadata.payment_processor;
+        var processorId = order.getPaymentInstrument().getPaymentMethod();
         if (cardUuid !== 'false' && customerId) {
             // Load the saved card
             var savedCard = cardHelper.getSavedCard(
@@ -148,7 +184,7 @@ var eventsHelper = {
         var order = OrderMgr.getOrder(hook.data.reference);
 
         // Get the payment processor id
-        var paymentProcessorId = hook.data.metadata.payment_processor;
+        var paymentProcessorId = order.getPaymentInstrument().getPaymentMethod();
 
         // Get the  transaction amount
         var transactionAmount = transactionHelper.getHookTransactionAmount(hook);
@@ -162,6 +198,8 @@ var eventsHelper = {
         paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = false;
         paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Refund';
         paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_CREDIT);
+
+        setPaymentStatus(order);
 
         // Update the parent transaction state
         var parentTransaction = transactionHelper.getParentTransaction(hook, 'Capture');
@@ -197,6 +235,8 @@ var eventsHelper = {
         paymentInstrument.paymentTransaction.custom.ckoTransactionOpened = false;
         paymentInstrument.paymentTransaction.custom.ckoTransactionType = 'Void';
         paymentInstrument.paymentTransaction.setType(PaymentTransaction.TYPE_AUTH_REVERSAL);
+
+        setPaymentStatus(order);
 
         // Update the parent transaction state
         var parentTransaction = transactionHelper.getParentTransaction(hook, 'Authorization');

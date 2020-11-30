@@ -1,0 +1,23 @@
+<style>
+	@import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
+
+<iscomment> Giropay </iscomment>
+<div class="tab-pane active giropay-content" id="giropay-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+
+        <iscomment> payment method is giropay </iscomment>
+        <input type="hidden" class="form-control"
+               name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+               value="GIROPAY"
+        />
+        <div class="row">
+            <div class="col-sm-9  col-md-9 apm-row-box">
+                <isprint value="${Resource.msg('cko.giropay.name','cko',null)}" />
+            </div>
+            <div class="col-sm-3 col-md-3 apm-row-image">
+                <img alt="${Resource.msg('cko.giropay.name','cko',null)}" id="giropay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/giropay.jpg')}"/>
+            </div>
+        </div>
+    </fieldset>
+</div>
