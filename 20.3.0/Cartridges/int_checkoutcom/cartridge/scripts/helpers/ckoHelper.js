@@ -265,7 +265,7 @@ var ckoHelper = {
 
             // Loop through the payment instruments
             for (var i = 0; i < paymentInstruments.length; i++) {
-                if (this.isCkoItem(paymentInstruments[i].paymentMethod) && !this.containsObject(item, data)) {
+                if (!this.containsObject(item, data)) {
                     data.push(item);
                 }
             }

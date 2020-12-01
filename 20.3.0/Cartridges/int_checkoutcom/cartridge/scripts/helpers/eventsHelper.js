@@ -126,6 +126,9 @@ var eventsHelper = {
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 
+        // Load the order
+        var order = OrderMgr.getOrder(hook.data.reference);
+
         // Create the authorized transaction
         transactionHelper.createAuthorization(hook);
 
