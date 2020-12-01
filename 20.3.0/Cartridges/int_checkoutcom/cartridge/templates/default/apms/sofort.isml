@@ -1,0 +1,8 @@
+<div class="apm-row">
+    <div class="apm-row-box">
+        <isprint value="${Resource.msg('cko.sofort.name','cko',null)}" />
+    </div>
+    <div class="apm-row-image">
+        <img alt="${Resource.msg('cko.sofort.name','cko',null)}" id="sepa_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/sofort.jpg')}"/>
+    </div>
+</div>

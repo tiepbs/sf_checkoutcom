@@ -22,7 +22,7 @@ var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
  * @param {Object} args The method arguments
  * @returns {Object} The form validation result
  */
-function Handle(args) {
+function Handle(args) { 
 
     var cart = Cart.get(args.Basket);
     var creditCardForm = app.getForm('billing.paymentMethods.creditCard');
@@ -41,7 +41,7 @@ function Handle(args) {
 
     if (creditCardStatus.error) {
 
-        var invalidatePaymentCardFormElements = require('sitegenesis_core/cartridge/scripts/checkout/InvalidatePaymentCardFormElements');
+        var invalidatePaymentCardFormElements = require('*/cartridge/scripts/checkout/InvalidatePaymentCardFormElements');
         invalidatePaymentCardFormElements.invalidatePaymentCardForm(creditCardStatus, session.forms.billing.paymentMethods.creditCard);
 
         return {error: true};

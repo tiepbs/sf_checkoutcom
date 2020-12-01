@@ -728,7 +728,7 @@ var ckoHelper = {
 
         // Add the data info if needed
         if (Object.prototype.hasOwnProperty.call(paymentInstrument, 'type')) {
-            meta.udf1 = data.type;
+            meta.udf1 = paymentInstrument.type;
         }
 
         // Get the payment processor
@@ -802,7 +802,7 @@ var ckoHelper = {
 
         // Add the data info if needed
         if (Object.prototype.hasOwnProperty.call(paymentInstrument, 'type')) {
-            meta += 'udf1' + data.type;
+            meta += 'udf1' + paymentInstrument.type;
         }
 
         // Get the payment processor

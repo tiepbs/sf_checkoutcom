@@ -1,8 +1,15 @@
-<!-- Klarna pay APM Option -->
-<div class="cko-apm-accordion" onclick="callKlarnaController('${URLUtils.url('CKOKlarna-KlarnaSession')}')">
-	<input id="klarna_apm_radio_btn" type="radio" name="apm_list" value="klarna" onclick="callKlarnaController('${URLUtils.url('CKOKlarna-KlarnaSession')}')">
-	<img alt="${Resource.msg('cko.klarna.name','cko',null)}" id="klarnapay_thumb" src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}"/>
-	${Resource.msg('cko.klarna.name','cko',null)}
+<style>
+    @import url("${URLUtils.staticURL('/css/apm.css')}");
+    @import url("${URLUtils.staticURL('/css/apms/klarna.css')}");
+</style>
+
+<div class="apm-row">
+    <div class="apm-row-box">
+        <isprint value="${Resource.msg('cko.klarna.name','cko',null)}" />
+    </div>
+    <div class="apm-row-image">
+        <img alt="${Resource.msg('cko.klarna.name','cko',null)}" id="klarna_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/klarna.png')}"/>
+    </div>
 </div>
 
 <div class="cko-apm-panel">
@@ -25,3 +32,8 @@
 	</div>
 	
 </div>
+
+<input type="hidden" id="ckoKlarnaController" value="${URLUtils.url('CKOKlarna-KlarnaSession')}"/>
+
+<script src="https://x.klarnacdn.net/kp/lib/v1/api.js"></script>
+<script src="${URLUtils.staticURL('js/apms/klarna.js')}"></script>

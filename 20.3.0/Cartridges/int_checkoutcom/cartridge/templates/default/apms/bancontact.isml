@@ -1,0 +1,8 @@
+<div class="apm-row">
+    <div class="apm-row-box">
+        <isprint value="${Resource.msg('cko.bancontact.name','cko',null)}" />
+    </div>
+    <div class="apm-row-image">
+        <img alt="${Resource.msg('cko.bancontact.name','cko',null)}" id="bancontactPay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/bancontactPay.png')}"/>
+    </div>
+</div>

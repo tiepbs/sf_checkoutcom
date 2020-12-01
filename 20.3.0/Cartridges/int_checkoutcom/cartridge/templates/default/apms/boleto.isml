@@ -1,0 +1,12 @@
+<div class="apm-row">
+    <div class="apm-row-box">
+        <isprint value="${Resource.msg('cko.boleto.name','cko',null)}" />
+    </div>
+    <div class="apm-row-image">
+        <img alt="${Resource.msg('cko.boleto.name','cko',null)}" id="boletopay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/boleto_bancario.png')}"/>
+    </div>
+</div>
+
+<div class="cko-apm-panel">
+	<isinputfield formfield="${pdict.CurrentForms.alternativePaymentForm.boleto_cpf}" id="boleto_cpfe" type="text" dynamicname="true" />
+</div>

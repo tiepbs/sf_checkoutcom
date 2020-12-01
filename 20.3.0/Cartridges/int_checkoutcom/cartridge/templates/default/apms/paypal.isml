@@ -1,0 +1,12 @@
+<style>
+    @import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
+
+<div class="apm-row">
+    <div class="apm-row-box">
+        <isprint value="${Resource.msg('cko.paypal.name','cko',null)}" />
+    </div>
+    <div class="apm-row-image">
+        <img alt="${Resource.msg('cko.paypal.name','cko',null)}" id="paypal_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/paypal.jpg')}"/>
+    </div>
+</div>

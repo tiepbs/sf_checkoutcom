@@ -1,0 +1,12 @@
+<style>
+    @import url("${URLUtils.staticURL('/css/apm.css')}");
+</style>
+
+<div class="apm-row">
+    <div class="apm-row-box">
+        <isprint value="${Resource.msg('cko.giro.name','cko',null)}" />
+    </div>
+    <div class="apm-row-image">
+        <img alt="${Resource.msg('cko.giro.name','cko',null)}" id="giropay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/giropay.jpg')}"/>
+    </div>
+</div>

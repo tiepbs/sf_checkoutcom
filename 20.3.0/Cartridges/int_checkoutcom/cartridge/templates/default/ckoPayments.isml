@@ -7,10 +7,129 @@
     <isinclude template="cardPayments/creditcard.isml"/>
 </div>
 
-<iscomment> This includes the alternative payment forms and buttons </iscomment>
-<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_APM'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_APM">
+<iscomment> This includes the klarna payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='KLARNA'}">payment-method-expanded</isif>" data-method="KLARNA">
     <div class="form-row form-caption cko-form ckoPaymentBox">
-        <isinclude template="apm/apm.isml"/>
+        <isinclude template="apms/klarna.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the paypal payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='PAYPAL'}">payment-method-expanded</isif>" data-method="PAYPAL">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/paypal.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the sepa payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='SEPA'}">payment-method-expanded</isif>" data-method="SEPA">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/sepa.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the sofort payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='SOFORT'}">payment-method-expanded</isif>" data-method="SOFORT">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/sofort.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the ideal payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='IDEAL'}">payment-method-expanded</isif>" data-method="IDEAL">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/ideal.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the bancontact payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='BANCONTACT'}">payment-method-expanded</isif>" data-method="BANCONTACT">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/bancontact.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the przelewy24 payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='PRZELEWY24'}">payment-method-expanded</isif>" data-method="PRZELEWY24">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/przelewy24.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the eps payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='EPS'}">payment-method-expanded</isif>" data-method="EPS">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/eps.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the multibanco payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='MULTIBANCO'}">payment-method-expanded</isif>" data-method="MULTIBANCO">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/multibanco.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the benefitpay payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='BENEFITPAY'}">payment-method-expanded</isif>" data-method="BENEFITPAY">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/benefitpay.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the qpay payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='QPAY'}">payment-method-expanded</isif>" data-method="QPAY">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/qpay.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the knet payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='KNET'}">payment-method-expanded</isif>" data-method="KNET">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/knet.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the boleto payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='BOLETO'}">payment-method-expanded</isif>" data-method="BOLETO">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/boleto.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the oxxo payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='OXXO'}">payment-method-expanded</isif>" data-method="OXXO">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/oxxo.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the fawry payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='FAWRY'}">payment-method-expanded</isif>" data-method="FAWRY">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/fawry.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the poli payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='POLI'}">payment-method-expanded</isif>" data-method="POLI">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/poli.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the giro payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='GIROPAY'}">payment-method-expanded</isif>" data-method="GIROPAY">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/giropay.isml"/>
+    </div>
+</div>
+
+<iscomment> This includes the alipay payment forms and buttons </iscomment>
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='ALIPAY'}">payment-method-expanded</isif>" data-method="ALIPAY">
+    <div class="form-row form-caption cko-form ckoPaymentBox">
+        <isinclude template="apms/alipay.isml"/>
     </div>
 </div>
 
