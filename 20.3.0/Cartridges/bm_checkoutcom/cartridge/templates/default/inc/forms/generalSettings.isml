@@ -3,11 +3,6 @@
     <input type="hidden" name="ckoAccountSettingsUrl" class="ckoAccountSettingsUrl" value="${URLUtils.url('CKOSettings-GetCkoCustomProperties')}"/>
 
     <div class="form-group required">
-        <label>${Resource.msg('cko.generalSettings.enableLabel', 'cko', null)} : </label> 
-        <input type="checkbox" id="ckoEnabled" class="form-control" name="ckoEnabled"/>
-    </div>
-
-    <div class="form-group required">
         <label>${Resource.msg('cko.generalSettings.modeLabel', 'cko', null)} : </label> 
         <select id="ckoMode" class="form-control" name="ckoMode" required="">
             <option value="${Resource.msg('cko.generalSettings.sandboxModeLabelValue', 'cko', null)}">${Resource.msg('cko.generalSettings.sandboxModeLabel', 'cko', null)}</option>
