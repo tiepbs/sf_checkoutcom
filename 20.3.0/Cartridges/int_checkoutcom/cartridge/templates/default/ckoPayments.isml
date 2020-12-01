@@ -146,3 +146,5 @@
         <isinclude template="walletPayments/applePayForm.isml"/>
     </div>
 </div>
+
+<script src="${URLUtils.staticURL('/js/applepay.js')}"></script>
