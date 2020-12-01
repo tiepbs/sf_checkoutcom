@@ -43,21 +43,41 @@ function Authorize(args) {
     // Add order Number to session
     // eslint-disable-next-line
     session.privacy.ckoOrderId = args.OrderNo;
+    var paymentInstrument = args.PaymentInstrument;
+    var paymentMethod = paymentInstrument.getPaymentMethod();
+    var PaymentMgr = require('dw/order/PaymentMgr');
+    var OrderMgr = require('dw/order/OrderMgr');
+    var order = OrderMgr.getOrder(args.OrderNo);
+    var paymentProcessor = PaymentMgr.getPaymentMethod(paymentMethod).getPaymentProcessor();
 
-    // Get apms form
-    var paymentForm = app.getForm('alternativePaymentForm');
-
-    // Get apm type chosen
-    var apm = paymentForm.get('alternative_payments').value();
-    var func = apm + 'PayAuthorization';
-
+    var func = paymentMethod.toLowerCase() + 'PayAuthorization';
     // Get the required apm pay config object
     var payObject = apmConfig[func](args);
-    if (apmHelper.apmAuthorization(payObject, args)) {
-        return { success: true };
-    }
 
-    return { error: true };
+    try {
+        var paymentAuth = apmHelper.apmAuthorization(payObject, args);
+
+        Transaction.wrap(function () {
+            order.addNote('Payment Authorization Request:', 'Payment Authorization successful');
+            paymentInstrument.paymentTransaction.transactionID = args.OrderNo;
+            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+        });
+
+        if (paymentAuth) { 
+
+            return {authorized: true, error: false};
+        } else {
+            throw new Error({mssage: 'Authorization Error'});
+        }
+    } catch(e) {
+        Transaction.wrap(function () {
+            order.addNote('Payment Authorization Request:', e.message);
+            paymentInstrument.paymentTransaction.transactionID = args.OrderNo;
+            paymentInstrument.paymentTransaction.paymentProcessor = paymentProcessor;
+        });
+
+        return {authorized: false, error: true, message: e.message };
+    }
 }
 
 // Local methods

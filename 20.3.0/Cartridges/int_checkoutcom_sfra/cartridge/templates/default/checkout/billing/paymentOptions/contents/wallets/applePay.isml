@@ -1,5 +1,3 @@
-<isinclude template="*/cartridge/util/modules" />
-
 <div class="tab-pane apple-pay-content" id="apple-pay-content" role="tabpanel">
     <fieldset class="payment-form-fields">
         <input type="hidden" class="form-control"
