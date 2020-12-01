@@ -101,7 +101,7 @@ var apmHelper = {
         var serviceName;
 
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Creating billing address object
         var gatewayRequest = this.getApmRequest(payObject, args);
@@ -145,7 +145,7 @@ var apmHelper = {
         var chargeData = false;
 
         // Load the order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Load the currency and amount
         var amount = ckoHelper.getFormattedPrice(order.totalGrossPrice.value.toFixed(2), payObject.currency);

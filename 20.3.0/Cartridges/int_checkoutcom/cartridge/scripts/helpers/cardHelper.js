@@ -50,7 +50,7 @@ var cardHelper = {
      */
     handleCardRequest: function(paymentInstrument, args) {
         // Prepare the parameters
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
         var serviceName = 'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service';
 
         // Create billing address object
@@ -131,7 +131,7 @@ var cardHelper = {
      */
     getCardRequest: function(paymentInstrument, args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
         var paymentData = JSON.parse(paymentInstrument.custom.ckoPaymentData);
 
         // Prepare the charge data
@@ -198,7 +198,7 @@ var cardHelper = {
      */
     getBillingObject: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
@@ -223,7 +223,7 @@ var cardHelper = {
      */
     getShippingObject: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get shipping address object
         var shippingAddress = order.getDefaultShipment().getShippingAddress();

@@ -365,7 +365,7 @@ var ckoHelper = {
      */
     getCustomer: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Customer object
         var customer = {
@@ -383,7 +383,7 @@ var ckoHelper = {
      */
     getQuantity: function(args) {
         // load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
         var quantity = order.getProductQuantityTotal();
 
         return quantity;
@@ -409,7 +409,7 @@ var ckoHelper = {
      */
     getProductInformation: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
         var it = order.productLineItems.iterator();
         var products = [];
 
@@ -442,7 +442,7 @@ var ckoHelper = {
      */
     getTaxObject: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Prepare the tax data
         var tax = {
@@ -467,7 +467,7 @@ var ckoHelper = {
      */
     getShippingValue: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get shipping address object
         var shipping = order.getDefaultShipment();
@@ -494,7 +494,7 @@ var ckoHelper = {
      */
     getCurrencyCode: function(args) {
         // Get the order
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get shipping address object
         var shipping = order.getDefaultShipment().getShippingMethod();
@@ -510,7 +510,7 @@ var ckoHelper = {
      */
     getProductNames: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Prepare the iterator
         var it = order.productLineItems.iterator();
@@ -532,7 +532,7 @@ var ckoHelper = {
      */
     getProductPrices: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get the product itemas
         var items = order.productLineItems.iterator();
@@ -554,7 +554,7 @@ var ckoHelper = {
      */
     getProductIds: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
         var it = order.productLineItems.iterator();
         var productIds = [];
         while (it.hasNext()) {
@@ -572,7 +572,7 @@ var ckoHelper = {
      */
     getProductQuantity: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Prepare the iterator
         var it = order.productLineItems.iterator();
@@ -594,7 +594,7 @@ var ckoHelper = {
      */
     getHost: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
         var host = order.getRemoteHost();
 
         return host;
@@ -618,7 +618,7 @@ var ckoHelper = {
      */
     getPhoneObject: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
@@ -639,7 +639,7 @@ var ckoHelper = {
      */
     getCustomerName: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
@@ -655,7 +655,7 @@ var ckoHelper = {
      */
     getCustomerFirstName: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
@@ -671,7 +671,7 @@ var ckoHelper = {
      */
     getCustomerLastName: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
@@ -822,7 +822,7 @@ var ckoHelper = {
      */
     getBillingObject: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
@@ -847,7 +847,7 @@ var ckoHelper = {
      */
     getBillingCountry: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
@@ -863,7 +863,7 @@ var ckoHelper = {
      */
     getShippingObject: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get shipping address object
         var shippingAddress = order.getDefaultShipment().getShippingAddress();
@@ -938,7 +938,7 @@ var ckoHelper = {
     getOrderBasketObject: function(args) {
         // Prepare some variables
         var currency = this.getAppModeValue('GBP', this.getCurrencyCode(args));
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
         var it = order.productLineItems.iterator();
         var productsQuantites = [];
 
@@ -1018,7 +1018,7 @@ var ckoHelper = {
      * @returns {Object} The address
      */
     getOrderBasketAddress: function(args) {
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
         var address = {
             given_name: order.defaultShipment.shippingAddress.firstName,
             family_name: order.defaultShipment.shippingAddress.lastName,

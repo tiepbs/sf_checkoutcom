@@ -313,7 +313,7 @@ var ckoApmConfig = {
      */
     klarnaPayAuthorization: function(args) {
         // Gdt the order
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Klarna form fields
         var klarnaApproved = paymentForm.get('klarna_approved').value();

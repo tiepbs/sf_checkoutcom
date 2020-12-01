@@ -47,7 +47,7 @@ function Authorize(args) {
     var paymentMethod = paymentInstrument.getPaymentMethod();
     var PaymentMgr = require('dw/order/PaymentMgr');
     var OrderMgr = require('dw/order/OrderMgr');
-    var order = OrderMgr.getOrder(args.OrderNo);
+    var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
     var paymentProcessor = PaymentMgr.getPaymentMethod(paymentMethod).getPaymentProcessor();
 
     var func = paymentMethod.toLowerCase() + 'PayAuthorization';

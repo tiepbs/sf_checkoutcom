@@ -19,7 +19,7 @@ var googlePayHelper = {
      */
     handleRequest: function(args) {
         // load the order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
         var paymentInstrument = args.PaymentInstrument;
         var ckoGooglePayData = paymentInstrument.paymentTransaction.custom.ckoGooglePayData;
 
