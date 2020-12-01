@@ -179,7 +179,6 @@ function klarnaAuthorize(sessionId, klarnaContainer, paymentMethod, address, req
         },
         // Callback
         function(response) {
-            console.log(response);
 
             if (response.approved) {
                 $(klarnaContainer).empty();
