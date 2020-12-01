@@ -134,7 +134,7 @@
 </div>
 
 <iscomment> This includes the google payment forms and buttons </iscomment>
-<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_GOOGLE_PAY'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_GOOGLE_PAY">
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='GOOGLE_PAY'}">payment-method-expanded</isif>" data-method="GOOGLE_PAY">
     <div class="form-row form-caption cko-form ckoPaymentBox">
         <isinclude template="walletPayments/googlePayForm.isml"/>
     </div>
