@@ -32,3 +32,7 @@ width: 10%;
 	width:100%;
 	display:none;
 }
+
+.month > .form-caption {
+    width: 100%;
+}
