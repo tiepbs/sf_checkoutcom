@@ -390,7 +390,8 @@ var CKOHelper = {
                     || element === 'ckoFawryEnabled' || element === 'ckoSepaEnabled' || element === 'ckoMultibancoEnabled'
                     || element === 'ckoPoliEnabled' || element === 'ckoP24Enabled' || element === 'ckoKlarnaEnabled'
                     || element === 'ckoPaypalEnabled' || element === 'ckoOxxoEnabled' || element === 'ckoAlipayEnabled'
-                    || element === 'ckoApplePayEnabled' || element === 'ckoGooglePayEnabled';
+                    || element === 'ckoApplePayEnabled' || element === 'ckoGooglePayEnabled' || element === 'ckoSavedCardEnabled'
+                    || element === 'ckoUseSavedCardEnabled';
                 if (match) {
                     // eslint-disable-next-line
                     var property = requestObject[element] ? true : false;
