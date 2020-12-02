@@ -70,17 +70,15 @@
         <input type="checkbox" id="ckoMada" class="form-control" name="ckoMada"/>
     </div>
 
-<iscomment> 						
     <div class="form-group required">
         <label>${Resource.msg('cko.generalSettings.savedCardLabel', 'cko', null)} : </label> 
         <input type="checkbox" id="ckoSavedCardEnabled" class="form-control" name="ckoSavedCardEnabled"/>
     </div>
-
+     
     <div class="form-group required">
         <label>${Resource.msg('cko.generalSettings.useSavedCardLabel', 'cko', null)} : </label> 
         <input type="checkbox" id="ckoUseSavedCardEnabled" class="form-control" name="ckoUseSavedCardEnabled"/>
     </div> 
-</iscomment>
 
     <div class="form-group required">
         <label>${Resource.msg('cko.generalSettings.storefrontCoreLabel', 'cko', null)} : </label> 
