@@ -124,6 +124,24 @@ var eventsHelper = {
      * @param {Object} hook The gateway webhook data
      */
     paymentApproved: function(hook) {
+        var order = OrderMgr.getOrder(hook.data.reference);
+
+        // If order Status is fail void the transaction
+        if (order.getStatus().toString() === 'FAILED') {
+            
+            var gatewayVoid = ckoHelper.gatewayClientRequest(
+                'cko.transaction.void.' + ckoHelper.getValue('ckoMode') + '.service',
+                {
+                    "chargeId": hook.data.id,
+                }
+            );
+            
+            // If Void is Successfull
+            if (gatewayVoid) {
+                return 0;
+            }
+        }
+
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 
@@ -131,7 +149,7 @@ var eventsHelper = {
         transactionHelper.createAuthorization(hook);
 
         // Save the card if needed
-        savedCardHelper.updateSavedCard(hook);
+        // savedCardHelper.updateSavedCard(hook);
     },
 
     /**
@@ -149,10 +167,10 @@ var eventsHelper = {
     paymentDeclined: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
 
-        // Delete the card if needed
-        if (hook.data.metadata.payment_processor == 'CHECKOUTCOM_CARD') {
-            savedCardHelper.updateSavedCard(hook);
-        }
+        // // Delete the card if needed
+        // if (hook.data.metadata.payment_processor == 'CHECKOUTCOM_CARD') {
+        //     savedCardHelper.updateSavedCard(hook);
+        // }
     },
 
     /**
