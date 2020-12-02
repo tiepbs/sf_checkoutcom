@@ -399,10 +399,7 @@ var CKOHelper = {
                     dw.system.Site.getCurrent().setCustomPreferenceValue(element, property);
                 } else {
                     var value = requestObject[element];
-                    if (value === undefined || value === '') {
-                        // eslint-disable-next-line
-                        // dw.system.Site.getCurrent().setCustomPreferenceValue(element, '');
-                    } else {
+                    if (value !== undefined || value !== '') {
                         // eslint-disable-next-line
         				dw.system.Site.getCurrent().setCustomPreferenceValue(element, value);
                     }
