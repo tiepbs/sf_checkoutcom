@@ -27,6 +27,13 @@ document.addEventListener('DOMContentLoaded', function() {
 var clearForm = function() {
     // Owner input
     $('.owner :input').val('');
+
+    // Number input
+    $('.number :input').val('');
+
+    // Set default thumb
+    setImage('default_thumb');
+    
     // Cvn input
     $('.cvn :input').val('');
 }
