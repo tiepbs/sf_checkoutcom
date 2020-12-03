@@ -174,13 +174,16 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
         paymentInstrument.setCreditCardExpirationYear(expirationYear);
 
         // Create card token if save card is true
-        if (paymentInformation.saveCard.value  && !paymentInformation.storedPaymentUUID) {
+        if (paymentInformation.saveCard.value && !paymentInformation.storedPaymentUUID) {
             paymentInstrument.setCreditCardToken(
                 paymentInformation.creditCardToken
                     ? paymentInformation.creditCardToken
                     : createToken()
             );
-        };
+        } else if (paymentInformation.storedPaymentUUID) {
+            paymentInstrument.setCreditCardToken(paymentInformation.creditCardToken);
+        }
+        
         paymentInstrument.custom.ckoPaymentData = JSON.stringify({
             'securityCode': cardSecurityCode,
             'storedPaymentUUID': paymentInformation.storedPaymentUUID,
