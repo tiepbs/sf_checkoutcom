@@ -5,6 +5,7 @@ var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var ISML = require('dw/template/ISML');
 var URLUtils = require('dw/web/URLUtils');
+var Site = require('dw/system/Site');
 
 // Utility
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -146,7 +147,7 @@ var cardHelper = {
             billing_descriptor: ckoHelper.getBillingDescriptorObject(),
             shipping: this.getShippingObject(args),
             '3ds': paymentData.madaCard === 'yes' ? { enabled: true } : this.get3Ds(),
-            risk: { enabled: false },
+            risk: { enabled: Site.getCurrent().getCustomPreferenceValue('ckoEnableRiskFlag') },
             success_url: URLUtils.https('CKOMain-HandleReturn').toString(),
             failure_url: URLUtils.https('CKOMain-HandleFail').toString(),
             payment_ip: ckoHelper.getHost(args),

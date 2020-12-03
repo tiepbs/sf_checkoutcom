@@ -574,12 +574,6 @@ function placeOrder(order, fraudDetectionStatus) {
             throw new Error();
         }
 
-        if (fraudDetectionStatus.status === 'flag') {
-            order.setConfirmationStatus(Order.CONFIRMATION_STATUS_NOTCONFIRMED);
-        } else {
-            order.setConfirmationStatus(Order.CONFIRMATION_STATUS_CONFIRMED);
-        }
-
         order.setExportStatus(Order.EXPORT_STATUS_READY);
         Transaction.commit();
     } catch (e) {

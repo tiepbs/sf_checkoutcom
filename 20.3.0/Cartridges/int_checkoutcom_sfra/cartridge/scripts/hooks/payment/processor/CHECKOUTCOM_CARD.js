@@ -45,7 +45,7 @@ function createToken() {
                 token: tokenResponse.token,
             },
             currency: Site.getCurrent().getDefaultCurrency(),
-            risk: { enabled: false },
+            risk: { enabled: Site.getCurrent().getCustomPreferenceValue('ckoEnableRiskFlag') },
             billing_descriptor: ckoHelper.getBillingDescriptor(),
         };
 
@@ -174,20 +174,17 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
         paymentInstrument.setCreditCardExpirationYear(expirationYear);
 
         // Create card token if save card is true
-        if (paymentInformation.saveCard.value && !paymentInformation.storedPaymentUUID) {
+        if (paymentInformation.saveCard.value) {
             paymentInstrument.setCreditCardToken(
                 paymentInformation.creditCardToken
                     ? paymentInformation.creditCardToken
                     : createToken()
             );
-        } else if (paymentInformation.storedPaymentUUID) {
-            paymentInstrument.setCreditCardToken(paymentInformation.creditCardToken);
         };
-
         paymentInstrument.custom.ckoPaymentData = JSON.stringify({
             'securityCode': cardSecurityCode,
             'storedPaymentUUID': paymentInformation.storedPaymentUUID,
-            'saveCard': paymentInformation.creditCardToken ? true : false,
+            'saveCard': paymentInformation.saveCard.value,
             'customerNo': req.currentCustomer.raw.registered ? req.currentCustomer.profile.customerNo : null ,
             'madaCard': madaCard
         });
