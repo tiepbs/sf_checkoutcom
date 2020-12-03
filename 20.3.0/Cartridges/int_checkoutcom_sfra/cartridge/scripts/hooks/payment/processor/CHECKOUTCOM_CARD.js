@@ -45,7 +45,7 @@ function createToken() {
                 token: tokenResponse.token,
             },
             currency: Site.getCurrent().getDefaultCurrency(),
-            risk: { enabled: false },
+            risk: { enabled: Site.getCurrent().getCustomPreferenceValue('ckoEnableRiskFlag') },
             billing_descriptor: ckoHelper.getBillingDescriptor(),
         };
 
