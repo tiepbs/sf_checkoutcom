@@ -182,8 +182,8 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
             );
         } else if (paymentInformation.storedPaymentUUID) {
             paymentInstrument.setCreditCardToken(paymentInformation.creditCardToken);
-        }
-        
+        };
+
         paymentInstrument.custom.ckoPaymentData = JSON.stringify({
             'securityCode': cardSecurityCode,
             'storedPaymentUUID': paymentInformation.storedPaymentUUID,
