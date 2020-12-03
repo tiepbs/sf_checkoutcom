@@ -9,7 +9,7 @@
         >
 
         <!--- register/authenticated user --->
-        <isif condition="${pdict.customer.registeredUser}">
+        <isif condition="${pdict.customer.registeredUser && (dw.system.Site.getCurrent().getCustomPreferenceValue('ckoUseSavedCardEnabled'))}">
             <div class="user-payment-instruments container ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? '' : 'checkout-hidden'}">
                 <!--- Stored user payments --->
                 <div class="stored-payments">
@@ -22,8 +22,7 @@
                 </div>
             </div>
         </isif>
-
-        <fieldset class="credit-card-form ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? 'checkout-hidden' : ''}">
+        <fieldset class="credit-card-form ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? (dw.system.Site.getCurrent().getCustomPreferenceValue('ckoUseSavedCardEnabled')) ? 'checkout-hidden' : '' : ''}">
             <isinclude template="checkout/billing/creditCardForm" />
             <isif condition="${pdict.customer.registeredUser}">
                 <button class="btn btn-block cancel-new-payment btn-outline-primary ${pdict.customer.registeredUser && pdict.customer.customerPaymentInstruments.length ? '' : 'checkout-hidden'}" type="button">${Resource.msg('button.back.to.stored.payments', 'checkout', null)}</button>

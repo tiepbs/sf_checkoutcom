@@ -174,7 +174,7 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
         paymentInstrument.setCreditCardExpirationYear(expirationYear);
 
         // Create card token if save card is true
-        if (paymentInformation.saveCard.value) {
+        if (paymentInformation.saveCard.value  && !paymentInformation.storedPaymentUUID) {
             paymentInstrument.setCreditCardToken(
                 paymentInformation.creditCardToken
                     ? paymentInformation.creditCardToken
@@ -184,7 +184,7 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
         paymentInstrument.custom.ckoPaymentData = JSON.stringify({
             'securityCode': cardSecurityCode,
             'storedPaymentUUID': paymentInformation.storedPaymentUUID,
-            'saveCard': paymentInformation.saveCard.value,
+            'saveCard': paymentInformation.creditCardToken ? true : false,
             'customerNo': req.currentCustomer.raw.registered ? req.currentCustomer.profile.customerNo : null ,
             'madaCard': madaCard
         });
