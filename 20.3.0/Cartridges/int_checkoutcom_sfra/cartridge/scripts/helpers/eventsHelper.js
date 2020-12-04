@@ -61,7 +61,7 @@ var eventsHelper = {
             // Prepare the webhook info
             var details = '';
 
-            if (hook.data.risk.flagged) {
+            if (Object.prototype.hasOwnProperty(hook.data, 'risk' ) && Object.prototype.hasOwnProperty(hook.data.risk, 'flagged')) {
                 details += ckoHelper._('cko.webhook.flagged', 'cko') + '\n';
                 details += ckoHelper._('cko.response.summary', 'cko') + ': ' + hook.data.response_summary + '\n';
                 order.setConfirmationStatus(order.CONFIRMATION_STATUS_NOTCONFIRMED);
