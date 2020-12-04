@@ -9,3 +9,4 @@
         ${paymentOption.name}
     </a>
 </li>
+<script src="${URLUtils.staticURL('/js/applepay.js')}"></script>

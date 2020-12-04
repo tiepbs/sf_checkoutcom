@@ -1,0 +1,6 @@
+/* make ApplePay button larger*/
+#ckoApplePayButton {
+    margin-top: 3em;
+    width: 100%;
+    height: 3em;
+}

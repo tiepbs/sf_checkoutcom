@@ -1,3 +1,8 @@
+<style>
+    @import url("${URLUtils.staticURL('/css/wallet.css')}");
+    @import url("${URLUtils.staticURL('/css/wallet/applepay.css')}");
+</style>
+
 <div class="tab-pane apple-pay-content" id="apple-pay-content" role="tabpanel">
     <fieldset class="payment-form-fields">
         <input type="hidden" class="form-control"
@@ -14,6 +19,6 @@
             </div>
         </div>
 
-        <isapplepay></isapplepay>
+        <isapplepay id="ckoApplePayButton"></isapplepay>
     </fieldset>
 </div>
