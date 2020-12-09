@@ -35,20 +35,11 @@
             </div>
             <div class="cko-apm">
                 <div class="cko-settings-accordion">
-                    <h2>${Resource.msg('cko.settings.apmSettingsTitle', 'cko', null)}</h2>
+                    <h2>${Resource.msg('cko.settings.cardSettingsTitle', 'cko', null)}</h2>
                 </div>
                 <div class="cko-settings-panel">
                     <iscomment>	APM Settings Form </iscomment>
-                    <isinclude template="inc/forms/apmSettings.isml"/>
-                </div>
-            </div>
-            <div class="cko-apple-pay">
-                <div class="cko-settings-accordion">
-                    <h2>${Resource.msg('cko.settings.applepaySettingsTitle', 'cko', null)}</h2>
-                </div>
-                <div class="cko-settings-panel">
-                    <iscomment>	Apple Pay Settings Form </iscomment>
-                    <isinclude template="inc/forms/applePaySettings.isml"/>
+                    <isinclude template="inc/forms/cardSettings.isml"/>
                 </div>
             </div>
             <div class="cko-google-pay">

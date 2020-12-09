@@ -46,41 +46,6 @@
     </div>
 
     <div class="form-group required">
-        <label>${Resource.msg('cko.generalSettings.3dsLabel', 'cko', null)} : </label> 
-        <input type="checkbox" id="cko3ds" class="form-control" name="cko3ds"/>
-    </div>
-
-    <div class="form-group required">
-        <label>${Resource.msg('cko.generalSettings.n3dsLabel', 'cko', null)} : </label> 
-        <input type="checkbox" id="ckoN3ds" class="form-control" name="ckoN3ds"/>
-    </div>
-
-    <div class="form-group required">
-        <label>${Resource.msg('cko.generalSettings.autoCaptureLabel', 'cko', null)} : </label> 
-        <input type="checkbox" id="ckoAutoCapture" class="form-control" name="ckoAutoCapture"/>
-    </div>
-
-    <div class="form-group required ckoAutoCaptureTime">
-        <label>${Resource.msg('cko.generalSettings.autoCaptureTimeLabel', 'cko', null)} : </label> 
-        <input type="text" id="ckoAutoCaptureTime" class="form-control" name="ckoAutoCaptureTime"/>
-    </div>
-
-    <div class="form-group required">
-        <label>${Resource.msg('cko.generalSettings.madaLabel', 'cko', null)} : </label> 
-        <input type="checkbox" id="ckoMada" class="form-control" name="ckoMada"/>
-    </div>
-
-    <div class="form-group required">
-        <label>${Resource.msg('cko.generalSettings.savedCardLabel', 'cko', null)} : </label> 
-        <input type="checkbox" id="ckoSavedCardEnabled" class="form-control" name="ckoSavedCardEnabled"/>
-    </div>
-     
-    <div class="form-group required">
-        <label>${Resource.msg('cko.generalSettings.useSavedCardLabel', 'cko', null)} : </label> 
-        <input type="checkbox" id="ckoUseSavedCardEnabled" class="form-control" name="ckoUseSavedCardEnabled"/>
-    </div> 
-
-    <div class="form-group required">
         <label>${Resource.msg('cko.generalSettings.storefrontCoreLabel', 'cko', null)} : </label> 
         <input type="text" id="ckoSgStorefrontCore" class="form-control" name="ckoSgStorefrontCore" required=""/>
     </div>

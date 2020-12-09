@@ -1,0 +1,56 @@
+<form action="${URLUtils.url('CKOSettings-SaveCkoCustomProperties')}" method="POST" name="GlobalForm" data-parsley-validate="">
+
+    <input type="hidden" name="ckoAccountSettingsUrl" class="ckoAccountSettingsUrl" value="${URLUtils.url('CKOSettings-GetCkoCustomProperties')}"/>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.cardSettings.3dsLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="cko3ds" class="form-control" name="cko3ds"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.cardSettings.n3dsLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoN3ds" class="form-control" name="ckoN3ds"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.cardSettings.autoCaptureLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoAutoCapture" class="form-control" name="ckoAutoCapture"/>
+    </div>
+
+    <div class="form-group required ckoAutoCaptureTime">
+        <label>${Resource.msg('cko.cardSettings.autoCaptureTimeLabel', 'cko', null)} : </label> 
+        <input type="text" id="ckoAutoCaptureTime" class="form-control" name="ckoAutoCaptureTime"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.cardSettings.madaLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoMada" class="form-control" name="ckoMada"/>
+    </div>
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.cardSettings.savedCardLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoSavedCardEnabled" class="form-control" name="ckoSavedCardEnabled"/>
+    </div>
+     
+    <div class="form-group required">
+        <label>${Resource.msg('cko.cardSettings.useSavedCardLabel', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoUseSavedCardEnabled" class="form-control" name="ckoUseSavedCardEnabled"/>
+    </div> 
+
+    <div class="form-group required">
+        <label>${Resource.msg('cko.cardSettings.enableRiskFlag', 'cko', null)} : </label> 
+        <input type="checkbox" id="ckoEnableRiskFlag" class="form-control" name="ckoEnableRiskFlag"/>
+    </div>
+
+    <div class="d-flex justify-content-center cko-spinner" id="cko-spinner">
+        <div class="spinner-border" id="cko-account-keys-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div id="process-message" class="process-message">
+            <span>&#10003;</span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-block btn-secondary">${Resource.msg('cko.cardSettings.submitButton', 'cko', null)}</button>
+
+</form>
