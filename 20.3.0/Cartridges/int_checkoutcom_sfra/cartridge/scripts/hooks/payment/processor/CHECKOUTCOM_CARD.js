@@ -210,28 +210,36 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
     var fieldErrors = {};
     var error = false;
 
-    try {
-        var ckoPaymentRequest = cardHelper.handleRequest(orderNumber, paymentInstrument, paymentProcessor);
+    var ckoPaymentRequest = cardHelper.handleRequest(orderNumber, paymentInstrument, paymentProcessor);
 
-        Transaction.wrap(function () {
-            paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-            paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-            paymentInstrument.custom.ckoPaymentData = "";
-        });
+    Transaction.wrap(function () {
+        paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
+        paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
+        paymentInstrument.custom.ckoPaymentData = "";
+    });
 
-        // Handle errors
-        if (ckoPaymentRequest.error) {
+    if (ckoPaymentRequest) {
 
-            throw new Error(ckoPaymentRequest.message);
+        try {
+            // Handle errors
+            if (ckoPaymentRequest.error) {
+    
+                throw new Error(ckoPaymentRequest.message);
+            }
+               
+        } catch (e) {
+            error = true;
+            if (ckoPaymentRequest.code) {
+                serverErrors.push(e.message);
+            } else {
+                Resource.msg('error.technical', 'checkout', null);
+            }
         }
-           
-    } catch (e) {
+
+    } else {
         error = true;
-        if (ckoPaymentRequest.code) {
-            serverErrors.push(e.message);
-        } else {
-            Resource.msg('error.technical', 'checkout', null);
-        }
+        Resource.msg('error.technical', 'checkout', null);
+        return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error, redirectUrl: false };
     }
 
     return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error, redirectUrl: ckoPaymentRequest.redirectUrl };
