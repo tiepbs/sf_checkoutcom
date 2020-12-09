@@ -993,29 +993,19 @@ var ckoHelper = {
      * @returns {Object} The billing address
      */
     getOrderAddress: function(args) {
-        var basket = BasketMgr.getCurrentBasket();
-        var form = session.getForms();
-        var shippingForm = form.shipping; 
-        var addressFields = shippingForm.shippingAddress.addressFields;
-
-        // Address line 2
-        var address2 = addressFields.address2.htmlValue;
-
-        // Address Coutry 
-        var country1 = addressFields.country.htmlValue;
-        var country2 = args.order.defaultShipment.shippingAddress.countryCode.valueOf();
+        var billingAddress = args.order.billingAddress;
 
         var address = {
-            given_name: addressFields.firstName.htmlValue,
-            family_name: addressFields.lastName.htmlValue,
+            given_name: billingAddress.firstName,
+            family_name: billingAddress.lastName,
             email: args.order.customerEmail,
             title: null,
-            street_address: addressFields.address1.htmlValue,
-            street_address2: address2 ? address2 : null,
-            postal_code: addressFields.postalCode.htmlValue,
-            city: addressFields.city.htmlValue,
-            phone: addressFields.phone.htmlValue,
-            country: country1 ? country1 : country2,
+            street_address: billingAddress.address1,
+            street_address2: billingAddress.address2,
+            postal_code: billingAddress.postalCode,
+            city: billingAddress.city,
+            phone: billingAddress.phone,
+            country: billingAddress.countryCode.value
         };
 
         return address;
