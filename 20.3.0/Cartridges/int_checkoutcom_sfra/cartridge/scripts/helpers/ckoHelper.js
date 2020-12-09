@@ -77,6 +77,25 @@ var ckoHelper = {
     },
 
     /**
+     * Converts gateway error message to a localized message
+     * @param {string} error_message from  auth request
+     * @returns {string} localized error message
+     */
+    errorMessage: function(message) {
+        var messageArray = message.split(' ');
+        var result = 'error.';
+        if (messageArray) {
+            messageArray.forEach(function(value){
+                result += value;
+            });
+        } else {
+            result += message;
+        }
+
+        return Resource.msg(result, 'cko', null);
+    },
+
+    /**
      * Get value from custom preferences.
      * @param {string} field The field id
      * @returns {string} The preference value

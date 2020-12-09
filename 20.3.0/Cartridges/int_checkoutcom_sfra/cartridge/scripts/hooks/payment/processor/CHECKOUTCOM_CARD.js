@@ -213,29 +213,25 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
     try {
         var ckoPaymentRequest = cardHelper.handleRequest(orderNumber, paymentInstrument, paymentProcessor);
 
+        Transaction.wrap(function () {
+            paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
+            paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
+            paymentInstrument.custom.ckoPaymentData = "";
+        });
+
         // Handle errors
         if (ckoPaymentRequest.error) {
-            error = true;
-            serverErrors.push(
-                ckoHelper.getPaymentFailureMessage()
-            );
-            Transaction.wrap(function () {
-                paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-                paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-                paymentInstrument.custom.ckoPaymentData = "";
-            });
-        } else {
-            Transaction.wrap(function () {
-                paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-                paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-                paymentInstrument.custom.ckoPaymentData = "";
-            });
+
+            throw new Error(ckoPaymentRequest.message);
         }
+           
     } catch (e) {
         error = true;
-        serverErrors.push(
-            Resource.msg('error.technical', 'checkout', null)
-        );
+        if (ckoPaymentRequest.code) {
+            serverErrors.push(e.message);
+        } else {
+            Resource.msg('error.technical', 'checkout', null);
+        }
     }
 
     return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error, redirectUrl: ckoPaymentRequest.redirectUrl };

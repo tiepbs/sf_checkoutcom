@@ -133,9 +133,12 @@ server.prepend('PlaceOrder', server.middleware.https, function(req, res, next) {
     if (handlePaymentResult.error) {
         res.json({
             error: true,
-            errorMessage: Resource.msg('error.technical', 'checkout', null),
+            errorMessage: handlePaymentResult.serverErrors[0],
         });
-        return next();
+
+        this.emit('route:Complete', req, res);
+        // eslint-disable-next-line
+        return;
     }
 
     var fraudDetectionStatus = hooksHelper('app.fraud.detection', 'fraudDetection', currentBasket, require('*/cartridge/scripts/hooks/fraudDetection').fraudDetection);

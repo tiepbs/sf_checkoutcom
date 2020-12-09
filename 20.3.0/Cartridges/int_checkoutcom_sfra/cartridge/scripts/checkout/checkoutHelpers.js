@@ -518,7 +518,7 @@ function handlePayments(order, orderNumber) {
 
                     if (authorizationResult.error) {
                         Transaction.wrap(function () { OrderMgr.failOrder(order, true); });
-                        result.error = true;
+                        result = authorizationResult
                         break;
                     } else {
                         result = authorizationResult;
