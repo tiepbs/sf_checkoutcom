@@ -1,6 +1,0 @@
-<iscomment> Poli APM option </iscomment>
-<button class="cko-apm-accordion">
-    <input id="poli_apm_radio_btn" type="radio"/>
-    <img alt="${Resource.msg('cko.poli.name','cko',null)}" id="poli_thumb" class="image imageright" src="${URLUtils.staticURL('/images/apm-icons/poli.png')}"/>
-    ${Resource.msg('cko.poli.name','cko',null)} 
-</button>
