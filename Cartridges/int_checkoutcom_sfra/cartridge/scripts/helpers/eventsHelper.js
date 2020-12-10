@@ -60,7 +60,15 @@ var eventsHelper = {
         if (order) {
             // Prepare the webhook info
             var details = '';
-            details += ckoHelper._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
+
+            if (Object.prototype.hasOwnProperty(hook.data, 'risk' ) && Object.prototype.hasOwnProperty(hook.data.risk, 'flagged')) {
+                details += ckoHelper._('cko.webhook.flagged', 'cko') + '\n';
+                details += ckoHelper._('cko.response.summary', 'cko') + ': ' + hook.data.response_summary + '\n';
+                order.setConfirmationStatus(order.CONFIRMATION_STATUS_NOTCONFIRMED);
+            } else {
+                details += ckoHelper._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
+            }
+
             details += ckoHelper._('cko.transaction.id', 'cko') + ': ' + hook.data.action_id + '\n';
             details += ckoHelper._('cko.transaction.paymentId', 'cko') + ': ' + hook.data.id + '\n';
             details += ckoHelper._('cko.transaction.eventId', 'cko') + ': ' + hook.id + '\n';
@@ -124,6 +132,26 @@ var eventsHelper = {
      * @param {Object} hook The gateway webhook data
      */
     paymentApproved: function(hook) {
+        var order = OrderMgr.getOrder(hook.data.reference);
+
+        // If order Status is fail void the transaction
+        if (order.getStatus().toString() === 'FAILED') {
+            
+            var gatewayVoid = ckoHelper.gatewayClientRequest(
+                'cko.transaction.void.' + ckoHelper.getValue('ckoMode') + '.service',
+                {
+                    "chargeId": hook.data.id,
+                }
+            );
+            
+            // If Void is Successfull
+            if (gatewayVoid) {
+                return 0;
+            }
+        }
+
+        order.setConfirmationStatus(order.CONFIRMATION_STATUS_CONFIRMED);
+
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 
@@ -131,7 +159,7 @@ var eventsHelper = {
         transactionHelper.createAuthorization(hook);
 
         // Save the card if needed
-        savedCardHelper.updateSavedCard(hook);
+        // savedCardHelper.updateSavedCard(hook);
     },
 
     /**
@@ -149,10 +177,10 @@ var eventsHelper = {
     paymentDeclined: function(hook) {
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', 'ORDER_STATUS_FAILED');
 
-        // Delete the card if needed
-        if (hook.data.metadata.payment_processor == 'CHECKOUTCOM_CARD') {
-            savedCardHelper.updateSavedCard(hook);
-        }
+        // // Delete the card if needed
+        // if (hook.data.metadata.payment_processor == 'CHECKOUTCOM_CARD') {
+        //     savedCardHelper.updateSavedCard(hook);
+        // }
     },
 
     /**

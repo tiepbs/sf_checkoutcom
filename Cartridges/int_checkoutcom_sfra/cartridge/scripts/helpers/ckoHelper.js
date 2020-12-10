@@ -77,6 +77,25 @@ var ckoHelper = {
     },
 
     /**
+     * Converts gateway error message to a localized message
+     * @param {string} error_message from  auth request
+     * @returns {string} localized error message
+     */
+    errorMessage: function(message) {
+        var messageArray = message.split(' ');
+        var result = 'error.';
+        if (messageArray) {
+            messageArray.forEach(function(value){
+                result += value;
+            });
+        } else {
+            result += message;
+        }
+
+        return Resource.msg(result, 'cko', null);
+    },
+
+    /**
      * Get value from custom preferences.
      * @param {string} field The field id
      * @returns {string} The preference value
@@ -308,7 +327,7 @@ var ckoHelper = {
 
             // Loop through the payment instruments
             for (var i = 0; i < paymentInstruments.length; i++) {
-                if (this.isCkoItem(paymentInstruments[i].paymentMethod) && !this.containsObject(item, data)) {
+                if (!this.containsObject(item, data)) {
                     data.push(item);
                 }
             }
@@ -464,7 +483,7 @@ var ckoHelper = {
      */
     getQuantity: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
+        var order = OrderMgr.getOrder(args.orderNo, args.Order.orderToken);
         var quantity = order.getProductQuantityTotal();
 
         return quantity;
@@ -490,7 +509,7 @@ var ckoHelper = {
      */
     getProductInformation: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
+        var order = OrderMgr.getOrder(args.orderNo, args.Order.orderToken);
         var it = order.productLineItems.iterator();
         var products = [];
 
@@ -531,7 +550,7 @@ var ckoHelper = {
      */
     getTaxObject: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
+        var order = OrderMgr.getOrder(args.orderNo, args.Order.orderToken);
 
         // Prepare the tax data
         var tax = {
@@ -558,7 +577,7 @@ var ckoHelper = {
      */
     getShippingValue: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
+        var order = OrderMgr.getOrder(args.orderNo, args.Order.orderToken);
 
         // Get shipping address object
         var shipping = order.getDefaultShipment();
@@ -584,7 +603,7 @@ var ckoHelper = {
      */
     getCurrencyCode: function(args) {
         // Get the order
-        var order = OrderMgr.getOrder(args.orderNo);
+        var order = OrderMgr.getOrder(args.orderNo, args.Order.orderToken);
 
         // Get shipping address object
         var shipping = order.getDefaultShipment().getShippingMethod();
@@ -600,7 +619,7 @@ var ckoHelper = {
      */
     getProductNames: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
+        var order = OrderMgr.getOrder(args.orderN, args.Order.orderToken);
 
         // Prepare the iterator
         var it = order.productLineItems.iterator();
@@ -622,7 +641,7 @@ var ckoHelper = {
      */
     getProductPrices: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
+        var order = OrderMgr.getOrder(args.orderNo, args.Order.orderToken);
 
         // Get the product itemas
         var items = order.productLineItems.iterator();
@@ -644,7 +663,7 @@ var ckoHelper = {
      */
     getProductIds: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
+        var order = OrderMgr.getOrder(args.orderNo, args.Order.orderToken);
         var it = order.productLineItems.iterator();
         var productIds = [];
         while (it.hasNext()) {
@@ -662,7 +681,7 @@ var ckoHelper = {
      */
     getProductQuantity: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.orderNo);
+        var order = OrderMgr.getOrder(args.orderNo, args.Order.orderToken);
 
         // Prepare the iterator
         var it = order.productLineItems.iterator();
@@ -694,7 +713,7 @@ var ckoHelper = {
      */
     getCustomerName: function(args) {
         // Load the order information
-        var order = OrderMgr.getOrder(args.orderNo);
+        var order = OrderMgr.getOrder(args.orderNo, args.Order.orderToken);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
@@ -974,29 +993,19 @@ var ckoHelper = {
      * @returns {Object} The billing address
      */
     getOrderAddress: function(args) {
-        var basket = BasketMgr.getCurrentBasket();
-        var form = session.getForms();
-        var shippingForm = form.shipping; 
-        var addressFields = shippingForm.shippingAddress.addressFields;
-
-        // Address line 2
-        var address2 = addressFields.address2.htmlValue;
-
-        // Address Coutry 
-        var country1 = addressFields.country.htmlValue;
-        var country2 = args.order.defaultShipment.shippingAddress.countryCode.valueOf();
+        var billingAddress = args.order.billingAddress;
 
         var address = {
-            given_name: addressFields.firstName.htmlValue,
-            family_name: addressFields.lastName.htmlValue,
+            given_name: billingAddress.firstName,
+            family_name: billingAddress.lastName,
             email: args.order.customerEmail,
             title: null,
-            street_address: addressFields.address1.htmlValue,
-            street_address2: address2 ? address2 : null,
-            postal_code: addressFields.postalCode.htmlValue,
-            city: addressFields.city.htmlValue,
-            phone: addressFields.phone.htmlValue,
-            country: country1 ? country1 : country2,
+            street_address: billingAddress.address1,
+            street_address2: billingAddress.address2,
+            postal_code: billingAddress.postalCode,
+            city: billingAddress.city,
+            phone: billingAddress.phone,
+            country: billingAddress.countryCode.value
         };
 
         return address;

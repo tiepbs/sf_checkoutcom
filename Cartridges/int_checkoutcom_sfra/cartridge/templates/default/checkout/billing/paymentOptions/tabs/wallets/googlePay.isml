@@ -1,7 +1,7 @@
 <li class="nav-item" data-method-id="${paymentOption.ID}">
     <a class="nav-link google-pay-tab" data-toggle="tab" href="#google-pay-content" role="tab">
         <img class="apple-payoptions"
-            src="${URLUtils.staticURL('/images/wallet-icons/googlepay.png')}"
+            src="${URLUtils.staticURL('/images/wallet-icons/googlepay.jpg')}"
             height="32"
             alt="${paymentOption.name}"
             title="${paymentOption.name}"

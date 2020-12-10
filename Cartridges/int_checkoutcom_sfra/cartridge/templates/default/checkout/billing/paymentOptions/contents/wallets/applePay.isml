@@ -1,3 +1,8 @@
+<style>
+    @import url("${URLUtils.staticURL('/css/wallet.css')}");
+    @import url("${URLUtils.staticURL('/css/wallet/applepay.css')}");
+</style>
+
 <div class="tab-pane apple-pay-content" id="apple-pay-content" role="tabpanel">
     <fieldset class="payment-form-fields">
         <input type="hidden" class="form-control"
@@ -7,13 +12,13 @@
 
         <div class="row">
             <div class="col-sm-9  col-md-9 wallet-row-box">
-                <isprint value="${Resource.msg('cko.alipay.name','cko',null)}" />
+                <isprint value="${Resource.msg('cko.applepay.name','cko',null)}" />
             </div>
             <div class="col-sm-3 col-md-3 wallet-row-image">
                 <img alt="${Resource.msg('cko.applepay.name','cko',null)}" id="applepay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/wallet-icons/applepay.png')}"/>
             </div>
         </div>
 
-        <isapplepay></isapplepay>
+        <isapplepay id="ckoApplePayButton"></isapplepay>
     </fieldset>
 </div>

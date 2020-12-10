@@ -3,6 +3,7 @@
 /* API Includes */
 var OrderMgr = require('dw/order/OrderMgr');
 var URLUtils = require('dw/web/URLUtils');
+var Site = require('dw/system/Site');
 
 /** Utility **/
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -49,7 +50,7 @@ var cardHelper = {
         // Prepare the result
         var result = {
             error: !ckoHelper.paymentSuccess(gatewayResponse),
-            message: gatewayResponse.response_summary,
+            message: ckoHelper.errorMessage(gatewayResponse.response_summary.toLowerCase()),
             code: gatewayResponse.response_code,
             redirectUrl: false,
         };
@@ -96,7 +97,7 @@ var cardHelper = {
             billing_descriptor: ckoHelper.getBillingDescriptor(),
             shipping: ckoHelper.getShipping(order),
             '3ds': (paymentData.madaCard === true) ? { enabled: true } : this.get3Ds(),
-            risk: { enabled: false },
+            risk: { enabled: Site.getCurrent().getCustomPreferenceValue('ckoEnableRiskFlag') },
             success_url: URLUtils.https('CKOMain-HandleReturn').toString(),
             failure_url: URLUtils.https('CKOMain-HandleFail').toString(),
             metadata: ckoHelper.getMetadata({}, paymentProcessor),

@@ -11,7 +11,7 @@
     </isif>
 
     <iscomment> Apple Pay </iscomment>
-    <isif condition="${paymentOption.ID === 'CHECKOUTCOM_APPLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
+    <isif condition="${paymentOption.ID === 'DW_APPLE_PAY' && dw.system.Site.getCurrent().getCustomPreferenceValue('ckoEnabled')}">
         <isinclude template="checkout/billing/paymentOptions/tabs/wallets/applePay"/>
     </isif>
 

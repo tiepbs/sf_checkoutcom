@@ -383,14 +383,9 @@ var CKOHelper = {
         try {
             properties.forEach(function(element) {
                 var match = element === 'ckoDebugEnabled' || element === 'cko3ds' || element === 'ckoN3ds'
-                    || element === 'ckoAutoCapture' || element === 'ckoMada' || element === 'ckoEnabled'
-                    || element === 'ckoIdealEnabled' || element === 'ckoBoletoEnabled' || element === 'ckoBancontactEnabled'
-                    || element === 'ckoBenefitEnabled' || element === 'ckoGiroEnabled' || element === 'ckoEpsEnabled'
-                    || element === 'ckoSofortEnabled' || element === 'ckoKnetEnabled' || element === 'ckoQpayEnabled'
-                    || element === 'ckoFawryEnabled' || element === 'ckoSepaEnabled' || element === 'ckoMultibancoEnabled'
-                    || element === 'ckoPoliEnabled' || element === 'ckoP24Enabled' || element === 'ckoKlarnaEnabled'
-                    || element === 'ckoPaypalEnabled' || element === 'ckoOxxoEnabled' || element === 'ckoAlipayEnabled'
-                    || element === 'ckoApplePayEnabled' || element === 'ckoGooglePayEnabled';
+                    || element === 'ckoAutoCapture' || element === 'ckoMada'
+                    || element === 'ckoGooglePayEnabled' || element === 'ckoSavedCardEnabled'
+                    || element === 'ckoUseSavedCardEnabled' || element === 'ckoEnableRiskFlag';
                 if (match) {
                     // eslint-disable-next-line
                     var property = requestObject[element] ? true : false;
@@ -398,10 +393,7 @@ var CKOHelper = {
                     dw.system.Site.getCurrent().setCustomPreferenceValue(element, property);
                 } else {
                     var value = requestObject[element];
-                    if (value === undefined || value === '') {
-                        // eslint-disable-next-line
-                        // dw.system.Site.getCurrent().setCustomPreferenceValue(element, '');
-                    } else {
+                    if (value !== undefined || value !== '') {
                         // eslint-disable-next-line
         				dw.system.Site.getCurrent().setCustomPreferenceValue(element, value);
                     }

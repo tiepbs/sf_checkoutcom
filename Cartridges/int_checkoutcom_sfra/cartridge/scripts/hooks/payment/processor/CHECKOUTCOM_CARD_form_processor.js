@@ -70,7 +70,7 @@ function processForm(req, paymentForm, viewFormData) {
         }
     };
 
-    if (req.form.storedPaymentUUID) {
+    if (req.form.storedPaymentUUID && req.form.storedPaymentUUID !== 'undefined') {
         viewData.storedPaymentUUID = req.form.storedPaymentUUID;
     }
 

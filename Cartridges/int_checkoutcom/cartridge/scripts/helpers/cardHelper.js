@@ -5,6 +5,7 @@ var Transaction = require('dw/system/Transaction');
 var OrderMgr = require('dw/order/OrderMgr');
 var ISML = require('dw/template/ISML');
 var URLUtils = require('dw/web/URLUtils');
+var Site = require('dw/system/Site');
 
 // Utility
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -50,7 +51,7 @@ var cardHelper = {
      */
     handleCardRequest: function(paymentInstrument, args) {
         // Prepare the parameters
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
         var serviceName = 'cko.card.charge.' + ckoHelper.getValue('ckoMode') + '.service';
 
         // Create billing address object
@@ -131,7 +132,7 @@ var cardHelper = {
      */
     getCardRequest: function(paymentInstrument, args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
         var paymentData = JSON.parse(paymentInstrument.custom.ckoPaymentData);
 
         // Prepare the charge data
@@ -146,7 +147,7 @@ var cardHelper = {
             billing_descriptor: ckoHelper.getBillingDescriptorObject(),
             shipping: this.getShippingObject(args),
             '3ds': paymentData.madaCard === 'yes' ? { enabled: true } : this.get3Ds(),
-            risk: { enabled: false },
+            risk: { enabled: Site.getCurrent().getCustomPreferenceValue('ckoEnableRiskFlag') },
             success_url: URLUtils.https('CKOMain-HandleReturn').toString(),
             failure_url: URLUtils.https('CKOMain-HandleFail').toString(),
             payment_ip: ckoHelper.getHost(args),
@@ -198,7 +199,7 @@ var cardHelper = {
      */
     getBillingObject: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
@@ -223,7 +224,7 @@ var cardHelper = {
      */
     getShippingObject: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo);
+        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
 
         // Get shipping address object
         var shippingAddress = order.getDefaultShipment().getShippingAddress();

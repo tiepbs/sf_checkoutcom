@@ -1,5 +1,6 @@
 <style>
-	@import url("${URLUtils.staticURL('/css/googlepay.css')}");
+    @import url("${URLUtils.staticURL('/css/wallet.css')}");
+    @import url("${URLUtils.staticURL('/css/wallet/googlepay.css')}");
 </style>
 
 <div class="tab-pane google-pay-content" id="google-pay-content" role="tabpanel">
@@ -14,7 +15,7 @@
                 <isprint value="${Resource.msg('cko.googlepay.name','cko',null)}" />
             </div>
             <div class="col-sm-3 col-md-3 wallet-row-image">
-                <img alt="${Resource.msg('cko.googlepay.name','cko',null)}" id="googlepay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/wallet-icons/googlepay.png')}"/>
+                <img alt="${Resource.msg('cko.googlepay.name','cko',null)}" id="googlepay_thumb" class="image imageright" src="${URLUtils.staticURL('/images/wallet-icons/googlepay.jpg')}"/>
             </div>
         </div>
 

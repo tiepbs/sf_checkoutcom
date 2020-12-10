@@ -3,6 +3,7 @@
 /* Business Name */
 var Site = require('dw/system/Site');
 var businessName = Site.getCurrent().getCustomPreferenceValue('ckoBusinessName');
+var BasketMgr = require('dw/order/BasketMgr');
 
 /* Utility */
 var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
@@ -311,7 +312,7 @@ var ckoApmConfig = {
                         args.order.totalTax.value,
                         args.order.getCurrencyCode()
                     ),
-                    billing_address: ckoHelper.getOrderAddress(args),
+                    billing_address: {email: args.order.customerEmail},
                     products: ckoHelper.getOrderBasketObject(args),
                 },
             };

@@ -518,7 +518,7 @@ function handlePayments(order, orderNumber) {
 
                     if (authorizationResult.error) {
                         Transaction.wrap(function () { OrderMgr.failOrder(order, true); });
-                        result.error = true;
+                        result = authorizationResult
                         break;
                     } else {
                         result = authorizationResult;
@@ -572,12 +572,6 @@ function placeOrder(order, fraudDetectionStatus) {
         var placeOrderStatus = OrderMgr.placeOrder(order);
         if (placeOrderStatus === Status.ERROR) {
             throw new Error();
-        }
-
-        if (fraudDetectionStatus.status === 'flag') {
-            order.setConfirmationStatus(Order.CONFIRMATION_STATUS_NOTCONFIRMED);
-        } else {
-            order.setConfirmationStatus(Order.CONFIRMATION_STATUS_CONFIRMED);
         }
 
         order.setExportStatus(Order.EXPORT_STATUS_READY);

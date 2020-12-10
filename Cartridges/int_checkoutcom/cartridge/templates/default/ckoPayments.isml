@@ -134,15 +134,17 @@
 </div>
 
 <iscomment> This includes the google payment forms and buttons </iscomment>
-<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_GOOGLE_PAY'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_GOOGLE_PAY">
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='GOOGLE_PAY'}">payment-method-expanded</isif>" data-method="GOOGLE_PAY">
     <div class="form-row form-caption cko-form ckoPaymentBox">
         <isinclude template="walletPayments/googlePayForm.isml"/>
     </div>
 </div>
 
 <iscomment> This includes the apple payment forms and buttons </iscomment>
-<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='CHECKOUTCOM_APPLE_PAY'}">payment-method-expanded</isif>" data-method="CHECKOUTCOM_APPLE_PAY">
+<div class="payment-method <isif condition="${!empty(pdict.selectedPaymentID) && pdict.selectedPaymentID=='DW_APPLE_PAY'}">payment-method-expanded</isif>" data-method="DW_APPLE_PAY">
     <div class="form-row form-caption cko-form ckoPaymentBox">
         <isinclude template="walletPayments/applePayForm.isml"/>
     </div>
 </div>
+
+<script src="${URLUtils.staticURL('/js/applepay.js')}"></script>

@@ -105,9 +105,14 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
 
     var ckoPaymentRequest = apmHelper.handleRequest(apmConfigData, paymentProcessor.ID, orderNumber);
 
+    Transaction.wrap(function () {
+        paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
+        paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
+        paymentInstrument.custom.ckoPaymentData = "";
+    });
+
     if (ckoPaymentRequest) {
         try {
-        
 
             // Handle errors
             if (ckoPaymentRequest.error) {
@@ -115,29 +120,13 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
                 serverErrors.push(
                     ckoHelper.getPaymentFailureMessage()
                 );
-                Transaction.wrap(function () {
-                    paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-                    paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-                    paymentInstrument.custom.ckoPaymentData = "";
-                });
-            } else {
-                Transaction.wrap(function () {
-                    paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-                    paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-                    paymentInstrument.custom.ckoPaymentData = "";
-                });
+
             }
         } catch (e) {
             error = true;
             serverErrors.push(
                 Resource.msg('error.technical', 'checkout', null)
             );
-
-            Transaction.wrap(function () {
-                paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-                paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-                paymentInstrument.custom.ckoPaymentData = "";
-            });
         }
     } else {
 
@@ -145,12 +134,6 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
         serverErrors.push(
             Resource.msg('error.technical', 'checkout', null)
         );
-
-        Transaction.wrap(function () {
-            paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-            paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-            paymentInstrument.custom.ckoPaymentData = "";
-        });
 
         return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error};
     }

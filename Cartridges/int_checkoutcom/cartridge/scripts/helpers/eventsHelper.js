@@ -60,7 +60,15 @@ var eventsHelper = {
         if (order) {
             // Prepare the webhook info
             var details = '';
-            details += ckoHelper._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
+            
+            if (Object.prototype.hasOwnProperty(hook.data, 'risk' ) && Object.prototype.hasOwnProperty(hook.data.risk, 'flagged')) {
+                details += ckoHelper._('cko.webhook.flagged', 'cko') + '\n';
+                details += ckoHelper._('cko.response.summary', 'cko') + ': ' + hook.data.response_summary + '\n';
+                order.setConfirmationStatus(order.CONFIRMATION_STATUS_NOTCONFIRMED);
+            } else {
+                details += ckoHelper._('cko.webhook.event', 'cko') + ': ' + hook.type + '\n';
+            }
+
             details += ckoHelper._('cko.transaction.id', 'cko') + ': ' + hook.data.action_id + '\n';
             details += ckoHelper._('cko.transaction.paymentId', 'cko') + ': ' + hook.data.id + '\n';
             details += ckoHelper._('cko.transaction.eventId', 'cko') + ': ' + hook.id + '\n';
@@ -123,6 +131,11 @@ var eventsHelper = {
      * @param {Object} hook The gateway webhook data
      */
     paymentApproved: function(hook) {
+        // Load the order
+        var order = OrderMgr.getOrder(hook.data.reference);
+
+        order.setConfirmationStatus(order.CONFIRMATION_STATUS_CONFIRMED);
+
         // Create the webhook info
         this.addWebhookInfo(hook, 'PAYMENT_STATUS_NOTPAID', null);
 

@@ -45,7 +45,7 @@ function createToken() {
                 token: tokenResponse.token,
             },
             currency: Site.getCurrent().getDefaultCurrency(),
-            risk: { enabled: false },
+            risk: { enabled: Site.getCurrent().getCustomPreferenceValue('ckoEnableRiskFlag') },
             billing_descriptor: ckoHelper.getBillingDescriptor(),
         };
 
@@ -174,17 +174,20 @@ function Handle(basket, paymentInformation, paymentMethodID, req) {
         paymentInstrument.setCreditCardExpirationYear(expirationYear);
 
         // Create card token if save card is true
-        if (paymentInformation.saveCard.value) {
+        if (paymentInformation.saveCard.value && !paymentInformation.storedPaymentUUID) {
             paymentInstrument.setCreditCardToken(
                 paymentInformation.creditCardToken
                     ? paymentInformation.creditCardToken
                     : createToken()
             );
+        } else if (paymentInformation.storedPaymentUUID) {
+            paymentInstrument.setCreditCardToken(paymentInformation.creditCardToken);
         };
+
         paymentInstrument.custom.ckoPaymentData = JSON.stringify({
             'securityCode': cardSecurityCode,
             'storedPaymentUUID': paymentInformation.storedPaymentUUID,
-            'saveCard': paymentInformation.saveCard.value,
+            'saveCard': paymentInformation.creditCardToken ? true : false,
             'customerNo': req.currentCustomer.raw.registered ? req.currentCustomer.profile.customerNo : null ,
             'madaCard': madaCard
         });
@@ -207,32 +210,36 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
     var fieldErrors = {};
     var error = false;
 
-    try {
-        var ckoPaymentRequest = cardHelper.handleRequest(orderNumber, paymentInstrument, paymentProcessor);
+    var ckoPaymentRequest = cardHelper.handleRequest(orderNumber, paymentInstrument, paymentProcessor);
 
-        // Handle errors
-        if (ckoPaymentRequest.error) {
+    Transaction.wrap(function () {
+        paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
+        paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
+        paymentInstrument.custom.ckoPaymentData = "";
+    });
+
+    if (ckoPaymentRequest) {
+
+        try {
+            // Handle errors
+            if (ckoPaymentRequest.error) {
+    
+                throw new Error(ckoPaymentRequest.message);
+            }
+               
+        } catch (e) {
             error = true;
-            serverErrors.push(
-                ckoHelper.getPaymentFailureMessage()
-            );
-            Transaction.wrap(function () {
-                paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-                paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-                paymentInstrument.custom.ckoPaymentData = "";
-            });
-        } else {
-            Transaction.wrap(function () {
-                paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
-                paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
-                paymentInstrument.custom.ckoPaymentData = "";
-            });
+            if (ckoPaymentRequest.code) {
+                serverErrors.push(e.message);
+            } else {
+                Resource.msg('error.technical', 'checkout', null);
+            }
         }
-    } catch (e) {
+
+    } else {
         error = true;
-        serverErrors.push(
-            Resource.msg('error.technical', 'checkout', null)
-        );
+        Resource.msg('error.technical', 'checkout', null);
+        return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error, redirectUrl: false };
     }
 
     return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error, redirectUrl: ckoPaymentRequest.redirectUrl };

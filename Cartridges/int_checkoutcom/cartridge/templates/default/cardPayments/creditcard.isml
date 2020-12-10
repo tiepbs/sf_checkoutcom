@@ -3,7 +3,7 @@
 </style>
 
 <div id="card_payment_box">
-	<isif condition="${pdict.CurrentCustomer.authenticated}">
+	<isif condition="${pdict.CurrentCustomer.authenticated && (dw.system.Site.getCurrent().getCustomPreferenceValue('ckoUseSavedCardEnabled'))}">
 		<div id="ckoCardSelector" class="form-row" class="hideCard">
 			<label class="label">${Resource.msg('billing.selectcreditcard','checkout',null)}</label>
 			<div class="field-wrapper">
@@ -61,7 +61,7 @@
 	<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.cvn}" type="input" rowclass="cvn" dynamicname="true" help="${help}"/>
 
 	<iscomment> Save Card </iscomment>
-	<isif condition="${pdict.CurrentCustomer.authenticated}">
+	<isif condition="${pdict.CurrentCustomer.authenticated && (dw.system.Site.getCurrent().getCustomPreferenceValue('ckoSavedCardEnabled'))}">
         <isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.saveCard}" type="checkbox"/>
     </isif>
 
