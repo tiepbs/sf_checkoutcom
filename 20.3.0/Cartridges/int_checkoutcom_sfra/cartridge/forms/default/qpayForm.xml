@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
-    
-    <!-- Field for Qpay -->
-    <field formid="qpay_national_id" type="string" mandatory="false" max-length="40" binding="qpay_national_id"/>
-</form>

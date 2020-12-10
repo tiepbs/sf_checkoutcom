@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
-    
-	<!-- Field for Boleto -->
-    <field formid="boleto_cpf" type="string" mandatory="false" max-length="40" binding="bolito_cpf"/>
-</form>
