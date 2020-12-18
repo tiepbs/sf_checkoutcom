@@ -1,0 +1,13 @@
+.invalid-field-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 0.8em;
+}
+
+.is-invalid {
+    border: solid 0.01em red;
+}
+
+.summary-details .payment-info-label {
+    display: none;
+}

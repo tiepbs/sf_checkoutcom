@@ -46,7 +46,7 @@ var CKOHelper = {
 
             // Loop through the payment instruments
             for (var i = 0; i < paymentInstruments.length; i++) {
-                if (this.isCkoItem(paymentInstruments[i].paymentMethod) && !this.containsObject(item, data)) {
+                if (this.isCkoItem(this.getProcessorId(paymentInstruments[i])) && !this.containsObject(item, data)) {
                     data.push(item);
                 }
             }
@@ -157,12 +157,11 @@ var CKOHelper = {
 
         // Return true only if conditions are met
         var condition1 = (tid && paymentTransaction.transactionID === tid) || !tid;
-        var condition2 = this.isCkoItem(paymentInstrument.paymentMethod);
-        var condition3 = this.isCkoItem(this.getProcessorId(paymentInstrument));
-        var condition4 = paymentTransaction.custom.ckoPaymentId !== null && paymentTransaction.custom.ckoPaymentId !== '';
-        var condition5 = paymentTransaction.transactionID && paymentTransaction.transactionID !== '';
+        var condition2 = this.isCkoItem(this.getProcessorId(paymentInstrument));
+        var condition3 = paymentTransaction.custom.ckoPaymentId !== null && paymentTransaction.custom.ckoPaymentId !== '';
+        var condition4 = paymentTransaction.transactionID && paymentTransaction.transactionID !== '';
 
-        if (condition1 && condition2 && condition3 && condition4 && condition5) {
+        if (condition1 && condition2 && condition3 && condition4) {
             return true;
         }
 
@@ -175,7 +174,7 @@ var CKOHelper = {
      * @returns {boolean} The status of the current payment instrument
      */
     isCkoItem: function(item) {
-        return item.length > 0 && (item.indexOf('CHECKOUTCOM_') >= 0 || item.indexOf('CREDIT_CARD') >= 0 || item.indexOf('DW_APPLE_PAY') >= 0);
+        return item.length > 0 && (item.indexOf('CHECKOUTCOM_') >= 0);
     },
 
     /**

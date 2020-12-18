@@ -365,7 +365,7 @@ var ckoHelper = {
      */
     getCustomer: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
+        var order = OrderMgr.getOrder(args.OrderNo);
 
         // Customer object
         var customer = {
@@ -618,7 +618,7 @@ var ckoHelper = {
      */
     getPhoneObject: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
+        var order = OrderMgr.getOrder(args.OrderNo);
 
         // Get billing address information
         var billingAddress = order.getBillingAddress();
@@ -863,7 +863,7 @@ var ckoHelper = {
      */
     getShippingObject: function(args) {
         // Load the card and order information
-        var order = OrderMgr.getOrder(args.OrderNo, args.Order.orderToken);
+        var order = OrderMgr.getOrder(args.OrderNo);
 
         // Get shipping address object
         var shippingAddress = order.getDefaultShipment().getShippingAddress();

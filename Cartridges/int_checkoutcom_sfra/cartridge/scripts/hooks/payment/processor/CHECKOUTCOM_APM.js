@@ -103,42 +103,29 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
     var func = paymentInstrument.paymentMethod.toLowerCase() + 'Authorization';
     var apmConfigData = apmConfig[func](args);
 
-    var ckoPaymentRequest = apmHelper.handleRequest(apmConfigData, paymentProcessor.ID, orderNumber);
-
     Transaction.wrap(function () {
         paymentInstrument.paymentTransaction.setTransactionID(orderNumber);
         paymentInstrument.paymentTransaction.setPaymentProcessor(paymentProcessor);
         paymentInstrument.custom.ckoPaymentData = "";
     });
 
-    if (ckoPaymentRequest) {
-        try {
+    try {
+        var ckoPaymentRequest = apmHelper.handleRequest(apmConfigData, paymentProcessor.ID, orderNumber);
 
-            // Handle errors
-            if (ckoPaymentRequest.error) {
-                error = true;
-                serverErrors.push(
-                    ckoHelper.getPaymentFailureMessage()
-                );
-
-            }
-        } catch (e) {
-            error = true;
-            serverErrors.push(
-                Resource.msg('error.technical', 'checkout', null)
-            );
+        // Handle errors
+        if (ckoPaymentRequest === '' || ckoPaymentRequest === undefined || ckoPaymentRequest.error) {
+            throw new Error(ckoHelper.getPaymentFailureMessage());
         }
-    } else {
 
+        return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error, redirectUrl: ckoPaymentRequest.redirectUrl };
+
+    } catch (e) {
         error = true;
         serverErrors.push(
-            Resource.msg('error.technical', 'checkout', null)
+            e.message
         );
-
-        return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error};
+        return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error, redirectUrl: false };
     }
-
-    return { fieldErrors: fieldErrors, serverErrors: serverErrors, error: error, redirectUrl: ckoPaymentRequest.redirectUrl};
 }
 
 exports.Handle = Handle;

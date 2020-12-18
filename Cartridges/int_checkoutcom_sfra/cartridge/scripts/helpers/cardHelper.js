@@ -50,7 +50,7 @@ var cardHelper = {
         // Prepare the result
         var result = {
             error: !ckoHelper.paymentSuccess(gatewayResponse),
-            message: ckoHelper.errorMessage(gatewayResponse.response_summary.toLowerCase()),
+            message: gatewayResponse.response_summary ? ckoHelper.errorMessage(gatewayResponse.response_summary.toLowerCase()) : '',
             code: gatewayResponse.response_code,
             redirectUrl: false,
         };

@@ -23,6 +23,9 @@ var ShippingHelper = require('*/cartridge/scripts/checkout/shippingHelpers');
 
 var basketCalculationHelpers = require('*/cartridge/scripts/helpers/basketCalculationHelpers');
 
+/** CKO Util */
+var ckoHelper = require('~/cartridge/scripts/helpers/ckoHelper');
+
 // static functions needed for Checkout Controller logic
 
 /**
@@ -407,6 +410,14 @@ function validatePayment(req, currentBasket) {
     var currentCustomer = req.currentCustomer.raw;
     var paymentInstruments = currentBasket.paymentInstruments;
     var result = {};
+
+    // If in sandbox mode
+    // Get coutrycode from currentBasket
+    // Else get countrycode from Request Geolocation
+    var ckoMode = ckoHelper.getValue('ckoMode');
+    if (ckoMode.value === 'sandbox') {
+        countryCode = currentBasket.billingAddress.countryCode.value;
+    }
 
     applicablePaymentMethods = PaymentMgr.getApplicablePaymentMethods(
         currentCustomer,
